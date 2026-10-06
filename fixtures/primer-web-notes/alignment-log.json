@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-06",
+  "file": "MdZuSD4Wgy03m4OFppbDlE",
+  "reference": "@primer/primitives 11.10.0 + @primer/react 38.40.1",
+  "tokens": [
+    {
+      "variable": "button/danger/bgColor/active",
+      "light": "aliased to same reference as code",
+      "value": "#a40e26"
+    },
+    {
+      "variable": "button/danger/bgColor/hover",
+      "light": "aliased to same reference as code",
+      "value": "#cf222e"
+    },
+    {
+      "variable": "button/default/bgColor/disabled",
+      "light": "aliased to same reference as code",
+      "value": "#eff2f5"
+    },
+    {
+      "variable": "controlKnob/borderColor/rest",
+      "light": "aliased to same reference as code",
+      "value": "#d1d9e0"
+    },
+    {
+      "variable": "color/prettylights/syntax/invalid/illegal/bg",
+      "light": "aliased to same reference as code",
+      "value": "#ffebe9"
+    },
+    {
+      "variable": "color/prettylights/syntax/invalid/illegal/text",
+      "light": "aliased to same reference as code",
+      "value": "#d1242f"
+    }
+  ],
+  "component": {
+    "Button": {
+      "renamed": "variant=secondary -> variant=default (36 variants)",
+      "notDone": "variant=link (36 variants): Figma cloud runtime lacks SF Pro fonts; do in Figma desktop"
+    }
+  },
+  "docs": {
+    "Button": "React accessibility: Not reviewed -> Reviewed 2025-01-08",
+    "LoadingButton": "same + docs link /design/components/button -> /components/button"
+  },
+  "leftAsIs": {
+    "fontStack/*": "Figma can't express fallback stacks; file uses SF Pro text styles",
+    "Rails status": "no Rails source checked",
+    "other themes": "only light mode aligned and certified"
+  }
+}
