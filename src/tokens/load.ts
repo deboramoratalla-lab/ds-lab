@@ -44,7 +44,9 @@ export function normalizeValue(raw: unknown): string {
   // rem -> px (16px base)
   const rem = v.match(/^(-?\d*\.?\d+)rem$/);
   if (rem) v = `${parseFloat(rem[1]) * 16}px`;
-  // bare numbers from Figma (spacing, radius) -> px
+  // Bare numbers -> px on BOTH sides. Figma stores every float (spacing, radius, but also
+  // font weight) as a unitless number; normalizing all of them the same way keeps comparisons
+  // consistent. Side effect: a weight reads as "500px" in reports.
   if (/^-?\d*\.?\d+$/.test(v)) v = `${parseFloat(v)}px`;
   return v;
 }

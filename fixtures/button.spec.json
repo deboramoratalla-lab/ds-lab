@@ -1,0 +1,210 @@
+{
+  "name": "Button",
+  "source": "fixtures/primer-react/package/dist/Button/ButtonBase-014fae23.css",
+  "base": {
+    "align-items": {
+      "value": "center"
+    },
+    "appearance": {
+      "value": "none"
+    },
+    "background-color": {
+      "value": "transparent"
+    },
+    "border": {
+      "value": "var(--borderWidth-thin,.0625rem) solid"
+    },
+    "border-color": {
+      "token": "button-default-border-color-rest",
+      "value": "#d1d9e0"
+    },
+    "border-radius": {
+      "token": "border-radius-medium",
+      "value": ".375rem"
+    },
+    "color": {
+      "token": "button-default-fg-color-rest",
+      "value": "#25292e"
+    },
+    "cursor": {
+      "value": "pointer"
+    },
+    "display": {
+      "value": "flex"
+    },
+    "font-family": {
+      "value": "inherit"
+    },
+    "font-size": {
+      "token": "text-body-size-medium",
+      "value": ".875rem"
+    },
+    "font-weight": {
+      "token": "base-text-weight-medium",
+      "value": "500"
+    },
+    "gap": {
+      "token": "base-size-8",
+      "value": ".5rem"
+    },
+    "height": {
+      "token": "control-medium-size",
+      "value": "2rem"
+    },
+    "justify-content": {
+      "value": "space-between"
+    },
+    "min-width": {
+      "value": "max-content"
+    },
+    "padding": {
+      "value": "0 var(--control-medium-paddingInline-normal,.75rem)"
+    },
+    "text-align": {
+      "value": "center"
+    },
+    "-webkit-text-decoration": {
+      "value": "none"
+    },
+    "text-decoration": {
+      "value": "none"
+    },
+    "transition": {
+      "value": "80ms cubic-bezier(.65,0,.35,1)"
+    },
+    "transition-property": {
+      "value": "color,fill,background-color,border-color"
+    },
+    "-webkit-user-select": {
+      "value": "none"
+    },
+    "user-select": {
+      "value": "none"
+    }
+  },
+  "axes": {
+    "size": {
+      "small": {
+        "font-size": {
+          "token": "text-body-size-small",
+          "value": ".75rem"
+        },
+        "gap": {
+          "token": "control-small-gap",
+          "value": ".25rem"
+        },
+        "height": {
+          "token": "control-small-size",
+          "value": "1.75rem"
+        },
+        "padding": {
+          "value": "0 var(--control-small-paddingInline-condensed,.5rem)"
+        }
+      },
+      "large": {
+        "gap": {
+          "token": "control-large-gap",
+          "value": ".5rem"
+        },
+        "height": {
+          "token": "control-large-size",
+          "value": "2.5rem"
+        },
+        "padding": {
+          "value": "0 var(--control-large-paddingInline-spacious,1rem)"
+        }
+      }
+    },
+    "variant": {
+      "default": {
+        "background-color": {
+          "token": "button-default-bg-color-rest",
+          "value": "#f6f8fa"
+        },
+        "box-shadow": {
+          "token": "button-default-shadow-resting",
+          "value": "0 1px 0 0 #1f23280a"
+        },
+        "color": {
+          "token": "button-default-fg-color-rest",
+          "value": "#25292e"
+        }
+      },
+      "primary": {
+        "background-color": {
+          "token": "button-primary-bg-color-rest",
+          "value": "#1f883d"
+        },
+        "border-color": {
+          "token": "button-primary-border-color-rest",
+          "value": "#1f232826"
+        },
+        "box-shadow": {
+          "token": "shadow-resting-small",
+          "value": "0 1px 1px 0 #1f23280a,0 1px 2px 0 #1f232808"
+        },
+        "color": {
+          "token": "button-primary-fg-color-rest",
+          "value": "#fff"
+        }
+      },
+      "danger": {
+        "background-color": {
+          "token": "button-danger-bg-color-rest",
+          "value": "#f6f8fa"
+        },
+        "box-shadow": {
+          "token": "button-default-shadow-resting",
+          "value": "0 1px 0 0 #1f23280a"
+        },
+        "color": {
+          "token": "button-danger-fg-color-rest",
+          "value": "#d1242f"
+        }
+      },
+      "invisible": {
+        "border-color": {
+          "token": "button-invisible-border-color-rest",
+          "value": "#ffffff00"
+        },
+        "box-shadow": {
+          "value": "none"
+        },
+        "color": {
+          "token": "button-default-fg-color-rest",
+          "value": "#25292e"
+        }
+      },
+      "link": {
+        "border": {
+          "value": "unset"
+        },
+        "border-radius": {
+          "value": "0"
+        },
+        "color": {
+          "token": "fg-color-link",
+          "value": "#0969da"
+        },
+        "display": {
+          "value": "inline-flex"
+        },
+        "font-size": {
+          "value": "inherit"
+        },
+        "height": {
+          "value": "unset"
+        },
+        "min-width": {
+          "value": "fit-content"
+        },
+        "padding": {
+          "value": "0"
+        },
+        "text-align": {
+          "value": "left"
+        }
+      }
+    }
+  }
+}
