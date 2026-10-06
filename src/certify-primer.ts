@@ -18,6 +18,15 @@ export interface PrimerCertifyInput {
   docs: string;             // @primer/react generated/components.json
   stories: string[];        // real Storybook files from primer/react (Button*.stories.tsx)
   exceptions: Record<string, string>; // token -> why it's accepted as different
+  /** tokens shared by both sides at the last certification; one disappearing from a side is a broken link */
+  baselineShared?: string[];
+}
+
+export function sharedTokens(i: PrimerCertifyInput): string[] {
+  const d = compareTokens(loadTokens(i.figmaTokens), loadTokens(i.codeTokens));
+  const off = new Set(d.items.filter((x) => x.kind !== "value-mismatch").map((x) => x.name));
+  const code = loadTokens(i.codeTokens);
+  return [...loadTokens(i.figmaTokens).keys()].filter((k) => code.has(k) && !off.has(k));
 }
 
 const isTransparent = (v?: string) => !v || v === "transparent" || /^#[0-9a-f]{6}00$/.test(v);
@@ -37,6 +46,11 @@ export function certifyPrimer(i: PrimerCertifyInput): { checks: Check[]; warning
   checks.push({ area: "Shared tokens (Figma ↔ code, light)", passed: shared - real.length, total: shared,
     issues: real.map((x) => `${x.name}: Figma ${x.design} · code ${x.code}`) });
   for (const x of conflicts.filter((x) => i.exceptions[x.name])) warnings.push(`accepted exception ${x.name}: ${i.exceptions[x.name]}`);
+  if (i.baselineShared) {
+    const lost = i.baselineShared.filter((k) => !figma.has(k) || !code.has(k));
+    checks.push({ area: "Links kept since last certification", passed: i.baselineShared.length - lost.length, total: i.baselineShared.length,
+      issues: lost.map((k) => `${k}: now missing in ${!figma.has(k) ? "Figma" : "code"}`) });
+  }
   warnings.push(`out of scope: ${drift.counts["missing-in-code"]} Figma-only and ${drift.counts["missing-in-design"]} code-only tokens; ${drift.counts.structural} modelled differently (composite shadows, px vs ratio line-heights)`);
 
   // 2. Button: every property resolves to the same value as the token the code uses

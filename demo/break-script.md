@@ -18,3 +18,10 @@ Each break is a realistic change, made on one side only. For each one we show wh
 
 ## The hook
 Break #1 passes every current check (same value) and only shows up when the code changes. That's the case nobody catches by hand.
+
+## Run it
+`npx tsx src/cli.ts break all` (or `break silent,rename`) applies the breaks to a copy in `out/broken/` and certifies it. The certified fixtures are never touched.
+
+Result: all 5 detected.
+- **rename** passed every value check: the new name was just "out of scope". It's caught by a new check, *Links kept since last certification*, which compares against the tokens shared at the last 100%.
+- **conflict** found something real in Primer: the code's invisible button paints its text with `button-default-fgColor-rest`, not `button-invisible-fgColor-rest`. The engineer's change wouldn't even show up on screen.

@@ -15,7 +15,8 @@ import { STRATEGIES } from "./lab/strategies.js";
 import { PRIMER_SCRIPT } from "./lab/script.js";
 import { runLab } from "./lab/run.js";
 import { certify } from "./certify.js";
-import { certifyPrimer } from "./certify-primer.js";
+import { certifyPrimer, sharedTokens } from "./certify-primer.js";
+import { BREAKS, makeWorkspace, closeWorkspace, primerInput } from "./demo/breaks.js";
 import { readdirSync } from "node:fs";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
@@ -53,18 +54,19 @@ if (cmd === "migrate" && designPath && codePath) {
   process.exit(r.ok ? 0 : 2);
 }
 
-if (cmd === "certify-primer") {
-  const D = "fixtures/package/dist";
-  const r = certifyPrimer({
-    figmaTokens: "fixtures/primer-web-figma",
-    codeTokens: `${D}/css/functional/themes/light.css,${D}/css/functional/size,${D}/css/functional/typography,${D}/css/base`,
-    buttonSnapshot: "fixtures/primer-web-notes/button-snapshot.json",
-    buttonCss: readdirSync("fixtures/primer-react/package/dist/Button").filter((f) => /^ButtonBase-.*\.css$/.test(f)).map((f) => `fixtures/primer-react/package/dist/Button/${f}`)[0],
-    docs: "fixtures/primer-react/package/generated/components.json",
-    stories: ["fixtures/primer-storybook/Button.stories.tsx", "fixtures/primer-storybook/Button.features.stories.tsx"],
-    exceptions: Object.fromEntries(["font-stack-monospace", "font-stack-sans-serif", "font-stack-sans-serif-display", "font-stack-system"]
-      .map((t) => [t, "Figma can't express font fallback stacks; the file is built on SF Pro"])),
-  });
+if (cmd === "certify-primer" || cmd === "break") {
+  // ds-lab certify-primer            certify the aligned Primer Web file
+  // ds-lab break [id,id|all]         apply the demo breaks to a copy, then certify
+  let input = primerInput();
+  if (cmd === "break") {
+    const ids = !designPath || designPath === "all" ? BREAKS.map((b) => b.id) : designPath.split(",");
+    const ws = makeWorkspace("out/broken");
+    for (const b of BREAKS.filter((b) => ids.includes(b.id))) { console.log(`✂  ${b.id}: ${b.title}`); b.apply(ws.w); }
+    closeWorkspace(ws.w.dir);
+    input = { ...ws.input, baselineShared: sharedTokens(primerInput()) };
+    console.log();
+  }
+  const r = certifyPrimer(input);
   for (const c of r.checks) {
     console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(50)} ${c.passed}/${c.total}`);
     for (const x of c.issues.slice(0, 15)) console.log(`    ${x}`);
