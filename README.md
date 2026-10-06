@@ -10,7 +10,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineeri
 
 - [x] Token drift engine (design tokens vs code tokens)
 - [x] Rendered-screen audit (Playwright): token coverage on what users actually see
-- [ ] Strategy lab on Token Factory Sandboxes (forked runs)
+- [x] Strategy lab: 4 sync strategies × the same scripted changes, scored per step (in-process runner)
+- [ ] Same lab on Token Factory Sandboxes: one fork per strategy, checkpoint per step
 - [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
 - [x] Token migration between Figma variables, W3C DTCG JSON, CSS and Tailwind v4, verified by read-back
 - [x] Component migration sample: Primer Button, code → Figma, 12 variants bound to variables, verified 96/96
@@ -45,6 +46,23 @@ npx tsx src/cli.ts migrate <source-tokens> dtcg|figma|css|tailwind --out <file>
 ```
 
 The output is read back with the same loader and compared with the source by the drift engine. A migration only passes at 100% sync, so nothing is lost silently. Primer's 1,164 Figma tokens pass in all four formats.
+
+## Run the lab
+
+```bash
+npx tsx src/cli.ts lab <design-tokens> <code-tokens> --json lab-run.json
+```
+
+Every strategy gets the same 5 changes on Primer's 1,036 shared tokens: a designer rename, an engineering hotfix, a new token, a deletion, and a conflict where both sides changed the same token.
+
+| Strategy | Breaks at | Handled correctly |
+|---|---|---|
+| No sync (status quo) | step 1 | 0/5 |
+| Figma is the source of truth | step 1 | 1/5, overwrites code's change silently |
+| Code is the source of truth | step 1 | 1/5, overwrites Figma's change silently |
+| DS Lab agent (3-way merge + Nemotron) | never | 5/5 |
+
+Caveat: the one-way strategies model the common "export and overwrite" pipelines, and the script was written alongside the agent. The lab's value is in running your own changes against your own system.
 
 ## Where does each option live?
 

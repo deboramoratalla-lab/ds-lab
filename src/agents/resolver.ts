@@ -25,6 +25,8 @@ export interface Evidence {
   deprecated?: Set<string>;
   /** where each side's value is used, e.g. "used by 14 components" */
   usage?: Map<string, string>;
+  /** what people wrote about the change: Figma notes, commit messages */
+  notes?: Record<string, string>;
 }
 
 const SYSTEM = `You are a senior design system lead. A token has different values in Figma and in code.
@@ -46,6 +48,7 @@ export async function resolveConflicts(items: DriftItem[], ev: Evidence = {}): P
         ev.descriptions?.get(c.name) && `Description: ${ev.descriptions.get(c.name)}`,
         ev.deprecated?.has(c.name) && `Code marks this token as deprecated.`,
         ev.usage?.get(c.name) && `Usage: ${ev.usage.get(c.name)}`,
+        ev.notes?.[c.name] && `History: ${ev.notes[c.name]}`,
       ].filter(Boolean).join("\n");
       const out = await chat({ role: "ultra", system: SYSTEM, user: facts, json: true, think: true });
       const r = parseJson<Omit<Resolution, "name" | "design" | "code">>(out);

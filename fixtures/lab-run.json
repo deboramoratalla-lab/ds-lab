@@ -1,0 +1,356 @@
+{
+  "script": [
+    {
+      "id": "rename",
+      "title": "Designer renames fgColor/muted → fgColor/subtle in Figma",
+      "who": "designer"
+    },
+    {
+      "id": "hotfix",
+      "title": "Engineer hotfixes the danger button text color in CSS (#d1242f → #c21c2c)",
+      "who": "engineer"
+    },
+    {
+      "id": "add",
+      "title": "Designer adds a new token bgColor/highlight in Figma",
+      "who": "designer"
+    },
+    {
+      "id": "delete",
+      "title": "Engineer removes the unused borderColor/translucent token from code",
+      "who": "engineer"
+    },
+    {
+      "id": "conflict",
+      "title": "Both change borderRadius/medium the same week: Figma 8px (redesign), code 4px (bug fix)",
+      "who": "both"
+    }
+  ],
+  "runs": [
+    {
+      "strategy": "manual",
+      "steps": [
+        {
+          "event": "rename",
+          "syncRate": 0.9980713596914176,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "hotfix",
+          "syncRate": 0.9971070395371263,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename",
+            "hotfix"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "add",
+          "syncRate": 0.9961464354527938,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename",
+            "hotfix",
+            "add"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "delete",
+          "syncRate": 0.9951830443159922,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename",
+            "hotfix",
+            "add",
+            "delete"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "conflict",
+          "syncRate": 0.9942196531791907,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename",
+            "hotfix",
+            "add",
+            "delete"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        }
+      ],
+      "breaksAt": "rename",
+      "ms": 50
+    },
+    {
+      "strategy": "figma-first",
+      "steps": [
+        {
+          "event": "rename",
+          "syncRate": 0.9990356798457087,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "hotfix",
+          "syncRate": 0.9990356798457087,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename",
+            "hotfix"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "add",
+          "syncRate": 0.9990366088631984,
+          "keptNow": true,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "hotfix"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "delete",
+          "syncRate": 0.9990366088631984,
+          "keptNow": false,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "hotfix",
+            "delete"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "conflict",
+          "syncRate": 0.9990366088631984,
+          "keptNow": false,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "hotfix",
+            "delete"
+          ],
+          "silentOverwrites": [
+            "conflict: code's value overwritten without a decision"
+          ],
+          "pendingHuman": [],
+          "decisions": []
+        }
+      ],
+      "breaksAt": "rename",
+      "ms": 48
+    },
+    {
+      "strategy": "code-first",
+      "steps": [
+        {
+          "event": "rename",
+          "syncRate": 0.9990356798457087,
+          "keptNow": false,
+          "keptSoFar": 0,
+          "lostSoFar": [
+            "rename"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "hotfix",
+          "syncRate": 0.9990356798457087,
+          "keptNow": true,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "add",
+          "syncRate": 0.9980732177263969,
+          "keptNow": false,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "add"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "delete",
+          "syncRate": 0.9971098265895953,
+          "keptNow": false,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "add",
+            "delete"
+          ],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": []
+        },
+        {
+          "event": "conflict",
+          "syncRate": 0.9971098265895953,
+          "keptNow": false,
+          "keptSoFar": 1,
+          "lostSoFar": [
+            "rename",
+            "add",
+            "delete"
+          ],
+          "silentOverwrites": [
+            "conflict: Figma's value overwritten without a decision"
+          ],
+          "pendingHuman": [],
+          "decisions": []
+        }
+      ],
+      "breaksAt": "rename",
+      "ms": 47
+    },
+    {
+      "strategy": "agent",
+      "steps": [
+        {
+          "event": "rename",
+          "syncRate": 1,
+          "keptNow": true,
+          "keptSoFar": 1,
+          "lostSoFar": [],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": [
+            {
+              "token": "fg-color-muted",
+              "how": "agent",
+              "detail": "design renamed fg-color-muted → fg-color-subtle (Nano, 95%)"
+            }
+          ]
+        },
+        {
+          "event": "hotfix",
+          "syncRate": 1,
+          "keptNow": true,
+          "keptSoFar": 2,
+          "lostSoFar": [],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": [
+            {
+              "token": "button-danger-fg-color-rest",
+              "how": "auto",
+              "detail": "engineer change propagated to Figma"
+            }
+          ]
+        },
+        {
+          "event": "add",
+          "syncRate": 1,
+          "keptNow": true,
+          "keptSoFar": 3,
+          "lostSoFar": [],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": [
+            {
+              "token": "bg-color-highlight",
+              "how": "auto",
+              "detail": "designer change propagated to code"
+            }
+          ]
+        },
+        {
+          "event": "delete",
+          "syncRate": 1,
+          "keptNow": true,
+          "keptSoFar": 4,
+          "lostSoFar": [],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": [
+            {
+              "token": "border-color-translucent",
+              "how": "auto",
+              "detail": "engineer change propagated to Figma"
+            }
+          ]
+        },
+        {
+          "event": "conflict",
+          "syncRate": 1,
+          "keptNow": true,
+          "keptSoFar": 5,
+          "lostSoFar": [],
+          "silentOverwrites": [],
+          "pendingHuman": [],
+          "decisions": [
+            {
+              "token": "border-radius-medium",
+              "how": "agent",
+              "detail": "design-is-right: The Figma change was an approved design review decision for a planned 2026 visual refresh, while the code change was explicitly a temporary workaround ('until the ring is reworked') for a focus-ring clipping issue."
+            }
+          ]
+        }
+      ],
+      "ms": 3450
+    }
+  ],
+  "usage": {
+    "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": {
+      "calls": 1,
+      "prompt": 135,
+      "completion": 46,
+      "ms": 1437
+    },
+    "nvidia/Nemotron-3-Ultra-550b-a55b": {
+      "calls": 1,
+      "prompt": 274,
+      "completion": 483,
+      "ms": 1991
+    }
+  }
+}

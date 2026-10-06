@@ -11,6 +11,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { extractComponent } from "./migrate/component.js";
 import { writeDoc, docToMarkdown, docDrift } from "./agents/docs.js";
 import { loadPrimerDoc, fourWayDrift, storybookAxes } from "./docs/primer.js";
+import { STRATEGIES } from "./lab/strategies.js";
+import { PRIMER_SCRIPT } from "./lab/script.js";
+import { runLab } from "./lab/run.js";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
@@ -45,6 +48,34 @@ if (cmd === "migrate" && designPath && codePath) {
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
   process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "lab" && designPath && codePath) {
+  // ds-lab lab <design-tokens> <code-tokens> [--json out.json]
+  const start = { design: loadTokens(designPath), code: loadTokens(codePath) };
+  // the lab measures changes, so start from a synced system: only tokens both sides share
+  for (const k of [...start.design.keys()]) if (start.code.get(k) !== start.design.get(k)) start.design.delete(k);
+  for (const k of [...start.code.keys()]) if (!start.design.has(k)) start.code.delete(k);
+  console.log(`Lab: ${STRATEGIES.length} strategies × ${PRIMER_SCRIPT.length} changes on ${start.design.size} shared tokens\n`);
+  PRIMER_SCRIPT.forEach((e, i) => console.log(`  ${i + 1}. ${e.title}`));
+  const runs = await runLab(STRATEGIES, start, PRIMER_SCRIPT);
+  console.log("");
+  for (const r of runs) {
+    const s = STRATEGIES.find((x) => x.id === r.strategy)!;
+    const last = r.steps.at(-1)!;
+    console.log(`■ ${s.name}`);
+    console.log(`  breaks at: ${r.breaksAt ? `step ${PRIMER_SCRIPT.findIndex((e) => e.id === r.breaksAt) + 1} (${r.breaksAt})` : "never"}`);
+    console.log(`  changes handled correctly: ${last.keptSoFar}/${PRIMER_SCRIPT.length} · final sync ${(last.syncRate * 100).toFixed(1)}%`);
+    if (last.lostSoFar.length) console.log(`  lost: ${last.lostSoFar.join(", ")}`);
+    for (const o of last.silentOverwrites) console.log(`  silent overwrite: ${o}`);
+    for (const p of last.pendingHuman) console.log(`  waiting for a person: ${p}`);
+    for (const d of r.steps.flatMap((x) => x.decisions).filter((d) => d.how === "agent")) console.log(`  agent decided: ${d.token}: ${d.detail}`);
+    console.log(`  per step: ${r.steps.map((x) => `${x.event} ${x.keptNow ? "✓" : "✗"}`).join(" → ")}\n`);
+  }
+  for (const [m, u] of Object.entries(usage)) console.log(`  ${m.split("/")[1]}: ${u.calls} calls · ${u.prompt + u.completion} tokens`);
+  const out = flags[flags.indexOf("--json") + 1];
+  if (flags.includes("--json") && out) writeFileSync(out, JSON.stringify({ script: PRIMER_SCRIPT.map(({ id, title, who }) => ({ id, title, who })), runs, usage }, null, 2));
+  process.exit(0);
 }
 
 if (cmd === "where" && designPath && codePath) {
