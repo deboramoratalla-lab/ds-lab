@@ -1,0 +1,188 @@
+{
+  "file": "MdZuSD4Wgy03m4OFppbDlE",
+  "set": "30258:5582",
+  "state": "rest, alignContent=center",
+  "takenAt": "2026-10-06",
+  "bindings": {
+    "variant=default, size=small": {
+      "height": null,
+      "heightPx": 28,
+      "padX": "control/small/paddingInline/condensed",
+      "gap": "control/small/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/default/borderColor/rest",
+      "fg": "button/default/fgColor/rest",
+      "font": "text/body/size/small"
+    },
+    "variant=default, size=medium": {
+      "height": null,
+      "heightPx": 32,
+      "padX": "control/medium/paddingInline/normal",
+      "gap": "control/medium/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/default/borderColor/rest",
+      "fg": "button/default/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=default, size=large": {
+      "height": null,
+      "heightPx": 40,
+      "padX": "control/large/paddingInline/spacious",
+      "gap": "control/large/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/default/borderColor/rest",
+      "fg": "button/default/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=primary, size=small": {
+      "height": null,
+      "heightPx": 28,
+      "padX": "control/small/paddingInline/condensed",
+      "gap": "control/small/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/primary/bgColor/rest",
+      "border": "button/primary/borderColor/rest",
+      "fg": "button/primary/fgColor/rest",
+      "font": "text/body/size/small"
+    },
+    "variant=primary, size=medium": {
+      "height": null,
+      "heightPx": 32,
+      "padX": "control/medium/paddingInline/normal",
+      "gap": "control/medium/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/primary/bgColor/rest",
+      "border": "button/primary/borderColor/rest",
+      "fg": "button/primary/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=primary, size=large": {
+      "height": null,
+      "heightPx": 40,
+      "padX": "control/large/paddingInline/spacious",
+      "gap": "control/large/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/primary/bgColor/rest",
+      "border": "button/primary/borderColor/rest",
+      "fg": "button/primary/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=danger, size=small": {
+      "height": null,
+      "heightPx": 28,
+      "padX": "control/small/paddingInline/condensed",
+      "gap": "control/small/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/danger/borderColor/rest",
+      "fg": "button/danger/fgColor/rest",
+      "font": "text/body/size/small"
+    },
+    "variant=danger, size=medium": {
+      "height": null,
+      "heightPx": 32,
+      "padX": "control/medium/paddingInline/normal",
+      "gap": "control/medium/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/danger/borderColor/rest",
+      "fg": "button/danger/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=danger, size=large": {
+      "height": null,
+      "heightPx": 40,
+      "padX": "control/large/paddingInline/spacious",
+      "gap": "control/large/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/default/bgColor/rest",
+      "border": "button/danger/borderColor/rest",
+      "fg": "button/danger/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=invisible, size=small": {
+      "height": null,
+      "heightPx": 28,
+      "padX": "control/small/paddingInline/condensed",
+      "gap": "control/small/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "button/invisible/fgColor/rest",
+      "font": "text/body/size/small"
+    },
+    "variant=invisible, size=medium": {
+      "height": null,
+      "heightPx": 32,
+      "padX": "control/medium/paddingInline/normal",
+      "gap": "control/medium/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "button/invisible/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=invisible, size=large": {
+      "height": null,
+      "heightPx": 40,
+      "padX": "control/large/paddingInline/spacious",
+      "gap": "control/large/gap",
+      "radius": "borderRadius/medium",
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "button/invisible/fgColor/rest",
+      "font": "text/body/size/medium"
+    },
+    "variant=link, size=small": {
+      "height": null,
+      "heightPx": null,
+      "padX": null,
+      "gap": "control/small/gap",
+      "radius": null,
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "fgColor/link",
+      "font": "text/body/size/small"
+    },
+    "variant=link, size=medium": {
+      "height": null,
+      "heightPx": null,
+      "padX": null,
+      "gap": "control/medium/gap",
+      "radius": null,
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "fgColor/link",
+      "font": "text/body/size/medium"
+    },
+    "variant=link, size=large": {
+      "height": null,
+      "heightPx": null,
+      "padX": null,
+      "gap": "control/large/gap",
+      "radius": null,
+      "bg": "button/invisible/bgColor/rest",
+      "border": null,
+      "fg": "fgColor/link",
+      "font": "text/body/size/medium"
+    }
+  },
+  "options": {
+    "variant": [
+      "primary",
+      "danger",
+      "invisible",
+      "default",
+      "link"
+    ],
+    "size": [
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "description": "Button is used to initiate actions on a page or form.\n\n\n------------ ⚛️ React -------------\n🟡 Status: Alpha\n♿️ Accessibility: Reviewed 2025-01-08\n\n\n------------- ♦️ Rails -------------\n🔵 Status: Beta\n♿️ Accessibility: Not reviewed"
+}

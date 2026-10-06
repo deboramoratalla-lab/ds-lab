@@ -37,7 +37,8 @@
   "component": {
     "Button": {
       "renamed": "variant=secondary -> variant=default (36 variants)",
-      "added": "variant=link (36 variants, label bound to fgColor/link; disabled keeps its own color). Done through a Figma desktop dev plugin because SF Pro Text is not available to the cloud runtime."
+      "added": "variant=link (36 variants, label bound to fgColor/link; disabled keeps its own color). Done through a Figma desktop dev plugin because SF Pro Text is not available to the cloud runtime.",
+      "linkShape": "link variants: padding 0 and corner radius 0, height hugs content (matches @primer/react: padding 0, border unset, border-radius 0, height unset)"
     }
   },
   "docs": {
@@ -48,5 +49,16 @@
     "fontStack/*": "Figma can't express fallback stacks; file uses SF Pro text styles",
     "Rails status": "no Rails source checked",
     "other themes": "only light mode aligned and certified"
+  },
+  "certified": {
+    "date": "2026-10-06",
+    "command": "npx tsx src/cli.ts certify-primer",
+    "result": {
+      "sharedTokens": "677/677",
+      "buttonProperties": "114/114",
+      "buttonOptions": "8/8",
+      "buttonDocs": "2/2"
+    },
+    "warnings": "19 (4 accepted font-stack exceptions, scope note, 14 'same value, different token' bindings)"
   }
 }

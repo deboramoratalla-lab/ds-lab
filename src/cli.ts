@@ -15,6 +15,8 @@ import { STRATEGIES } from "./lab/strategies.js";
 import { PRIMER_SCRIPT } from "./lab/script.js";
 import { runLab } from "./lab/run.js";
 import { certify } from "./certify.js";
+import { certifyPrimer } from "./certify-primer.js";
+import { readdirSync } from "node:fs";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
@@ -48,6 +50,27 @@ if (cmd === "migrate" && designPath && codePath) {
     ? `Verified: read back and compared with the source, 100% in sync.`
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
+  process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "certify-primer") {
+  const D = "fixtures/package/dist";
+  const r = certifyPrimer({
+    figmaTokens: "fixtures/primer-web-figma",
+    codeTokens: `${D}/css/functional/themes/light.css,${D}/css/functional/size,${D}/css/functional/typography,${D}/css/base`,
+    buttonSnapshot: "fixtures/primer-web-notes/button-snapshot.json",
+    buttonCss: readdirSync("fixtures/primer-react/package/dist/Button").filter((f) => /^ButtonBase-.*\.css$/.test(f)).map((f) => `fixtures/primer-react/package/dist/Button/${f}`)[0],
+    docs: "fixtures/primer-react/package/generated/components.json",
+    exceptions: Object.fromEntries(["font-stack-monospace", "font-stack-sans-serif", "font-stack-sans-serif-display", "font-stack-system"]
+      .map((t) => [t, "Figma can't express font fallback stacks; the file is built on SF Pro"])),
+  });
+  for (const c of r.checks) {
+    console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(50)} ${c.passed}/${c.total}`);
+    for (const x of c.issues.slice(0, 15)) console.log(`    ${x}`);
+  }
+  console.log(`\nWarnings (${r.warnings.length}):`);
+  for (const w of r.warnings.slice(0, 30)) console.log(`  · ${w}`);
+  console.log(r.ok ? "\nCertified: Primer Web (light) is in sync with GitHub's code, within scope." : "\nNot in sync.");
   process.exit(r.ok ? 0 : 2);
 }
 
