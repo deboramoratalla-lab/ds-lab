@@ -11,7 +11,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineeri
 - [x] Token drift engine (design tokens vs code tokens)
 - [x] Rendered-screen audit (Playwright): token coverage on what users actually see
 - [ ] Strategy lab on Token Factory Sandboxes (forked runs)
-- [ ] Nemotron agents: Nano (matching), Super (building screens), Ultra (conflict resolution, recommendation)
+- [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
+- [ ] Super builds screens inside the lab
 - [ ] Post-adoption tracking with Nebius Serverless Jobs
 - [ ] Dashboard
 
@@ -32,6 +33,17 @@ npx tsx src/cli.ts audit <tokens> fixtures/screens/settings.html
 ```
 
 Opens the screen in Chromium, reads every computed color, spacing, font size and radius, and checks each against tokens of the right category. Off-system values come with the nearest token as a suggestion.
+
+## Reconcile with Nemotron
+
+```bash
+cp .env.example .env   # add your Token Factory key
+npx tsx src/cli.ts reconcile <design-tokens> <code-tokens>
+```
+
+Nemotron 3 Nano pairs tokens that were renamed between Figma and code (thinking off: fast, cheap). Nemotron 3 Ultra decides, for each conflicting value, whether Figma or code holds the intended decision, or that a person must decide, and says what to change. On Primer it calls the font-stack conflicts in favour of code (Figma can't express fallback stacks) and flags one it can't settle for a human.
+
+Behind an HTTPS proxy, run Node with `NODE_USE_ENV_PROXY=1`.
 
 ## License
 
