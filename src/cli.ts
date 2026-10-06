@@ -14,9 +14,14 @@ const report = compareTokens(loadTokens(designPath), loadTokens(codePath));
 if (flags.includes("--json")) {
   console.log(JSON.stringify(report, null, 2));
 } else {
-  console.log(`Sync rate: ${(report.syncRate * 100).toFixed(1)}% (${report.inSync}/${report.total})`);
+  const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+  console.log(`Real drift sync rate: ${pct(report.realSyncRate)}  (all differences: ${pct(report.syncRate)})`);
+  console.log(`In sync ${report.inSync} · ` + Object.entries(report.counts).map(([k, v]) => `${k} ${v}`).join(" · "));
   for (const i of report.items) {
-    const detail = i.kind === "value-mismatch" ? `design ${i.design} · code ${i.code}` : "";
+    const detail =
+      i.kind === "value-mismatch" ? `design ${i.design} · code ${i.code}`
+      : i.kind === "structural" ? `one value in code, ${i.parts!.length} variables in design`
+      : "";
     console.log(`  ${i.kind.padEnd(18)} ${i.name} ${detail}`);
   }
 }

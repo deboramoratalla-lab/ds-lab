@@ -10,6 +10,19 @@ test("normalizes equivalent values", () => {
   assert.equal(normalizeValue(16), "16px");
 });
 
+test("separates structural differences from real drift", () => {
+  const design = flattenJson({
+    shadow: { sm: { blur: { $value: 2 }, color: { $value: "#000" }, "offset-y": { $value: 1 } } },
+    color: { fg: { $value: "#111" }, bg: { $value: "#fff" } },
+  });
+  const code = parseCss(`--shadow-sm: 0 1px 2px #000; --color-fg: #111; --color-bg: #eee;`);
+  const r = compareTokens(design, code);
+  assert.equal(r.counts.structural, 1);
+  assert.equal(r.counts["missing-in-code"], 0);
+  assert.equal(r.counts["value-mismatch"], 1);
+  assert.equal(r.realSyncRate, 1 / 2);
+});
+
 test("detects all three kinds of drift", () => {
   const design = flattenJson({
     color: { primary: { $value: "#0055FF" }, surface: { $value: "#fff" } },
