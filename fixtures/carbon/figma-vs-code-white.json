@@ -1,0 +1,5 @@
+{"file":"6Qt1GJPqD7kktvUNQwuIsv","collection":"Theme","mode":"White Theme","code":"@carbon/styles 1.116.0 .cds--white",
+"figmaColorVars":260,"codeTokens":223,"inSync":139,
+"mismatch":[["Layer/layer-background-01","#f4f4f4","#ffffff"],["Layer/layer-background-02","#ffffff","#f4f4f4"],["Text/text-placeholder","#a8a8a8","#16161666"],["Status/status-gray","#525252","#6f6f6f"],["Notification/notification-action-tertiary-inverse-text","#121619","#161616"],["Notification/notification-action-tertiary-inverse-hover","#e8e8e8","#f4f4f4"],["AI/Chat/chat-prompt-border-end","#f4f4f4","#f4f4f400"],["AI/Chat/chat-bubble-border","#ffffff00","#e0e0e0"],["AI/Chat/chat-avatar-bot","#0f62fe","#6f6f6f"],["AI/Chat/chat-avatar-agent","#161616","#393939"],["AI/Chat/chat-avatar-user","#161616","#0f62fe"]],
+"namingIssuesInFigma":["Text/text--on-color-disabled (double hyphen)","Tag/Orange/tag-border- transparent (space in name)","Notification/notification-info-background vs code notification-background-info (segment order)"],
+"figmaOnlyCount":110,"codeOnlyCount":73}
