@@ -15,6 +15,7 @@ import { STRATEGIES } from "./lab/strategies.js";
 import { PRIMER_SCRIPT } from "./lab/script.js";
 import { runLab } from "./lab/run.js";
 import { certify } from "./certify.js";
+import { checkFreshness } from "./research/freshness.js";
 import { certifyPrimer, sharedTokens } from "./certify-primer.js";
 import { BREAKS, makeWorkspace, closeWorkspace, primerInput } from "./demo/breaks.js";
 import { readdirSync } from "node:fs";
@@ -52,6 +53,20 @@ if (cmd === "migrate" && designPath && codePath) {
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
   process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "fresh") {
+  // ds-lab fresh   are the versions we certified against still the latest published ones? (Tavily + Nano)
+  const pkgs: [string, string, string][] = [
+    ["@primer/primitives", "fixtures/package/package.json", "primer/primitives"],
+    ["@primer/react", "fixtures/primer-react/package/package.json", "primer/react"],
+  ];
+  for (const [pkg, pj, repo] of pkgs) {
+    const f = await checkFreshness(pkg, pj, repo);
+    console.log(`${f.latest === undefined || f.staleSource ? "?" : f.behind ? "✗" : "✓"} ${pkg.padEnd(20)} local ${f.local.padEnd(8)} latest ${f.latest ?? "unknown"}${f.source ? `  (${f.source})` : ""}`);
+    console.log(`    ${f.note}`);
+  }
+  process.exit(0);
 }
 
 if (cmd === "certify-primer" || cmd === "break") {
