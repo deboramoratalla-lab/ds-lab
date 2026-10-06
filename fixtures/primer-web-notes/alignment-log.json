@@ -37,7 +37,7 @@
   "component": {
     "Button": {
       "renamed": "variant=secondary -> variant=default (36 variants)",
-      "notDone": "variant=link (36 variants): Figma cloud runtime lacks SF Pro fonts; do in Figma desktop"
+      "added": "variant=link (36 variants, label bound to fgColor/link; disabled keeps its own color). Done through a Figma desktop dev plugin because SF Pro Text is not available to the cloud runtime."
     }
   },
   "docs": {
