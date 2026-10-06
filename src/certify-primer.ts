@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import { loadTokens, normalizeName, type TokenMap } from "./tokens/load.js";
 import { compareTokens } from "./tokens/drift.js";
 import { extractComponent } from "./migrate/component.js";
-import { loadPrimerDoc, propOptions, fourWayDrift, storybookAxes } from "./docs/primer.js";
+import { loadPrimerDoc, propOptions, fourWayDrift, storybookFromFiles } from "./docs/primer.js";
 import type { Check } from "./certify.js";
 
 export interface PrimerCertifyInput {
@@ -16,6 +16,7 @@ export interface PrimerCertifyInput {
   buttonSnapshot: string;   // Figma Button bindings + options + description
   buttonCss: string;        // @primer/react ButtonBase CSS
   docs: string;             // @primer/react generated/components.json
+  stories: string[];        // real Storybook files from primer/react (Button*.stories.tsx)
   exceptions: Record<string, string>; // token -> why it's accepted as different
 }
 
@@ -85,7 +86,7 @@ export function certifyPrimer(i: PrimerCertifyInput): { checks: Check[]; warning
     const def = doc.props.find((p) => p.name === a)?.defaultValue?.replace(/'/g, "");
     return [a, [...new Set([...(def ? [def] : []), ...Object.keys(spec.axes[a] ?? {})])]];
   }));
-  const four = fourWayDrift(doc, codeAxes, snap.options, storybookAxes(doc, ["variant", "size"]));
+  const four = fourWayDrift(doc, codeAxes, snap.options, storybookFromFiles(i.stories, "Button", ["variant", "size"]));
   checks.push({ area: "Button options (docs · code · Figma · Storybook)", passed: four.inSync, total: four.total,
     issues: four.gaps.map((g) => `${g.axis}=${g.option}: missing in ${[!g.inDocs && "docs", !g.inCode && "code", !g.inFigma && "Figma", !g.inStorybook && "Storybook"].filter(Boolean).join(", ")}`) });
 

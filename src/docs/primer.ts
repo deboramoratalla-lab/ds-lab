@@ -75,3 +75,21 @@ export function fourWayDrift(
   const gaps = items.filter((i) => !(i.inDocs && i.inCode && i.inFigma && i.inStorybook));
   return { items, gaps, inSync: items.length - gaps.length, total: items.length };
 }
+
+// Reads Primer's real Storybook files (.stories.tsx): Playground argTypes options plus every
+// `<Component axis="…">` used in the stories. This is what Storybook actually shows.
+export function storybookFromFiles(files: string[], component: string, axes: string[]): Record<string, string[]> {
+  const out: Record<string, Set<string>> = Object.fromEntries(axes.map((a) => [a, new Set<string>()]));
+  for (const f of files) {
+    const src = readFileSync(f, "utf8");
+    for (const axis of axes) {
+      const arg = src.match(new RegExp(`\\b${axis}:\\s*\\{(?:[^{}]|\\{[^}]*\\})*?options:\\s*\\[([^\\]]*)\\]`));
+      for (const m of arg?.[1].matchAll(/['"]([\w-]+)['"]/g) ?? []) out[axis].add(m[1]);
+      for (const tag of src.matchAll(new RegExp(`<${component}\\b[^>]*>`, "g"))) {
+        const m = tag[0].match(new RegExp(`\\b${axis}=["']([\\w-]+)`));
+        if (m) out[axis].add(m[1]);
+      }
+    }
+  }
+  return Object.fromEntries(Object.entries(out).map(([k, s]) => [k, [...s]]));
+}

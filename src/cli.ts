@@ -61,6 +61,7 @@ if (cmd === "certify-primer") {
     buttonSnapshot: "fixtures/primer-web-notes/button-snapshot.json",
     buttonCss: readdirSync("fixtures/primer-react/package/dist/Button").filter((f) => /^ButtonBase-.*\.css$/.test(f)).map((f) => `fixtures/primer-react/package/dist/Button/${f}`)[0],
     docs: "fixtures/primer-react/package/generated/components.json",
+    stories: ["fixtures/primer-storybook/Button.stories.tsx", "fixtures/primer-storybook/Button.features.stories.tsx"],
     exceptions: Object.fromEntries(["font-stack-monospace", "font-stack-sans-serif", "font-stack-sans-serif-display", "font-stack-system"]
       .map((t) => [t, "Figma can't express font fallback stacks; the file is built on SF Pro"])),
   });
