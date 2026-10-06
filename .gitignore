@@ -4,3 +4,4 @@ dist
 fixtures/package
 fixtures/primer-css
 fixtures/primer-react
+fixtures/carbon/carbon-*/
