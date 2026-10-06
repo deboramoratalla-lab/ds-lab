@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- A Primer settings screen with four planted off-system values (marked "drift").
+     The audit should find exactly those, and nothing that comes from Primer itself. -->
+<html lang="en" data-color-mode="light" data-light-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Settings</title>
+  <link rel="stylesheet" href="../package/dist/css/functional/themes/light.css">
+  <link rel="stylesheet" href="../package/dist/css/functional/size/size.css">
+  <link rel="stylesheet" href="../package/dist/css/functional/size/border.css">
+  <link rel="stylesheet" href="../package/dist/css/functional/size/radius.css">
+  <link rel="stylesheet" href="../package/dist/css/functional/typography/typography.css">
+  <link rel="stylesheet" href="../package/dist/css/base/size/size.css">
+  <link rel="stylesheet" href="../package/dist/css/base/typography/typography.css">
+  <link rel="stylesheet" href="../primer-css/package/dist/primer.css">
+</head>
+<body class="p-4">
+  <div class="Box" style="max-width: 640px">
+    <div class="Box-header">
+      <h2 class="Box-title">Profile</h2>
+    </div>
+    <div class="Box-body">
+      <div class="form-group">
+        <div class="form-group-header"><label for="name">Name</label></div>
+        <div class="form-group-body"><input id="name" class="form-control" value="Debora"></div>
+      </div>
+      <div class="flash mt-3">Your profile is public.</div>
+      <!-- drift: paragraph with a hardcoded font size -->
+      <p class="color-fg-muted mt-3" style="font-size: 15px">Changes apply to all your repositories.</p>
+    </div>
+    <div class="Box-footer d-flex" style="gap: 8px">
+      <button class="btn btn-primary">Save</button>
+      <!-- drift: hardcoded blue that is not a Primer color, odd padding and radius -->
+      <button class="btn" style="background:#2563eb; color:#fff; padding: 5px 13px; border-radius: 5px">Preview</button>
+      <span class="Label">Beta</span>
+    </div>
+  </div>
+</body>
+</html>

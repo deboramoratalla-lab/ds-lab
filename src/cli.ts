@@ -2,10 +2,27 @@
 import { loadTokens } from "./tokens/load.js";
 import { compareTokens } from "./tokens/drift.js";
 
+import { auditScreen } from "./render/audit.js";
+import { pathToFileURL } from "node:url";
+import { existsSync } from "node:fs";
+
 const [cmd, designPath, codePath, ...flags] = process.argv.slice(2);
 
+if (cmd === "audit" && designPath && codePath) {
+  // ds-lab audit <tokens> <screen.html|url>
+  const url = existsSync(codePath) ? pathToFileURL(codePath).href : codePath;
+  const r = await auditScreen(url, loadTokens(designPath));
+  if (flags.includes("--json")) console.log(JSON.stringify(r, null, 2));
+  else {
+    console.log(`Token coverage: ${(r.coverage * 100).toFixed(1)}% (${r.onSystem}/${r.checked} style values)`);
+    for (const o of r.offSystem)
+      console.log(`  off-system  ${o.property.padEnd(18)} ${o.value.padEnd(9)} ${o.selector}${o.suggestion ? `  → try ${o.suggestion}` : ""}`);
+  }
+  process.exit(r.offSystem.length ? 2 : 0);
+}
+
 if (cmd !== "drift" || !designPath || !codePath) {
-  console.log("Usage: ds-lab drift <design-tokens.json> <code-tokens.css|json> [--json]");
+  console.log("Usage:\n  ds-lab drift <design-tokens> <code-tokens> [--json]\n  ds-lab audit <tokens> <screen.html|url> [--json]");
   process.exit(cmd ? 1 : 0);
 }
 
