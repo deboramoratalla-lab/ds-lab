@@ -183,7 +183,7 @@ if (flags.includes("--json")) {
   for (const i of report.items) {
     const detail =
       i.kind === "value-mismatch" ? `design ${i.design} · code ${i.code}`
-      : i.kind === "structural" ? `one value in code, ${i.parts!.length} variables in design`
+      : i.kind === "structural" ? (i.parts?.length ? `one value in code, ${i.parts.length} variables in design` : `different unit model: design ${i.design} · code ${i.code}`)
       : "";
     console.log(`  ${i.kind.padEnd(18)} ${i.name} ${detail}`);
   }

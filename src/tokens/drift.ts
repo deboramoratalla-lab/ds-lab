@@ -31,6 +31,23 @@ export interface DriftReport {
   counts: Record<DriftKind, number>;
 }
 
+/** Equal, or colors that differ only by 8-bit rounding (Figma stores 0.7 alpha, CSS writes b3, Figma exports b2). */
+function sameValue(a: string, b: string): boolean {
+  if (a === b) return true;
+  const ha = a.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/), hb = b.match(/^#([0-9a-f]{6})([0-9a-f]{2})?$/);
+  if (!ha || !hb) return false;
+  const ch = (h: RegExpMatchArray) => [...(h[1] + (h[2] ?? "ff")).matchAll(/../g)].map((m) => parseInt(m[0], 16));
+  const x = ch(ha), y = ch(hb);
+  return x.every((v, i) => Math.abs(v - y[i]) <= 1);
+}
+
+/** Same decision, different unit model: Figma line-heights are absolute px, CSS ones are ratios. */
+function unitModelDiffers(name: string, a: string, b: string): boolean {
+  if (!/line-height/.test(name)) return false;
+  const n = (v: string) => parseFloat(v);
+  return (n(a) < 4) !== (n(b) < 4);
+}
+
 export function compareTokens(design: TokenMap, code: TokenMap): DriftReport {
   const raw: DriftItem[] = [];
   let inSync = 0;
@@ -39,8 +56,10 @@ export function compareTokens(design: TokenMap, code: TokenMap): DriftReport {
     const c = code.get(name);
     if (d === undefined) raw.push({ kind: "missing-in-design", name, code: c });
     else if (c === undefined) raw.push({ kind: "missing-in-code", name, design: d });
-    else if (d !== c) raw.push({ kind: "value-mismatch", name, design: d, code: c });
-    else inSync++;
+    else if (sameValue(d, c)) inSync++;
+    else if (unitModelDiffers(name, d, c))
+      raw.push({ kind: "structural", name, design: d, code: c, parts: [] }); // e.g. line-height 20px vs 1.5
+    else raw.push({ kind: "value-mismatch", name, design: d, code: c });
   }
 
   // Composite tokens: a code-only token whose name prefixes several design-only tokens.

@@ -1,0 +1,27 @@
+{
+  "file": "MdZuSD4Wgy03m4OFppbDlE",
+  "node": "30258:5582",
+  "description": "Button is used to initiate actions on a page or form.\n\n------------ React -------------\nStatus: Alpha\nAccessibility: Not reviewed\n\n------------- Rails -------------\nStatus: Beta\nAccessibility: Not reviewed",
+  "docLinks": [
+    "https://primer.style/components/button"
+  ],
+  "variant": [
+    "primary",
+    "secondary",
+    "danger",
+    "invisible"
+  ],
+  "size": [
+    "small",
+    "medium",
+    "large"
+  ],
+  "state": [
+    "rest",
+    "focus",
+    "hover",
+    "pressed",
+    "disabled",
+    "inactive"
+  ]
+}
