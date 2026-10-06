@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "test": "node --test --import tsx test/*.test.ts",
-    "drift": "tsx src/cli.ts drift"
+    "drift": "tsx src/cli.ts drift",
+    "primer": "bash fixtures/get-primer.sh && D=fixtures/package/dist && tsx src/cli.ts drift $D/figma/themes/light.json,$D/figma/dimension,$D/figma/typography $D/css/functional/themes/light.css,$D/css/functional/size,$D/css/functional/typography,$D/css/base"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
