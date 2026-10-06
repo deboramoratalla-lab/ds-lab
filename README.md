@@ -12,6 +12,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineeri
 - [x] Rendered-screen audit (Playwright): token coverage on what users actually see
 - [ ] Strategy lab on Token Factory Sandboxes (forked runs)
 - [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
+- [x] Token migration between Figma variables, W3C DTCG JSON, CSS and Tailwind v4, verified by read-back
+- [ ] Component migration (sample: Button)
 - [ ] Super builds screens inside the lab
 - [ ] Post-adoption tracking with Nebius Serverless Jobs
 - [ ] Dashboard
@@ -33,6 +35,14 @@ npx tsx src/cli.ts audit <tokens> fixtures/screens/settings.html
 ```
 
 Opens the screen in Chromium, reads every computed color, spacing, font size and radius, and checks each against tokens of the right category. Off-system values come with the nearest token as a suggestion.
+
+## Migrate tokens
+
+```bash
+npx tsx src/cli.ts migrate <source-tokens> dtcg|figma|css|tailwind --out <file>
+```
+
+The output is read back with the same loader and compared with the source by the drift engine. A migration only passes at 100% sync, so nothing is lost silently. Primer's 1,164 Figma tokens pass in all four formats.
 
 ## Reconcile with Nemotron
 

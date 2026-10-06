@@ -58,6 +58,7 @@ export function flattenJson(obj: unknown, prefix: string[] = [], out: TokenMap =
       return out;
     }
     for (const [k, v] of Object.entries(o)) {
+      if (k === "$root") { flattenJson(v, prefix, out); continue; } // token that is also a group
       if (k.startsWith("$")) continue; // $type, $description...
       flattenJson(v, [...prefix, k], out);
     }

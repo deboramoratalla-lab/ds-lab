@@ -12,6 +12,7 @@ import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
 import { usage } from "./llm/nebius.js";
+import { migrateTokens, type Format } from "./migrate/tokens.js";
 
 if (existsSync(".env")) process.loadEnvFile(".env");
 
@@ -26,6 +27,21 @@ function figmaDescriptions(paths: string): Map<string, string> {
     if (Array.isArray(json)) for (const v of json) if (v.description) out.set(normalizeName(v.name), v.description);
   }
   return out;
+}
+
+if (cmd === "migrate" && designPath && codePath) {
+  // ds-lab migrate <source-tokens> <dtcg|figma|css|tailwind> [--out file]
+  const format = codePath as Format;
+  const outIdx = flags.indexOf("--out");
+  const ext = format === "dtcg" || format === "figma" ? "json" : "css";
+  const out = outIdx >= 0 ? flags[outIdx + 1] : `tokens.${format}.${ext}`;
+  const r = migrateTokens(loadTokens(designPath), format, out);
+  console.log(`Migrated ${r.tokens} tokens → ${format} (${out})`);
+  console.log(r.ok
+    ? `Verified: read back and compared with the source, 100% in sync.`
+    : `NOT verified: ${r.verification.items.length} differences after migration`);
+  for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
+  process.exit(r.ok ? 0 : 2);
 }
 
 if (cmd === "reconcile" && designPath && codePath) {
