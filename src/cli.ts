@@ -3,20 +3,29 @@ import { loadTokens } from "./tokens/load.js";
 import { compareTokens } from "./tokens/drift.js";
 
 import { auditScreen } from "./render/audit.js";
-import { pathToFileURL } from "node:url";
 import { existsSync } from "node:fs";
+import { relative } from "node:path";
+import { serveDir } from "./render/serve.js";
 
 const [cmd, designPath, codePath, ...flags] = process.argv.slice(2);
 
 if (cmd === "audit" && designPath && codePath) {
   // ds-lab audit <tokens> <screen.html|url>
-  const url = existsSync(codePath) ? pathToFileURL(codePath).href : codePath;
+  // Local files are served over HTTP: Chrome won't expose stylesheet rules on file:// pages.
+  let server: Awaited<ReturnType<typeof serveDir>> | undefined;
+  let url = codePath;
+  if (existsSync(codePath)) {
+    server = await serveDir(process.cwd());
+    url = `${server.origin}/${relative(process.cwd(), codePath).split("\\").join("/")}`;
+  }
   const r = await auditScreen(url, loadTokens(designPath));
+  server?.close();
   if (flags.includes("--json")) console.log(JSON.stringify(r, null, 2));
   else {
-    console.log(`Token coverage: ${(r.coverage * 100).toFixed(1)}% (${r.onSystem}/${r.checked} style values)`);
+    console.log(`Token coverage: ${(r.coverage * 100).toFixed(1)}% (${r.onSystem}/${r.checked} authored style values)`);
+    console.log(`  via token ${r.viaToken} · hand-written but equal to a token ${r.literalMatchingToken} · off-system ${r.offSystem.length}`);
     for (const o of r.offSystem)
-      console.log(`  off-system  ${o.property.padEnd(18)} ${o.value.padEnd(9)} ${o.selector}${o.suggestion ? `  → try ${o.suggestion}` : ""}`);
+      console.log(`  off-system  ${o.property.padEnd(22)} ${o.authored.padEnd(9)} ${o.selector}${o.suggestion ? `  → try ${o.suggestion}` : ""}`);
   }
   process.exit(r.offSystem.length ? 2 : 0);
 }

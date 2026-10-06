@@ -15,19 +15,33 @@ const PROPS = {
   radius: ["border-top-left-radius"],
 } as const;
 
+interface Sample {
+  selector: string;
+  property: string;
+  value: string;
+  /** the declaration as written in CSS, e.g. "var(--base-size-16)" or "13px" */
+  authored?: string;
+}
+
 export interface OffSystem {
   selector: string;
   property: string;
   value: string;
+  authored: string;
   /** closest token by value, when one is near */
   suggestion?: string;
 }
 
 export interface AuditReport {
   url: string;
+  /** style values that were authored on the element itself */
   checked: number;
   onSystem: number;
   coverage: number; // 0..1
+  /** written as var(--token) or calc() with tokens */
+  viaToken: number;
+  /** written by hand but equal to a token value (on-system visually, fragile) */
+  literalMatchingToken: number;
   offSystem: OffSystem[];
 }
 
@@ -84,8 +98,45 @@ export async function auditScreen(url: string, tokens: TokenMap): Promise<AuditR
     await page.goto(url);
     const props = Object.values(PROPS).flat();
     // Plain string so the TS toolchain can't inject helpers that don't exist in the page.
-    const samples: { selector: string; property: string; value: string }[] = await page.evaluate(`(() => {
+    // For each element we also find the AUTHORED declaration behind each value: the last matching
+    // rule in source order, inline style winning. (Approximates the cascade: ignores specificity
+    // and !important, which is enough to tell "var(--token)" from a hand-written number.)
+    const samples: Sample[] = await page.evaluate(`(() => {
       const props = ${JSON.stringify(props)};
+      const SHORTHAND = {
+        "padding-top": "padding", "padding-right": "padding", "padding-bottom": "padding", "padding-left": "padding",
+        "row-gap": "gap", "column-gap": "gap", "background-color": "background",
+        "border-top-color": "border-color", "border-top-left-radius": "border-radius", "font-size": "font",
+      };
+      const SIDE = { "padding-top": 0, "padding-right": 1, "padding-bottom": 2, "padding-left": 3 };
+      const splitTop = (v) => { const out = []; let depth = 0, cur = "";
+        for (const ch of v.trim()) { if (ch === "(") depth++; if (ch === ")") depth--;
+          if (ch === " " && depth === 0) { if (cur) out.push(cur); cur = ""; } else cur += ch; }
+        if (cur) out.push(cur); return out; };
+      const sideOf = (parts, i) => i === 0 ? parts[0] : i === 1 ? (parts[1] ?? parts[0])
+        : i === 2 ? (parts[2] ?? parts[0]) : (parts[3] ?? parts[1] ?? parts[0]);
+
+      const rules = [];
+      const collect = (list) => { for (const r of list) {
+        if (r.selectorText !== undefined) rules.push(r);
+        else if (r.media) { if (matchMedia(r.media.mediaText).matches) collect(r.cssRules); }
+        else if (r.cssRules) collect(r.cssRules);
+      } };
+      for (const s of document.styleSheets) { try { collect(s.cssRules); } catch (e) {} }
+
+      const authored = (el, p) => {
+        let found;
+        const blocks = rules.filter((r) => { try { return el.matches(r.selectorText); } catch (e) { return false; } })
+          .map((r) => r.style).concat([el.style]);
+        for (const st of blocks) {
+          const v = st.getPropertyValue(p);
+          if (v) { found = v; continue; }
+          const sh = SHORTHAND[p]; const sv = sh && st.getPropertyValue(sh);
+          if (sv) found = p in SIDE ? sideOf(splitTop(sv), SIDE[p]) : sv;
+        }
+        return found;
+      };
+
       const out = [];
       for (const el of document.body.querySelectorAll("*")) {
         const r = el.getBoundingClientRect();
@@ -97,13 +148,14 @@ export async function auditScreen(url: string, tokens: TokenMap): Promise<AuditR
         const selector = el.tagName.toLowerCase() + cls + (text ? ' "' + text + '"' : "");
         for (const p of props) {
           if (p === "border-top-color" && !hasBorder) continue;
-          out.push({ selector, property: p, value: cs.getPropertyValue(p) });
+          out.push({ selector, property: p, value: cs.getPropertyValue(p), authored: authored(el, p) });
         }
       }
       return out;
     })()`);
 
     let checked = 0;
+    const sources = { viaToken: 0, literalMatchingToken: 0 };
     const offSystem: OffSystem[] = [];
     const seen = new Set<string>();
     for (const s of samples) {
@@ -111,16 +163,20 @@ export async function auditScreen(url: string, tokens: TokenMap): Promise<AuditR
       if (NEUTRAL.has(value)) continue;
       // line-height is often a computed product of font-size × ratio, not a token itself
       if (s.property === "line-height") continue;
+      // No declaration on this element: the value is inherited or a browser default.
+      // It gets checked on the element where it was authored.
+      if (!s.authored || /^(inherit|initial|unset|currentcolor|transparent)$/i.test(s.authored.trim())) continue;
       checked++;
+      if (s.authored.includes("var(--")) { sources.viaToken++; continue; } // derived from a token, even via calc()
       const cat = categoryOf(s.property);
-      if (allowedBy[cat].has(value)) continue;
+      if (allowedBy[cat].has(value)) { sources.literalMatchingToken++; continue; }
       const key = `${s.selector}|${s.property}|${value}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      offSystem.push({ ...s, value, suggestion: nearestToken(value, byCategory[cat]) });
+      offSystem.push({ selector: s.selector, property: s.property, value, authored: s.authored.trim(), suggestion: nearestToken(value, byCategory[cat]) });
     }
     const onSystem = checked - offSystem.length;
-    return { url, checked, onSystem, coverage: checked ? onSystem / checked : 1, offSystem };
+    return { url, checked, onSystem, coverage: checked ? onSystem / checked : 1, ...sources, offSystem };
   } finally {
     await browser.close();
   }
