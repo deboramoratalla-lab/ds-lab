@@ -1,0 +1,28 @@
+/* Baseline tokens: a Primer subset (values from @primer/primitives 11.10.0, light). Source of truth for the demo. */
+:root {
+  --border-width-thin: 1px;
+  --button-default-border-color-rest: #d1d9e0;
+  --border-radius-medium: 6px;
+  --button-default-fg-color-rest: #25292e;
+  --text-body-size-medium: 14px;
+  --base-size-8: 8px;
+  --control-medium-size: 32px;
+  --control-medium-padding-inline-normal: 12px;
+  --text-body-size-small: 12px;
+  --control-small-gap: 4px;
+  --control-small-size: 28px;
+  --control-small-padding-inline-condensed: 8px;
+  --control-large-gap: 8px;
+  --control-large-size: 40px;
+  --control-large-padding-inline-spacious: 16px;
+  --button-default-bg-color-rest: #f6f8fa;
+  --button-primary-bg-color-rest: #1f883d;
+  --button-primary-border-color-rest: #1f232826;
+  --button-primary-fg-color-rest: #ffffff;
+  --button-danger-bg-color-rest: #f6f8fa;
+  --button-danger-fg-color-rest: #d1242f;
+  --button-invisible-border-color-rest: #ffffff00;
+  --fg-color-link: #0969da;
+  --fg-color-muted: #59636e;
+  --border-color-translucent: #1f232826;
+}

@@ -14,6 +14,7 @@ import { loadPrimerDoc, fourWayDrift, storybookAxes } from "./docs/primer.js";
 import { STRATEGIES } from "./lab/strategies.js";
 import { PRIMER_SCRIPT } from "./lab/script.js";
 import { runLab } from "./lab/run.js";
+import { certify } from "./certify.js";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
@@ -47,6 +48,21 @@ if (cmd === "migrate" && designPath && codePath) {
     ? `Verified: read back and compared with the source, 100% in sync.`
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
+  process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "certify") {
+  // ds-lab certify [baseline dir]
+  const dir = designPath ?? "baseline";
+  const r = certify({
+    figmaSnapshot: `${dir}/figma/snapshot.json`, codeTokens: `${dir}/code/tokens.css`, componentCss: `${dir}/code/button.css`,
+    baseClass: "ds-Button", docs: `${dir}/docs/components.json`, stories: `${dir}/stories/button.stories.js`, component: "Button",
+  });
+  for (const c of r.checks) {
+    console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(44)} ${c.passed}/${c.total}  ${Math.round((c.passed / c.total) * 100)}%`);
+    for (const x of c.issues.slice(0, 12)) console.log(`    ${x}`);
+  }
+  console.log(r.ok ? "\nCertified: Figma, code, Storybook and docs are 100% in sync." : "\nNot in sync.");
   process.exit(r.ok ? 0 : 2);
 }
 

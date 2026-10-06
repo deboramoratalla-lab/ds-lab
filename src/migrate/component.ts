@@ -48,7 +48,7 @@ function parseDeclarations(body: string): StyleBlock {
  * @param attributes data attributes that define variant axes, e.g. ["data-variant", "data-size"]
  */
 export function extractComponent(name: string, cssPath: string, baseClass: string, attributes: string[]): ComponentSpec {
-  const css = readFileSync(cssPath, "utf8");
+  const css = readFileSync(cssPath, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
   const spec: ComponentSpec = { name, source: cssPath, base: {}, axes: {} };
   const rule = /([^{}]+)\{([^{}]*)\}/g;
   let m: RegExpExecArray | null;

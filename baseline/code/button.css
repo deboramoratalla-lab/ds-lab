@@ -1,0 +1,9 @@
+/* Baseline Button: same structure and tokens as @primer/react ButtonBase, reduced to rest state. */
+.ds-Button{align-items:center;display:inline-flex;font-family:inherit;font-weight:500;cursor:pointer;background-color:transparent;border:var(--border-width-thin) solid;border-color:var(--button-default-border-color-rest);border-radius:var(--border-radius-medium);color:var(--button-default-fg-color-rest);font-size:var(--text-body-size-medium);gap:var(--base-size-8);height:var(--control-medium-size);padding:0 var(--control-medium-padding-inline-normal)}
+.ds-Button:where([data-size=small]){font-size:var(--text-body-size-small);gap:var(--control-small-gap);height:var(--control-small-size);padding:0 var(--control-small-padding-inline-condensed)}
+.ds-Button:where([data-size=large]){gap:var(--control-large-gap);height:var(--control-large-size);padding:0 var(--control-large-padding-inline-spacious)}
+.ds-Button:where([data-variant=default]){background-color:var(--button-default-bg-color-rest);color:var(--button-default-fg-color-rest)}
+.ds-Button:where([data-variant=primary]){background-color:var(--button-primary-bg-color-rest);border-color:var(--button-primary-border-color-rest);color:var(--button-primary-fg-color-rest)}
+.ds-Button:where([data-variant=danger]){background-color:var(--button-danger-bg-color-rest);color:var(--button-danger-fg-color-rest)}
+.ds-Button:where([data-variant=invisible]){border-color:var(--button-invisible-border-color-rest);color:var(--button-default-fg-color-rest)}
+.ds-Button:where([data-variant=link]){border-color:var(--button-invisible-border-color-rest);color:var(--fg-color-link)}

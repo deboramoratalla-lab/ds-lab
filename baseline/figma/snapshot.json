@@ -1,0 +1,198 @@
+{
+  "takenAt": "2026-10-06T10:23:48.380Z",
+  "file": "8NpJVVuCcGnZyrmldH6pa5",
+  "tokens": {
+    "border-width-thin": 1,
+    "button-default-border-color-rest": "#d1d9e0",
+    "border-radius-medium": 6,
+    "button-default-fg-color-rest": "#25292e",
+    "text-body-size-medium": 14,
+    "base-size-8": 8,
+    "control-medium-size": 32,
+    "control-medium-padding-inline-normal": 12,
+    "text-body-size-small": 12,
+    "control-small-gap": 4,
+    "control-small-size": 28,
+    "control-small-padding-inline-condensed": 8,
+    "control-large-gap": 8,
+    "control-large-size": 40,
+    "control-large-padding-inline-spacious": 16,
+    "button-default-bg-color-rest": "#f6f8fa",
+    "button-primary-bg-color-rest": "#1f883d",
+    "button-primary-border-color-rest": "#1f232826",
+    "button-primary-fg-color-rest": "#ffffff",
+    "button-danger-bg-color-rest": "#f6f8fa",
+    "button-danger-fg-color-rest": "#d1242f",
+    "button-invisible-border-color-rest": "#ffffff00",
+    "fg-color-link": "#0969da",
+    "fg-color-muted": "#59636e",
+    "border-color-translucent": "#1f232826"
+  },
+  "bindings": {
+    "variant=default, size=small": {
+      "height": "control-small-size",
+      "padX": "control-small-padding-inline-condensed",
+      "gap": "control-small-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-default-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-small"
+    },
+    "variant=default, size=medium": {
+      "height": "control-medium-size",
+      "padX": "control-medium-padding-inline-normal",
+      "gap": "base-size-8",
+      "radius": "border-radius-medium",
+      "bg": "button-default-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=default, size=large": {
+      "height": "control-large-size",
+      "padX": "control-large-padding-inline-spacious",
+      "gap": "control-large-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-default-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=primary, size=small": {
+      "height": "control-small-size",
+      "padX": "control-small-padding-inline-condensed",
+      "gap": "control-small-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-primary-bg-color-rest",
+      "border": "button-primary-border-color-rest",
+      "fg": "button-primary-fg-color-rest",
+      "font": "text-body-size-small"
+    },
+    "variant=primary, size=medium": {
+      "height": "control-medium-size",
+      "padX": "control-medium-padding-inline-normal",
+      "gap": "base-size-8",
+      "radius": "border-radius-medium",
+      "bg": "button-primary-bg-color-rest",
+      "border": "button-primary-border-color-rest",
+      "fg": "button-primary-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=primary, size=large": {
+      "height": "control-large-size",
+      "padX": "control-large-padding-inline-spacious",
+      "gap": "control-large-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-primary-bg-color-rest",
+      "border": "button-primary-border-color-rest",
+      "fg": "button-primary-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=danger, size=small": {
+      "height": "control-small-size",
+      "padX": "control-small-padding-inline-condensed",
+      "gap": "control-small-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-danger-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-danger-fg-color-rest",
+      "font": "text-body-size-small"
+    },
+    "variant=danger, size=medium": {
+      "height": "control-medium-size",
+      "padX": "control-medium-padding-inline-normal",
+      "gap": "base-size-8",
+      "radius": "border-radius-medium",
+      "bg": "button-danger-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-danger-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=danger, size=large": {
+      "height": "control-large-size",
+      "padX": "control-large-padding-inline-spacious",
+      "gap": "control-large-gap",
+      "radius": "border-radius-medium",
+      "bg": "button-danger-bg-color-rest",
+      "border": "button-default-border-color-rest",
+      "fg": "button-danger-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=invisible, size=small": {
+      "height": "control-small-size",
+      "padX": "control-small-padding-inline-condensed",
+      "gap": "control-small-gap",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-small"
+    },
+    "variant=invisible, size=medium": {
+      "height": "control-medium-size",
+      "padX": "control-medium-padding-inline-normal",
+      "gap": "base-size-8",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=invisible, size=large": {
+      "height": "control-large-size",
+      "padX": "control-large-padding-inline-spacious",
+      "gap": "control-large-gap",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "button-default-fg-color-rest",
+      "font": "text-body-size-medium"
+    },
+    "variant=link, size=small": {
+      "height": "control-small-size",
+      "padX": "control-small-padding-inline-condensed",
+      "gap": "control-small-gap",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "fg-color-link",
+      "font": "text-body-size-small"
+    },
+    "variant=link, size=medium": {
+      "height": "control-medium-size",
+      "padX": "control-medium-padding-inline-normal",
+      "gap": "base-size-8",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "fg-color-link",
+      "font": "text-body-size-medium"
+    },
+    "variant=link, size=large": {
+      "height": "control-large-size",
+      "padX": "control-large-padding-inline-spacious",
+      "gap": "control-large-gap",
+      "radius": "border-radius-medium",
+      "bg": null,
+      "border": "button-invisible-border-color-rest",
+      "fg": "fg-color-link",
+      "font": "text-body-size-medium"
+    }
+  },
+  "options": {
+    "variant": [
+      "default",
+      "primary",
+      "danger",
+      "invisible",
+      "link"
+    ],
+    "size": [
+      "small",
+      "medium",
+      "large"
+    ]
+  },
+  "description": "Change the visual style of the button with variant (default, primary, danger, invisible, link) and its size with size (small, medium, large; default medium).\n\nStatus: Alpha \u00b7 Accessibility reviewed 2025-01-08 \u00b7 import { Button } from '@ds-lab/baseline'\n\nSource: baseline/docs/components.json, synced by DS Lab."
+}

@@ -1,0 +1,96 @@
+{
+  "components": {
+    "button": {
+      "id": "button",
+      "name": "Button",
+      "status": "alpha",
+      "a11yReviewed": "2025-01-08",
+      "importPath": "@ds-lab/baseline",
+      "source": "Subset of @primer/react 38.40.1 generated/components.json",
+      "props": [
+        {
+          "name": "block",
+          "type": "boolean",
+          "description": "Allow button width to fill its container."
+        },
+        {
+          "name": "children",
+          "required": true,
+          "type": "React.ReactNode",
+          "description": "The content of the button."
+        },
+        {
+          "name": "inactive",
+          "type": "boolean",
+          "description": "Whether the button looks visually disabled, but can still accept all the same interactions as an enabled button.\nThis is intended to be used when a system error such as an outage prevents the button from performing its usual action.\nInactive styles are slightly different from disabled styles because inactive buttons need to have an accessible color contrast ratio. This is because inactive buttons can have tooltips or perform an action such as opening a dialog explaining why it's inactive.\nIf both `disabled` and `inactive` are true, `disabled` takes precedence."
+        },
+        {
+          "name": "leadingVisual",
+          "type": "React.ElementType",
+          "description": "A visual to display before the button text."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "description": "When true, the button is in a loading state."
+        },
+        {
+          "name": "size",
+          "type": "'small'\n| 'medium'\n| 'large'",
+          "defaultValue": "'medium'"
+        },
+        {
+          "name": "trailingVisual",
+          "type": "React.ElementType",
+          "description": "A visual to display after the button text."
+        },
+        {
+          "name": "variant",
+          "type": "'default'\n| 'primary'\n| 'danger'\n| 'invisible'\n| 'link'",
+          "defaultValue": "'default'",
+          "description": "Change the visual style of the button."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "description": "Avoid disabling buttons because it will make them inaccessible to users who rely on keyboard navigation. Buttons that are disabled can not be clicked, selected, or navigated through.",
+          "defaultValue": ""
+        }
+      ],
+      "stories": [
+        {
+          "id": "components-button--default",
+          "code": "() => <Button>Button</Button>"
+        },
+        {
+          "id": "components-button--primary",
+          "code": "() => <Button variant=\"primary\">Button</Button>"
+        },
+        {
+          "id": "components-button--danger",
+          "code": "() => <Button variant=\"danger\">Button</Button>"
+        },
+        {
+          "id": "components-button--invisible",
+          "code": "() => <Button variant=\"invisible\">Button</Button>"
+        },
+        {
+          "id": "components-button--link",
+          "code": "() => <Button variant=\"link\">Button</Button>"
+        },
+        {
+          "id": "components-button--small",
+          "code": "() => <Button size=\"small\">Button</Button>"
+        },
+        {
+          "id": "components-button--medium",
+          "code": "() => <Button size=\"medium\">Button</Button>"
+        },
+        {
+          "id": "components-button--large",
+          "code": "() => <Button size=\"large\">Button</Button>"
+        }
+      ]
+    }
+  }
+}
