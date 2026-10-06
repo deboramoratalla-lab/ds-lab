@@ -15,7 +15,7 @@ import { STRATEGIES } from "./lab/strategies.js";
 import { PRIMER_SCRIPT } from "./lab/script.js";
 import { runLab } from "./lab/run.js";
 import { certify } from "./certify.js";
-import { checkFreshness } from "./research/freshness.js";
+import { benchmark } from "./research/benchmark.js";
 import { certifyPrimer, sharedTokens } from "./certify-primer.js";
 import { BREAKS, makeWorkspace, closeWorkspace, primerInput } from "./demo/breaks.js";
 import { readdirSync } from "node:fs";
@@ -55,17 +55,21 @@ if (cmd === "migrate" && designPath && codePath) {
   process.exit(r.ok ? 0 : 2);
 }
 
-if (cmd === "fresh") {
-  // ds-lab fresh   are the versions we certified against still the latest published ones? (Tavily + Nano)
-  const pkgs: [string, string, string][] = [
-    ["@primer/primitives", "fixtures/package/package.json", "primer/primitives"],
-    ["@primer/react", "fixtures/primer-react/package/package.json", "primer/react"],
-  ];
-  for (const [pkg, pj, repo] of pkgs) {
-    const f = await checkFreshness(pkg, pj, repo);
-    console.log(`${f.latest === undefined || f.staleSource ? "?" : f.behind ? "✗" : "✓"} ${pkg.padEnd(20)} local ${f.local.padEnd(8)} latest ${f.latest ?? "unknown"}${f.source ? `  (${f.source})` : ""}`);
-    console.log(`    ${f.note}`);
-  }
+if (cmd === "benchmark") {
+  // ds-lab benchmark [option]   research a new Button size against other public systems + WCAG (Tavily + Nemotron Super)
+  // reads the option from the broken workspace's CSS (run `break xsmall` first)
+  const option = designPath ?? "xsmall";
+  const spec = extractComponent("Button", "out/broken/ButtonBase.css", "prc-Button-ButtonBase", ["data-variant", "data-size"]);
+  const st = spec.axes.size?.[option];
+  if (!st) { console.log(`size="${option}" not found in out/broken/ButtonBase.css — run \`ds-lab break xsmall\` first`); process.exit(1); }
+  const px = (v?: string) => { const f = v?.match(/([\d.]+)rem\)?$/)?.[1]; return f ? `${parseFloat(f) * 16}px` : v ?? "—"; };
+  const ours = { height: px(st.height?.value), paddingInline: px(st.padding?.value), gap: px(st.gap?.value), fontSize: px(st["font-size"]?.value) };
+  console.log(`Proposal: Button size="${option}" ${JSON.stringify(ours)}\n`);
+  const r = await benchmark({ component: "Button", axis: "size", option, ours });
+  for (const f of r.findings) console.log(`· ${f.system.padEnd(18)} ${f.summary}\n    ${f.values.join(", ")}  — ${f.url}`);
+  if (r.standard) console.log(`· ${r.standard.system.padEnd(18)} ${r.standard.summary}\n    ${r.standard.values.join(", ")}  — ${r.standard.url}`);
+  console.log(`\n${r.verdict === "consistent" ? "✓" : r.verdict === "review" ? "?" : "✗"} ${r.verdict}: ${r.recommendation}`);
+  console.log(`\n${r.searches} Tavily searches · ${Object.values(usage).reduce((a, u) => a + u.calls, 0)} Nemotron Super call(s)${r.dropped ? ` · ${r.dropped} uncited finding(s) dropped` : ""}`);
   process.exit(0);
 }
 

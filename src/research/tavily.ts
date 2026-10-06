@@ -3,13 +3,13 @@
 
 export interface WebResult { url: string; title: string; content: string }
 
-export async function search(query: string, o: { max?: number; domains?: string[]; depth?: "basic" | "advanced" } = {}): Promise<WebResult[]> {
+export async function search(query: string, o: { max?: number; domains?: string[]; exclude?: string[]; depth?: "basic" | "advanced" } = {}): Promise<WebResult[]> {
   const key = process.env.TAVILY_API_KEY;
   if (!key) throw new Error("TAVILY_API_KEY missing (.env)");
   const res = await fetch("https://api.tavily.com/search", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ query, max_results: o.max ?? 5, include_domains: o.domains, search_depth: o.depth ?? "basic" }),
+    body: JSON.stringify({ query, max_results: o.max ?? 5, include_domains: o.domains, exclude_domains: o.exclude, search_depth: o.depth ?? "basic", include_raw_content: false }),
   });
   if (!res.ok) throw new Error(`Tavily ${res.status}: ${await res.text()}`);
   const d: any = await res.json();
