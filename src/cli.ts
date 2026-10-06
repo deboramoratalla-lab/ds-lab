@@ -65,7 +65,10 @@ if (cmd === "benchmark") {
   const px = (v?: string) => { const f = v?.match(/([\d.]+)rem\)?$/)?.[1]; return f ? `${parseFloat(f) * 16}px` : v ?? "—"; };
   const ours = { height: px(st.height?.value), paddingInline: px(st.padding?.value), gap: px(st.gap?.value), fontSize: px(st["font-size"]?.value) };
   console.log(`Proposal: Button size="${option}" ${JSON.stringify(ours)}\n`);
-  const r = await benchmark({ component: "Button", axis: "size", option, ours });
+  const base = extractComponent("Button", "out/broken/ButtonBase.css", "prc-Button-ButtonBase", ["data-variant", "data-size"]);
+  const scale: Record<string, string> = { medium: px(base.base.height?.value) };
+  for (const [k, v] of Object.entries(base.axes.size ?? {})) if (k !== option) scale[k] = px(v.height?.value);
+  const r = await benchmark({ component: "Button", axis: "size", option, ours, scale });
   for (const f of r.findings) console.log(`· ${f.system.padEnd(18)} ${f.summary}\n    ${f.values.join(", ")}  — ${f.url}`);
   if (r.standard) console.log(`· ${r.standard.system.padEnd(18)} ${r.standard.summary}\n    ${r.standard.values.join(", ")}  — ${r.standard.url}`);
   console.log(`\n${r.verdict === "consistent" ? "✓" : r.verdict === "review" ? "?" : "✗"} ${r.verdict}: ${r.recommendation}`);

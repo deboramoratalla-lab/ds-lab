@@ -16,7 +16,9 @@ export const REFERENCES: Reference[] = [
 ];
 export const STANDARDS: Reference = { system: "WCAG 2.2", domains: ["w3.org"] };
 
-export interface Proposal { component: string; axis: string; option: string; ours: Record<string, string> }
+export interface Proposal { component: string; axis: string; option: string; ours: Record<string, string>;
+  /** the rest of this axis in your own system, read from code: option -> value */
+  scale?: Record<string, string> }
 
 export interface Finding { system: string; summary: string; values: string[]; url: string }
 export interface Benchmark {
@@ -63,11 +65,13 @@ export async function benchmark(p: Proposal): Promise<Benchmark> {
     ? { system: STANDARDS.system, summary: out.standard.summary, values: out.standard.values, url: sources[out.standard.source].r.url } : undefined;
   dropped = out.findings.length - findings.length;
   // step 2: the verdict sees ONLY the findings that survived the citation check
+  const own = p.scale ? { system: "Your system (code)", summary: `Existing ${p.axis} options`, values: Object.entries(p.scale).map(([k, x]) => `${k}: ${x}`), url: "local" } : undefined;
+  if (own) findings.unshift(own);
   const v = parseJson<{ verdict: Benchmark["verdict"]; recommendation: string }>(await chat({
     role: "super", think: false, json: true,
     system: "You advise a design-system team. Use only the verified findings given. Don't mention any system that isn't in them.",
     user: `Proposal: ${p.component} ${p.axis}="${p.option}" ${JSON.stringify(p.ours)}\nVerified findings:\n${JSON.stringify({ findings, standard }, null, 1)}\n` +
-      `Verdict: "consistent" (in line with the references and the standard), "review" (unusual vs the references), or "against-standard". ` +
+      `Verdict: "consistent" (in line with the references and the standard), "review" (unusual vs the references, or doesn't fit the team's own scale), or "against-standard". ` +
       `Then one or two plain sentences for the team. Return JSON {"verdict","recommendation"}.`,
   }));
   return { proposal: p, findings, dropped, verdict: v.verdict, recommendation: v.recommendation, standard, searches: REFERENCES.length + 1 };
