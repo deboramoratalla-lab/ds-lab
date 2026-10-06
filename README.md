@@ -14,7 +14,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineeri
 - [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
 - [x] Token migration between Figma variables, W3C DTCG JSON, CSS and Tailwind v4, verified by read-back
 - [x] Component migration sample: Primer Button, code → Figma, 12 variants bound to variables, verified 96/96
-- [x] Documentation: generated from the spec by Nemotron 3 Super, written into Figma, doc drift measured
+- [x] Documentation: the design system's own docs (Primer components.json) synced into Figma, never rewritten
+- [x] Storybook: four-way check of every variant and size across docs, code, Figma and Storybook
 - [ ] Super builds screens inside the lab
 - [ ] Post-adoption tracking with Nebius Serverless Jobs
 - [ ] Dashboard
@@ -44,6 +45,15 @@ npx tsx src/cli.ts migrate <source-tokens> dtcg|figma|css|tailwind --out <file>
 ```
 
 The output is read back with the same loader and compared with the source by the drift engine. A migration only passes at 100% sync, so nothing is lost silently. Primer's 1,164 Figma tokens pass in all four formats.
+
+## Where does each option live?
+
+```bash
+npx tsx src/cli.ts where <components.json> <Component.css> --name Button --base prc-Button-ButtonBase \
+  --figma "variant=default,primary,danger,invisible;size=small,medium,large"
+```
+
+Checks every variant and size against the official docs, the code, Figma and Storybook stories. On Primer's Button: 7/8 in sync; `variant=link` is missing in Figma.
 
 ## Reconcile with Nemotron
 

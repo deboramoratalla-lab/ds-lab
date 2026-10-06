@@ -10,6 +10,7 @@ import { serveDir } from "./render/serve.js";
 import { readFileSync, writeFileSync } from "node:fs";
 import { extractComponent } from "./migrate/component.js";
 import { writeDoc, docToMarkdown, docDrift } from "./agents/docs.js";
+import { loadPrimerDoc, fourWayDrift, storybookAxes } from "./docs/primer.js";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
@@ -44,6 +45,29 @@ if (cmd === "migrate" && designPath && codePath) {
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
   process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "where" && designPath && codePath) {
+  // ds-lab where <components.json> <component.css> --name Button --base <class> --figma variant=a,b;size=s,m
+  const arg = (f: string) => { const i = flags.indexOf(f); return i >= 0 ? flags[i + 1] : undefined; };
+  const name = arg("--name")!;
+  const doc = loadPrimerDoc(designPath, name);
+  const spec = extractComponent(name, codePath, arg("--base")!, ["data-variant", "data-size"]);
+  const axes = ["variant", "size"];
+  // the default value has no CSS override of its own, so it lives in the base styles
+  const code = Object.fromEntries(axes.map((a) => {
+    const def = doc.props.find((p) => p.name === a)?.defaultValue?.replace(/'/g, "");
+    return [a, [...new Set([...(def ? [def] : []), ...Object.keys(spec.axes[a] ?? {})])]];
+  }));
+  const figma = Object.fromEntries((arg("--figma") ?? "").split(";").filter(Boolean).map((s) => {
+    const [k, v] = s.split("="); return [k, v.split(",")];
+  }));
+  const r = fourWayDrift(doc, code, figma, storybookAxes(doc, axes));
+  console.log(`${name}: ${r.inSync}/${r.total} options exist in docs, code, Figma and Storybook`);
+  console.log(`  ${"option".padEnd(20)} docs  code  figma storybook`);
+  for (const i of r.items)
+    console.log(`  ${(i.axis + "=" + i.option).padEnd(20)} ${[i.inDocs, i.inCode, i.inFigma, i.inStorybook].map((b) => (b ? "✓" : "✗").padEnd(5)).join(" ")}`);
+  process.exit(r.gaps.length ? 2 : 0);
 }
 
 if (cmd === "docs" && designPath) {

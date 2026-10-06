@@ -1,0 +1,210 @@
+{
+  "name": "Button",
+  "status": "alpha",
+  "a11yReviewed": "2025-01-08",
+  "importPath": "@primer/react",
+  "props": [
+    {
+      "name": "alignContent",
+      "type": "'start' | 'center'",
+      "description": "Content alignment for when visuals are present."
+    },
+    {
+      "name": "as",
+      "type": "React.ElementType",
+      "defaultValue": "'button'"
+    },
+    {
+      "name": "href",
+      "type": "string",
+      "description": "**May only be used when `as` is set to 'a'**.\n The URL the button links to. If `as` is set to 'a', this prop is required."
+    },
+    {
+      "name": "block",
+      "type": "boolean",
+      "description": "Allow button width to fill its container."
+    },
+    {
+      "name": "children",
+      "type": "React.ReactNode",
+      "description": "The content of the button."
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "For counter buttons, the number to display."
+    },
+    {
+      "name": "inactive",
+      "type": "boolean",
+      "description": "Whether the button looks visually disabled, but can still accept all the same interactions as an enabled button.\nThis is intended to be used when a system error such as an outage prevents the button from performing its usual action.\nInactive styles are slightly different from disabled styles because inactive buttons need to have an accessible color contrast ratio. This is because inactive buttons can have tooltips or perform an action such as opening a dialog explaining why it's inactive.\nIf both `disabled` and `inactive` are true, `disabled` takes precedence."
+    },
+    {
+      "name": "leadingIcon",
+      "type": "React.ComponentType<OcticonProps>",
+      "description": "An icon to display before the button text."
+    },
+    {
+      "name": "leadingVisual",
+      "type": "React.ElementType",
+      "description": "A visual to display before the button text."
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "When true, the button is in a loading state."
+    },
+    {
+      "name": "loadingAnnouncement",
+      "type": "string",
+      "description": "The content to announce to screen readers when loading. This requires `loading` prop to be true"
+    },
+    {
+      "name": "ref",
+      "type": "React.RefObject<HTMLButtonElement>"
+    },
+    {
+      "name": "size",
+      "type": "'small' | 'medium' | 'large'",
+      "defaultValue": "'medium'"
+    },
+    {
+      "name": "trailingIcon",
+      "type": "React.ComponentType<OcticonProps>",
+      "description": "An icon to display after the button text."
+    },
+    {
+      "name": "trailingVisual",
+      "type": "React.ElementType",
+      "description": "A visual to display after the button text."
+    },
+    {
+      "name": "trailingAction",
+      "type": "React.ElementType",
+      "description": "Trailing action appears to the right of the trailing visual and is always locked to the end"
+    },
+    {
+      "name": "variant",
+      "type": "'default' | 'primary' | 'danger' | 'invisible' | 'link'",
+      "defaultValue": "'default'",
+      "description": "Change the visual style of the button."
+    },
+    {
+      "name": "labelWrap",
+      "type": "boolean",
+      "defaultValue": "false",
+      "description": "Whether the button label should wrap to multiple lines of it is longer than the button width."
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Avoid disabling buttons because it will make them inaccessible to users who rely on keyboard navigation. Buttons that are disabled can not be clicked, selected, or navigated through."
+    }
+  ],
+  "stories": [
+    {
+      "id": "components-button--default",
+      "code": "() => <Button>Default</Button>"
+    },
+    {
+      "id": "components-button-features--primary",
+      "code": "() => <Button variant=\"primary\">Primary</Button>"
+    },
+    {
+      "id": "components-button-features--danger",
+      "code": "() => <Button variant=\"danger\">Danger</Button>"
+    },
+    {
+      "id": "components-button-features--invisible",
+      "code": "() => <Button variant=\"invisible\">Invisible</Button>"
+    },
+    {
+      "id": "components-button-features--link",
+      "code": "() => <Button variant=\"link\">Button that looks like a link</Button>"
+    },
+    {
+      "id": "components-button-features--leading-visual",
+      "code": "() => <Button leadingVisual={HeartIcon}>Leading visual</Button>"
+    },
+    {
+      "id": "components-button-features--trailing-visual",
+      "code": "() => <Button trailingVisual={EyeIcon}>Trailing visual</Button>"
+    },
+    {
+      "id": "components-button-features--trailing-counter",
+      "code": "() => {\n  const [count, setCount] = useState(0)\n  const onClick = () => {\n    setCount(count + 1)\n    announce(`Watch ${count + 1}`)\n  }\n  return (\n    <>\n      <Button onClick={onClick} count={count}>\n        Watch\n      </Button>\n      <AccessibilityNote />\n      <p>\n        In this example, a live region has been implemented to communicate the\n        change.\n      </p>\n    </>\n  )\n}"
+    },
+    {
+      "id": "components-button-features--trailing-counter-with-no-text",
+      "code": "() => <Button aria-label=\"Comments\" leadingVisual={CommentIcon} count={3} />"
+    },
+    {
+      "id": "components-button-features--trailing-counter-all-variants",
+      "code": "() => {\n  const [count, setCount] = useState(0)\n  const onClick = () => {\n    setCount(count + 1)\n    announce(`Watch ${count + 1}`)\n  }\n  return (\n    <>\n      <Stack gap=\"normal\" wrap=\"wrap\" direction=\"horizontal\">\n        <Button onClick={onClick} count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} variant=\"primary\" disabled count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} variant=\"danger\" count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} variant=\"danger\" disabled count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} variant=\"invisible\" count={count}>\n          Watch\n        </Button>\n        <Button onClick={onClick} variant=\"invisible\" disabled count={count}>\n          Watch\n        </Button>\n      </Stack>\n      <AccessibilityNote />\n      <p>\n        In these examples, a live region has been implemented to communicate the\n        change.\n      </p>\n    </>\n  )\n}"
+    },
+    {
+      "id": "components-button-features--trailing-action",
+      "code": "() => <Button trailingAction={TriangleDownIcon}>Trailing action</Button>"
+    },
+    {
+      "id": "components-button-features--block",
+      "code": "() => <Button block>Default</Button>"
+    },
+    {
+      "id": "components-button-features--disabled",
+      "code": "() => (\n  <div\n    style={{\n      display: 'flex',\n      flexDirection: 'row',\n      gap: '1rem',\n    }}\n  >\n    <Button disabled>Default</Button>\n    <Button variant=\"primary\" disabled>\n      Primary\n    </Button>\n    <Button variant=\"danger\" disabled>\n      Danger\n    </Button>\n    <Button variant=\"invisible\" disabled>\n      Invisible\n    </Button>\n  </div>\n)"
+    },
+    {
+      "id": "components-button-features--inactive",
+      "code": "() => (\n  <div\n    style={{\n      display: 'flex',\n      flexWrap: 'wrap',\n      flexDirection: 'row',\n      gap: '1rem',\n    }}\n  >\n    <VisuallyHidden id=\"inactive-state\">Inactive</VisuallyHidden>\n    <Button inactive aria-describedby=\"inactive-state\">\n      Default\n    </Button>\n    <Button variant=\"primary\" inactive aria-describedby=\"inactive-state\">\n      Primary\n    </Button>\n    <Button variant=\"danger\" inactive aria-describedby=\"inactive-state\">\n      Danger\n    </Button>\n    <Button variant=\"invisible\" inactive aria-describedby=\"inactive-state\">\n      Invisible\n    </Button>\n  </div>\n)"
+    },
+    {
+      "id": "components-button-features--small",
+      "code": "() => <Button size=\"small\">Default</Button>"
+    },
+    {
+      "id": "components-button-features--medium",
+      "code": "() => <Button size=\"medium\">Default</Button>"
+    },
+    {
+      "id": "components-button-features--large",
+      "code": "() => <Button size=\"large\">Default</Button>"
+    },
+    {
+      "id": "components-button-features--loading",
+      "code": "() => <Button loading>Default</Button>"
+    },
+    {
+      "id": "components-button-features--loading-custom-announcement",
+      "code": "() => (\n  <Button loading loadingAnnouncement=\"This is a custom loading announcement\">\n    Default\n  </Button>\n)"
+    },
+    {
+      "id": "components-button-features--loading-with-leading-visual",
+      "code": "() => (\n  <Button loading leadingVisual={DownloadIcon}>\n    Export\n  </Button>\n)"
+    },
+    {
+      "id": "components-button-features--loading-with-trailing-visual",
+      "code": "() => (\n  <Button loading trailingVisual={DownloadIcon}>\n    Export\n  </Button>\n)"
+    },
+    {
+      "id": "components-button-features--loading-with-trailing-action",
+      "code": "() => (\n  <Button loading trailingAction={TriangleDownIcon}>\n    Export dropdown\n  </Button>\n)"
+    },
+    {
+      "id": "components-button-features--loading-trigger",
+      "code": "() => {\n  const [isLoading, setIsLoading] = useState(false)\n  const handleClick = () => {\n    setIsLoading(true)\n  }\n  return (\n    <Button\n      loading={isLoading}\n      onClick={handleClick}\n      leadingVisual={DownloadIcon}\n    >\n      Export\n    </Button>\n  )\n}"
+    },
+    {
+      "id": "components-button-features--label-wrap",
+      "code": "() => {\n  return (\n    <Stack\n      style={{\n        width: '200px',\n      }}\n    >\n      <Button labelWrap>\n        This button label will wrap if the label is too long\n      </Button>\n      <Button size=\"small\" labelWrap>\n        This small button label will wrap if the label is too long\n      </Button>\n      <Button size=\"large\" labelWrap>\n        This large button label will wrap if the label is too long\n      </Button>\n      <Button labelWrap leadingVisual={HeartIcon} trailingVisual={EyeIcon}>\n        This button label will wrap if the label is too long\n      </Button>\n    </Stack>\n  )\n}"
+    },
+    {
+      "id": "components-button-features--inactive-button-with-tooltip",
+      "code": "() => (\n  <Tooltip\n    text=\"Action unavailable: an error occurred while loading repository permissions\"\n    direction=\"n\"\n  >\n    <Button inactive>Review changes</Button>\n  </Tooltip>\n)"
+    },
+    {
+      "id": "components-button-features--expanded-button",
+      "code": "() => (\n  <Stack align=\"start\">\n    <Button aria-expanded trailingAction={TriangleDownIcon}>\n      Review changes\n    </Button>\n    <Button aria-expanded trailingAction={TriangleDownIcon} variant=\"primary\">\n      Review changes\n    </Button>\n    <Button aria-expanded trailingAction={TriangleDownIcon} variant=\"invisible\">\n      Review changes\n    </Button>\n    <Button aria-expanded trailingAction={TriangleDownIcon} variant=\"danger\">\n      Review changes\n    </Button>\n  </Stack>\n)"
+    }
+  ]
+}
