@@ -13,7 +13,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineeri
 - [ ] Strategy lab on Token Factory Sandboxes (forked runs)
 - [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
 - [x] Token migration between Figma variables, W3C DTCG JSON, CSS and Tailwind v4, verified by read-back
-- [ ] Component migration (sample: Button)
+- [x] Component migration sample: Primer Button, code → Figma, 12 variants bound to variables, verified 96/96
+- [x] Documentation: generated from the spec by Nemotron 3 Super, written into Figma, doc drift measured
 - [ ] Super builds screens inside the lab
 - [ ] Post-adoption tracking with Nebius Serverless Jobs
 - [ ] Dashboard

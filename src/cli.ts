@@ -7,7 +7,9 @@ import { existsSync } from "node:fs";
 import { relative } from "node:path";
 import { serveDir } from "./render/serve.js";
 
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { extractComponent } from "./migrate/component.js";
+import { writeDoc, docToMarkdown, docDrift } from "./agents/docs.js";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
 import { resolveConflicts } from "./agents/resolver.js";
@@ -42,6 +44,26 @@ if (cmd === "migrate" && designPath && codePath) {
     : `NOT verified: ${r.verification.items.length} differences after migration`);
   for (const i of r.verification.items.slice(0, 10)) console.log(`  ${i.kind} ${i.name} ${i.design ?? ""} → ${i.code ?? ""}`);
   process.exit(r.ok ? 0 : 2);
+}
+
+if (cmd === "docs" && designPath) {
+  // ds-lab docs <component.css> --base <class> --variants a,b --sizes s,m [--existing doc.md] [--out file]
+  const arg = (f: string) => { const i = [codePath, ...flags].indexOf(f); return i >= 0 ? [codePath, ...flags][i + 1] : undefined; };
+  const variants = arg("--variants")!.split(","), sizes = arg("--sizes")!.split(",");
+  const spec = extractComponent(arg("--name") ?? "Component", designPath, arg("--base")!, ["data-variant", "data-size"]);
+  const existing = arg("--existing");
+  if (existing) {
+    const d = docDrift(readFileSync(existing, "utf8"), variants, sizes);
+    console.log(`Existing doc coverage: ${Math.round(d.coverage * 100)}% · undocumented: ${d.undocumented.join(", ") || "none"} · stale: ${d.stale.join(", ") || "none"}`);
+  }
+  const doc = await writeDoc(spec, variants, sizes);
+  const md = docToMarkdown(spec.name, doc);
+  const out = arg("--out");
+  if (out) writeFileSync(out, md); else console.log(md);
+  const d = docDrift(md, variants, sizes);
+  console.log(`\nGenerated doc coverage: ${Math.round(d.coverage * 100)}%`);
+  for (const [m, u] of Object.entries(usage)) console.log(`  ${m.split("/")[1]}: ${u.calls} call · ${u.prompt} in / ${u.completion} out · ${(u.ms / 1000).toFixed(1)}s`);
+  process.exit(0);
 }
 
 if (cmd === "reconcile" && designPath && codePath) {
