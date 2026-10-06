@@ -20,6 +20,8 @@ export interface PrimerCertifyInput {
   exceptions: Record<string, string>; // token -> why it's accepted as different
   /** tokens shared by both sides at the last certification; one disappearing from a side is a broken link */
   baselineShared?: string[];
+  /** renames agreed since then: old name -> new name (a link is kept if the new name exists on both sides) */
+  renames?: Record<string, string>;
 }
 
 export function sharedTokens(i: PrimerCertifyInput): string[] {
@@ -47,7 +49,8 @@ export function certifyPrimer(i: PrimerCertifyInput): { checks: Check[]; warning
     issues: real.map((x) => `${x.name}: Figma ${x.design} · code ${x.code}`) });
   for (const x of conflicts.filter((x) => i.exceptions[x.name])) warnings.push(`accepted exception ${x.name}: ${i.exceptions[x.name]}`);
   if (i.baselineShared) {
-    const lost = i.baselineShared.filter((k) => !figma.has(k) || !code.has(k));
+    const here = (k: string) => figma.has(k) && code.has(k);
+    const lost = i.baselineShared.filter((k) => !here(k) && !(i.renames?.[k] && here(i.renames[k])));
     checks.push({ area: "Links kept since last certification", passed: i.baselineShared.length - lost.length, total: i.baselineShared.length,
       issues: lost.map((k) => `${k}: now missing in ${!figma.has(k) ? "Figma" : "code"}`) });
   }

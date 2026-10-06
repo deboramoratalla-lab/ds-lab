@@ -25,3 +25,13 @@ Break #1 passes every current check (same value) and only shows up when the code
 Result: all 5 detected.
 - **rename** passed every value check: the new name was just "out of scope". It's caught by a new check, *Links kept since last certification*, which compares against the tokens shared at the last 100%.
 - **conflict** found something real in Primer: the code's invisible button paints its text with `button-default-fgColor-rest`, not `button-invisible-fgColor-rest`. The engineer's change wouldn't even show up on screen.
+
+## Repair
+`npx tsx src/cli.ts repair all` breaks a copy, lets the agent repair it and certifies again.
+Add `--decide button-invisible-fg-color-rest=code` (or `=figma`) to record the person's call on the conflict.
+
+- Nano pairs the rename; code adopts the new name and keeps the old one as a deprecated alias.
+- Ultra reads the commits: silent and hotfix → code is right → Figma updated.
+- Conflict: both sides changed the token since the last certification, so it goes to a person, whatever Ultra thinks. (In a first run Ultra picked the designer on its own; that's the exact failure the lab exists to catch.)
+- Rules re-bind 6 Figma bindings to the token code uses, generate the 5 xsmall variants from the code's CSS, and add the missing story.
+- Result: 100% again, with 1 Nano call and 3 Ultra calls, ~5–15 s.

@@ -20,6 +20,7 @@ export interface Workspace {
   codeOverride(css: string): void;
   buttonCss(append: string): void;
   docs(edit: (components: any) => void): void;
+  story(append: string): void;
 }
 
 const D = "fixtures/package/dist";
@@ -46,7 +47,8 @@ export function makeWorkspace(dir: string): { w: Workspace; input: PrimerCertify
   cpSync(base.buttonSnapshot, join(dir, "button-snapshot.json"));
   cpSync(base.buttonCss, join(dir, "ButtonBase.css"));
   cpSync(base.docs, join(dir, "components.json"));
-  writeFileSync(join(dir, "commits.css"), ":root {\n");
+  writeFileSync(join(dir, "commits.css"), "");
+  for (const f of base.stories) cpSync(f, join(dir, f.split("/").pop()!));
   const json = (f: string, edit: (x: any) => void) => { const x = JSON.parse(readFileSync(f, "utf8")); edit(x); writeFileSync(f, JSON.stringify(x)); };
   const w: Workspace = {
     dir,
@@ -61,9 +63,10 @@ export function makeWorkspace(dir: string): { w: Workspace; input: PrimerCertify
       for (const [p, x] of out) writeFileSync(p, JSON.stringify(x));
     },
     snapshot: (edit) => json(join(dir, "button-snapshot.json"), edit),
-    codeOverride: (css) => appendFileSync(join(dir, "commits.css"), css + "\n"),
+    codeOverride: (css) => appendFileSync(join(dir, "commits.css"), `:root {\n${css}\n}\n`),
     buttonCss: (css) => appendFileSync(join(dir, "ButtonBase.css"), css),
     docs: (edit) => json(join(dir, "components.json"), edit),
+    story: (src) => appendFileSync(join(dir, "Button.features.stories.tsx"), src),
   };
   const input = primerInput({
     figmaTokens: join(dir, "figma"),
@@ -71,11 +74,12 @@ export function makeWorkspace(dir: string): { w: Workspace; input: PrimerCertify
     buttonSnapshot: join(dir, "button-snapshot.json"),
     buttonCss: join(dir, "ButtonBase.css"),
     docs: join(dir, "components.json"),
+    stories: base.stories.map((f) => join(dir, f.split("/").pop()!)),
   });
   return { w, input };
 }
 
-export function closeWorkspace(dir: string) { appendFileSync(join(dir, "commits.css"), "}\n"); }
+export function closeWorkspace(_dir: string) { /* each override is a complete :root block */ }
 
 const SEL = ".prc-Button-ButtonBase-9n-Xk";
 

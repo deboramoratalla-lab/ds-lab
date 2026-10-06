@@ -18,6 +18,7 @@ import { certify } from "./certify.js";
 import { benchmark } from "./research/benchmark.js";
 import { certifyPrimer, sharedTokens } from "./certify-primer.js";
 import { BREAKS, makeWorkspace, closeWorkspace, primerInput } from "./demo/breaks.js";
+import { repair } from "./demo/repair.js";
 import { readdirSync } from "node:fs";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
@@ -74,6 +75,43 @@ if (cmd === "benchmark") {
   console.log(`\n${r.verdict === "consistent" ? "✓" : r.verdict === "review" ? "?" : "✗"} ${r.verdict}: ${r.recommendation}`);
   console.log(`\n${r.searches} Tavily searches · ${Object.values(usage).reduce((a, u) => a + u.calls, 0)} Nemotron Super call(s)${r.dropped ? ` · ${r.dropped} uncited finding(s) dropped` : ""}`);
   process.exit(0);
+}
+
+if (cmd === "repair") {
+  // ds-lab repair [id,id|all]   break a copy, let the agent repair it, certify again
+  const ids = !designPath || designPath === "all" ? BREAKS.map((b) => b.id) : designPath.split(",");
+  const ws = makeWorkspace("out/broken");
+  const chosen = BREAKS.filter((b) => ids.includes(b.id));
+  for (const b of chosen) { console.log(`✂  ${b.id}: ${b.title}`); b.apply(ws.w); }
+  const baselineShared = sharedTokens(primerInput());
+  const before = certifyPrimer({ ...ws.input, baselineShared });
+  console.log(`\nBroken: ${before.checks.filter((c) => c.passed !== c.total).length} of ${before.checks.length} checks fail\n`);
+  const t0 = Date.now();
+  const r = await repair(ws.w, ws.input, primerInput(), baselineShared, Object.assign({}, ...chosen.map((b) => b.notes ?? {})));
+  for (const a of r.actions) console.log(`${{ nano: "Nano ", ultra: "Ultra", rule: "rule " }[a.who]} → ${a.side.padEnd(9)} ${a.what}`);
+  // --decide token=figma|code : the person's call on a pending conflict
+  const argv = process.argv.slice(2), di = argv.indexOf("--decide");
+  for (const d of di >= 0 ? argv[di + 1].split(",") : []) {
+    const [tok, side] = d.split("=");
+    const f = loadTokens(ws.input.figmaTokens), c = loadTokens(ws.input.codeTokens);
+    const fk = Object.keys(Object.assign({}, ...readdirSync(ws.input.figmaTokens).map((x) => JSON.parse(readFileSync(`${ws.input.figmaTokens}/${x}`, "utf8"))))).find((k) => normalizeName(k) === tok)!;
+    if (side === "figma") ws.w.codeOverride(`  --${fk.replace(/\//g, "-")}: ${f.get(tok)};`);
+    else ws.w.figma((v) => { v[fk] = c.get(tok); });
+    r.pending = r.pending.filter((p) => !p.startsWith(tok));
+    console.log(`person → ${side === "figma" ? "code     " : "Figma    "} ${tok}: keeps the ${side} value (${side === "figma" ? f.get(tok) : c.get(tok)})`);
+  }
+  const after = certifyPrimer({ ...ws.input, baselineShared, renames: r.renames });
+  console.log();
+  for (const c of after.checks) {
+    console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(50)} ${c.passed}/${c.total}`);
+    for (const x of c.issues.slice(0, 8)) console.log(`    ${x}`);
+  }
+  if (r.pending.length) { console.log(`\nWaiting for a person (${r.pending.length}):`); for (const p of r.pending) console.log(`  · ${p}`); }
+  const open = after.checks.reduce((a, c) => a + c.total - c.passed, 0);
+  console.log(after.ok ? "\nCertified again: 100%." : `\n${open} check(s) still open${r.pending.length ? `, ${r.pending.length} of them waiting for a person` : ""}.`);
+  const calls = Object.entries(usage).map(([m, u]) => `${u.calls}× ${m.split("/").pop()}`).join(", ");
+  console.log(`\n${((Date.now() - t0) / 1000).toFixed(0)}s · ${calls}`);
+  process.exit(after.ok ? 0 : 2);
 }
 
 if (cmd === "certify-primer" || cmd === "break") {
