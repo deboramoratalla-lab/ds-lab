@@ -67,10 +67,22 @@ export async function benchmark(p: Proposal): Promise<Benchmark> {
   // step 2: the verdict sees ONLY the findings that survived the citation check
   const own = p.scale ? { system: "Your system (code)", summary: `Existing ${p.axis} options`, values: Object.entries(p.scale).map(([k, x]) => `${k}: ${x}`), url: "local" } : undefined;
   if (own) findings.unshift(own);
+  // fit with the team's own scale, computed rather than left to the model
+  let fit = "";
+  const n = (x?: string) => parseFloat(x ?? "");
+  const mine = n(Object.values(p.ours)[0]), steps = Object.values(p.scale ?? {}).map(n).filter((x) => !isNaN(x)).sort((a, b) => a - b);
+  if (!isNaN(mine) && steps.length > 1) {
+    const gaps = steps.slice(1).map((x, i) => x - steps[i]);
+    const next = steps.find((x) => x > mine), prev = [...steps].reverse().find((x) => x < mine);
+    const gap = next !== undefined ? next - mine : mine - (prev ?? mine);
+    fit = steps.includes(mine) ? `Same value as an existing option (${mine}px): it duplicates it.`
+      : `Sits ${gap}px from the nearest step (${next ?? prev}px); existing steps are ${gaps.join(", ")}px apart, so it ${gap >= Math.min(...gaps) && gap <= Math.max(...gaps) ? "fits" : "does not fit"} the scale.`;
+  }
   const v = parseJson<{ verdict: Benchmark["verdict"]; recommendation: string }>(await chat({
     role: "super", think: false, json: true,
     system: "You advise a design-system team. Use only the verified findings given. Don't mention any system that isn't in them.",
-    user: `Proposal: ${p.component} ${p.axis}="${p.option}" ${JSON.stringify(p.ours)}\nVerified findings:\n${JSON.stringify({ findings, standard }, null, 1)}\n` +
+    user: `Proposal: ${p.component} ${p.axis}="${p.option}" ${JSON.stringify(p.ours)}\nVerified findings:\n${JSON.stringify({ findings, standard }, null, 1)}\nFit with the team's own scale (computed, trust it): ${fit || "unknown"}\n` +
+      `Mention the own-scale fit in the recommendation. ` +
       `Verdict: "consistent" (in line with the references and the standard), "review" (unusual vs the references, or doesn't fit the team's own scale), or "against-standard". ` +
       `Then one or two plain sentences for the team. Return JSON {"verdict","recommendation"}.`,
   }));
