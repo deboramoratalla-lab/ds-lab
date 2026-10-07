@@ -551,16 +551,25 @@ a:hover { text-decoration: underline; }
     agent: ["DS Lab agent", "Merges from the last sync. Nano for renames, Ultra for conflicts, a person when both sides changed."],
   };
   function renderLab() {
-    const ev = D.lab.script;
-    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${ev.map((e) => `<th title="${esc(e.title)}">${esc(e.id)}</th>`).join("")}<th>Kept</th></tr>`;
-    $("#lab-body").innerHTML = D.lab.runs.map((r) => {
-      const kept = r.steps.filter((s) => s.keptNow).length;
-      return `<tr><td style="font-weight:${r.strategy === "agent" ? 600 : 500}">${esc(STRAT[r.strategy]?.[0] || r.strategy)}</td>
-        ${r.steps.map((s) => `<td>${s.keptNow ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="mark-bad" aria-label="lost">✕</span>`}</td>`).join("")}
-        <td class="num" style="font-weight:600">${kept} of ${r.steps.length}</td></tr>`;
-    }).join("");
-    $("#lab-note").textContent = `Each strategy gets the same ${ev.length} changes from designers and engineers. Only the agent keeps all of them. This run uses the earlier token-level script.`;
-    $("#lab-legend").innerHTML = Object.values(STRAT).map(([n, d]) => `<dt>${n}</dt><dd>${d}</dd>`).join("");
+    const L = D.sandboxLab;
+    if (!L) { $("#lab-note").textContent = "Run lab/run_sandboxes.py to fill this in."; return; }
+    const COLS = [["silent", "Silent bug"], ["rename", "Rename"], ["hotfix", "Hotfix"], ["xsmall", "New size"], ["conflict", "Conflict"]];
+    const NAME = { manual: "Manual", "figma-first": "Figma first", "code-first": "Code first", agent: "DS Lab agent" };
+    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n]) => `<th>${n}</th>`).join("")}<th>Kept</th><th>Checks</th><th>Sandbox</th></tr>`;
+    $("#lab-body").innerHTML = L.runs.map((r) => `<tr>
+      <td style="font-weight:${r.strategy === "agent" ? 700 : 500}">${NAME[r.strategy]}${r.overwrote ? `<div class="s" style="color:var(--red);font-weight:400;font-size:12px">${esc(r.overwrote)}</div>` : ""}${r.pending?.length ? `<div class="s" style="color:var(--amber);font-weight:400;font-size:12px">asked a person</div>` : ""}</td>
+      ${COLS.map(([k]) => `<td>${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="mark-bad" aria-label="lost">✕</span>`}</td>`).join("")}
+      <td class="num" style="font-weight:700">${r.keptCount} of 5</td>
+      <td class="num">${!(r.total - r.passed) ? `<span class="status st-ok">all</span>` : r.pending?.length >= r.total - r.passed ? `<span class="status st-warn">${r.total - r.passed} waiting</span>` : `<span class="status st-bad">${r.total - r.passed} off</span>`}</td>
+      <td class="tertiary num" style="font-size:12px"><span class="mono">${esc(r.sandbox.slice(0, 8))}</span><br>${r.wall_s}s</td></tr>`).join("");
+    $("#lab-note").textContent = `The same five changes, forked into ${L.runs.length} Nebius Token Factory Sandboxes from one checkpoint and run in parallel. ${L.total_s} s end to end, ${L.files} files uploaded.`;
+    $("#lab-legend").innerHTML = [
+      ["Manual", "Each side edits on its own; nobody syncs until someone notices."],
+      ["Figma first", "Figma variables are exported and regenerate the code. Code-only changes are overwritten."],
+      ["Code first", "Code tokens are pushed into Figma. Figma-only changes are undone; components aren't touched."],
+      ["DS Lab agent", "Merges from the last certification. Nano pairs renames, Ultra judges one-sided changes, rules fix bindings and variants, a person decides when both sides changed."],
+      ["Checkpoint", `<span class="mono">${esc(L.checkpoint)}</span> · certified Primer Web plus the five changes`],
+    ].map(([n, d]) => `<dt>${n}</dt><dd>${d}</dd>`).join("");
   }
 
   function renderMetrics() {
