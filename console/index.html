@@ -1,6 +1,6 @@
 <title>DS Lab Console</title>
 <style>
-/* Layout: macOS-style app. Translucent sidebar, large title, one ring for health, grouped inset lists.
+/* Layout: macOS-style app on a living gradient. Frosted-glass sidebar and groups; a sync map of the four sources leads.
    Taste: docs/designpowers/taste/2026-10-07-ds-lab-console-taste.md. Neutral first; purple = action, cyan = progress. */
 :root {
   --ground: #f5f5f7;
@@ -17,6 +17,14 @@
   --progress-text: #127a75;
   --track: rgba(118, 118, 128, .16);
   --seg-on: #ffffff;
+  --glass: rgba(255, 255, 255, .55);
+  --glass-strong: rgba(255, 255, 255, .72);
+  --glass-edge: rgba(255, 255, 255, .85);
+  --glass-line: rgba(255, 255, 255, .5);
+  --glass-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 20px 50px -20px rgba(40, 20, 90, .25), 0 2px 8px rgba(11, 34, 57, .06);
+  --blob-a: #b9a2ff; --blob-b: #7ff3ee; --blob-c: #9fc2ff; --blob-d: #ffd1f0;
+  --node: rgba(255, 255, 255, .92);
+  --edge-ok: #13b8b2; --edge-glow: rgba(34, 199, 193, .55);
   --red: #d70015;
   --red-soft: rgba(215, 0, 21, .08);
   --amber: #b25000;
@@ -28,22 +36,31 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ground: #08182a; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
+    --ground: #050f1e; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
     --label: #f5f7fa; --label-2: rgba(235, 240, 245, .66); --label-3: rgba(235, 240, 245, .4); --side: rgba(12, 30, 50, .72);
-    --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: #3b5370;
+    --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.18); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
     --red: #ff6961; --red-soft: rgba(255, 105, 97, .14); --amber: #ffb340; --amber-soft: rgba(255, 179, 64, .16); --green: #30d158;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --ground: #08182a; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
+  --ground: #050f1e; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
   --label: #f5f7fa; --label-2: rgba(235, 240, 245, .66); --label-3: rgba(235, 240, 245, .4); --side: rgba(12, 30, 50, .72);
-  --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: #3b5370;
+  --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.18); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
   --red: #ff6961; --red-soft: rgba(255, 105, 97, .14); --amber: #ffb340; --amber-soft: rgba(255, 179, 64, .16); --green: #30d158;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+body::before, body::after { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointer-events: none; }
+body::before { background:
+  radial-gradient(38vmax 34vmax at 18% 22%, var(--blob-a), transparent 62%),
+  radial-gradient(34vmax 30vmax at 82% 18%, var(--blob-b), transparent 60%),
+  radial-gradient(40vmax 36vmax at 70% 85%, var(--blob-c), transparent 62%),
+  radial-gradient(30vmax 26vmax at 25% 90%, var(--blob-d), transparent 60%);
+  opacity: var(--blob-o, .9); filter: saturate(130%); animation: drift 28s ease-in-out infinite alternate; }
+body::after { background: radial-gradient(transparent 0, var(--ground) 120%); opacity: .35; }
+@keyframes drift { to { transform: translate3d(3vmax, -2vmax, 0) rotate(8deg) scale(1.06); } }
 body { background: var(--ground); color: var(--label); font: 13px/1.45 var(--font); -webkit-font-smoothing: antialiased; letter-spacing: -.003em; }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
 :focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; border-radius: 8px; }
@@ -55,7 +72,7 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .app { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100%; }
 
 /* sidebar: material */
-.side { position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; padding: 18px 10px; display: flex; flex-direction: column; gap: 18px;
+.side { background: var(--glass) !important; position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; padding: 18px 10px; display: flex; flex-direction: column; gap: 18px;
   background: var(--side); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-right: 1px solid var(--hair); }
 .brand { display: flex; align-items: center; gap: 9px; padding: 0 10px; font-weight: 600; font-size: 14px; }
 .mark { width: 22px; height: 22px; border-radius: 6px; background: var(--label); position: relative; }
@@ -64,7 +81,7 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .nav-label { font-size: 11px; font-weight: 600; color: var(--label-3); padding: 12px 10px 4px; }
 .nav button { display: flex; align-items: center; gap: 9px; padding: 6px 10px; border-radius: 7px; text-align: left; }
 .nav button:hover { background: var(--fill); }
-.nav button[aria-current="page"] { background: var(--accent); color: #fff; }
+.nav button[aria-current="page"] { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, var(--progress))); color: #fff; box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--accent) 70%, transparent); }
 .nav svg { width: 15px; height: 15px; flex: none; opacity: .85; }
 .badge { margin-left: auto; min-width: 18px; height: 18px; border-radius: 9px; background: var(--amber); color: #fff; font-size: 11px; font-weight: 600; display: grid; place-items: center; padding: 0 5px; }
 .nav button[aria-current="page"] .badge { background: rgba(255, 255, 255, .28); }
@@ -80,22 +97,30 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .search input::placeholder { color: var(--label-3); }
 .toolbar .meta { margin-left: auto; color: var(--label-3); }
 
-.hero { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; }
-.ring { width: 132px; height: 132px; position: relative; }
-.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.ring circle { fill: none; stroke-width: 12; stroke-linecap: round; }
-.ring .t { stroke: var(--track); }
-.ring .v { stroke: var(--progress); transition: stroke-dashoffset .6s cubic-bezier(.2, .8, .2, 1), stroke .3s; }
-.ring.bad .v { stroke: var(--red); }
-.ring.warn .v { stroke: var(--amber); }
-.ring-in { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-.ring-in b { font: 600 26px/1 var(--display); letter-spacing: -.02em; }
-.ring-in small { color: var(--label-3); font-size: 11px; margin-top: 3px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 8px; align-items: center; padding: 28px 28px 24px 32px; }
+.bignum { font: 700 64px/1 var(--display); letter-spacing: -.04em; margin: 14px 0 2px;
+  background: linear-gradient(120deg, var(--label) 30%, var(--accent) 75%, var(--progress)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bignum.bad { background: linear-gradient(120deg, var(--label) 20%, var(--red)); -webkit-background-clip: text; background-clip: text; }
+.bignum.warn { background: linear-gradient(120deg, var(--label) 20%, var(--amber)); -webkit-background-clip: text; background-clip: text; }
+.bigcap { color: var(--label-2); font-size: 13px; }
+.map { width: 100%; height: auto; overflow: visible; }
+.map .edge { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke .4s; }
+.map .edge.ok { stroke: var(--edge-ok); filter: drop-shadow(0 0 6px var(--edge-glow)); }
+.map .edge.bad { stroke: var(--red); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--red) 60%, transparent)); }
+.map .edge.warn { stroke: var(--amber); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--amber) 60%, transparent)); }
+.map .flow { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 18; stroke: #fff; opacity: .9; animation: flow 1.6s linear infinite; }
+.map .flow.bad { animation-duration: 3.2s; opacity: .55; }
+@keyframes flow { to { stroke-dashoffset: -40; } }
+.map .node rect { fill: var(--node); stroke: var(--glass-edge); filter: drop-shadow(0 8px 18px rgba(0,0,0,.18)); }
+.map .node text { fill: var(--label); font: 600 13px var(--font); }
+.map .node .sub { fill: var(--label-3); font: 400 11px var(--font); }
+.map .node .dotc { transition: fill .4s; }
+.map .lbl { fill: var(--label-2); font: 500 10.5px var(--font); }
 .eyebrow { color: var(--label-3); font-size: 12px; font-weight: 500; }
 h1 { font: 700 34px/1.1 var(--display); letter-spacing: -.025em; margin: 4px 0 6px; text-wrap: balance; }
 .lede { color: var(--label-2); font-size: 15px; margin: 0; max-width: 56ch; }
 
-.segmented { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--fill); border-radius: 9px; padding: 2px; margin-top: 16px; max-width: 100%; }
+.segmented { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--fill); border-radius: 9px; padding: 2px; margin-top: 16px; max-width: 100%; }
 .segmented button { padding: 5px 14px; border-radius: 7px; font-weight: 500; color: var(--label-2); white-space: nowrap; transition: background .2s, color .2s; }
 .segmented button[aria-pressed="true"] { background: var(--seg-on); color: var(--label); box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
 
@@ -103,9 +128,13 @@ section > h2, .sec-h { font: 600 20px/1.2 var(--display); letter-spacing: -.015e
 .sec-h small { margin-left: auto; font: 400 13px var(--font); color: var(--label-3); letter-spacing: 0; }
 .footnote { color: var(--label-3); font-size: 12px; margin: 8px 4px 0; }
 
-.group { background: var(--group); border-radius: 14px; overflow: hidden; }
+.group, .glass { background: var(--glass); border-radius: 20px; overflow: hidden; position: relative;
+  backdrop-filter: blur(28px) saturate(170%); -webkit-backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow); }
 .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 12px 16px; position: relative; }
 .row + .row::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 1px; background: var(--hair); }
+.row { transition: background .2s; }
+.row:hover { background: var(--glass-line); }
 .row.lead { grid-template-columns: 28px minmax(0, 1fr) auto; }
 .row.lead + .row.lead::before { left: 60px; }
 .row .t { font-weight: 500; min-width: 0; }
@@ -141,11 +170,12 @@ section > h2, .sec-h { font: 600 20px/1.2 var(--display); letter-spacing: -.015e
 .figure { padding: 16px; position: relative; }
 .figure + .figure::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 1px; background: var(--hair); }
 .figure .k { color: var(--label-2); font-size: 12px; }
-.figure .n { font: 600 28px/1.15 var(--display); letter-spacing: -.02em; margin: 4px 0 2px; }
+.figure .n { font: 700 34px/1.1 var(--display); letter-spacing: -.02em; margin: 4px 0 2px; }
 .figure .d { color: var(--label-3); font-size: 12px; }
 
-.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hair); }
-.opt { background: var(--group); text-align: left; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; transition: background .15s; }
+.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--hair); border-top: 1px solid var(--hair); }
+.choice { background: none; } .opt + .opt { border-left: 1px solid var(--hair); }
+.opt { background: transparent; text-align: left; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; transition: background .15s; }
 .opt:hover { background: color-mix(in srgb, var(--accent) 5%, var(--group)); }
 .opt[aria-pressed="true"] { background: var(--accent-soft); }
 .opt .who { font-size: 12px; color: var(--label-2); display: flex; justify-content: space-between; }
@@ -172,7 +202,7 @@ dl.kv dd { color: var(--label-2); }
 dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-.page[hidden] { display: none !important; }
+[hidden] { display: none !important; }
 
 @media (max-width: 980px) { .cols { grid-template-columns: minmax(0, 1fr); } .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .figure:nth-child(3)::before { display: none; } }
 @media (max-width: 760px) {
@@ -181,7 +211,7 @@ a:hover { text-decoration: underline; }
   .nav { flex-direction: row; flex-wrap: wrap; }
   .nav-label, .side-foot { display: none; }
   .main { padding-inline: 16px; }
-  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero { grid-template-columns: minmax(0, 1fr); padding: 20px; } .bignum { font-size: 48px; }
   .segmented { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr 1fr; }
   .choice { grid-template-columns: minmax(0, 1fr); }
   .figures { grid-template-columns: minmax(0, 1fr); }
@@ -238,13 +268,12 @@ a:hover { text-decoration: underline; }
     <!-- OVERVIEW -->
     <div class="page" id="p-overview">
       <div class="wrap" style="gap:32px">
-        <div class="hero">
-          <div class="ring" id="ring"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="t" cx="66" cy="66" r="58"/><circle class="v" id="ring-v" cx="66" cy="66" r="58"/></svg>
-            <div class="ring-in"><b class="num" id="ring-pct">100%</b><small>in sync</small></div></div>
+        <div class="hero glass">
           <div>
             <div class="eyebrow" id="hero-eyebrow">Primer Web</div>
             <h1 id="hero-title">Everything agrees.</h1>
             <p class="lede" id="hero-sub"></p>
+            <div class="bignum num" id="bignum">1,517</div><div class="bigcap" id="bigcap">checks agree</div>
             <div class="segmented" role="group" aria-label="Replay this run">
               <button data-state="certified" aria-pressed="true">Certified</button>
               <button data-state="broken" aria-pressed="false">Changes land</button>
@@ -252,6 +281,7 @@ a:hover { text-decoration: underline; }
               <button data-state="decided" aria-pressed="false">You decide</button>
             </div>
           </div>
+          <svg class="map" id="map" viewBox="40 40 440 280" role="img" aria-label="Sync between Figma, code, Storybook and docs"></svg>
         </div>
 
         <div class="group figures" id="figures"></div>
@@ -1066,10 +1096,11 @@ a:hover { text-decoration: underline; }
 
   function renderHero() {
     const r = report();
-    const C = 2 * Math.PI * 58, v = $("#ring-v");
-    v.style.strokeDasharray = C; v.style.strokeDashoffset = C * (1 - r.passed / r.total);
-    $("#ring-pct").textContent = pct(r);
-    $("#ring").className = "ring " + (state === "broken" ? "bad" : state === "repaired" && !decided ? "warn" : "");
+    const bad = r.total - r.passed;
+    $("#bignum").textContent = bad ? bad.toLocaleString() : r.passed.toLocaleString();
+    $("#bignum").className = "bignum num " + (state === "broken" ? "bad" : state === "repaired" && !decided ? "warn" : "");
+    $("#bigcap").textContent = bad ? `of ${r.total.toLocaleString()} checks disagree` : "checks agree, out of " + r.total.toLocaleString();
+    renderMap(r);
     const copy = {
       certified: ["Everything agrees.", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: ["Five changes landed.", `Designers and engineers each changed something on their side. ${r.total - r.passed} checks now disagree.`],
@@ -1079,6 +1110,32 @@ a:hover { text-decoration: underline; }
     $("#hero-eyebrow").textContent = `Primer Web · step ${STATES.indexOf(state) + 1} of 4`;
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
     document.querySelectorAll(".segmented button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
+  }
+
+  function renderMap(r) {
+    const fail = (a) => { const c = r.checks.find((x) => x.area.startsWith(a)); return c && c.passed !== c.total ? c : null; };
+    const opt = fail("Button options"), issues = opt ? opt.issues.join(" ") : "";
+    const fc = fail("Shared tokens") || fail("Links kept") || fail("Button properties");
+    const pending = state === "repaired" && !decided;
+    const st = (b) => (b ? "bad" : "ok");
+    const E = {
+      fc: pending ? "warn" : st(fc), cs: st(/Storybook/.test(issues)), cd: st(/docs/.test(issues)), fd: st(fail("Button docs") || /Figma/.test(issues) && false),
+    };
+    const N = { figma: [70, 70, "Figma", "844 variables"], code: [330, 70, "Code", "@primer 11.10"], story: [330, 230, "Storybook", "Button stories"], docs: [70, 230, "Docs", "primer.style"] };
+    // anchors on the node edges: Figma (70,70) Code (330,70) Docs (70,230) Storybook (330,230), nodes 120×52
+    const edges = [
+      ["fc", "M190,96 C240,70 280,70 330,96", 260, 66, "tokens · bindings"],
+      ["cs", "M390,122 C410,160 410,190 390,230", 432, 180, "stories"],
+      ["cd", "M190,256 C240,282 280,282 330,256", 260, 298, "options"],
+      ["fd", "M130,122 C110,160 110,190 130,230", 88, 180, "status"],
+    ];
+    const color = (k) => k === "bad" ? "var(--red)" : k === "warn" ? "var(--amber)" : "var(--edge-ok)";
+    const nodeState = { figma: E.fc !== "ok" || E.fd !== "ok" ? (E.fc === "warn" ? "warn" : "bad") : "ok", code: E.fc !== "ok" ? (E.fc === "warn" ? "warn" : "bad") : "ok", story: E.cs, docs: E.cd !== "ok" || E.fd !== "ok" ? "bad" : "ok" };
+    $("#map").innerHTML = edges.map(([k, d, lx, ly, l]) => `<path class="edge ${E[k]}" d="${d}"/><path class="flow ${E[k] === "ok" ? "" : "bad"}" d="${d}"/>
+        <text class="lbl" x="${lx}" y="${ly}" text-anchor="middle">${l}</text>`).join("") + Object.entries(N).map(([k, [x, y, name, sub]]) => `<g class="node">
+        <rect x="${x}" y="${y}" width="120" height="52" rx="16"/>
+        <circle class="dotc" cx="${x + 18}" cy="${y + 26}" r="5" fill="${color(nodeState[k])}"/>
+        <text x="${x + 32}" y="${y + 23}">${name}</text><text class="sub" x="${x + 32}" y="${y + 39}">${sub}</text></g>`).join("");
   }
 
   function renderFigures() {
