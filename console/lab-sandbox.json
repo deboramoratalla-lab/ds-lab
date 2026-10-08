@@ -1,8 +1,8 @@
 {
- "ranAt": "2026-10-07T14:37:32+0200",
+ "ranAt": "2026-10-08T12:18:00+0200",
  "where": "Nebius Token Factory Sandboxes",
  "image": "node:22-slim",
- "checkpoint": "2f305d55-1626-45c0-8757-050f9bef95dc",
+ "checkpoint": "d72c8699-73fd-496c-a1ff-5f007023356f",
  "broken": [
   [
    "Shared tokens (Figma \u2194 code, light)",
@@ -31,11 +31,11 @@
   ]
  ],
  "files": 23,
- "total_s": 12.8,
+ "total_s": 11.6,
  "runs": [
   {
    "strategy": "manual",
-   "ms": 36,
+   "ms": 43,
    "kept": {
     "silent": false,
     "rename": false,
@@ -95,13 +95,14 @@
    "pending": [],
    "overwrote": "",
    "actions": [],
+   "queue": [],
    "calls": {},
-   "sandbox": "2f305d55-1626-45c0-8757-050f9bef95dc",
-   "wall_s": 1.3
+   "sandbox": "d72c8699-73fd-496c-a1ff-5f007023356f",
+   "wall_s": 1.7
   },
   {
    "strategy": "figma-first",
-   "ms": 131,
+   "ms": 149,
    "kept": {
     "silent": false,
     "rename": true,
@@ -156,13 +157,14 @@
     "8 code tokens overwritten or added from Figma",
     "Button CSS regenerated from Figma (xsmall dropped)"
    ],
+   "queue": [],
    "calls": {},
-   "sandbox": "51fcdcd1-cfff-405d-8e02-60fff5455eab",
-   "wall_s": 1.6
+   "sandbox": "71208e2f-8a45-4490-b794-af6b18a3484e",
+   "wall_s": 1.4
   },
   {
    "strategy": "code-first",
-   "ms": 49,
+   "ms": 48,
    "kept": {
     "silent": false,
     "rename": false,
@@ -219,13 +221,14 @@
     "Figma variables overwritten from code",
     "renamed Figma variable re-created under its old name"
    ],
+   "queue": [],
    "calls": {},
-   "sandbox": "aff5ee34-38a6-4ae0-a268-7a8546367a21",
-   "wall_s": 1.3
+   "sandbox": "f213c55b-7ac9-4fb8-9cdc-5a4438e82544",
+   "wall_s": 1.7
   },
   {
    "strategy": "agent",
-   "ms": 3617,
+   "ms": 5185,
    "kept": {
     "silent": true,
     "rename": true,
@@ -237,29 +240,39 @@
    "checks": [
     {
      "area": "Shared tokens (Figma \u2194 code, light)",
-     "passed": 676,
-     "total": 677,
+     "passed": 675,
+     "total": 676,
      "issues": [
       "button-invisible-fg-color-rest: Figma #0969da \u00b7 code #59636e"
      ]
     },
     {
      "area": "Links kept since last certification",
-     "passed": 677,
+     "passed": 676,
      "total": 677,
-     "issues": []
+     "issues": [
+      "control-medium-gap: now missing in Figma"
+     ]
     },
     {
      "area": "Button properties (Figma \u2194 code, by value)",
-     "passed": 152,
-     "total": 152,
-     "issues": []
+     "passed": 114,
+     "total": 119,
+     "issues": [
+      "variant=default, size=xsmall: missing in Figma",
+      "variant=primary, size=xsmall: missing in Figma",
+      "variant=danger, size=xsmall: missing in Figma",
+      "variant=invisible, size=xsmall: missing in Figma",
+      "variant=link, size=xsmall: missing in Figma"
+     ]
     },
     {
      "area": "Button options (docs \u00b7 code \u00b7 Figma \u00b7 Storybook)",
-     "passed": 9,
+     "passed": 8,
      "total": 9,
-     "issues": []
+     "issues": [
+      "size=xsmall: missing in Figma, Storybook"
+     ]
     },
     {
      "area": "Button docs in Figma (React status \u2194 docs)",
@@ -268,55 +281,66 @@
      "issues": []
     }
    ],
-   "passed": 1516,
-   "total": 1517,
+   "passed": 1475,
+   "total": 1483,
    "pending": [
-    "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. Ultra leans code: The engineer's fix addresses a concrete usability conflict: invisible buttons using link blue (#0969da) clashed with actual links in table contexts. The designer's brand refresh was a broad intent that didn't account for this component's usage in dense UI where both patterns coexist."
+    "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. Ultra leans Figma: The Figma change is a deliberate brand refresh establishing that invisible buttons should use link blue for action affordance. The code change was a reactive fix for a table-specific clash that over-corrected by removing the action signal globally."
    ],
    "overwrote": "",
    "actions": [
     {
-     "who": "nano",
-     "side": "code",
-     "what": "rename control-medium-gap \u2192 control-medium-gap-inline adopted in code, old name kept as deprecated alias (confidence 0.9)"
-    },
-    {
+     "id": "value-2",
      "who": "ultra",
      "side": "Figma",
-     "what": "button-danger-bg-color-rest: code is right \u2192 Figma #f6f8fa \u2192 #ffebe9. The commit message explicitly states danger buttons get a tinted background per design ticket DS-412; #ffebe9 is a red tint signaling destructive action, while #f6f8fa is a neutral gray that doesn't convey danger."
+     "confidence": 0.92,
+     "notify": "designers",
+     "what": "button-danger-bg-color-rest: code is right \u2192 Figma #f6f8fa \u2192 #ffebe9. The commit explicitly implements design ticket DS-412 to give danger buttons a tinted (reddish) background; #ffebe9 is that tint while #f6f8fa is a neutral gray, so Figma is stale."
     },
     {
+     "id": "decide-3",
      "who": "ultra",
      "side": "person",
-     "what": "button-invisible-fg-color-rest: both sides changed it \u2192 a person decides (Ultra leans code)"
+     "what": "button-invisible-fg-color-rest: both sides changed it \u2192 a person decides (Ultra leans Figma)"
     },
     {
+     "id": "value-4",
      "who": "ultra",
      "side": "Figma",
-     "what": "button-primary-bg-color-hover: code is right \u2192 Figma #1c8139 \u2192 #1a7f37. The commit message explicitly documents an accessibility fix darkening the hover color to #1a7f37 to pass 4.5:1 contrast with white text; Figma still holds the pre-fix value."
+     "confidence": 0.98,
+     "notify": "designers",
+     "what": "button-primary-bg-color-hover: code is right \u2192 Figma #1c8139 \u2192 #1a7f37. The commit history explicitly states the code value #1a7f37 was chosen to fix a 4.5:1 contrast failure with white text in a high-contrast audit \u2014 the Figma value is the pre-fix color that failed accessibility."
     },
     {
+     "id": "bind-5",
      "who": "rule",
      "side": "Figma",
+     "notify": "designers",
      "what": "6 Button bindings pointed at a token with a different value than code's \u2192 re-bound to the token the code uses"
+    }
+   ],
+   "queue": [
+    {
+     "id": "review-1",
+     "kind": "review",
+     "title": "Was control-medium-gap renamed to control-medium-gap-inline?"
     },
     {
-     "who": "rule",
-     "side": "Figma",
-     "what": "5 missing Button variants generated from the code's CSS, bound to Figma variables"
+     "id": "decide-3",
+     "kind": "decide",
+     "title": "button-invisible-fg-color-rest: both sides changed it"
     },
     {
-     "who": "rule",
-     "side": "Storybook",
-     "what": "added a story for size=\"xsmall\""
+     "id": "proposal-6",
+     "kind": "proposal",
+     "title": "New size=\"xsmall\" in code and docs"
     }
    ],
    "calls": {
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 1,
     "nvidia/Nemotron-3-Ultra-550b-a55b": 3
    },
-   "sandbox": "976ea89a-32e9-40e2-b372-1b876b8534a4",
-   "wall_s": 5.3
+   "sandbox": "df2dfa92-d013-4317-b8c7-1ec156b412c0",
+   "wall_s": 6.7
   }
  ]
 }

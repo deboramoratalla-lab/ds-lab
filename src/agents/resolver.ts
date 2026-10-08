@@ -50,9 +50,15 @@ export async function resolveConflicts(items: DriftItem[], ev: Evidence = {}): P
         ev.usage?.get(c.name) && `Usage: ${ev.usage.get(c.name)}`,
         ev.notes?.[c.name] && `History: ${ev.notes[c.name]}`,
       ].filter(Boolean).join("\n");
-      const out = await chat({ role: "ultra", system: SYSTEM, user: facts, json: true, think: true });
-      const r = parseJson<Omit<Resolution, "name" | "design" | "code">>(out);
-      return { name: c.name, design: c.design!, code: c.code!, ...r };
+      try {
+        const out = await chat({ role: "ultra", system: SYSTEM, user: facts, json: true, think: true });
+        const r = parseJson<Omit<Resolution, "name" | "design" | "code">>(out);
+        return { name: c.name, design: c.design!, code: c.code!, ...r };
+      } catch (e) {
+        // never guess when the model fails: hand it to a person
+        return { name: c.name, design: c.design!, code: c.code!, verdict: "ask-a-human" as Verdict, confidence: 0,
+          why: `Model unavailable (${String(e).slice(0, 80)}). A person needs to check this one.`, action: "review by hand" };
+      }
     }),
   );
 }

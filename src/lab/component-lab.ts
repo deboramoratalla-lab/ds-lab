@@ -63,7 +63,7 @@ export async function runStrategy(id: StrategyId, dir: string) {
   const baselineShared = sharedTokens(base);
   const notes = Object.assign({}, ...BREAKS.map((b) => b.notes ?? {}));
   const t0 = Date.now();
-  let pending: string[] = [], renames: Record<string, string> = {}, actions: unknown[] = [];
+  let pending: string[] = [], renames: Record<string, string> = {}, actions: unknown[] = [], items: any[] = [];
   const figma = loadTokens(input.figmaTokens), code = loadTokens(input.codeTokens);
   const drift = compareTokens(figma, code);
   const fk = (t: string) => figmaKeys(input).find((k) => normalizeName(k) === t);
@@ -90,7 +90,7 @@ export async function runStrategy(id: StrategyId, dir: string) {
     actions = ["Figma variables overwritten from code", "renamed Figma variable re-created under its old name"];
   } else if (id === "agent") {
     const r = await repair(w, input, base, baselineShared, notes);
-    pending = r.pending; renames = r.renames; actions = r.actions;
+    pending = r.pending; renames = r.renames; actions = r.actions; items = r.items;
   }
 
   const report = certifyPrimer({ ...input, baselineShared, renames });
@@ -102,9 +102,11 @@ export async function runStrategy(id: StrategyId, dir: string) {
   const inv = "button-invisible-fg-color-rest";
   const kept = {
     silent: both("button-danger-bg-color-rest", "#ffebe9") && dangerBound,
-    rename: f2.has("control-medium-gap-inline") && c2.has("control-medium-gap-inline"),
+    // kept = applied, or held in the queue for a person without losing either side's work
+    rename: (f2.has("control-medium-gap-inline") && c2.has("control-medium-gap-inline")) || items.some((i) => i.change?.type === "rename"),
     hotfix: both("button-primary-bg-color-hover", "#1a7f37"),
-    xsmall: !!snap.bindings["variant=default, size=xsmall"] && /size="xsmall"/.test(stories) && /data-size=xsmall/.test(readFileSync(input.buttonCss, "utf8")),
+    xsmall: (!!snap.bindings["variant=default, size=xsmall"] && /size="xsmall"/.test(stories) && /data-size=xsmall/.test(readFileSync(input.buttonCss, "utf8")))
+      || (items.some((i) => i.kind === "proposal" && i.change?.option === "xsmall") && /data-size=xsmall/.test(readFileSync(input.buttonCss, "utf8"))),
     // a conflict is handled well only if nobody's change was overwritten without a person deciding
     conflict: pending.some((p) => p.startsWith(inv)),
   };
@@ -114,7 +116,7 @@ export async function runStrategy(id: StrategyId, dir: string) {
   return {
     strategy: id, ms: Date.now() - t0, kept, keptCount: Object.values(kept).filter(Boolean).length,
     checks: report.checks.map((c) => ({ area: c.area, passed: c.passed, total: c.total, issues: c.issues.slice(0, 5) })),
-    passed: sum.p, total: sum.t, pending, overwrote, actions,
+    passed: sum.p, total: sum.t, pending, overwrote, actions, queue: items.map((i) => ({ id: i.id, kind: i.kind, title: i.title })),
     calls: Object.fromEntries(Object.entries(usage).map(([m, u]) => [m, u.calls])),
   };
 }

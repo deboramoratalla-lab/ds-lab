@@ -200,6 +200,22 @@ dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 [hidden] { display: none !important; }
+.queue { display: flex; flex-direction: column; gap: 12px; }
+.q { padding: 0; }
+.q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
+.q-head .t { font-weight: 600; font-size: 14px; }
+.q-head .s { color: var(--label-2); font-size: 12.5px; margin-top: 3px; }
+.q-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.q-actions { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--hair); flex-wrap: wrap; align-items: center; }
+.btn { border-radius: 8px; padding: 6px 14px; font-weight: 500; background: var(--fill); color: var(--label); }
+.btn:hover { background: color-mix(in srgb, var(--label) 12%, transparent); }
+.btn.primary { background: var(--accent); color: #fff; }
+.btn.primary:hover { background: color-mix(in srgb, var(--accent) 85%, #000); }
+.btn.ghost { background: none; color: var(--accent); padding-inline: 6px; }
+.q-done { color: var(--label-2); font-size: 12.5px; }
+.q-done b { color: var(--green); font-weight: 600; }
+.impact { padding: 0 16px 12px; display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; color: var(--label-2); }
+.impact b { color: var(--label); font-weight: 500; }
 
 @media (max-width: 980px) { .cols { grid-template-columns: minmax(0, 1fr); } .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .figure:nth-child(3)::before { display: none; } }
 @media (max-width: 760px) {
@@ -265,6 +281,10 @@ a:hover { text-decoration: underline; }
     <!-- OVERVIEW -->
     <div class="page" id="p-overview">
       <div class="wrap" style="gap:32px">
+        <section id="queue-sec">
+          <div class="sec-h">For you<small id="queue-note"></small></div>
+          <div class="queue" id="queue"></div>
+        </section>
         <div class="hero glass">
           <div>
             <div class="eyebrow" id="hero-eyebrow">Primer Web</div>
@@ -289,8 +309,9 @@ a:hover { text-decoration: underline; }
             <div class="group" id="checks"></div>
           </section>
           <section>
-            <div class="sec-h">Waiting for you<small id="decide-note"></small></div>
-            <div class="group" id="decide"></div>
+            <div class="sec-h">Applied by the agent<small id="applied-note"></small></div>
+            <div class="group" id="applied"></div>
+            <p class="footnote">Only calls at 85% confidence or more are applied. Each one can be undone.</p>
           </section>
         </div>
 
@@ -319,8 +340,8 @@ a:hover { text-decoration: underline; }
     <!-- DECISIONS -->
     <div class="page" id="p-decisions" hidden>
       <div class="wrap" style="gap:32px">
-        <div><div class="eyebrow">Decisions</div><h1>Your call</h1><p class="lede">When only one side changed, the agent reads the commit or the Figma note and fixes the other side. When both changed, each person had a reason, so someone who owns the system decides.</p></div>
-        <section style="max-width:680px"><div class="group" id="decide-full"></div></section>
+        <div><div class="eyebrow">Decisions</div><h1>Your queue</h1><p class="lede">Three things come here: conflicts where both sides changed, model calls the agent wasn't sure enough to apply, and new options it researched but won't create without you.</p></div>
+        <section style="max-width:760px"><div class="queue" id="queue-full"></div></section>
       </div>
     </div>
 
@@ -380,18 +401,21 @@ a:hover { text-decoration: underline; }
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const ic = (id) => `<svg><use href="#i-${id}"/></svg>`;
-  const tok = D.repair.pendingTokens[0];
-  const pendingText = D.repair.pending[0] || "";
-  const m = pendingText.match(/Figma (#[0-9a-f]+) vs code (#[0-9a-f]+)/i);
-  const conflict = { figma: m?.[1], code: m?.[2] };
-  const leanSide = (pendingText.match(/Ultra leans (\w+)/) || [])[1];
-  const leanWhy = pendingText.split(/Ultra leans \w+: |no recommendation: /)[1] || "";
+  const ITEMS = D.repair.items || [];
+  const DEC = ITEMS.find((i) => i.kind === "decide");
+  const tok = DEC?.token;
   const notes = Object.assign({}, ...D.breaks.map((b) => b.notes));
+  const answers = {};          // item id → approve | reject | figma | code
+  const undone = new Set();    // applied action ids the user undid (reverted on next sync)
+  const answered = (i) => !!answers[i.id];
+  const openItems = () => ITEMS.filter((i) => !answered(i));
   const STATES = ["certified", "broken", "repaired", "decided"];
-  let state = "certified", decided = null;
-
+  let state = "certified";
+  const decidedSide = () => DEC ? answers[DEC.id] : null;
+  const allApproved = () => ITEMS.every((i) => i.kind === "decide" ? answered(i) : answers[i.id] === "approve");
   const report = () => state === "certified" ? D.certified : state === "broken" ? D.broken
-    : state === "repaired" ? D.repaired : (D.decisions[tok]?.[decided || "code"] || D.repaired);
+    : allApproved() ? (D.decisions[tok]?.[decidedSide() || "code"] || D.repaired) : D.repaired;
+  const syncState = () => { if (state === "repaired" || state === "decided") state = openItems().length ? "repaired" : "decided"; };
   const pct = (r) => { const p = Math.floor((r.passed / r.total) * 1000) / 10; return (p % 1 ? p.toFixed(1) : p) + "%"; };
   const afterRepair = () => state === "repaired" || state === "decided";
   const callsOf = (k) => Object.entries(D.repair.calls).filter(([n]) => n.toLowerCase().includes(k)).reduce((a, [, u]) => a + u.calls, 0);
@@ -402,14 +426,14 @@ a:hover { text-decoration: underline; }
     const r = report();
     const bad = r.total - r.passed;
     $("#bignum").textContent = bad ? bad.toLocaleString() : r.passed.toLocaleString();
-    $("#bignum").className = "bignum num " + (state === "broken" ? "bad" : state === "repaired" && !decided ? "warn" : "");
+    $("#bignum").className = "bignum num " + (state === "broken" ? "bad" : state === "repaired" ? "warn" : "");
     $("#bigcap").textContent = bad ? `of ${r.total.toLocaleString()} checks disagree` : "checks agree, out of " + r.total.toLocaleString();
     renderMap(r);
     const copy = {
       certified: ["Everything agrees.", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: ["Five changes landed.", `Designers and engineers each changed something on their side. ${r.total - r.passed} checks now disagree.`],
-      repaired: ["One decision left.", "The agent fixed what one side had changed. A conflict both sides touched is waiting for you."],
-      decided: ["Certified again.", `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decided === "figma" ? "Figma" : "code"} value.`],
+      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is in your queue above."],
+      decided: [r.passed === r.total ? "Certified again." : "Answered.", r.passed === r.total ? `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decidedSide() === "figma" ? "Figma" : "code"} value.${undone.size ? ` ${undone.size} undone change${undone.size > 1 ? "s" : ""} will reopen on the next sync.` : ""}` : `${r.total - r.passed} checks stay open because of what you rejected or undid. They'll be checked again on the next sync.`],
     }[state];
     $("#hero-eyebrow").textContent = `Primer Web · step ${STATES.indexOf(state) + 1} of 4`;
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
@@ -420,7 +444,7 @@ a:hover { text-decoration: underline; }
     const fail = (a) => { const c = r.checks.find((x) => x.area.startsWith(a)); return c && c.passed !== c.total ? c : null; };
     const opt = fail("Button options"), issues = opt ? opt.issues.join(" ") : "";
     const fc = fail("Shared tokens") || fail("Links kept") || fail("Button properties");
-    const pending = state === "repaired" && !decided;
+    const pending = state === "repaired";
     const st = (b) => (b ? "bad" : "ok");
     const E = {
       fc: pending ? "warn" : st(fc), cs: st(/Storybook/.test(issues)), cd: st(/docs/.test(issues)), fd: st(fail("Button docs") || /Figma/.test(issues) && false),
@@ -446,8 +470,8 @@ a:hover { text-decoration: underline; }
     const acts = D.repair.actions, done = afterRepair();
     const f = [
       ["Changes", state === "certified" ? "0" : "5", "1 Figma · 3 code · 1 both"],
-      ["Fixed by the agent", done ? String(acts.filter((a) => a.side !== "person").length) : "–", done ? `${acts.filter((a) => a.who === "rule").length} rules · ${acts.filter((a) => a.who !== "rule" && a.side !== "person").length} Nemotron` : "After the agent runs"],
-      ["Needed a person", done ? "1" : "–", done ? (decided ? "Decided" : "Waiting") : "After the agent runs"],
+      ["Applied by the agent", done ? String(acts.filter((a) => a.side !== "person").length) : "–", done ? `${acts.filter((a) => a.who === "rule").length} rules · ${acts.filter((a) => a.who !== "rule" && a.side !== "person").length} Nemotron` : "After the agent runs"],
+      ["Needed a person", done ? String(ITEMS.length) : "–", done ? (openItems().length ? `${openItems().length} waiting` : "All answered") : "After the agent runs"],
       ["Repair time", done ? `${(D.repair.ms / 1000).toFixed(1)} s` : "–", done ? `${callsOf("nano")} Nano · ${callsOf("ultra")} Ultra` : "On Token Factory"],
     ];
     $("#figures").innerHTML = f.map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
@@ -476,44 +500,91 @@ a:hover { text-decoration: underline; }
     $("#checks-note").textContent = failing ? `${failing} failing` : "All passing";
   }
 
-  function decideHTML(full) {
-    if (!afterRepair()) return `<div class="empty"><b>${state === "certified" ? "Nothing waiting." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to let it fix what it can."}</div>`;
-    const [fNote, cNote] = (notes[tok] || "").split(/ Code change by an engineer, /);
-    const opt = (side, color, who, why) => `<button class="opt" type="button" data-side="${side}" aria-pressed="${decided === side}">
-      <span class="who">${who}${decided === side ? "<b>Kept</b>" : ""}</span>
-      <span class="sample"><span class="chip" style="background:${color}"></span><span class="mono" style="font-size:13px">${esc(color)}</span></span>
-      <span class="why">${esc(why)}</span></button>`;
-    return `<div class="row" style="grid-template-columns:minmax(0,1fr)"><div><div class="t mono">${esc(tok)}</div><div class="s">Invisible button text · both sides changed it since the last 100%</div></div></div>
-      <div class="choice">
-        ${opt("figma", conflict.figma, "Designer · Figma", (fNote || "").replace(/^Figma change by a designer, version note: /, "").replace(/^'|'$/g, ""))}
-        ${opt("code", conflict.code, "Engineer · code", (cNote || "").replace(/^commit message: /, "").replace(/^'|'\.?$/g, ""))}
-      </div>
-      <div class="note"><b>Nemotron Ultra</b> ${leanSide ? `leans ${esc(leanSide)}` : "has no recommendation"}${full ? `. ${esc(leanWhy)}` : ". The call is yours."}</div>`;
+  const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
+  function itemHTML(i, full) {
+    const kind = KIND[i.kind];
+    const a = answers[i.id];
+    const meta = [
+      `<span class="tag ${i.kind === "decide" ? "" : "accent"}">${kind[0]}</span>`,
+      i.confidence != null && i.kind !== "decide" ? `<span class="tag">${Math.round(i.confidence * 100)}% sure</span>` : "",
+      i.failed ? `<span class="tag" style="color:var(--red)">Model didn't answer</span>` : "",
+      i.who === "nano" ? `<span class="tag">Nemotron Nano</span>` : i.who === "ultra" ? `<span class="tag">Nemotron Ultra</span>` : "",
+    ].join("");
+    let body = "", actions = "";
+    if (i.kind === "decide") {
+      const opt = (side, color, who, why) => `<button class="opt" type="button" data-item="${i.id}" data-answer="${side}" aria-pressed="${a === side}">
+        <span class="who">${who}${a === side ? "<b>Kept</b>" : ""}</span>
+        <span class="sample"><span class="chip" style="background:${color}"></span><span class="mono" style="font-size:13px">${esc(color)}</span></span>
+        <span class="why">${esc((why || "").replace(/^'|'\.?$/g, ""))}</span></button>`;
+      body = `${i.impact ? `<div class="impact">${i.impact.map((x) => { const [k, ...v] = x.split(": "); return `<div><b>${esc(k)}</b> ${esc(v.join(": "))}</div>`; }).join("")}</div>` : ""}
+        <div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
+        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}` : "has no recommendation"}${full ? `. ${esc(i.why)}` : ". The call is yours."}</div>`;
+      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
+        : `<span class="q-done">Both people get notified with your answer.</span>`;
+    } else {
+      if (i.impact) body = `<div class="impact">${i.impact.map((x) => { const [k, ...v] = x.split(": "); return `<div><b>${esc(k)}</b> ${esc(v.join(": "))}</div>`; }).join("")}</div>`;
+      if (i.kind === "proposal" && i.research && !i.research.error) {
+        const R = i.research, V = { consistent: ["st-ok", "Consistent with other systems"], review: ["st-warn", "Worth a second look"], "against-standard": ["st-bad", "Against the standard"] }[R.verdict] || ["st-off", R.verdict];
+        body += `<div class="impact"><div><span class="status ${V[0]}">${V[1]}</span></div><div>${esc(R.recommendation)}</div>${full ? "" : `<div><button class="btn ghost" style="padding:0" data-go="activity">See the research</button></div>`}</div>`;
+      }
+      const yes = i.kind === "proposal" ? "Create it" : "Apply", no = i.kind === "proposal" ? "Not now" : "Reject";
+      actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
+        : `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>`;
+    }
+    return `<div class="group q" data-id="${i.id}">
+      <div class="q-head"><div><div class="t">${esc(i.title)}</div><div class="s">${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>
+      ${body}<div class="q-actions">${actions}</div></div>`;
   }
-  function renderDecide() {
-    $("#decide").innerHTML = decideHTML(false);
-    $("#decide-full").innerHTML = decideHTML(true);
-    const open = afterRepair() && !decided;
-    $("#decide-note").textContent = open ? "1 open" : "";
-    $("#nav-count").hidden = !open;
-    document.querySelectorAll(".opt").forEach((b) => b.addEventListener("click", () => { decided = b.dataset.side; state = "decided"; render(); }));
+  function renderQueue() {
+    const show = state === "repaired" || state === "decided";
+    $("#queue-sec").hidden = !show && !ITEMS.length;
+    const empty = `<div class="group"><div class="empty"><b>${state === "certified" ? "Nothing for you." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to see what it needs from you."}</div></div>`;
+    $("#queue").innerHTML = show ? ITEMS.map((i) => itemHTML(i, false)).join("") : empty;
+    $("#queue-full").innerHTML = show ? ITEMS.map((i) => itemHTML(i, true)).join("") : empty;
+    const open = show ? openItems().length : 0;
+    $("#queue-note").textContent = show ? (open ? `${open} open` : "All answered") : "";
+    $("#nav-count").textContent = open; $("#nav-count").hidden = !open;
+    document.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
+      if (b.dataset.answer) answers[b.dataset.item] = b.dataset.answer; else delete answers[b.dataset.item];
+      syncState(); render();
+    }));
+    document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
+  }
+  function renderApplied() {
+    const acts = D.repair.actions.filter((a) => a.side !== "person");
+    const show = state === "repaired" || state === "decided";
+    $("#applied").innerHTML = show ? acts.map((a) => {
+      const [what] = a.what.split(/(?<=\.)\s/), u = undone.has(a.id);
+      return `<div class="row"><div><div class="t" style="${u ? "text-decoration:line-through;opacity:.6" : ""}">${esc(what)}</div>
+        <div class="s">${u ? "Undone. Reverted on the next sync." : `${a.who === "rule" ? "Rule" : a.who === "nano" ? "Nemotron Nano" : "Nemotron Ultra"}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}% sure` : ""}${a.notify ? ` · ${a.notify} notified` : ""}`}</div></div>
+        <div class="v"><button class="btn ghost" data-undo="${a.id}">${u ? "Redo" : "Undo"}</button></div></div>`;
+    }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent runs in step 3.</div>`;
+    $("#applied-note").textContent = show ? `${acts.length} changes` : "";
+    document.querySelectorAll("[data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); }));
   }
 
   const BREAK = {
-    silent: ["code", "Ultra", "Code is right"], rename: ["design", "Nano", "Rename adopted"], hotfix: ["code", "Ultra", "Code is right"],
-    xsmall: ["code", "Rules", "Variants and story added"], conflict: ["both", "You", "Both changed"],
+    silent: ["code", "Ultra", "Code is right, Figma updated"], rename: ["design", "Nano", ""], hotfix: ["code", "Ultra", "Code is right, Figma updated"],
+    xsmall: ["code", "Researched", ""], conflict: ["both", "You", ""],
   };
+  const itemFor = (id) => id === "conflict" ? DEC : id === "xsmall" ? ITEMS.find((i) => i.kind === "proposal") : id === "rename" ? ITEMS.find((i) => i.change?.type === "rename" || /renamed|disappeared/.test(i.title)) : null;
   function renderChanges() {
     $("#changes").innerHTML = D.breaks.map((b) => {
-      const [kind, by, what] = BREAK[b.id];
-      let st;
+      const [kind, by, what] = BREAK[b.id], it = itemFor(b.id);
+      let st, sub;
       if (state === "certified") st = `<span class="status st-off">Not yet</span>`;
       else if (state === "broken") st = `<span class="status st-bad">Out of sync</span>`;
-      else if (b.id === "conflict" && !decided) st = `<span class="status st-warn">Waiting for you</span>`;
+      else if (it && !answered(it)) st = `<span class="status st-warn">In your queue</span>`;
+      else if (it && answers[it.id] === "reject") st = `<span class="status st-off">Rejected</span>`;
       else st = `<span class="status st-ok">Fixed</span>`;
+      if (!(state === "repaired" || state === "decided")) sub = b.who === "both" ? "Designer and engineer" : b.who === "designer" ? "Designer" : "Engineer";
+      else if (it) sub = it.kind === "decide" ? (answered(it) ? `You · kept ${answers[it.id]}` : "Both changed it · your call")
+        : it.kind === "proposal" ? `Researched · ${answered(it) ? (answers[it.id] === "approve" ? "you approved it" : "not now") : "proposed, not created"}`
+        : `${by} · ${Math.round((it.confidence || 0) * 100)}% sure, sent to review`;
+      else sub = `${by} · ${what}`;
       return `<div class="row lead">
         <span class="glyph g-${kind}">${ic(kind === "design" ? "pen" : kind === "code" ? "code" : "split")}</span>
-        <div><div class="t">${esc(b.title)}</div><div class="s">${afterRepair() ? `${by} · ${b.id === "conflict" && decided ? `kept ${decided}` : what}` : b.who === "both" ? "Designer and engineer" : b.who === "designer" ? "Designer" : "Engineer"}</div></div>
+        <div><div class="t">${esc(b.title)}</div><div class="s">${esc(sub)}</div></div>
         <div class="v">${st}</div></div>`;
     }).join("");
   }
@@ -525,9 +596,9 @@ a:hover { text-decoration: underline; }
       const [what, ...why] = a.what.split(/(?<=\.)\s/);
       return `<div class="row lead"><span class="glyph g-${g[0]}">${ic(g[1])}</span>
         <div><div class="t">${esc(what)}</div>${why.length ? `<div class="s" style="margin-top:2px">${esc(why.join(" "))}</div>` : ""}</div>
-        <div class="v"><span class="tag ${a.who === "ultra" || a.who === "nano" ? "accent" : ""}">${g[2]}</span></div></div>`;
+        <div class="v"><span class="tag ${a.who === "ultra" || a.who === "nano" ? "accent" : ""}">${g[2]}</span>${a.notify ? `<div class="tertiary" style="font-size:11px;margin-top:4px">${esc(a.notify)} notified</div>` : ""}</div></div>`;
     }).join("");
-    $("#act-note").textContent = `${D.repair.actions.length} actions in ${(D.repair.ms / 1000).toFixed(1)} seconds. Each one says which model made the call and why.`;
+    $("#act-note").textContent = `${D.repair.actions.length} actions in ${(D.repair.ms / 1000).toFixed(1)} seconds. The agent applies a model's call only at ${Math.round(D.repair.autoApply * 100)}% confidence or more; everything it applies is journaled and can be undone.`;
 
     const B = D.benchmark;
     if (!B || B.error) { $("#research").innerHTML = `<div class="empty"><b>Research didn't run.</b>${esc(B?.error || "")}</div>`; return; }
@@ -572,7 +643,7 @@ a:hover { text-decoration: underline; }
   function renderMetrics() {
     $("#metrics").innerHTML = [
       ["Detected", `${D.breaks.length} of ${D.breaks.length}`, "Changes that turned a check red"],
-      ["Fixed alone", `${D.breaks.length - 1} of ${D.breaks.length}`, "Without asking anyone"],
+      ["Applied alone", `${D.repair.actions.filter((a) => a.side !== "person").length}`, `${ITEMS.length} sent to a person`],
       ["Agent time", `${(D.repair.ms / 1000).toFixed(1)} s`, "Plus your decision"],
       ["Model calls", String(Object.values(D.repair.calls).reduce((a, u) => a + u.calls, 0)), `${callsOf("nano")} Nano · ${callsOf("ultra")} Ultra`],
     ].map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
@@ -582,10 +653,11 @@ a:hover { text-decoration: underline; }
       <div class="v num">${s.count.toLocaleString()} ${esc(s.unit)}</div></div>`).join("");
   }
 
-  function render() { renderHero(); renderFigures(); renderChecks(); renderDecide(); renderChanges(); }
+  function render() { renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   document.querySelectorAll(".segmented button").forEach((b) => b.addEventListener("click", () => {
     state = b.dataset.state;
-    if (state !== "decided") decided = null; else if (!decided) decided = "code";
+    for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
+    if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
     render();
   }));
 

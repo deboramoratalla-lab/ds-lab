@@ -5,8 +5,9 @@
 import { cpSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { certifyPrimer, sharedTokens, type PrimerCertifyInput } from "../certify-primer.js";
 import { BREAKS, makeWorkspace, primerInput } from "../demo/breaks.js";
-import { repair } from "../demo/repair.js";
-import { benchmark } from "../research/benchmark.js";
+import { repair, resolveItem, AUTO_APPLY } from "../demo/repair.js";
+import { reopen } from "../lab/component-lab.js";
+import { buttonOptionResearch } from "../research/option-research.js";
 import { extractComponent } from "../migrate/component.js";
 import { loadTokens, normalizeName } from "../tokens/load.js";
 import { usage } from "../llm/nebius.js";
@@ -23,43 +24,29 @@ for (const b of BREAKS) b.apply(ws.w);
 const broken = certifyPrimer({ ...ws.input, baselineShared });
 
 const t0 = Date.now();
-const r = await repair(ws.w, ws.input, base, baselineShared, Object.assign({}, ...BREAKS.map((b) => b.notes ?? {})));
+const r = await repair(ws.w, ws.input, base, baselineShared, Object.assign({}, ...BREAKS.map((b) => b.notes ?? {})),
+  { research: buttonOptionResearch(ws.input.buttonCss) });
 const repairMs = Date.now() - t0;
 const repaired = certifyPrimer({ ...ws.input, baselineShared, renames: r.renames });
 const calls = Object.fromEntries(Object.entries(usage).map(([m, u]) => [m, { ...u }]));
 
-// the person's decision on each pending conflict, computed for both choices
-const figmaKey = (input: PrimerCertifyInput, tok: string) =>
-  Object.keys(Object.assign({}, ...readdirSync(input.figmaTokens).map((x) => JSON.parse(readFileSync(`${input.figmaTokens}/${x}`, "utf8"))))).find((k) => normalizeName(k) === tok)!;
-const pendingTokens = r.pending.map((p) => p.split(":")[0]);
-const decisions: Record<string, Record<string, ReturnType<typeof slim>>> = {};
-for (const tok of pendingTokens) {
-  decisions[tok] = {};
-  for (const side of ["figma", "code"]) {
-    const dir = `out/decide-${side}`;
-    cpSync("out/broken", dir, { recursive: true });
-    const input = JSON.parse(JSON.stringify(ws.input).replaceAll("out/broken", dir)) as PrimerCertifyInput;
-    const f = loadTokens(input.figmaTokens), c = loadTokens(input.codeTokens), fk = figmaKey(input, tok);
-    if (side === "figma") writeFileSync(`${dir}/commits.css`, readFileSync(`${dir}/commits.css`, "utf8") + `:root {\n  --${fk.replace(/\//g, "-")}: ${f.get(tok)};\n}\n`);
-    else for (const p of readdirSync(input.figmaTokens)) {
-      const path = `${input.figmaTokens}/${p}`, x = JSON.parse(readFileSync(path, "utf8"));
-      if (fk in x) { x[fk] = c.get(tok); writeFileSync(path, JSON.stringify(x)); }
-    }
-    decisions[tok][side] = slim(certifyPrimer({ ...input, baselineShared, renames: r.renames }));
+// the person's answers: approve every review/proposal, and keep Figma or code on each conflict
+const decide = r.items.find((i) => i.kind === "decide");
+const tok = decide?.token ?? "";
+const decisions: Record<string, Record<string, ReturnType<typeof slim>>> = { [tok]: {} };
+for (const side of ["figma", "code"] as const) {
+  const dir = `out/decide-${side}`;
+  cpSync("out/broken", dir, { recursive: true });
+  const input = JSON.parse(JSON.stringify(ws.input).replaceAll("out/broken", dir)) as PrimerCertifyInput;
+  const w = reopen(dir).w;
+  const renames = { ...r.renames };
+  for (const item of r.items) {
+    if (item.kind === "decide") resolveItem(w, input, item, side);
+    else { resolveItem(w, input, item, "approve"); if (item.change?.type === "rename") renames[item.change.from!] = item.change.to!; }
   }
+  decisions[tok][side] = slim(certifyPrimer({ ...input, baselineShared, renames }));
 }
-
-// benchmark for the new option (Tavily + Super)
-const spec = extractComponent("Button", ws.input.buttonCss, "prc-Button-ButtonBase", ["data-variant", "data-size"]);
-const px = (v?: string) => { const f = v?.match(/([\d.]+)rem\)?$/)?.[1]; return f ? `${parseFloat(f) * 16}px` : v ?? "—"; };
-const st = spec.axes.size.xsmall;
-const scale: Record<string, string> = { medium: px(spec.base.height?.value) };
-for (const [k, v] of Object.entries(spec.axes.size ?? {})) if (k !== "xsmall") scale[k] = px(v.height?.value);
-let bench: unknown = null;
-try {
-  bench = await benchmark({ component: "Button", axis: "size", option: "xsmall", scale,
-    ours: { height: px(st.height?.value), paddingInline: px(st.padding?.value), gap: px(st.gap?.value), fontSize: px(st["font-size"]?.value) } });
-} catch (e) { bench = { error: String(e) }; }
+const bench = (r.items.find((i) => i.kind === "proposal")?.research as any) ?? null;
 
 const lab = JSON.parse(readFileSync("fixtures/lab-run.json", "utf8"));
 const figmaVars = Object.keys(Object.assign({}, ...readdirSync(base.figmaTokens).map((x) => JSON.parse(readFileSync(`${base.figmaTokens}/${x}`, "utf8"))))).length;
@@ -77,11 +64,11 @@ writeFileSync("console/data.json", JSON.stringify({
   certified: slim(certified),
   breaks: BREAKS.map((b) => ({ id: b.id, who: b.who, title: b.title, notes: b.notes ?? {} })),
   broken: slim(broken),
-  repair: { actions: r.actions, pending: r.pending, pendingTokens, renames: r.renames, ms: repairMs, calls },
+  repair: { actions: r.actions, items: r.items, pending: r.pending, pendingTokens: tok ? [tok] : [], renames: r.renames, ms: repairMs, calls, journal: r.journal.map((e) => ({ id: e.id, at: e.at, what: e.what, files: Object.keys(e.files).length, undo: e.inverse ? "token" : "files" })), autoApply: AUTO_APPLY },
   repaired: slim(repaired),
   decisions,
   benchmark: bench,
   lab: { script: lab.script, runs: lab.runs.map((x: any) => ({ strategy: x.strategy, breaksAt: x.breaksAt ?? null, ms: x.ms,
     steps: x.steps.map((s: any) => ({ event: s.event, keptNow: s.keptNow, syncRate: s.syncRate, silentOverwrites: s.silentOverwrites.length, pendingHuman: s.pendingHuman.length })) })), usage: lab.usage },
 }, null, 1));
-console.log("console/data.json written", { repairMs, pending: r.pending.length, repaired: sum(repaired.checks) });
+console.log("console/data.json written", { repairMs, queue: r.items.map((i) => i.kind), repaired: sum(repaired.checks), final: sum(decisions[tok].code.checks) });

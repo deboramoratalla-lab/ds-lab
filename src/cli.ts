@@ -18,7 +18,8 @@ import { certify } from "./certify.js";
 import { benchmark } from "./research/benchmark.js";
 import { certifyPrimer, sharedTokens } from "./certify-primer.js";
 import { BREAKS, makeWorkspace, closeWorkspace, primerInput } from "./demo/breaks.js";
-import { repair } from "./demo/repair.js";
+import { repair, resolveItem, revert } from "./demo/repair.js";
+import { buttonOptionResearch } from "./research/option-research.js";
 import { readdirSync } from "node:fs";
 import { normalizeName } from "./tokens/load.js";
 import { matchRenamed } from "./agents/matcher.js";
@@ -78,7 +79,7 @@ if (cmd === "benchmark") {
 }
 
 if (cmd === "repair") {
-  // ds-lab repair [id,id|all]   break a copy, let the agent repair it, certify again
+  // ds-lab repair [id,id|all] [--decide token=figma|code] [--approve all|id,id] [--revert id]
   const ids = !designPath || designPath === "all" ? BREAKS.map((b) => b.id) : designPath.split(",");
   const ws = makeWorkspace("out/broken");
   const chosen = BREAKS.filter((b) => ids.includes(b.id));
@@ -87,28 +88,35 @@ if (cmd === "repair") {
   const before = certifyPrimer({ ...ws.input, baselineShared });
   console.log(`\nBroken: ${before.checks.filter((c) => c.passed !== c.total).length} of ${before.checks.length} checks fail\n`);
   const t0 = Date.now();
-  const r = await repair(ws.w, ws.input, primerInput(), baselineShared, Object.assign({}, ...chosen.map((b) => b.notes ?? {})));
-  for (const a of r.actions) console.log(`${{ nano: "Nano ", ultra: "Ultra", rule: "rule " }[a.who]} → ${a.side.padEnd(9)} ${a.what}`);
-  // --decide token=figma|code : the person's call on a pending conflict
-  const argv = process.argv.slice(2), di = argv.indexOf("--decide");
-  for (const d of di >= 0 ? argv[di + 1].split(",") : []) {
-    const [tok, side] = d.split("=");
-    const f = loadTokens(ws.input.figmaTokens), c = loadTokens(ws.input.codeTokens);
-    const fk = Object.keys(Object.assign({}, ...readdirSync(ws.input.figmaTokens).map((x) => JSON.parse(readFileSync(`${ws.input.figmaTokens}/${x}`, "utf8"))))).find((k) => normalizeName(k) === tok)!;
-    if (side === "figma") ws.w.codeOverride(`  --${fk.replace(/\//g, "-")}: ${f.get(tok)};`);
-    else ws.w.figma((v) => { v[fk] = c.get(tok); });
-    r.pending = r.pending.filter((p) => !p.startsWith(tok));
-    console.log(`person → ${side === "figma" ? "code     " : "Figma    "} ${tok}: keeps the ${side} value (${side === "figma" ? f.get(tok) : c.get(tok)})`);
+  const r = await repair(ws.w, ws.input, primerInput(), baselineShared, Object.assign({}, ...chosen.map((b) => b.notes ?? {})),
+    { research: buttonOptionResearch(ws.input.buttonCss) });
+  for (const a of r.actions.filter((a) => a.side !== "person"))
+    console.log(`${{ nano: "Nano ", ultra: "Ultra", rule: "rule " }[a.who]} → ${a.side.padEnd(9)} ${a.what}${a.notify ? `  [notify ${a.notify}]` : ""}  (${a.id})`);
+  console.log(`\nQueue for a person (${r.items.length}):`);
+  for (const i of r.items) console.log(`  · [${i.kind}] ${i.id} ${i.title}${i.impact ? `\n      ${i.impact.join(" · ")}` : ""}`);
+
+  const argv = process.argv.slice(2), flag = (f: string) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : undefined; };
+  const answered = new Set<string>();
+  for (const d of flag("--decide")?.split(",") ?? []) {
+    const [token, side] = d.split("="), item = r.items.find((i) => i.kind === "decide" && i.token === token);
+    if (item) { resolveItem(ws.w, ws.input, item, side as "figma" | "code"); answered.add(item.id); console.log(`person → kept ${side} for ${token}`); }
   }
+  const approve = flag("--approve");
+  for (const item of r.items.filter((i) => i.kind !== "decide" && (approve === "all" || approve?.split(",").includes(i.id)))) {
+    resolveItem(ws.w, ws.input, item, "approve"); answered.add(item.id); console.log(`person → approved ${item.id}: ${item.title}`);
+    if (item.change?.type === "rename") r.renames[item.change.from!] = item.change.to!;
+  }
+  const rv = flag("--revert");
+  if (rv) { const e = revert(ws.w, ws.input, rv); console.log(`reverted ${rv}: ${e.what} (${Object.keys(e.files).length} files restored)`); }
+
   const after = certifyPrimer({ ...ws.input, baselineShared, renames: r.renames });
   console.log();
   for (const c of after.checks) {
     console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(50)} ${c.passed}/${c.total}`);
-    for (const x of c.issues.slice(0, 8)) console.log(`    ${x}`);
+    for (const x of c.issues.slice(0, 6)) console.log(`    ${x}`);
   }
-  if (r.pending.length) { console.log(`\nWaiting for a person (${r.pending.length}):`); for (const p of r.pending) console.log(`  · ${p}`); }
-  const open = after.checks.reduce((a, c) => a + c.total - c.passed, 0);
-  console.log(after.ok ? "\nCertified again: 100%." : `\n${open} check(s) still open${r.pending.length ? `, ${r.pending.length} of them waiting for a person` : ""}.`);
+  const open = r.items.filter((i) => !answered.has(i.id)).length;
+  console.log(after.ok ? "\nCertified again: 100%." : `\nNot certified yet${open ? `: ${open} item(s) waiting for a person` : ""}.`);
   const calls = Object.entries(usage).map(([m, u]) => `${u.calls}× ${m.split("/").pop()}`).join(", ");
   console.log(`\n${((Date.now() - t0) / 1000).toFixed(0)}s · ${calls}`);
   process.exit(after.ok ? 0 : 2);
