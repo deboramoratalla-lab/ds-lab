@@ -54,12 +54,10 @@
 html, body { height: 100%; }
 body::before, body::after { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointer-events: none; }
 body::before { background:
-  radial-gradient(38vmax 34vmax at 18% 22%, var(--blob-a), transparent 62%),
-  radial-gradient(34vmax 30vmax at 82% 18%, var(--blob-b), transparent 60%),
-  radial-gradient(40vmax 36vmax at 70% 85%, var(--blob-c), transparent 62%),
-  radial-gradient(30vmax 26vmax at 25% 90%, var(--blob-d), transparent 60%);
-  opacity: var(--blob-o, .9); filter: saturate(130%); animation: drift 28s ease-in-out infinite alternate; }
-body::after { background: radial-gradient(transparent 0, var(--ground) 120%); opacity: .35; }
+  radial-gradient(42vmax 36vmax at 12% 8%, var(--blob-a), transparent 65%),
+  radial-gradient(40vmax 34vmax at 92% 96%, var(--blob-b), transparent 65%);
+  opacity: var(--blob-o, .22); }
+body::after { display: none; }
 @keyframes drift { to { transform: translate3d(3vmax, -2vmax, 0) rotate(8deg) scale(1.06); } }
 body { background: var(--ground); color: var(--label); font: 13px/1.45 var(--font); -webkit-font-smoothing: antialiased; letter-spacing: -.003em; }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
@@ -81,7 +79,7 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .nav-label { font-size: 11px; font-weight: 600; color: var(--label-3); padding: 12px 10px 4px; }
 .nav button { display: flex; align-items: center; gap: 9px; padding: 6px 10px; border-radius: 7px; text-align: left; }
 .nav button:hover { background: var(--fill); }
-.nav button[aria-current="page"] { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, var(--progress))); color: #fff; box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--accent) 70%, transparent); }
+.nav button[aria-current="page"] { background: var(--accent); color: #fff; }
 .nav svg { width: 15px; height: 15px; flex: none; opacity: .85; }
 .badge { margin-left: auto; min-width: 18px; height: 18px; border-radius: 9px; background: var(--amber); color: #fff; font-size: 11px; font-weight: 600; display: grid; place-items: center; padding: 0 5px; }
 .nav button[aria-current="page"] .badge { background: rgba(255, 255, 255, .28); }
@@ -98,20 +96,19 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .toolbar .meta { margin-left: auto; color: var(--label-3); }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 8px; align-items: center; padding: 28px 28px 24px 32px; }
-.bignum { font: 700 64px/1 var(--display); letter-spacing: -.04em; margin: 14px 0 2px;
-  background: linear-gradient(120deg, var(--label) 30%, var(--accent) 75%, var(--progress)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.bignum.bad { background: linear-gradient(120deg, var(--label) 20%, var(--red)); -webkit-background-clip: text; background-clip: text; }
-.bignum.warn { background: linear-gradient(120deg, var(--label) 20%, var(--amber)); -webkit-background-clip: text; background-clip: text; }
+.bignum { font: 700 64px/1 var(--display); letter-spacing: -.04em; margin: 14px 0 2px; color: var(--label); }
+.bignum.bad { color: var(--red); }
+.bignum.warn { color: var(--amber); }
 .bigcap { color: var(--label-2); font-size: 13px; }
 .map { width: 100%; height: auto; overflow: visible; }
 .map .edge { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke .4s; }
-.map .edge.ok { stroke: var(--edge-ok); filter: drop-shadow(0 0 6px var(--edge-glow)); }
-.map .edge.bad { stroke: var(--red); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--red) 60%, transparent)); }
-.map .edge.warn { stroke: var(--amber); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--amber) 60%, transparent)); }
+.map .edge.ok { stroke: var(--edge-ok); }
+.map .edge.bad { stroke: var(--red); }
+.map .edge.warn { stroke: var(--amber); }
 .map .flow { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 18; stroke: #fff; opacity: .9; animation: flow 1.6s linear infinite; }
 .map .flow.bad { animation-duration: 3.2s; opacity: .55; }
 @keyframes flow { to { stroke-dashoffset: -40; } }
-.map .node rect { fill: var(--node); stroke: var(--glass-edge); filter: drop-shadow(0 8px 18px rgba(0,0,0,.18)); }
+.map .node rect { fill: var(--node); stroke: var(--glass-edge); filter: drop-shadow(0 2px 6px rgba(0,0,0,.08)); }
 .map .node text { fill: var(--label); font: 600 13px var(--font); }
 .map .node .sub { fill: var(--label-3); font: 400 11px var(--font); }
 .map .node .dotc { transition: fill .4s; }
