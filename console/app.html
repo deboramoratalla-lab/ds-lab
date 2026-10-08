@@ -625,10 +625,10 @@ a:hover { text-decoration: underline; }
     const NAME = { manual: "Manual", "figma-first": "Figma first", "code-first": "Code first", agent: "DS Lab agent" };
     $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n]) => `<th>${n}</th>`).join("")}<th>Kept</th><th>Checks</th><th>Sandbox</th></tr>`;
     $("#lab-body").innerHTML = L.runs.map((r) => `<tr>
-      <td style="font-weight:${r.strategy === "agent" ? 700 : 500}">${NAME[r.strategy]}${r.overwrote ? `<div class="s" style="color:var(--red);font-weight:400;font-size:12px">${esc(r.overwrote)}</div>` : ""}${r.pending?.length ? `<div class="s" style="color:var(--amber);font-weight:400;font-size:12px">asked a person</div>` : ""}</td>
+      <td style="font-weight:${r.strategy === "agent" ? 700 : 500}">${NAME[r.strategy]}${r.overwrote ? `<div class="s" style="color:var(--red);font-weight:400;font-size:12px">${esc(r.overwrote)}</div>` : ""}${r.queue?.length ? `<div class="s" style="color:var(--amber);font-weight:400;font-size:12px">${r.queue.length} sent to a person</div>` : ""}</td>
       ${COLS.map(([k]) => `<td>${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="mark-bad" aria-label="lost">✕</span>`}</td>`).join("")}
       <td class="num" style="font-weight:700">${r.keptCount} of 5</td>
-      <td class="num">${!(r.total - r.passed) ? `<span class="status st-ok">all</span>` : r.pending?.length >= r.total - r.passed ? `<span class="status st-warn">${r.total - r.passed} waiting</span>` : `<span class="status st-bad">${r.total - r.passed} off</span>`}</td>
+      <td class="num">${!(r.total - r.passed) ? `<span class="status st-ok">all</span>` : r.queue?.length ? `<span class="status st-warn">${r.queue.length} in queue</span>` : `<span class="status st-bad">${r.total - r.passed} off</span>`}</td>
       <td class="tertiary num" style="font-size:12px"><span class="mono">${esc(r.sandbox.slice(0, 8))}</span><br>${r.wall_s}s</td></tr>`).join("");
     $("#lab-note").textContent = `The same five changes, forked into ${L.runs.length} Nebius Token Factory Sandboxes from one checkpoint and run in parallel. ${L.total_s} s end to end, ${L.files} files uploaded.`;
     $("#lab-legend").innerHTML = [
