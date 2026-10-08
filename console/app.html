@@ -101,7 +101,7 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 .bignum.warn { color: var(--amber); }
 .bigcap { color: var(--label-2); font-size: 13px; }
 .map { width: 100%; height: auto; overflow: visible; }
-.map .edge { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke .4s; }
+.map .edge { fill: none; stroke-width: 2; stroke-linecap: round; transition: stroke .4s; }
 .map .edge.ok { stroke: var(--edge-ok); }
 .map .edge.bad { stroke: var(--red); }
 .map .edge.warn { stroke: var(--amber); }
@@ -428,15 +428,15 @@ a:hover { text-decoration: underline; }
     const N = { figma: [70, 70, "Figma", "844 variables"], code: [330, 70, "Code", "@primer 11.10"], story: [330, 230, "Storybook", "Button stories"], docs: [70, 230, "Docs", "primer.style"] };
     // anchors on the node edges: Figma (70,70) Code (330,70) Docs (70,230) Storybook (330,230), nodes 120×52
     const edges = [
-      ["fc", "M190,96 C240,70 280,70 330,96", 260, 66, "tokens · bindings"],
-      ["cs", "M390,122 C410,160 410,190 390,230", 432, 180, "stories"],
-      ["cd", "M190,256 C240,282 280,282 330,256", 260, 298, "options"],
-      ["fd", "M130,122 C110,160 110,190 130,230", 88, 180, "status"],
+      ["fc", "M190,96 H330", 260, 88, "tokens · bindings"],
+      ["cs", "M390,122 V230", 398, 180, "stories"],
+      ["cd", "M190,256 H330", 260, 248, "options"],
+      ["fd", "M130,122 V230", 122, 180, "status"],
     ];
     const color = (k) => k === "bad" ? "var(--red)" : k === "warn" ? "var(--amber)" : "var(--edge-ok)";
     const nodeState = { figma: E.fc !== "ok" || E.fd !== "ok" ? (E.fc === "warn" ? "warn" : "bad") : "ok", code: E.fc !== "ok" ? (E.fc === "warn" ? "warn" : "bad") : "ok", story: E.cs, docs: E.cd !== "ok" || E.fd !== "ok" ? "bad" : "ok" };
-    $("#map").innerHTML = edges.map(([k, d, lx, ly, l]) => `<path class="edge ${E[k]}" d="${d}"/><path class="flow ${E[k] === "ok" ? "" : "bad"}" d="${d}"/>
-        <text class="lbl" x="${lx}" y="${ly}" text-anchor="middle">${l}</text>`).join("") + Object.entries(N).map(([k, [x, y, name, sub]]) => `<g class="node">
+    $("#map").innerHTML = edges.map(([k, d, lx, ly, l]) => `<path class="edge ${E[k]}" d="${d}"/>
+        <text class="lbl" x="${lx}" y="${ly}" text-anchor="${k === "cs" ? "start" : k === "fd" ? "end" : "middle"}">${l}</text>`).join("") + Object.entries(N).map(([k, [x, y, name, sub]]) => `<g class="node">
         <rect x="${x}" y="${y}" width="120" height="52" rx="16"/>
         <circle class="dotc" cx="${x + 18}" cy="${y + 26}" r="5" fill="${color(nodeState[k])}"/>
         <text x="${x + 32}" y="${y + 23}">${name}</text><text class="sub" x="${x + 32}" y="${y + 39}">${sub}</text></g>`).join("");
