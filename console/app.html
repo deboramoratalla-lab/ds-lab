@@ -117,9 +117,22 @@ code, .mono { font-family: var(--mono); font-size: 11.5px; }
 h1 { font: 700 34px/1.1 var(--display); letter-spacing: -.025em; margin: 4px 0 6px; text-wrap: balance; }
 .lede { color: var(--label-2); font-size: 15px; margin: 0; max-width: 56ch; }
 
-.segmented { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--fill); border-radius: 9px; padding: 2px; margin-top: 16px; max-width: 100%; }
-.segmented button { padding: 5px 14px; border-radius: 7px; font-weight: 500; color: var(--label-2); white-space: nowrap; transition: background .2s, color .2s; }
-.segmented button[aria-pressed="true"] { background: var(--seg-on); color: var(--label); box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 .5px rgba(0, 0, 0, .04); }
+.segmented { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: auto; gap: 2px; padding: 4px; margin-top: 18px; max-width: 100%;
+  background: var(--fill); border-radius: 12px; border: 1px solid var(--hair); }
+.segmented .thumb { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 9px; background: var(--seg-on);
+  box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 14px -4px var(--thumb-glow, transparent), inset 0 0 0 1px var(--thumb-edge, transparent);
+  transition: transform .45s cubic-bezier(.3, 1.3, .5, 1), width .45s cubic-bezier(.3, 1.3, .5, 1), box-shadow .3s; }
+.segmented button { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 7px 10px; border-radius: 9px; font-weight: 500; color: var(--label-2); white-space: nowrap; transition: color .25s; }
+.segmented button:hover { color: var(--label); }
+.segmented button .n { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 600;
+  background: var(--fill); color: var(--label-2); transition: background .3s, color .3s, transform .3s; }
+.segmented button[aria-pressed="true"] { color: var(--label); }
+.segmented button[aria-pressed="true"] .n { background: var(--step-c); color: #fff; transform: scale(1.08); }
+.segmented button[data-state="certified"] { --step-c: var(--green); }
+.segmented button[data-state="broken"] { --step-c: var(--red); }
+.segmented button[data-state="repaired"] { --step-c: var(--amber); }
+.segmented button[data-state="decided"] { --step-c: var(--accent); }
 
 section > h2, .sec-h { font: 600 20px/1.2 var(--display); letter-spacing: -.015em; margin: 0 0 10px; display: flex; align-items: baseline; gap: 10px; }
 .sec-h small { margin-left: auto; font: 400 13px var(--font); color: var(--label-3); letter-spacing: 0; }
@@ -247,7 +260,7 @@ a:hover { text-decoration: underline; }
   .nav-label, .side-foot { display: none; }
   .main { padding-inline: 16px; }
   .hero { grid-template-columns: minmax(0, 1fr); padding: 20px; } .bignum { font-size: 48px; }
-  .segmented { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr 1fr; }
+  .segmented { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr 1fr; } .segmented .thumb { display: none; } .segmented button[aria-pressed="true"] { background: var(--seg-on); }
   .choice { grid-template-columns: minmax(0, 1fr); }
   .figures { grid-template-columns: minmax(0, 1fr); }
   .figure::before { display: none; }
@@ -309,10 +322,6 @@ a:hover { text-decoration: underline; }
           <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
           <div class="who-status" id="who-status"></div>
         </header>
-        <section id="queue-sec" hidden>
-          <div class="sec-h">Needs your review <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
-          <div class="queue" id="queue"></div>
-        </section>
         <div class="hero glass">
           <div>
             <div class="eyebrow" id="hero-eyebrow">Primer Web</div>
@@ -320,16 +329,22 @@ a:hover { text-decoration: underline; }
             <p class="lede" id="hero-sub"></p>
             <div class="bignum num" id="bignum">1,517</div><div class="bigcap" id="bigcap">checks agree</div>
             <div class="segmented" role="group" aria-label="Replay this run">
-              <button data-state="certified" aria-pressed="true">Certified</button>
-              <button data-state="broken" aria-pressed="false">Changes land</button>
-              <button data-state="repaired" aria-pressed="false">Agent repairs</button>
-              <button data-state="decided" aria-pressed="false">You decide</button>
+              <span class="thumb" aria-hidden="true"></span>
+              <button data-state="certified" aria-pressed="true"><span class="n">1</span>Certified</button>
+              <button data-state="broken" aria-pressed="false"><span class="n">2</span>Changes land</button>
+              <button data-state="repaired" aria-pressed="false"><span class="n">3</span>Agent repairs</button>
+              <button data-state="decided" aria-pressed="false"><span class="n">4</span>You decide</button>
             </div>
           </div>
           <svg class="map" id="map" viewBox="40 40 440 280" role="img" aria-label="Sync between Figma, code, Storybook and docs"></svg>
         </div>
 
         <div class="group figures" id="figures"></div>
+
+        <section id="queue-sec" hidden>
+          <div class="sec-h">Needs your review <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
+          <div class="queue" id="queue"></div>
+        </section>
 
         <div class="cols">
           <section>
@@ -460,12 +475,13 @@ a:hover { text-decoration: underline; }
     const copy = {
       certified: ["Everything agrees.", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: ["Five changes landed.", `Designers and engineers each changed something on their side. ${r.total - r.passed} checks now disagree.`],
-      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is in your queue above."],
+      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is waiting for you below."],
       decided: [r.passed === r.total ? "Certified again." : "Answered.", r.passed === r.total ? `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decidedSide() === "figma" ? "Figma" : "code"} value.${undone.size ? ` ${undone.size} undone change${undone.size > 1 ? "s" : ""} will reopen on the next sync.` : ""}` : `${r.total - r.passed} checks stay open because of what you rejected or undid. They'll be checked again on the next sync.`],
     }[state];
     $("#hero-eyebrow").textContent = `Primer Web · step ${STATES.indexOf(state) + 1} of 4`;
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
     document.querySelectorAll(".segmented button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
+    moveThumb();
   }
 
   function renderMap(r) {
@@ -564,6 +580,15 @@ a:hover { text-decoration: underline; }
       ${body}<div class="q-actions">${actions}</div></div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
+  function moveThumb() {
+    const seg = $(".segmented"), on = seg?.querySelector('[aria-pressed="true"]'), t = seg?.querySelector(".thumb");
+    if (!on || !t) return;
+    const c = getComputedStyle(on).getPropertyValue("--step-c").trim();
+    t.style.width = on.offsetWidth + "px"; t.style.transform = `translate(${on.offsetLeft}px, 0)`;
+    t.style.setProperty("--thumb-glow", `color-mix(in srgb, ${c} 45%, transparent)`);
+    t.style.setProperty("--thumb-edge", `color-mix(in srgb, ${c} 35%, transparent)`);
+  }
+  addEventListener("resize", moveThumb);
   function renderWho() {
     const r = report(), open = (state === "repaired" || state === "decided") ? openItems().length : 0, bad = r.total - r.passed;
     const p = (dot, html) => `<span class="pill"><span class="d" style="background:${dot}"></span>${html}</span>`;
