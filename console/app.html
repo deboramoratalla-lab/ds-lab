@@ -573,6 +573,28 @@ body::before, body::after { display: none !important; }
 .start { background: color-mix(in srgb, var(--cat) 14%, transparent); color: var(--cat); }
 .map .cnt circle { fill: var(--amber); }
 @media (prefers-reduced-motion: reduce) { .pipe li.warn .pi::after { animation: none; } }
+
+/* applied by the agent: change cards with before/after */
+#applied { display: flex; flex-direction: column; }
+.ap { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.ap + .ap { border-top: 1px solid var(--hair); }
+.ap-top { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--label-3); }
+.ap-who { font: 600 10.5px var(--mono); padding: 2px 7px; border-radius: 4px; background: var(--fill); color: var(--label-2); }
+.ap-ultra { background: var(--accent-soft); color: var(--accent); }
+.ap-nano { background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green); }
+.ap-conf { font-size: 11px; }
+.ap-undo { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font: 500 12px var(--font); color: var(--label-2); }
+.ap-undo:hover { background: var(--fill); color: var(--label); }
+.ap-undo svg { width: 14px; height: 14px; }
+.ap-t { font-weight: 600; font-size: 13px; color: var(--label); }
+.ap-s { font-size: 11.5px; color: var(--label-3); }
+.ap-s .mono { font-size: 11px; }
+.ap-ba { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.ap-ba .stage { flex: 1; min-height: 48px; }
+.ap-arrow { width: 16px; height: 16px; color: var(--label-3); flex: none; }
+.ap-foot { font-size: 11.5px; color: var(--label-3); }
+.ap.undone .ap-t { text-decoration: line-through; color: var(--label-3); }
+.ap.undone .ap-ba { opacity: .45; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1024,20 +1046,35 @@ body::before, body::after { display: none !important; }
     document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
     document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
   }
+  // Human label for a token: button-danger-bg-color-rest → "Danger button · background"
+  const tokenLabel = (t) => {
+    const m = t.match(/^button-(\w+)-(bg|fg|border)-color-(\w+)$/);
+    if (!m) return t;
+    const part = { bg: "background", fg: "text", border: "border" }[m[2]];
+    return `${m[1][0].toUpperCase() + m[1].slice(1)} button · ${part}${m[3] !== "rest" ? ` (${m[3]})` : ""}`;
+  };
   function renderApplied() {
     const acts = D.repair.actions.filter((a) => a.side !== "person");
     const show = state === "repaired" || state === "decided";
+    const who = { ultra: "Ultra", nano: "Nano", rule: "Rule" };
     $("#applied").innerHTML = show ? acts.map((a) => {
-      const [what] = a.what.split(/(?<=\.)\s/), u = undone.has(a.id);
+      const u = undone.has(a.id);
       const m = a.what.match(/^([\w-]+):.*?(#[0-9a-f]{6,8}) → (#[0-9a-f]{6,8})/i);
-      const ba = m ? `<div class="ba">${stage(previewFor(m[1], m[2]), "xs")}<span class="arrow">→</span>${stage(previewFor(m[1], m[3]), "xs")}</div>` : "";
-      return `<div class="row"><div>${ba}<div class="t" style="${u ? "text-decoration:line-through;opacity:.6" : ""}">${esc(what)}</div>
-        <div class="s">${u ? "Undone. Reverted on the next sync." : `${a.who === "rule" ? "Rule" : a.who === "nano" ? "Nemotron Nano" : "Nemotron Ultra"}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}% sure` : ""}${a.notify ? ` · ${a.notify} notified` : ""}`}</div></div>
-        <div class="v"><button class="btn ghost" data-undo="${a.id}">${u ? "Redo" : "Undo"}</button></div></div>`;
+      const title = m ? tokenLabel(m[1]) : a.who === "rule" ? `${(a.what.match(/^(\d+)/) || [])[1] || ""} Button bindings re-linked` : a.what.split(/(?<=\.)\s/)[0];
+      const sub = m ? `<span class="mono">${esc(m[1])}</span>` : a.who === "rule" ? "Pointed at a token with a different value than code's" : "";
+      const ba = m ? `<div class="ap-ba">${stage(previewFor(m[1], m[2]), "xs")}<svg class="ap-arrow" viewBox="0 0 16 16"><path d="M3 8h9M9 4.5 12.5 8 9 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${stage(previewFor(m[1], m[3]), "xs")}</div>` : "";
+      return `<div class="ap${u ? " undone" : ""}">
+        <div class="ap-top"><span class="ap-who ap-${a.who}">${who[a.who]}</span><span class="ap-side">→ ${esc(a.side)}</span>${a.confidence != null ? `<span class="ap-conf mono">${Math.round(a.confidence * 100)}%</span>` : ""}
+          <button class="ap-undo" data-undo="${a.id}" aria-label="${u ? "Redo" : "Undo"} this change" title="${u ? "Redo" : "Undo"}"><svg viewBox="0 0 16 16"><path d="${u ? "M12 6H6a3 3 0 0 0 0 6h4M10 3.5 12.5 6 10 8.5" : "M4 6h6a3 3 0 0 1 0 6H6M6 3.5 3.5 6 6 8.5"}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${u ? "Redo" : "Undo"}</button></div>
+        <div class="ap-t">${esc(title)}</div>${sub ? `<div class="ap-s">${sub}</div>` : ""}
+        ${ba}
+        <div class="ap-foot">${u ? "Undone · reverted on the next sync" : a.notify ? `${esc(a.notify[0].toUpperCase() + a.notify.slice(1))} notified` : ""}</div>
+      </div>`;
     }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent runs in step 3.</div>`;
     $("#applied-note").textContent = show ? `${acts.length} changes` : "";
     document.querySelectorAll("[data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); }));
   }
+
 
   const BREAK = {
     silent: ["code", "Ultra", "Code is right, Figma updated"], rename: ["design", "Nano", ""], hotfix: ["code", "Ultra", "Code is right, Figma updated"],
