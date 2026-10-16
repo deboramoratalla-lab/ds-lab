@@ -41,3 +41,9 @@ Quality level: production for the hackathon demo.
 - Protagonist: **the agent at work**: the live flow/map is the centrepiece.
 - Anti-reference: **generic template dashboard** (rows of KPI cards).
 - Principles: one canvas, not cards; say each thing once; numbers live inside sentences and logs; colour only for status; motion shows work being done.
+
+## Persona-led direction 2026-10-16 (replaces Vercel/Apple copies)
+Persona: design-system lead who lives in Figma and GitHub, opens the console when notified or before a release.
+- Show the real thing: every decision draws the component with each value (Primer Button on a dotted stage, like a Figma frame).
+- Workbench look: neutral canvas, 1px borders, Inter + JetBrains Mono; colour belongs to tokens and components; one accent of our own (purple).
+- Order: what needs me (with previews) → the agent at work → what it changed (before/after) → checks.
