@@ -485,6 +485,35 @@ body::before, body::after { display: none !important; }
 @media (max-width: 980px) { .cv-body { grid-template-columns: minmax(0, 1fr); } .cv-log { border-left: 0; border-top: 1px solid var(--hair); } .pipe { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .log li.in, .pipe li.run .pi, .ld::after { animation: none !important; } }
+
+/* queue hierarchy: category stripe, collapsed rows, first open item expanded */
+.fbar { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 2px; }
+.fchip { display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--hair); background: var(--group); font: 500 12.5px var(--font); color: var(--label-2); }
+.fchip i { width: 8px; height: 8px; border-radius: 2px; background: var(--cat); }
+.fchip .mono { font-size: 11px; color: var(--label-3); }
+.fchip.on { color: var(--label); border-color: var(--label); }
+.fhint { margin-left: auto; color: var(--label-3); font-size: 12px; }
+.q { position: relative; padding: 0; overflow: hidden; }
+.q::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cat); }
+.q.answered::before { background: var(--green); }
+.q-row { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 16px 12px 18px; text-align: left; }
+.q-row:hover { background: var(--glass-line); }
+.q-ic { width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; background: color-mix(in srgb, var(--cat) 12%, transparent); color: var(--cat); }
+.q.answered .q-ic { background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green); }
+.q-ic svg { width: 15px; height: 15px; }
+.q-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.q-cat { font: 600 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--cat); display: flex; gap: 8px; align-items: center; }
+.start { font: 600 10px var(--font); letter-spacing: 0; text-transform: none; color: #fff; background: var(--cat); border-radius: 4px; padding: 1px 6px; }
+.q-title { font-weight: 600; font-size: 13.5px; color: var(--label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.q.open .q-title { white-space: normal; }
+.q-side { display: flex; align-items: center; gap: 12px; color: var(--label-3); font-size: 12px; white-space: nowrap; }
+.q-eff { font-size: 11px; }
+.chev { font-size: 18px; line-height: 1; transition: transform .2s; color: var(--label-3); }
+.q.open .chev { transform: rotate(90deg); }
+.q-body { border-top: 1px solid var(--hair); }
+.q-body .q-head { padding-top: 12px; }
+.q.answered .q-title { color: var(--label-2); }
+@media (max-width: 700px) { .q-imp, .fhint { display: none; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -838,6 +867,15 @@ body::before, body::after { display: none !important; }
     if (/invisible-fg/.test(token)) return btn({ ...PB.invisible, fg: value }, "Show more");
     return `<span class="sw" style="background:${value}"></span>`;
   }
+  // Categories, in the order a lead should handle them: what blocks first, decisions next, checks last.
+  const CAT = {
+    decide: { n: 1, label: "Conflict", sub: "Both sides changed it · blocks certification", c: "var(--red)", ic: "split", effort: "1 min" },
+    proposal: { n: 2, label: "New option", sub: "Product decision · nothing breaks while it waits", c: "var(--accent)", ic: "sparkle", effort: "2 min" },
+    review: { n: 3, label: "Check", sub: "The agent wasn't sure · low risk", c: "var(--blue)", ic: "shield", effort: "30 s" },
+  };
+  const ordered = () => [...ITEMS].sort((a, b) => CAT[a.kind].n - CAT[b.kind].n);
+  let filter = "all";
+  const expanded = new Set();
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   function itemHTML(i, full) {
     const kind = KIND[i.kind];
@@ -872,9 +910,15 @@ body::before, body::after { display: none !important; }
       actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
         : `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>`;
     }
-    return `<div class="group q" data-id="${i.id}">
-      <div class="q-head"><div><div class="t">${esc(i.title)}</div><div class="s">${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>
-      ${body}<div class="q-actions">${actions}</div></div>`;
+    const C = CAT[i.kind], open = full || expanded.has(i.id), first = ordered().find((x) => !answers[x.id])?.id === i.id;
+    const impactShort = i.kind === "decide" ? "Figma Button invisible · 3 variants" : i.kind === "proposal" ? "5 Figma variants + 1 story" : "1 token link";
+    return `<div class="group q cat-${i.kind}${open ? " open" : ""}${a ? " answered" : ""}" data-id="${i.id}" style="--cat:${C.c}">
+      <button class="q-row" type="button" data-toggle="${i.id}" aria-expanded="${open}">
+        <span class="q-ic"><svg><use href="#i-${C.ic}"/></svg></span>
+        <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(i.title)}</span></span>
+        <span class="q-side">${a ? `<span class="status st-ok">Done</span>` : `<span class="q-imp">${impactShort}</span><span class="q-eff mono">~${C.effort}</span>`}<span class="chev">›</span></span>
+      </button>
+      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(C.sub)}. ${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>${body}<div class="q-actions">${actions}</div></div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   function renderWho() {
@@ -892,16 +936,23 @@ body::before, body::after { display: none !important; }
     $("#queue-count").textContent = show ? openItems().length || "" : "";
     $("#queue-count").hidden = !(show && openItems().length);
     const empty = `<div class="group"><div class="empty"><b>${state === "certified" ? "Nothing for you." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to see what it needs from you."}</div></div>`;
-    $("#queue").innerHTML = show ? ITEMS.map((i) => itemHTML(i, false)).join("") : empty;
-    $("#queue-full").innerHTML = show ? ITEMS.map((i) => itemHTML(i, true)).join("") : empty;
+    if (show && !expanded.size) { const f = ordered().find((x) => !answers[x.id]); if (f) expanded.add(f.id); }
+    const list = ordered().filter((i) => filter === "all" || i.kind === filter);
+    const chips = [["all", "All", ITEMS.length], ...Object.entries(CAT).map(([k, c]) => [k, c.label + (k === "decide" ? "s" : k === "proposal" ? "s" : "s"), ITEMS.filter((i) => i.kind === k).length])]
+      .filter(([, , n]) => n).map(([k, l, n]) => `<button class="fchip${filter === k ? " on" : ""}" data-filter="${k}" style="${k !== "all" ? `--cat:${CAT[k].c}` : ""}">${k !== "all" ? `<i></i>` : ""}${l}<span class="mono">${n}</span></button>`).join("");
+    $("#queue").innerHTML = show ? `<div class="fbar">${chips}<span class="fhint">Sorted by what blocks the system first</span></div>` + list.map((i) => itemHTML(i, false)).join("") : empty;
+    $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
     $("#nav-count").textContent = open; $("#nav-count").hidden = !open;
     document.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
-      if (b.dataset.answer) answers[b.dataset.item] = b.dataset.answer; else delete answers[b.dataset.item];
+      if (b.dataset.answer) { answers[b.dataset.item] = b.dataset.answer; expanded.delete(b.dataset.item); const nx = ordered().find((x) => !answers[x.id]); if (nx) expanded.add(nx.id); }
+      else delete answers[b.dataset.item];
       syncState(); render();
     }));
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
+    document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
+    document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
   }
   function renderApplied() {
     const acts = D.repair.actions.filter((a) => a.side !== "person");
