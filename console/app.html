@@ -528,6 +528,25 @@ body::before, body::after { display: none !important; }
 .cv-log.flash { animation: flash 1s ease-out; }
 @keyframes flash { 0% { box-shadow: inset 0 0 0 2px var(--accent); } 100% { box-shadow: inset 0 0 0 2px transparent; } }
 .cv-hint { color: var(--label-3); font-size: 11.5px; }
+
+/* steps as a connected track, not boxes */
+.pipe { list-style: none; margin: 0; padding: 18px 28px 20px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--hair); background: var(--group); }
+.pipe li { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 0 6px; background: none !important; border: 0 !important; border-radius: 0; }
+.pipe li::before { content: ""; position: absolute; top: 9px; left: -50%; right: 50%; height: 2px; background: var(--hair); z-index: 0; }
+.pipe li:first-child::before { display: none; }
+.pipe li.ok::before, .pipe li.warn::before { background: var(--green); }
+.pipe li.warn::before { background: linear-gradient(90deg, var(--green), var(--amber)); }
+.pipe .pi { position: relative; z-index: 1; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--hair); background: var(--group); margin-bottom: 4px; }
+.pipe li.ok .pi { border-color: var(--green); background: var(--green); }
+.pipe li.ok .pi::after { content: ""; position: absolute; left: 5.5px; top: 2.5px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.pipe li.warn .pi { border-color: var(--amber); background: var(--amber); box-shadow: 0 0 0 5px color-mix(in srgb, var(--amber) 18%, transparent); }
+.pipe li.warn .pi::after { content: "!"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 11px; }
+.pipe li.run .pi { border-color: var(--accent); border-right-color: transparent; animation: spin .9s linear infinite; }
+.pipe .pn { font-weight: 600; font-size: 12.5px; color: var(--label); }
+.pipe li.idle .pn { color: var(--label-3); }
+.pipe .pm { font: 11px var(--mono); color: var(--label-3); }
+.pipe li.warn .pm { color: var(--amber); font-weight: 600; }
+@media (max-width: 760px) { .pipe { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 16px; } .pipe li:nth-child(4)::before { display: none; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -598,6 +617,7 @@ body::before, body::after { display: none !important; }
             <div class="cv-map"><svg class="map" id="map" viewBox="0 10 520 320" role="img" aria-label="The agent between Figma, code, Storybook and docs"></svg></div>
             <div class="cv-log"><div class="log-h"><span>Agent log</span><span class="mono" id="log-n"></span></div><ol class="log" id="log" aria-live="polite"></ol></div>
           </div>
+          <ol class="pipe" id="pipe" aria-label="Steps of the last sync"></ol>
         </section>
 
         <section id="queue-sec" hidden>
