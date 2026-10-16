@@ -547,6 +547,32 @@ body::before, body::after { display: none !important; }
 .pipe .pm { font: 11px var(--mono); color: var(--label-3); }
 .pipe li.warn .pm { color: var(--amber); font-weight: 600; }
 @media (max-width: 760px) { .pipe { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 16px; } .pipe li:nth-child(4)::before { display: none; } }
+
+/* refined palette (2026-10-16): softer, less primary; teal from the alias palette, rose instead of red, apricot instead of orange */
+:root { --green: #1e9e8b; --amber: #d08a3c; --red: #d4566a; --blue: #4a7fc1; --edge-ok: #1e9e8b; --accent: #6d48c8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --green: #3cc2ad; --amber: #e8a65c; --red: #ec7a8b; --blue: #7aa7e0; --edge-ok: #3cc2ad; --accent: #9b7cf0; } }
+:root[data-theme="dark"] { --green: #3cc2ad; --amber: #e8a65c; --red: #ec7a8b; --blue: #7aa7e0; --edge-ok: #3cc2ad; --accent: #9b7cf0; }
+/* finer step track */
+.pipe { padding: 20px 28px 18px; }
+.pipe li::before { top: 6px; height: 1.5px; background: var(--hair); }
+.pipe li.ok::before { background: color-mix(in srgb, var(--green) 70%, transparent); }
+.pipe li.warn::before { background: linear-gradient(90deg, color-mix(in srgb, var(--green) 70%, transparent), var(--amber)); }
+.pipe .pi { width: 13px; height: 13px; border-width: 1.5px; margin-bottom: 6px; box-shadow: 0 0 0 4px var(--group); }
+.pipe li.ok .pi { background: var(--green); border-color: var(--green); }
+.pipe li.ok .pi::after { left: 3.6px; top: 1.2px; width: 2.6px; height: 5.5px; border-width: 0 1.4px 1.4px 0; }
+.pipe li.warn .pi { background: var(--group); border-color: var(--amber); box-shadow: 0 0 0 4px var(--group); }
+.pipe li.warn .pi::after { content: ""; inset: 2.5px; border-radius: 50%; background: var(--amber); animation: breathe 2s ease-in-out infinite; }
+@keyframes breathe { 50% { transform: scale(.55); opacity: .6; } }
+.pipe li.idle .pi { border-style: dashed; }
+.pipe .pn { font-weight: 500; font-size: 12px; letter-spacing: -.005em; }
+.pipe li.warn .pn { font-weight: 600; }
+.pipe .pm { font-size: 10.5px; }
+.pipe li.warn .pm { font-weight: 500; }
+/* softer chips and badges */
+.count, .badge { background: color-mix(in srgb, var(--amber) 16%, transparent) !important; color: var(--amber) !important; }
+.start { background: color-mix(in srgb, var(--cat) 14%, transparent); color: var(--cat); }
+.map .cnt circle { fill: var(--amber); }
+@media (prefers-reduced-motion: reduce) { .pipe li.warn .pi::after { animation: none; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
