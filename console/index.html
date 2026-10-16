@@ -200,6 +200,28 @@ dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 [hidden] { display: none !important; }
+.toolbar { gap: 16px; }
+.crumbs { display: flex; gap: 8px; align-items: center; color: var(--label-3); font-size: 13px; margin-right: auto; }
+.crumbs b { color: var(--label); font-weight: 600; }
+.crumbs .sep { opacity: .5; }
+.search { flex: 0 1 300px; }
+.search kbd { font: 500 11px var(--font); color: var(--label-3); border: 1px solid var(--hair); border-radius: 5px; padding: 0 5px; }
+.sync { display: inline-flex; align-items: center; gap: 7px; color: var(--label-3); font-size: 12px; white-space: nowrap; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+.av { width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; font: 600 12px var(--font); color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--progress-text)); flex: none; }
+.av-lg { width: 44px; height: 44px; font-size: 15px; }
+.me { border-radius: 50%; }
+.who-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.who-name { font: 600 17px/1.2 var(--display); letter-spacing: -.01em; }
+.who-role { color: var(--label-2); font-size: 13px; margin-top: 2px; }
+.who-status { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 999px; font-weight: 500; font-size: 12.5px;
+  background: var(--glass); border: 1px solid var(--glass-edge); color: var(--label-2); }
+.pill b { color: var(--label); font-weight: 600; }
+.pill .d { width: 7px; height: 7px; border-radius: 50%; }
+.count { font: 600 12px var(--font); background: var(--amber); color: #fff; border-radius: 999px; padding: 1px 8px; letter-spacing: 0; }
+@media (max-width: 760px) { .crumbs { display: none; } .sync { display: none; } .who-status { margin-left: 0; width: 100%; } }
 .queue { display: flex; flex-direction: column; gap: 12px; }
 .q { padding: 0; }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
@@ -274,15 +296,22 @@ a:hover { text-decoration: underline; }
 
   <main class="main"><div class="wrap">
     <div class="toolbar">
-      <label class="search" for="q"><svg width="14" height="14"><use href="#i-search"/></svg><input id="q" placeholder="Search" autocomplete="off"></label>
-      <span class="meta num" id="run-at"></span>
+      <nav class="crumbs" aria-label="Breadcrumb"><span>Primer Web</span><span class="sep">/</span><b id="crumb">Overview</b></nav>
+      <label class="search" for="q"><svg width="14" height="14"><use href="#i-search"/></svg><input id="q" placeholder="Search tokens, components" autocomplete="off"><kbd>⌘K</kbd></label>
+      <span class="sync"><span class="sync-dot"></span><span class="num" id="run-at"></span></span>
+      <button class="me" type="button" aria-label="Account: Debora Moratalla"><span class="av">DM</span></button>
     </div>
 
     <!-- OVERVIEW -->
     <div class="page" id="p-overview">
       <div class="wrap" style="gap:32px">
-        <section id="queue-sec">
-          <div class="sec-h">For you<small id="queue-note"></small></div>
+        <header class="who-bar">
+          <span class="av av-lg">DM</span>
+          <div class="who-txt"><div class="who-name">Debora Moratalla</div><div class="who-role">Design system lead · Primer Web</div></div>
+          <div class="who-status" id="who-status"></div>
+        </header>
+        <section id="queue-sec" hidden>
+          <div class="sec-h">Needs your review <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
           <div class="queue" id="queue"></div>
         </section>
         <div class="hero glass">
@@ -420,7 +449,7 @@ a:hover { text-decoration: underline; }
   const afterRepair = () => state === "repaired" || state === "decided";
   const callsOf = (k) => Object.entries(D.repair.calls).filter(([n]) => n.toLowerCase().includes(k)).reduce((a, [, u]) => a + u.calls, 0);
 
-  $("#run-at").textContent = "Last run " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  $("#run-at").textContent = "Synced " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
   function renderHero() {
     const r = report();
@@ -535,14 +564,25 @@ a:hover { text-decoration: underline; }
       <div class="q-head"><div><div class="t">${esc(i.title)}</div><div class="s">${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>
       ${body}<div class="q-actions">${actions}</div></div>`;
   }
+  function renderWho() {
+    const r = report(), open = (state === "repaired" || state === "decided") ? openItems().length : 0, bad = r.total - r.passed;
+    const p = (dot, html) => `<span class="pill"><span class="d" style="background:${dot}"></span>${html}</span>`;
+    $("#who-status").innerHTML = [
+      open ? p("var(--amber)", `<b>${open}</b> to review`) : p("var(--green)", "Nothing to review"),
+      bad ? p(state === "broken" ? "var(--red)" : "var(--amber)", `<b>${bad}</b> checks out of sync`) : p("var(--green)", "Certified"),
+      p("var(--label-3)", `${D.sources.length} sources connected`),
+    ].join("");
+  }
   function renderQueue() {
     const show = state === "repaired" || state === "decided";
-    $("#queue-sec").hidden = !show && !ITEMS.length;
+    $("#queue-sec").hidden = !show;
+    $("#queue-count").textContent = show ? openItems().length || "" : "";
+    $("#queue-count").hidden = !(show && openItems().length);
     const empty = `<div class="group"><div class="empty"><b>${state === "certified" ? "Nothing for you." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to see what it needs from you."}</div></div>`;
     $("#queue").innerHTML = show ? ITEMS.map((i) => itemHTML(i, false)).join("") : empty;
     $("#queue-full").innerHTML = show ? ITEMS.map((i) => itemHTML(i, true)).join("") : empty;
     const open = show ? openItems().length : 0;
-    $("#queue-note").textContent = show ? (open ? `${open} open` : "All answered") : "";
+    $("#queue-note").textContent = show && !open ? "All answered" : "";
     $("#nav-count").textContent = open; $("#nav-count").hidden = !open;
     document.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
       if (b.dataset.answer) answers[b.dataset.item] = b.dataset.answer; else delete answers[b.dataset.item];
@@ -653,7 +693,7 @@ a:hover { text-decoration: underline; }
       <div class="v num">${s.count.toLocaleString()} ${esc(s.unit)}</div></div>`).join("");
   }
 
-  function render() { renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  function render() { renderWho(); renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   document.querySelectorAll(".segmented button").forEach((b) => b.addEventListener("click", () => {
     state = b.dataset.state;
     for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
@@ -665,6 +705,7 @@ a:hover { text-decoration: underline; }
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
+    $("#crumb").textContent = p[0].toUpperCase() + p.slice(1);
     document.querySelectorAll(".nav button").forEach((b) => { if (b.dataset.page === p) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     try { localStorage.setItem("dslab-page", p); } catch {}
   }
