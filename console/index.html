@@ -299,14 +299,14 @@ a:hover { text-decoration: underline; }
       <nav class="crumbs" aria-label="Breadcrumb"><span>Primer Web</span><span class="sep">/</span><b id="crumb">Overview</b></nav>
       <label class="search" for="q"><svg width="14" height="14"><use href="#i-search"/></svg><input id="q" placeholder="Search tokens, components" autocomplete="off"><kbd>⌘K</kbd></label>
       <span class="sync"><span class="sync-dot"></span><span class="num" id="run-at"></span></span>
-      <button class="me" type="button" aria-label="Account: Debora Moratalla"><span class="av">DM</span></button>
     </div>
 
     <!-- OVERVIEW -->
     <div class="page" id="p-overview">
       <div class="wrap" style="gap:32px">
         <header class="who-bar">
-          <div class="who-txt"><div class="who-name">Good evening, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
+          <span class="av av-lg" aria-hidden="true">DM</span>
+          <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
           <div class="who-status" id="who-status"></div>
         </header>
         <section id="queue-sec" hidden>
@@ -563,6 +563,7 @@ a:hover { text-decoration: underline; }
       <div class="q-head"><div><div class="t">${esc(i.title)}</div><div class="s">${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>
       ${body}<div class="q-actions">${actions}</div></div>`;
   }
+  { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   function renderWho() {
     const r = report(), open = (state === "repaired" || state === "decided") ? openItems().length : 0, bad = r.total - r.passed;
     const p = (dot, html) => `<span class="pill"><span class="d" style="background:${dot}"></span>${html}</span>`;
