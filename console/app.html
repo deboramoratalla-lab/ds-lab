@@ -218,6 +218,7 @@ dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 [hidden] { display: none !important; }
+.st.static { cursor: default; } .st.static:hover { transform: none; } .st:disabled { color: inherit; opacity: 1; }
 /* run: a 4-stage pipeline you can scrub or play */
 .run { display: flex; flex-direction: column; gap: 14px; }
 .run-top { display: flex; align-items: flex-end; gap: 12px; }
@@ -424,7 +425,7 @@ a:hover { text-decoration: underline; }
         </header>
         <section class="run" aria-label="Run replay">
           <div class="run-top">
-            <div><div class="run-label">Latest run</div><div class="run-title">From certified to certified again <span class="mono run-id" id="run-id"></span></div></div>
+            <div><div class="run-label">Latest run</div><div class="run-title"><span id="run-headline">From certified to certified again</span> <span class="mono run-id" id="run-id"></span></div></div>
             <button class="play" id="play" type="button" aria-pressed="false"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg><span id="play-txt">Play run</span></button>
           </div>
           <div class="stepper" role="tablist" aria-label="Steps of this run">
@@ -561,7 +562,10 @@ a:hover { text-decoration: underline; }
   const answered = (i) => !!answers[i.id];
   const openItems = () => ITEMS.filter((i) => !answered(i));
   const STATES = ["certified", "broken", "repaired", "decided"];
-  let state = "certified";
+  // Demo mode (#demo in the link): the run can be replayed step by step for presentations.
+  // Normal mode: the console always shows the current state; the run is a read-only summary.
+  const DEMO = location.hash === "#demo";
+  let state = DEMO ? "certified" : "repaired";
   const decidedSide = () => DEC ? answers[DEC.id] : null;
   const allApproved = () => ITEMS.every((i) => i.kind === "decide" ? answered(i) : answers[i.id] === "approve");
   const report = () => state === "certified" ? D.certified : state === "broken" ? D.broken
@@ -584,24 +588,33 @@ a:hover { text-decoration: underline; }
     const copy = {
       certified: ["Everything agrees.", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: ["Five changes landed.", `Designers and engineers each changed something on their side. ${r.total - r.passed} checks now disagree.`],
-      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is waiting for you below."],
+      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is waiting for your review below."],
       decided: [r.passed === r.total ? "Certified again." : "Answered.", r.passed === r.total ? `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decidedSide() === "figma" ? "Figma" : "code"} value.${undone.size ? ` ${undone.size} undone change${undone.size > 1 ? "s" : ""} will reopen on the next sync.` : ""}` : `${r.total - r.passed} checks stay open because of what you rejected or undid. They'll be checked again on the next sync.`],
     }[state];
-    $("#hero-eyebrow").textContent = `System health · step ${STATES.indexOf(state) + 1} of 4`;
-    $("#run-cap").innerHTML = {
+    $("#hero-eyebrow").textContent = DEMO ? `System health · step ${STATES.indexOf(state) + 1} of 4` : "System health · now";
+    if (!DEMO) {
+      const open = openItems().length;
+      $("#run-headline").textContent = open ? `${D.breaks.length} changes synced, ${open} waiting for you` : "Certified again";
+      $("#run-cap").innerHTML = open
+        ? `<b>Last sync.</b> ${D.breaks.length} changes landed in Figma and code. The agent fixed ${D.repair.actions.filter((a) => a.side !== "person").length} and sent ${ITEMS.length} to you. ${open} still waiting below.`
+        : `<b>Last sync.</b> ${D.breaks.length} changes landed, the agent fixed what it was sure about and you answered the rest. Certified again.`;
+    } else $("#run-cap").innerHTML = {
       certified: "<b>Before.</b> Figma, code, Storybook and docs agree. Pick a step or press play: the whole page follows it.",
       broken: "<b>Changes land.</b> Designers and engineers change things on their side. The map and checks below go red.",
       repaired: "<b>The agent repairs.</b> It applies what it's sure about and sends the rest to your review below.",
       decided: "<b>You review.</b> You answer the three items. The system is certified again.",
     }[state];
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
-    document.querySelectorAll(".stepper .st").forEach((b, k) => { b.setAttribute("aria-pressed", String(b.dataset.state === state)); b.classList.toggle("done", k < STATES.indexOf(state)); });
-    $("#track-fill").style.width = ((STATES.indexOf(state) + 1) / 4 * 100) + "%";
+    // in normal mode the run is finished up to "You review": that stage is the live one
+    const cur = DEMO ? state : "decided", curI = STATES.indexOf(cur), finished = !DEMO && !openItems().length;
+    document.querySelectorAll(".stepper .st").forEach((b, k) => { b.setAttribute("aria-pressed", String(b.dataset.state === cur && !finished)); b.classList.toggle("done", k < curI || finished); });
+    $("#track-fill").style.width = DEMO ? ((STATES.indexOf(state) + 1) / 4 * 100) + "%" : (finished ? "100%" : "87.5%");
     const off = (x) => x.total - x.passed, fin = D.decisions[tok]?.code || D.repaired;
     $("#m-certified").textContent = "100%"; $("#d-certified").textContent = `${D.certified.passed.toLocaleString()} checks agree`;
     $("#m-broken").textContent = `${off(D.broken)} off`; $("#d-broken").textContent = `${D.breaks.length} changes in Figma and code`;
     $("#m-repaired").textContent = `${D.repair.actions.filter((a) => a.side !== "person").length} fixed`; $("#d-repaired").textContent = `${ITEMS.length} sent to you · ${(D.repair.ms / 1000).toFixed(0)} s`;
-    $("#m-decided").textContent = off(fin) ? `${off(fin)} off` : "100%"; $("#d-decided").textContent = `${ITEMS.length} decisions · certified again`;
+    if (DEMO) { $("#m-decided").textContent = off(fin) ? `${off(fin)} off` : "100%"; $("#d-decided").textContent = `${ITEMS.length} decisions · certified again`; }
+    else { const o = openItems().length; $("#m-decided").textContent = o ? `${o} waiting` : "100%"; $("#d-decided").textContent = o ? "Your review, below" : "Certified again"; }
   }
 
   // Sync map: the four sources orbit the agent; arcs carry pulses toward it (changes coming in)
@@ -867,6 +880,7 @@ a:hover { text-decoration: underline; }
 
   function render() { renderWho(); renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   document.querySelectorAll(".stepper .st").forEach((b) => b.addEventListener("click", () => {
+    if (!DEMO) return;
     stopPlay();
     state = b.dataset.state;
     for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
@@ -896,7 +910,8 @@ a:hover { text-decoration: underline; }
     try { localStorage.setItem("dslab-page", p); } catch {}
   }
   document.querySelectorAll(".nav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.page)));
-  let start = location.hash.slice(1);
+  let start = DEMO ? "" : location.hash.slice(1);
+  if (!DEMO) { $("#play").hidden = true; document.querySelectorAll(".stepper .st").forEach((b) => { b.disabled = true; b.classList.add("static"); b.removeAttribute("role"); }); $(".stepper").removeAttribute("role"); $(".run-label").textContent = "Last sync"; }
   if (!start) { try { start = localStorage.getItem("dslab-page") || ""; } catch {} }
 
   const tb = $("#theme-btn");
