@@ -1,4 +1,6 @@
 <title>DS Lab Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: macOS-style app on a living gradient. Frosted-glass sidebar and groups; a sync map of the four sources leads.
    Taste: docs/designpowers/taste/2026-10-07-ds-lab-console-taste.md. Neutral first; purple = action, cyan = progress. */
@@ -17,6 +19,7 @@
   --progress-text: #127a75;
   --track: rgba(118, 118, 128, .16);
   --seg-on: #ffffff;
+  --group-bg: rgba(255, 255, 255, .78);
   --glass: rgba(255, 255, 255, .55);
   --glass-strong: rgba(255, 255, 255, .72);
   --glass-edge: rgba(255, 255, 255, .85);
@@ -32,13 +35,13 @@
   --green: #1b8a3a;
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
   --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
-  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --ground: #050f1e; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
     --label: #f5f7fa; --label-2: rgba(235, 240, 245, .66); --label-3: rgba(235, 240, 245, .4); --side: rgba(12, 30, 50, .72);
-    --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.18); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
+    --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.14); --group-bg: rgba(16, 35, 58, .72); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
     --red: #ff6961; --red-soft: rgba(255, 105, 97, .14); --amber: #ffb340; --amber-soft: rgba(255, 179, 64, .16); --green: #30d158;
     color-scheme: dark;
   }
@@ -46,7 +49,7 @@
 :root[data-theme="dark"] {
   --ground: #050f1e; --group: #10233a; --fill: rgba(118, 118, 128, .24); --hair: rgba(235, 235, 245, .12);
   --label: #f5f7fa; --label-2: rgba(235, 240, 245, .66); --label-3: rgba(235, 240, 245, .4); --side: rgba(12, 30, 50, .72);
-  --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.18); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
+  --accent: #a98ef0; --accent-soft: rgba(169, 142, 240, .16); --progress: #2ee6e0; --progress-text: #2ee6e0; --track: rgba(118, 118, 128, .3); --seg-on: rgba(255,255,255,.14); --group-bg: rgba(16, 35, 58, .72); --glass: rgba(22, 44, 72, .45); --glass-strong: rgba(26, 50, 82, .62); --glass-edge: rgba(255,255,255,.16); --glass-line: rgba(255,255,255,.08); --glass-shadow: 0 1px 0 rgba(255,255,255,.12) inset, 0 30px 60px -20px rgba(0,0,0,.6); --blob-a: #5b34c9; --blob-b: #0fb5b0; --blob-c: #1b4d9e; --blob-d: #8a2fb8; --node: rgba(20, 42, 70, .94); --edge-ok: #2ee6e0; --edge-glow: rgba(46, 230, 224, .6);
   --red: #ff6961; --red-soft: rgba(255, 105, 97, .14); --amber: #ffb340; --amber-soft: rgba(255, 179, 64, .16); --green: #30d158;
   color-scheme: dark;
 }
@@ -138,7 +141,7 @@ section > h2, .sec-h { font: 600 20px/1.2 var(--display); letter-spacing: -.015e
 .sec-h small { margin-left: auto; font: 400 13px var(--font); color: var(--label-3); letter-spacing: 0; }
 .footnote { color: var(--label-3); font-size: 12px; margin: 8px 4px 0; }
 
-.group, .glass { background: var(--glass); border-radius: 20px; overflow: hidden; position: relative;
+.group, .glass { background: var(--group-bg); border-radius: 14px; overflow: hidden; position: relative;
   backdrop-filter: blur(28px) saturate(170%); -webkit-backdrop-filter: blur(28px) saturate(170%);
   border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow); }
 .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 12px 16px; position: relative; }
@@ -213,6 +216,30 @@ dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 [hidden] { display: none !important; }
+/* run replay: one global control, sticky, says what it drives */
+.runbar { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 10px); z-index: 5; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 16px; align-items: center;
+  padding: 8px 10px 8px 16px; border-radius: 14px; background: var(--glass); border: 1px solid var(--glass-edge);
+  backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%); box-shadow: 0 8px 30px -18px rgba(11, 34, 57, .35); }
+.run-meta { display: flex; flex-direction: column; gap: 2px; }
+.run-label { font: 600 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--label-3); }
+.run-id { font-size: 12px; color: var(--label-2); }
+.runbar .segmented { margin-top: 0; }
+.run-cap { color: var(--label-2); font-size: 12.5px; text-align: right; }
+.run-cap b { color: var(--label); font-weight: 600; }
+/* status: flat, no card */
+.ov-status { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; padding-top: 8px; }
+.kpi-main { display: flex; align-items: baseline; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.kpi-main .bignum { margin: 0; font-family: var(--mono); font-weight: 600; letter-spacing: -.04em; }
+/* figures: flat strip with hairlines */
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.figure { padding: 16px 16px 16px 0; }
+.figure + .figure { padding-left: 20px; }
+.figure + .figure::before { top: 16px; bottom: 16px; }
+.figure .k { font: 600 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--label-3); }
+.figure .n { font-family: var(--mono); font-weight: 600; font-size: 28px; letter-spacing: -.03em; }
+.sec-h { font-size: 17px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 980px) { .runbar { grid-template-columns: minmax(0, 1fr); } .run-cap { text-align: left; } .ov-status { grid-template-columns: minmax(0, 1fr); } }
 .toolbar { gap: 16px; }
 .crumbs { display: flex; gap: 8px; align-items: center; color: var(--label-3); font-size: 13px; margin-right: auto; }
 .crumbs b { color: var(--label); font-weight: 600; }
@@ -225,7 +252,7 @@ a:hover { text-decoration: underline; }
   background: linear-gradient(135deg, var(--accent), var(--progress-text)); flex: none; }
 .av-lg { width: 44px; height: 44px; font-size: 15px; }
 .me { border-radius: 50%; }
-.who-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.who-bar { padding-bottom: 4px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .who-name { font: 600 17px/1.2 var(--display); letter-spacing: -.01em; }
 .who-role { color: var(--label-2); font-size: 13px; margin-top: 2px; }
 .who-status { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
@@ -322,24 +349,29 @@ a:hover { text-decoration: underline; }
           <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
           <div class="who-status" id="who-status"></div>
         </header>
-        <div class="hero glass">
+        <div class="runbar" role="region" aria-label="Run replay">
+          <div class="run-meta"><span class="run-label">Run replay</span><span class="mono run-id" id="run-id"></span></div>
+          <div class="segmented" role="group" aria-label="Replay this run">
+            <span class="thumb" aria-hidden="true"></span>
+            <button data-state="certified" aria-pressed="true"><span class="n">1</span>Certified</button>
+            <button data-state="broken" aria-pressed="false"><span class="n">2</span>Changes land</button>
+            <button data-state="repaired" aria-pressed="false"><span class="n">3</span>Agent repairs</button>
+            <button data-state="decided" aria-pressed="false"><span class="n">4</span>You decide</button>
+          </div>
+          <div class="run-cap" id="run-cap"></div>
+        </div>
+
+        <div class="ov-status">
           <div>
             <div class="eyebrow" id="hero-eyebrow">Primer Web</div>
             <h1 id="hero-title">Everything agrees.</h1>
             <p class="lede" id="hero-sub"></p>
-            <div class="bignum num" id="bignum">1,517</div><div class="bigcap" id="bigcap">checks agree</div>
-            <div class="segmented" role="group" aria-label="Replay this run">
-              <span class="thumb" aria-hidden="true"></span>
-              <button data-state="certified" aria-pressed="true"><span class="n">1</span>Certified</button>
-              <button data-state="broken" aria-pressed="false"><span class="n">2</span>Changes land</button>
-              <button data-state="repaired" aria-pressed="false"><span class="n">3</span>Agent repairs</button>
-              <button data-state="decided" aria-pressed="false"><span class="n">4</span>You decide</button>
-            </div>
+            <div class="kpi-main"><span class="bignum num" id="bignum">1,517</span><span class="bigcap" id="bigcap">checks agree</span></div>
           </div>
           <svg class="map" id="map" viewBox="40 40 440 280" role="img" aria-label="Sync between Figma, code, Storybook and docs"></svg>
         </div>
 
-        <div class="group figures" id="figures"></div>
+        <div class="figures" id="figures"></div>
 
         <section id="queue-sec" hidden>
           <div class="sec-h">Needs your review <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
@@ -463,6 +495,7 @@ a:hover { text-decoration: underline; }
   const afterRepair = () => state === "repaired" || state === "decided";
   const callsOf = (k) => Object.entries(D.repair.calls).filter(([n]) => n.toLowerCase().includes(k)).reduce((a, [, u]) => a + u.calls, 0);
 
+  $("#run-id").textContent = "#" + D.generatedAt.replace(/\D/g, "").slice(2, 10) + " · " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   $("#run-at").textContent = "Synced " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
   function renderHero() {
@@ -478,7 +511,13 @@ a:hover { text-decoration: underline; }
       repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is waiting for you below."],
       decided: [r.passed === r.total ? "Certified again." : "Answered.", r.passed === r.total ? `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decidedSide() === "figma" ? "Figma" : "code"} value.${undone.size ? ` ${undone.size} undone change${undone.size > 1 ? "s" : ""} will reopen on the next sync.` : ""}` : `${r.total - r.passed} checks stay open because of what you rejected or undid. They'll be checked again on the next sync.`],
     }[state];
-    $("#hero-eyebrow").textContent = `Primer Web · step ${STATES.indexOf(state) + 1} of 4`;
+    $("#hero-eyebrow").textContent = `System health · step ${STATES.indexOf(state) + 1} of 4`;
+    $("#run-cap").innerHTML = {
+      certified: "<b>Step 1.</b> The last certified state. Everything below follows the step you pick.",
+      broken: "<b>Step 2.</b> Five changes land in Figma and code. Checks, map and changes update below.",
+      repaired: "<b>Step 3.</b> The agent applies what it's sure about and queues the rest for you.",
+      decided: "<b>Step 4.</b> You answered the queue. The system is certified again.",
+    }[state];
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
     document.querySelectorAll(".segmented button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
     moveThumb();
