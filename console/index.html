@@ -598,7 +598,6 @@ body::before, body::after { display: none !important; }
             <div class="cv-map"><svg class="map" id="map" viewBox="0 10 520 320" role="img" aria-label="The agent between Figma, code, Storybook and docs"></svg></div>
             <div class="cv-log"><div class="log-h"><span>Agent log</span><span class="mono" id="log-n"></span></div><ol class="log" id="log" aria-live="polite"></ol></div>
           </div>
-          <ol class="pipe" id="pipe" aria-label="Steps of the last sync"></ol>
         </section>
 
         <section id="queue-sec" hidden>
@@ -776,7 +775,7 @@ body::before, body::after { display: none !important; }
       ["Your review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
       ["Certify", state === "decided" && !bad ? "ok" : state === "certified" ? "ok" : "idle", state === "decided" && !bad ? "100%" : state === "certified" ? "100%" : "—"],
     ];
-    $("#pipe").innerHTML = P.map(([n, st, m]) => `<li class="${st}"><span class="pi"></span><span class="pn">${n}</span><span class="pm mono">${m}</span></li>`).join("");
+    if ($("#pipe")) $("#pipe").innerHTML = P.map(([n, st, m]) => `<li class="${st}"><span class="pi"></span><span class="pn">${n}</span><span class="pm mono">${m}</span></li>`).join("");
     if (DEMO) {
       $("#cv-right").innerHTML = `<span class="demo-tag mono">demo</span>` + STATES.map((x, k) => `<button class="dbtn${x === state ? " on" : ""}" data-demo="${x}">${["Before", "Changes", "Agent", "You"][k]}</button>`).join("");
       document.querySelectorAll("[data-demo]").forEach((b) => b.addEventListener("click", () => setState(b.dataset.demo)));
