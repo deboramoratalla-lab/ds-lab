@@ -218,6 +218,50 @@ dl.kv dt:first-of-type, dl.kv dt:first-of-type + dd { border-top: 0; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 [hidden] { display: none !important; }
+/* run: a 4-stage pipeline you can scrub or play */
+.run { display: flex; flex-direction: column; gap: 14px; }
+.run-top { display: flex; align-items: flex-end; gap: 12px; }
+.run-label { font: 600 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--label-3); }
+.run-title { font: 600 17px/1.3 var(--display); letter-spacing: -.01em; margin-top: 3px; }
+.run-title .run-id { font-size: 12px; font-weight: 400; color: var(--label-3); margin-left: 6px; }
+.play { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px 0 11px; border-radius: 999px;
+  background: var(--label); color: var(--ground); font-weight: 600; font-size: 12.5px; transition: transform .15s; }
+.play:hover { transform: translateY(-1px); }
+.play svg { width: 14px; height: 14px; }
+.play .i-pause, .play[aria-pressed="true"] .i-play { display: none; }
+.play[aria-pressed="true"] .i-pause { display: block; }
+.stepper { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 8px; }
+.track { position: absolute; left: 0; right: 0; bottom: -8px; height: 3px; background: var(--hair); border-radius: 3px; overflow: hidden; }
+.st:not(:last-of-type)::after { content: ""; position: absolute; right: -10px; top: 50%; width: 8px; height: 8px; border-top: 1.5px solid var(--label-3); border-right: 1.5px solid var(--label-3);
+  transform: translateY(-50%) rotate(45deg); opacity: .6; z-index: 2; }
+.track i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--red), var(--amber), var(--accent)); background-size: 300% 100%;
+  transition: width .6s cubic-bezier(.2, .8, .2, 1); }
+.st { position: relative; text-align: left; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "dot k" "dot t" "m m" "d d"; gap: 2px 12px;
+  padding: 14px 16px 16px; border-radius: 14px; background: var(--group-bg); border: 1px solid var(--hair); transition: border-color .25s, box-shadow .25s, transform .25s, background .25s; }
+.st:hover { transform: translateY(-2px); }
+.st .dot { grid-area: dot; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--fill); color: var(--label-2);
+  position: relative; z-index: 1; transition: background .3s, color .3s, box-shadow .3s; }
+.st .dot svg { width: 18px; height: 18px; }
+.st-k { grid-area: k; font: 600 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--label-3); align-self: end; }
+.st-t { grid-area: t; font-weight: 600; font-size: 14px; color: var(--label); }
+.st-m { grid-area: m; margin-top: 12px; font-size: 24px; font-weight: 600; letter-spacing: -.03em; color: var(--label-2); transition: color .3s; }
+.st-d { grid-area: d; font-size: 12px; color: var(--label-3); }
+.st.done .dot { background: color-mix(in srgb, var(--step-c) 14%, transparent); color: var(--step-c); }
+.st[aria-pressed="true"] { border-color: color-mix(in srgb, var(--step-c) 55%, transparent); background: var(--seg-on);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--step-c) 12%, transparent), 0 14px 30px -18px color-mix(in srgb, var(--step-c) 80%, transparent); }
+.st[aria-pressed="true"] .dot { background: var(--step-c); color: #fff; box-shadow: 0 6px 16px -6px var(--step-c); }
+.st[aria-pressed="true"] .st-m { color: var(--step-c); }
+.st[aria-pressed="true"] .dot::after { content: ""; position: absolute; inset: -5px; border-radius: 15px; border: 1.5px solid var(--step-c); opacity: 0; animation: ping 1.8s ease-out infinite; }
+@keyframes ping { 0% { opacity: .6; transform: scale(.85); } 100% { opacity: 0; transform: scale(1.25); } }
+.st[data-state="certified"] { --step-c: var(--green); }
+.st[data-state="broken"] { --step-c: var(--red); }
+.st[data-state="repaired"] { --step-c: var(--amber); }
+.st[data-state="decided"] { --step-c: var(--accent); }
+.run-cap { margin: 0; color: var(--label-2); font-size: 13px; }
+.run-cap b { color: var(--label); font-weight: 600; }
+@media (max-width: 900px) { .stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); } .track, .st::after { display: none; } }
+@media (max-width: 480px) { .stepper { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .st[aria-pressed="true"] .dot::after { animation: none; } }
 .map .arc-base { fill: none; stroke: var(--hair); stroke-width: 1.5; }
 .map .arc { fill: none; stroke-width: 2; stroke-linecap: round; transition: stroke .4s; }
 .map .arc.bad { stroke-dasharray: 5 5; animation: dash 1s linear infinite; }
@@ -378,17 +422,20 @@ a:hover { text-decoration: underline; }
           <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
           <div class="who-status" id="who-status"></div>
         </header>
-        <div class="runbar" role="region" aria-label="Run replay">
-          <div class="run-meta"><span class="run-label">Run replay</span><span class="mono run-id" id="run-id"></span></div>
-          <div class="segmented" role="group" aria-label="Replay this run">
-            <span class="thumb" aria-hidden="true"></span>
-            <button data-state="certified" aria-pressed="true"><svg><use href="#i-shield"/></svg>Certified<span class="bd" id="bd-certified"></span></button>
-            <button data-state="broken" aria-pressed="false"><svg><use href="#i-split"/></svg>Changes<span class="bd" id="bd-broken"></span></button>
-            <button data-state="repaired" aria-pressed="false"><svg><use href="#i-sparkle"/></svg>Agent<span class="bd" id="bd-repaired"></span></button>
-            <button data-state="decided" aria-pressed="false"><svg><use href="#i-user"/></svg>Your review<span class="bd" id="bd-decided"></span></button>
+        <section class="run" aria-label="Run replay">
+          <div class="run-top">
+            <div><div class="run-label">Latest run</div><div class="run-title">From certified to certified again <span class="mono run-id" id="run-id"></span></div></div>
+            <button class="play" id="play" type="button" aria-pressed="false"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg><span id="play-txt">Play run</span></button>
           </div>
-          <div class="run-cap" id="run-cap"></div>
-        </div>
+          <div class="stepper" role="tablist" aria-label="Steps of this run">
+            <div class="track" aria-hidden="true"><i id="track-fill"></i></div>
+            <button class="st" role="tab" data-state="certified" aria-pressed="true"><span class="dot"><svg><use href="#i-shield"/></svg></span><span class="st-k">01 · Before</span><span class="st-t">Certified</span><span class="st-m mono" id="m-certified"></span><span class="st-d" id="d-certified"></span></button>
+            <button class="st" role="tab" data-state="broken" aria-pressed="false"><span class="dot"><svg><use href="#i-split"/></svg></span><span class="st-k">02 · Changes</span><span class="st-t">Changes land</span><span class="st-m mono" id="m-broken"></span><span class="st-d" id="d-broken"></span></button>
+            <button class="st" role="tab" data-state="repaired" aria-pressed="false"><span class="dot"><svg><use href="#i-sparkle"/></svg></span><span class="st-k">03 · Agent</span><span class="st-t">Agent repairs</span><span class="st-m mono" id="m-repaired"></span><span class="st-d" id="d-repaired"></span></button>
+            <button class="st" role="tab" data-state="decided" aria-pressed="false"><span class="dot"><svg><use href="#i-user"/></svg></span><span class="st-k">04 · You</span><span class="st-t">You review</span><span class="st-m mono" id="m-decided"></span><span class="st-d" id="d-decided"></span></button>
+          </div>
+          <p class="run-cap" id="run-cap"></p>
+        </section>
 
         <div class="ov-status">
           <div>
@@ -542,17 +589,19 @@ a:hover { text-decoration: underline; }
     }[state];
     $("#hero-eyebrow").textContent = `System health · step ${STATES.indexOf(state) + 1} of 4`;
     $("#run-cap").innerHTML = {
-      certified: "<b>Step 1.</b> The last certified state. Everything below follows the step you pick.",
-      broken: "<b>Step 2.</b> Five changes land in Figma and code. Checks, map and changes update below.",
-      repaired: "<b>Step 3.</b> The agent applies what it's sure about and queues the rest for you.",
-      decided: "<b>Step 4.</b> You answered the queue. The system is certified again.",
+      certified: "<b>Before.</b> Figma, code, Storybook and docs agree. Pick a step or press play: the whole page follows it.",
+      broken: "<b>Changes land.</b> Designers and engineers change things on their side. The map and checks below go red.",
+      repaired: "<b>The agent repairs.</b> It applies what it's sure about and sends the rest to your review below.",
+      decided: "<b>You review.</b> You answer the three items. The system is certified again.",
     }[state];
     $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
-    document.querySelectorAll(".segmented button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
-    $("#bd-broken").textContent = D.breaks.length;
-    $("#bd-repaired").textContent = D.repair.actions.filter((a) => a.side !== "person").length;
-    $("#bd-decided").textContent = ITEMS.length;
-    moveThumb();
+    document.querySelectorAll(".stepper .st").forEach((b, k) => { b.setAttribute("aria-pressed", String(b.dataset.state === state)); b.classList.toggle("done", k < STATES.indexOf(state)); });
+    $("#track-fill").style.width = ((STATES.indexOf(state) + 1) / 4 * 100) + "%";
+    const off = (x) => x.total - x.passed, fin = D.decisions[tok]?.code || D.repaired;
+    $("#m-certified").textContent = "100%"; $("#d-certified").textContent = `${D.certified.passed.toLocaleString()} checks agree`;
+    $("#m-broken").textContent = `${off(D.broken)} off`; $("#d-broken").textContent = `${D.breaks.length} changes in Figma and code`;
+    $("#m-repaired").textContent = `${D.repair.actions.filter((a) => a.side !== "person").length} fixed`; $("#d-repaired").textContent = `${ITEMS.length} sent to you · ${(D.repair.ms / 1000).toFixed(0)} s`;
+    $("#m-decided").textContent = off(fin) ? `${off(fin)} off` : "100%"; $("#d-decided").textContent = `${ITEMS.length} decisions · certified again`;
   }
 
   // Sync map: the four sources orbit the agent; arcs carry pulses toward it (changes coming in)
@@ -687,14 +736,6 @@ a:hover { text-decoration: underline; }
       ${body}<div class="q-actions">${actions}</div></div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
-  function moveThumb() {
-    const seg = $(".segmented"), on = seg?.querySelector('[aria-pressed="true"]'), t = seg?.querySelector(".thumb");
-    if (!on || !t) return;
-    const c = getComputedStyle(on).getPropertyValue("--step-c").trim();
-    t.style.width = on.offsetWidth + "px"; t.style.transform = `translate(${on.offsetLeft}px, 0)`;
-
-  }
-  addEventListener("resize", moveThumb);
   function renderWho() {
     const r = report(), open = (state === "repaired" || state === "decided") ? openItems().length : 0, bad = r.total - r.passed;
     const p = (dot, html) => `<span class="pill"><span class="d" style="background:${dot}"></span>${html}</span>`;
@@ -825,13 +866,27 @@ a:hover { text-decoration: underline; }
   }
 
   function render() { renderWho(); renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
-  document.querySelectorAll(".segmented button").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll(".stepper .st").forEach((b) => b.addEventListener("click", () => {
+    stopPlay();
     state = b.dataset.state;
     for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
     render();
   }));
 
+  let timer = null;
+  function setState(st) {
+    state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
+    if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
+    render();
+  }
+  function stopPlay() { clearInterval(timer); timer = null; $("#play").setAttribute("aria-pressed", "false"); $("#play-txt").textContent = "Play run"; }
+  $("#play").addEventListener("click", () => {
+    if (timer) return stopPlay();
+    $("#play").setAttribute("aria-pressed", "true"); $("#play-txt").textContent = "Pause";
+    setState("certified");
+    timer = setInterval(() => { const n = STATES.indexOf(state) + 1; if (n >= STATES.length) return stopPlay(); setState(STATES[n]); }, 2600);
+  });
   const pages = ["overview", "activity", "decisions", "lab", "metrics", "sources"];
   function go(p) {
     if (!pages.includes(p)) p = "overview";

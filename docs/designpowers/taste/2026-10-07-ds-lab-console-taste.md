@@ -27,3 +27,10 @@ Calm control. The design-system lead opens it and knows in two seconds whether t
 Navy = text and dark mode ground. Purple = actions/selection. Cyan = progress (darkest shade for text on white). Semantic red/amber separate.
 
 Quality level: production for the hackathon demo.
+
+## Update 2026-10-16 (user direction)
+- Less "fake": real app chrome (breadcrumb, search, sync status, one avatar next to the greeting).
+- Not too much gradient; no "AI-looking" circular diagrams. Straight or purposeful curves only.
+- References: shadcn tabs (icon + label + count badge), Framer connection globe (arcs with travelling pulses) without the globe.
+- Steps must read as a story: a playable 4-stage pipeline with outcome metrics, colour per stage, motion that explains (progress, pulses), not decorates.
+- Technical feel: mono for figures, IDs and small labels.
