@@ -1,6 +1,6 @@
 <title>DS Lab Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: macOS-style app on a living gradient. Frosted-glass sidebar and groups; a sync map of the four sources leads.
    Taste: docs/designpowers/taste/2026-10-07-ds-lab-console-taste.md. Neutral first; purple = action, cyan = progress. */
@@ -368,6 +368,92 @@ a:hover { text-decoration: underline; }
   dl.kv dd { border-top: 0; padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ===== Vercel direction (2026-10-16): neutral, hairlines, Geist, grid canvas ===== */
+:root {
+  --ground: #fafafa; --group: #ffffff; --group-bg: #ffffff; --fill: #f2f2f2; --hair: #eaeaea; --seg-on: #ffffff;
+  --label: #0a0a0a; --label-2: #666666; --label-3: #8f8f8f; --side: #ffffff;
+  --glass: #ffffff; --glass-strong: #ffffff; --glass-edge: #eaeaea; --glass-line: #f5f5f5; --glass-shadow: none; --node: #ffffff;
+  --accent: #7c3aed; --accent-soft: rgba(124, 58, 237, .08); --progress: #0a0a0a; --progress-text: #0a0a0a; --edge-ok: #0a0a0a;
+  --green: #0a8a3a; --amber: #c25d00; --red: #e00;
+  --font: "Geist", -apple-system, system-ui, sans-serif; --display: "Geist", -apple-system, system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --blob-o: 0;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ground: #000000; --group: #0a0a0a; --group-bg: #0a0a0a; --fill: #1a1a1a; --hair: #232323; --seg-on: #1f1f1f;
+  --label: #ededed; --label-2: #a1a1a1; --label-3: #6e6e6e; --side: #000000;
+  --glass: #0a0a0a; --glass-strong: #0a0a0a; --glass-edge: #232323; --glass-line: #111; --node: #0a0a0a;
+  --accent: #a78bfa; --accent-soft: rgba(167, 139, 250, .12); --progress: #ededed; --progress-text: #ededed; --edge-ok: #ededed;
+  --green: #3fd68a; --amber: #ffb224; --red: #ff6166; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --ground: #000000; --group: #0a0a0a; --group-bg: #0a0a0a; --fill: #1a1a1a; --hair: #232323; --seg-on: #1f1f1f;
+  --label: #ededed; --label-2: #a1a1a1; --label-3: #6e6e6e; --side: #000000;
+  --glass: #0a0a0a; --glass-strong: #0a0a0a; --glass-edge: #232323; --glass-line: #111; --node: #0a0a0a;
+  --accent: #a78bfa; --accent-soft: rgba(167, 139, 250, .12); --progress: #ededed; --progress-text: #ededed; --edge-ok: #ededed;
+  --green: #3fd68a; --amber: #ffb224; --red: #ff6166; color-scheme: dark; }
+body::before, body::after { display: none !important; }
+.side { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.group, .glass { backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 10px; border: 1px solid var(--hair); box-shadow: none; }
+.nav button[aria-current="page"] { background: var(--fill); color: var(--label); font-weight: 600; box-shadow: none; }
+.av { background: var(--label); color: var(--ground); }
+h1 { font-weight: 600; letter-spacing: -.035em; }
+.headline h1 { font-size: 32px; margin: 0 0 6px; }
+.headline .lede { margin: 0; }
+/* canvas */
+.canvas { border: 1px solid var(--hair); border-radius: 12px; background: var(--group); overflow: hidden; }
+.cv-head { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-bottom: 1px solid var(--hair); font-size: 12.5px; flex-wrap: wrap; }
+.live { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+.ld { width: 8px; height: 8px; border-radius: 50%; background: var(--label-3); position: relative; }
+.live.run .ld { background: var(--accent); } .live.warn .ld { background: var(--amber); } .live.ok .ld { background: var(--green); } .live.idle .ld { background: var(--green); }
+.live.run .ld::after, .live.warn .ld::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid currentColor; animation: ping 1.6s ease-out infinite; }
+.live.run { color: var(--accent); } .live.warn { color: var(--amber); }
+.live #cv-state { color: var(--label); }
+@keyframes ping { 0% { opacity: .7; transform: scale(.6); } 100% { opacity: 0; transform: scale(1.6); } }
+.cv-run { color: var(--label-3); font-size: 12px; }
+.cv-right { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+.cv-right .dim { color: var(--label-3); font-size: 12px; }
+.demo-tag { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-right: 6px; }
+.dbtn { font: 500 12px var(--font); padding: 4px 10px; border-radius: 6px; color: var(--label-2); border: 1px solid transparent; }
+.dbtn.on { color: var(--label); border-color: var(--hair); background: var(--ground); }
+.cv-body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); min-height: 360px;
+  background-image: linear-gradient(var(--hair) 1px, transparent 1px), linear-gradient(90deg, var(--hair) 1px, transparent 1px); background-size: 32px 32px; background-position: -1px -1px; }
+.cv-map { display: grid; place-items: center; padding: 8px 16px; background: radial-gradient(circle at 50% 50%, transparent 0, var(--group) 75%); }
+.cv-map .map { width: 100%; max-width: 560px; }
+.cv-log { border-left: 1px solid var(--hair); background: var(--group); display: flex; flex-direction: column; min-width: 0; }
+.log-h { display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--hair); font-size: 12px; font-weight: 500; color: var(--label-2); }
+.log-h .mono { color: var(--label-3); font-size: 11px; }
+.log { list-style: none; margin: 0; padding: 8px 0; overflow: auto; max-height: 330px; font: 12px/1.5 var(--mono); }
+.log li { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 10px; padding: 3px 14px; color: var(--label); }
+.log li.in { animation: logIn .35s ease-out both; animation-delay: var(--d); }
+@keyframes logIn { from { opacity: 0; transform: translateY(4px); } }
+.log .lt { color: var(--label-3); text-transform: lowercase; }
+.log li.ok .lt { color: var(--green); } .log li.bad .lt { color: var(--red); } .log li.warn .lt { color: var(--amber); } .log li.run .lt { color: var(--accent); }
+.log li.dim .lx { color: var(--label-2); }
+.log .lx { word-break: break-word; }
+.pipe { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--hair); }
+.pipe li { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "i n" ". m"; gap: 0 8px; padding: 10px 14px; font-size: 12.5px; position: relative; }
+.pipe li + li { border-left: 1px solid var(--hair); }
+.pipe .pi { grid-area: i; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--label-3); align-self: center; position: relative; }
+.pipe li.ok .pi { border-color: var(--green); background: var(--green); }
+.pipe li.ok .pi::after { content: ""; position: absolute; left: 4px; top: 1.5px; width: 3px; height: 6px; border: solid var(--group); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+.pipe li.warn .pi { border-color: var(--amber); background: color-mix(in srgb, var(--amber) 20%, transparent); }
+.pipe li.run .pi { border-color: var(--accent); border-right-color: transparent; animation: spin .9s linear infinite; }
+.pipe .pn { grid-area: n; font-weight: 500; }
+.pipe li.idle .pn { color: var(--label-3); }
+.pipe .pm { grid-area: m; color: var(--label-3); font-size: 11px; }
+.pipe li.warn .pm { color: var(--amber); }
+/* map in Vercel tones */
+.map .pin { fill: var(--group); stroke: var(--hair); }
+.map .src-name { font-family: var(--font); }
+.map .hub-core { fill: var(--label); }
+.map .hub-spin { stroke: var(--ground); }
+.map .hub-glow { display: none; }
+.map .hub-ring { stroke: var(--label-3); }
+.map rect[fill="url(#dots)"] { display: none; }
+@media (max-width: 980px) { .cv-body { grid-template-columns: minmax(0, 1fr); } .cv-log { border-left: 0; border-top: 1px solid var(--hair); } .pipe { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pipe li:nth-child(4) { border-left: 0; } .pipe li:nth-child(n+4) { border-top: 1px solid var(--hair); } }
+@media (max-width: 480px) { .pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .log li.in, .pipe li.run .pi, .ld::after { animation: none !important; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -423,32 +509,23 @@ a:hover { text-decoration: underline; }
           <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
           <div class="who-status" id="who-status"></div>
         </header>
-        <section class="run" aria-label="Run replay">
-          <div class="run-top">
-            <div><div class="run-label">Latest run</div><div class="run-title"><span id="run-headline">From certified to certified again</span> <span class="mono run-id" id="run-id"></span></div></div>
-            <button class="play" id="play" type="button" aria-pressed="false"><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg><span id="play-txt">Play run</span></button>
-          </div>
-          <div class="stepper" role="tablist" aria-label="Steps of this run">
-            <div class="track" aria-hidden="true"><i id="track-fill"></i></div>
-            <button class="st" role="tab" data-state="certified" aria-pressed="true"><span class="dot"><svg><use href="#i-shield"/></svg></span><span class="st-k">01 · Before</span><span class="st-t">Certified</span><span class="st-m mono" id="m-certified"></span><span class="st-d" id="d-certified"></span></button>
-            <button class="st" role="tab" data-state="broken" aria-pressed="false"><span class="dot"><svg><use href="#i-split"/></svg></span><span class="st-k">02 · Changes</span><span class="st-t">Changes land</span><span class="st-m mono" id="m-broken"></span><span class="st-d" id="d-broken"></span></button>
-            <button class="st" role="tab" data-state="repaired" aria-pressed="false"><span class="dot"><svg><use href="#i-sparkle"/></svg></span><span class="st-k">03 · Agent</span><span class="st-t">Agent repairs</span><span class="st-m mono" id="m-repaired"></span><span class="st-d" id="d-repaired"></span></button>
-            <button class="st" role="tab" data-state="decided" aria-pressed="false"><span class="dot"><svg><use href="#i-user"/></svg></span><span class="st-k">04 · You</span><span class="st-t">You review</span><span class="st-m mono" id="m-decided"></span><span class="st-d" id="d-decided"></span></button>
-          </div>
-          <p class="run-cap" id="run-cap"></p>
-        </section>
-
-        <div class="ov-status">
-          <div>
-            <div class="eyebrow" id="hero-eyebrow">Primer Web</div>
-            <h1 id="hero-title">Everything agrees.</h1>
-            <p class="lede" id="hero-sub"></p>
-            <div class="kpi-main"><span class="bignum num" id="bignum">1,517</span><span class="bigcap" id="bigcap">checks agree</span></div>
-          </div>
-          <svg class="map" id="map" viewBox="0 10 520 320" role="img" aria-label="Sync between Figma, code, Storybook and docs"></svg>
+        <div class="headline">
+          <h1 id="hero-title">All sources in sync</h1>
+          <p class="lede" id="hero-sub"></p>
         </div>
 
-        <div class="figures" id="figures"></div>
+        <section class="canvas" aria-label="Agent">
+          <div class="cv-head">
+            <span class="live" id="live"><span class="ld"></span><span id="cv-state">Agent idle</span></span>
+            <span class="mono cv-run" id="run-id"></span>
+            <span class="cv-right" id="cv-right"></span>
+          </div>
+          <div class="cv-body">
+            <div class="cv-map"><svg class="map" id="map" viewBox="0 10 520 320" role="img" aria-label="The agent between Figma, code, Storybook and docs"></svg></div>
+            <div class="cv-log"><div class="log-h"><span>Agent log</span><span class="mono" id="log-n"></span></div><ol class="log" id="log" aria-live="polite"></ol></div>
+          </div>
+          <ol class="pipe" id="pipe" aria-label="Steps of the last sync"></ol>
+        </section>
 
         <section id="queue-sec" hidden>
           <div class="sec-h">Needs your review <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
@@ -578,47 +655,58 @@ a:hover { text-decoration: underline; }
   $("#run-id").textContent = "#" + D.generatedAt.replace(/\D/g, "").slice(2, 10) + " · " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   $("#run-at").textContent = "Synced " + new Date(D.generatedAt).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
-  function renderHero() {
-    const r = report();
-    const bad = r.total - r.passed;
-    $("#bignum").textContent = bad ? bad.toLocaleString() : r.passed.toLocaleString();
-    $("#bignum").className = "bignum num " + (state === "broken" ? "bad" : state === "repaired" ? "warn" : "");
-    $("#bigcap").textContent = bad ? `of ${r.total.toLocaleString()} checks disagree` : "checks agree, out of " + r.total.toLocaleString();
-    renderMap(r);
-    const copy = {
-      certified: ["Everything agrees.", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
-      broken: ["Five changes landed.", `Designers and engineers each changed something on their side. ${r.total - r.passed} checks now disagree.`],
-      repaired: [`${openItems().length} ${openItems().length === 1 ? "thing needs" : "things need"} you.`, "The agent applied what it was sure about. The rest is waiting for your review below."],
-      decided: [r.passed === r.total ? "Certified again." : "Answered.", r.passed === r.total ? `Back to ${r.passed.toLocaleString()} of ${r.total.toLocaleString()}. You kept the ${decidedSide() === "figma" ? "Figma" : "code"} value.${undone.size ? ` ${undone.size} undone change${undone.size > 1 ? "s" : ""} will reopen on the next sync.` : ""}` : `${r.total - r.passed} checks stay open because of what you rejected or undid. They'll be checked again on the next sync.`],
+  // ---------- agent canvas: headline, log, pipeline (Vercel-style) ----------
+  const tag = (w) => w === "nano" ? "nano" : w === "ultra" ? "ultra" : w === "rule" ? "rule" : w;
+  function logLines() {
+    const r = report(), L = [];
+    const add = (t, cls, txt) => L.push({ t, cls, txt });
+    add("watch", "dim", "Watching Figma, code, Storybook and docs");
+    if (state === "certified") { add("certify", "ok", `${D.certified.passed.toLocaleString()} checks agree. Nothing to do.`); return L; }
+    add("detect", "bad", `${D.breaks.length} changes landed · ${D.broken.total - D.broken.passed} checks out of sync`);
+    for (const b of D.breaks) add(b.who === "designer" ? "figma" : b.who === "engineer" ? "code" : "both", "dim", b.title);
+    if (state === "broken") { add("agent", "run", "Starting repair on Nemotron · Token Factory"); return L; }
+    for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0]}${a.confidence != null ? ` (${Math.round(a.confidence * 100)}%)` : ""}`);
+    for (const i of ITEMS) {
+      const ans = answers[i.id];
+      add(ans ? "you" : "queue", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${i.title} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to you: ${i.title}`);
+    }
+    if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
+    return L;
+  }
+  let shownLines = 0;
+  function renderCanvas() {
+    const r = report(), open = openItems().length, bad = r.total - r.passed;
+    const head = {
+      certified: ["All sources in sync", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
+      broken: [`${bad} checks out of sync`, `${D.breaks.length} changes landed in Figma and code. The agent is picking them up.`],
+      repaired: [`${open} ${open === 1 ? "decision" : "decisions"} waiting for you`, `The agent fixed what it was sure about in ${(D.repair.ms / 1000).toFixed(0)} s. The rest needs your call.`],
+      decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. They'll be checked on the next sync." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
     }[state];
-    $("#hero-eyebrow").textContent = DEMO ? `System health · step ${STATES.indexOf(state) + 1} of 4` : "System health · now";
-    if (!DEMO) {
-      const open = openItems().length;
-      $("#run-headline").textContent = open ? `${D.breaks.length} changes synced, ${open} waiting for you` : "Certified again";
-      $("#run-cap").innerHTML = open
-        ? `<b>Last sync.</b> ${D.breaks.length} changes landed in Figma and code. The agent fixed ${D.repair.actions.filter((a) => a.side !== "person").length} and sent ${ITEMS.length} to you. ${open} still waiting below.`
-        : `<b>Last sync.</b> ${D.breaks.length} changes landed, the agent fixed what it was sure about and you answered the rest. Certified again.`;
-    } else $("#run-cap").innerHTML = {
-      certified: "<b>Before.</b> Figma, code, Storybook and docs agree. Pick a step or press play: the whole page follows it.",
-      broken: "<b>Changes land.</b> Designers and engineers change things on their side. The map and checks below go red.",
-      repaired: "<b>The agent repairs.</b> It applies what it's sure about and sends the rest to your review below.",
-      decided: "<b>You review.</b> You answer the three items. The system is certified again.",
-    }[state];
-    $("#hero-title").textContent = copy[0]; $("#hero-sub").textContent = copy[1];
-    // in normal mode the run is finished up to "You review": that stage is the live one
-    const cur = DEMO ? state : "decided", curI = STATES.indexOf(cur), finished = !DEMO && !openItems().length;
-    document.querySelectorAll(".stepper .st").forEach((b, k) => { b.setAttribute("aria-pressed", String(b.dataset.state === cur && !finished)); b.classList.toggle("done", k < curI || finished); });
-    $("#track-fill").style.width = DEMO ? ((STATES.indexOf(state) + 1) / 4 * 100) + "%" : (finished ? "100%" : "87.5%");
-    const off = (x) => x.total - x.passed, fin = D.decisions[tok]?.code || D.repaired;
-    $("#m-certified").textContent = "100%"; $("#d-certified").textContent = `${D.certified.passed.toLocaleString()} checks agree`;
-    $("#m-broken").textContent = `${off(D.broken)} off`; $("#d-broken").textContent = `${D.breaks.length} changes in Figma and code`;
-    $("#m-repaired").textContent = `${D.repair.actions.filter((a) => a.side !== "person").length} fixed`; $("#d-repaired").textContent = `${ITEMS.length} sent to you · ${(D.repair.ms / 1000).toFixed(0)} s`;
-    if (DEMO) { $("#m-decided").textContent = off(fin) ? `${off(fin)} off` : "100%"; $("#d-decided").textContent = `${ITEMS.length} decisions · certified again`; }
-    else { const o = openItems().length; $("#m-decided").textContent = o ? `${o} waiting` : "100%"; $("#d-decided").textContent = o ? "Your review, below" : "Certified again"; }
+    $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
+    const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Waiting on you"], decided: ["ok", "Certified"] }[state];
+    $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
+    // log: new lines type in one by one
+    const lines = logLines(), ol = $("#log");
+    const html = lines.map((l, k) => `<li class="${l.cls}${k >= shownLines ? " in" : ""}" style="--d:${Math.max(0, k - shownLines) * 90}ms"><span class="lt">${l.t}</span><span class="lx">${esc(l.txt)}</span></li>`).join("");
+    ol.innerHTML = html; shownLines = lines.length; ol.scrollTop = ol.scrollHeight;
+    $("#log-n").textContent = `${lines.length} events`;
+    // pipeline
+    const acts = D.repair.actions.filter((a) => a.side !== "person"), done = state === "repaired" || state === "decided";
+    const P = [
+      ["Detect", state === "certified" ? "idle" : "ok", state === "certified" ? "no drift" : `${D.broken.total - D.broken.passed} off`],
+      ["Pair renames", !done ? (state === "broken" ? "run" : "idle") : "ok", done ? `nano · ${ITEMS.filter((i) => i.who === "nano").length} to review` : "nano"],
+      ["Judge values", !done ? "idle" : "ok", done ? `ultra · ${acts.filter((a) => a.who === "ultra").length} applied` : "ultra"],
+      ["Fix bindings", !done ? "idle" : "ok", done ? `rule · ${acts.filter((a) => a.who === "rule").length} applied` : "rule"],
+      ["Your review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
+      ["Certify", state === "decided" && !bad ? "ok" : state === "certified" ? "ok" : "idle", state === "decided" && !bad ? "100%" : state === "certified" ? "100%" : "—"],
+    ];
+    $("#pipe").innerHTML = P.map(([n, st, m]) => `<li class="${st}"><span class="pi"></span><span class="pn">${n}</span><span class="pm mono">${m}</span></li>`).join("");
+    if (DEMO) {
+      $("#cv-right").innerHTML = `<span class="demo-tag mono">demo</span>` + STATES.map((x, k) => `<button class="dbtn${x === state ? " on" : ""}" data-demo="${x}">${["Before", "Changes", "Agent", "You"][k]}</button>`).join("");
+      document.querySelectorAll("[data-demo]").forEach((b) => b.addEventListener("click", () => setState(b.dataset.demo)));
+    } else $("#cv-right").innerHTML = `<span class="mono dim">${D.sources.length} sources · Nemotron on Token Factory</span>`;
   }
 
-  // Sync map: the four sources orbit the agent; arcs carry pulses toward it (changes coming in)
-  // and back out (repairs). Colour = state of that source's link. Dot field instead of a globe.
   function renderMap(r) {
     const fail = (a) => { const c = r.checks.find((x) => x.area.startsWith(a)); return c && c.passed !== c.total ? c : null; };
     const opt = fail("Button options"), issues = opt ? opt.issues.join(" ") : "";
@@ -677,17 +765,6 @@ a:hover { text-decoration: underline; }
         <text y="46" text-anchor="middle" class="src-name">DS Lab agent</text>
         <text y="60" text-anchor="middle" class="src-sub">Nemotron · Token Factory</text>
       </g>`;
-  }
-
-  function renderFigures() {
-    const acts = D.repair.actions, done = afterRepair();
-    const f = [
-      ["Changes", state === "certified" ? "0" : "5", "1 Figma · 3 code · 1 both"],
-      ["Applied by the agent", done ? String(acts.filter((a) => a.side !== "person").length) : "–", done ? `${acts.filter((a) => a.who === "rule").length} rules · ${acts.filter((a) => a.who !== "rule" && a.side !== "person").length} Nemotron` : "After the agent runs"],
-      ["Needed a person", done ? String(ITEMS.length) : "–", done ? (openItems().length ? `${openItems().length} waiting` : "All answered") : "After the agent runs"],
-      ["Repair time", done ? `${(D.repair.ms / 1000).toFixed(1)} s` : "–", done ? `${callsOf("nano")} Nano · ${callsOf("ultra")} Ultra` : "On Token Factory"],
-    ];
-    $("#figures").innerHTML = f.map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
   }
 
   const AREAS = {
@@ -878,29 +955,12 @@ a:hover { text-decoration: underline; }
       <div class="v num">${s.count.toLocaleString()} ${esc(s.unit)}</div></div>`).join("");
   }
 
-  function render() { renderWho(); renderHero(); renderFigures(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
-  document.querySelectorAll(".stepper .st").forEach((b) => b.addEventListener("click", () => {
-    if (!DEMO) return;
-    stopPlay();
-    state = b.dataset.state;
-    for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
-    if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
-    render();
-  }));
-
-  let timer = null;
+  function render() { renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
-    state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear();
+    state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
     render();
   }
-  function stopPlay() { clearInterval(timer); timer = null; $("#play").setAttribute("aria-pressed", "false"); $("#play-txt").textContent = "Play run"; }
-  $("#play").addEventListener("click", () => {
-    if (timer) return stopPlay();
-    $("#play").setAttribute("aria-pressed", "true"); $("#play-txt").textContent = "Pause";
-    setState("certified");
-    timer = setInterval(() => { const n = STATES.indexOf(state) + 1; if (n >= STATES.length) return stopPlay(); setState(STATES[n]); }, 2600);
-  });
   const pages = ["overview", "activity", "decisions", "lab", "metrics", "sources"];
   function go(p) {
     if (!pages.includes(p)) p = "overview";
@@ -911,7 +971,6 @@ a:hover { text-decoration: underline; }
   }
   document.querySelectorAll(".nav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.page)));
   let start = DEMO ? "" : location.hash.slice(1);
-  if (!DEMO) { $("#play").hidden = true; document.querySelectorAll(".stepper .st").forEach((b) => { b.disabled = true; b.classList.add("static"); b.removeAttribute("role"); }); $(".stepper").removeAttribute("role"); $(".run-label").textContent = "Last sync"; }
   if (!start) { try { start = localStorage.getItem("dslab-page") || ""; } catch {} }
 
   const tb = $("#theme-btn");

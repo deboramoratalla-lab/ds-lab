@@ -34,3 +34,10 @@ Quality level: production for the hackathon demo.
 - References: shadcn tabs (icon + label + count badge), Framer connection globe (arcs with travelling pulses) without the globe.
 - Steps must read as a story: a playable 4-stage pipeline with outcome metrics, colour per stage, motion that explains (progress, pulses), not decorates.
 - Technical feel: mono for figures, IDs and small labels.
+
+## Recalibration 2026-10-16 (asked directly)
+- Reference: **Vercel** (black/white, Geist + Geist Mono, hairline borders, grid backgrounds, status dots, deployment-style step logs).
+- Feeling: **power and technology**: agents working, an engine running.
+- Protagonist: **the agent at work**: the live flow/map is the centrepiece.
+- Anti-reference: **generic template dashboard** (rows of KPI cards).
+- Principles: one canvas, not cards; say each thing once; numbers live inside sentences and logs; colour only for status; motion shows work being done.
