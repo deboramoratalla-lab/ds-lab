@@ -749,6 +749,11 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .sdd-menu button:hover:not([disabled]){background:color-mix(in srgb,var(--accent) 8%,transparent)}.sdd-menu button[disabled]{opacity:.4;cursor:default}
 .sdd-menu .mono{margin-left:auto;opacity:.6}.sdd-menu .ck{color:var(--accent)}
 .cv{width:14px;height:14px;flex:none}
+.tb-runs .sdd-btn{height:30px;font-size:12px;font-weight:500;color:var(--label-2);border:0;box-shadow:var(--tag-shadow)}.tb-runs .sdd-btn svg:first-child{color:var(--accent)}
+.tb-runs .sdd-btn.on{color:var(--accent);box-shadow:0 0 0 1.5px var(--accent)}
+.run-menu{min-width:300px}.run-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding:6px 10px 4px}
+.run-menu button{align-items:flex-start}.rtx{display:flex;flex-direction:column;gap:2px}.rtx b{font-weight:500}.rtx em{font-style:normal;font-size:10px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:4px}.rtx small{color:var(--label-3);font-size:11.5px}
+.rdot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:#1e9e8b}.rdot.broken{background:#d9534f}.rdot.repaired{background:#d08a3c}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -785,7 +790,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
     </nav>
     <div class="side-foot">
-      <span class="tb-date"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span id="tb-date"></span></span>
+      <div class="sdd tb-runs" id="runs"></div>
       <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch to dark appearance"></button>
       <span class="av" aria-label="Debora Moratalla">DM</span>
     </div>
@@ -1181,7 +1186,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
       k("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}% sure` : "", null),
       k("Waiting on you", done ? `${open}` : "–", done && open ? "~3 min" : done ? "all answered" : "", open ? ["warn", "▴ review"] : null),
     ].join("");
-    $("#tb-date").textContent = new Date().toLocaleString([], { weekday: "long", day: "numeric", month: "long" }) + " · " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    renderRuns();
   }
 
   function renderQueue() {
@@ -1336,7 +1341,29 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
       <div class="v num">${s.count.toLocaleString()} ${esc(s.unit)}</div></div>`).join("");
   }
 
-  function render() { renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  // Run history: each entry is a real run in data.json; selecting one shows the system as it was after that run.
+  const fmtAt = (t) => { const d = new Date(t); return d.toLocaleDateString([], { day: "numeric", month: "short" }) + ", " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); };
+  const firstAt = D.repair.journal?.[0]?.at;
+  const RUNS = [
+    { st: "repaired", at: D.generatedAt, label: "Agent repaired", sub: `${D.repair.actions.filter((a) => a.side !== "person").length} applied · ${ITEMS.length} sent to you` },
+    { st: "broken", at: firstAt ? new Date(new Date(firstAt).getTime() - D.repair.ms).toISOString() : null, label: "Drift detected", sub: `${D.broken.total - D.broken.passed} checks failing` },
+    { st: "certified", at: null, label: "Baseline certification", sub: `${D.certified.passed}/${D.certified.total} checks · 100%` },
+  ];
+  let runsOpen = false;
+  function renderRuns() {
+    const latest = state === "repaired" || state === "decided";
+    const cur = RUNS.find((r) => r.st === state) || RUNS[0];
+    const tag = cur.at ? fmtAt(cur.at) : "Baseline";
+    $("#runs").className = "sdd tb-runs" + (runsOpen ? " open" : "");
+    $("#runs").innerHTML = `<button class="sdd-btn${latest ? "" : " on"}" aria-haspopup="listbox" aria-expanded="${runsOpen}"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.8" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.2l2 1.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>${latest ? "Last run" : "Viewing"} · ${tag}<svg class="cv"><use href="#i-chev"/></svg></button>
+      <div class="sdd-menu run-menu" role="listbox"><div class="run-h">Run history</div>${RUNS.map((r, n) => { const on = r.st === cur.st;
+        return `<button role="option" aria-selected="${on}" data-run="${r.st}"><span class="rdot ${r.st}"></span><span class="rtx"><b>${r.label}${n === 0 ? ' <em>Latest</em>' : ""}</b><small>${r.at ? fmtAt(r.at) : "Before the breaks"} · ${r.sub}</small></span>${on ? '<span class="ck">✓</span>' : ""}</button>`; }).join("")}</div>`;
+    $("#runs .sdd-btn").onclick = (e) => { e.stopPropagation(); runsOpen = !runsOpen; renderRuns(); };
+    $("#runs").querySelectorAll("[data-run]").forEach((b) => b.onclick = () => { runsOpen = false; setState(b.dataset.run); });
+  }
+  document.addEventListener("click", (e) => { if (runsOpen && !e.target.closest("#runs")) { runsOpen = false; renderRuns(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && runsOpen) { runsOpen = false; renderRuns(); } });
+  function render() { renderRuns(); renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
