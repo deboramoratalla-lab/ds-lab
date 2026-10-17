@@ -823,7 +823,7 @@ code, kbd { background: none; padding: 0; }
         <header class="pg-head">
           <h1 class="pg-title">Overview</h1>
           <span id="greet" hidden></span>
-          <div class="pg-filters"><span class="flt"><svg><use href="#i-grid"/></svg>Primer Web<svg class="cv"><use href="#i-chev"/></svg></span><span class="flt"><svg><use href="#i-shield"/></svg>Button · light<svg class="cv"><use href="#i-chev"/></svg></span></div>
+          <div class="pg-filters" id="scope"></div>
         </header>
         <div class="kpis group" id="who-status"></div>
         <div class="headline">
@@ -1397,7 +1397,21 @@ code, kbd { background: none; padding: 0; }
   $("#acct .av-btn").onclick = (e) => { e.stopPropagation(); const o = !$("#acct").classList.contains("open"); if (o) renderAcct(); $("#acct").classList.toggle("open", o); e.currentTarget.setAttribute("aria-expanded", o); };
   document.addEventListener("click", (e) => { if (!e.target.closest("#acct")) closeAcct(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAcct(); });
-  function render() { renderRuns(); renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  // Scope pickers: only what has been certified is selectable; the rest says why not.
+  const SCOPES = {
+    sys: { ic: "grid", label: () => D.system.name, h: "Design system", opts: [[D.system.name, `${D.certified.total} checks certified`, true], ["Primer React", "Not connected yet", false], ["Add a design system…", "Connect Figma and a repo", false]] },
+    cmp: { ic: "shield", label: () => `${D.system.component} · ${D.system.theme}`, h: "Component · theme", opts: [[`${D.system.component} · ${D.system.theme}`, "Certified", true], [`${D.system.component} · dark`, "Not certified yet", false], ["IconButton · light", "Not certified yet", false], ["TextInput · light", "Not certified yet", false]] },
+  };
+  let scopeOpen = null;
+  function renderScope() {
+    $("#scope").innerHTML = Object.entries(SCOPES).map(([k, c]) => `<div class="sdd${scopeOpen === k ? " open" : ""}" data-scope="${k}"><button class="sdd-btn flt" aria-haspopup="listbox" aria-expanded="${scopeOpen === k}"><svg><use href="#i-${c.ic}"/></svg>${esc(c.label())}<svg class="cv"><use href="#i-chev"/></svg></button>
+      <div class="sdd-menu run-menu" role="listbox"><div class="run-h">${c.h}</div>${c.opts.map(([l, sub, on], n) => `<button role="option" aria-selected="${n === 0}"${on ? "" : " disabled"}><span class="rtx"><b>${esc(l)}</b><small>${sub}</small></span>${n === 0 ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`).join("");
+    $("#scope").querySelectorAll("[data-scope] > .sdd-btn").forEach((b) => b.onclick = (e) => { e.stopPropagation(); const k = b.parentElement.dataset.scope; scopeOpen = scopeOpen === k ? null : k; renderScope(); });
+    $("#scope").querySelectorAll('[aria-selected="true"]').forEach((b) => b.onclick = () => { scopeOpen = null; renderScope(); });
+  }
+  document.addEventListener("click", (e) => { if (scopeOpen && !e.target.closest("#scope")) { scopeOpen = null; renderScope(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && scopeOpen) { scopeOpen = null; renderScope(); } });
+  function render() { renderScope(); renderRuns(); renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
