@@ -1,6 +1,6 @@
 <title>DS Lab Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap">
 <style>
 /* Layout: macOS-style app on a living gradient. Frosted-glass sidebar and groups; a sync map of the four sources leads.
    Taste: docs/designpowers/taste/2026-10-07-ds-lab-console-taste.md. Neutral first; purple = action, cyan = progress. */
@@ -763,6 +763,11 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .sw{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;box-sizing:border-box;display:block;width:32px;height:19px;border-radius:999px;background:rgba(120,120,135,.28);position:relative;cursor:pointer;flex:none;transition:background .2s}
 .sw::after{content:"";position:absolute;top:50%;left:2px;margin-top:-7.5px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
 .sw:checked{background:var(--accent)}.sw:checked::after{transform:translateX(13px)}
+:root, :root[data-theme] { --font: "Outfit", -apple-system, system-ui, sans-serif; --display: var(--font); --mono: var(--font); }
+body, button, input, select, textarea { font-family: var(--font); }
+.mono, code, kbd, pre, .map text { font-family: var(--font) !important; font-variant-numeric: tabular-nums; letter-spacing: 0 !important; }
+.mono, code, kbd { font-size: inherit; }
+code, kbd { background: none; padding: 0; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
