@@ -733,6 +733,13 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .theme-btn { width: 40px; height: 40px; border-radius: 999px; display: inline-grid; place-items: center; background: var(--group); box-shadow: var(--tag-shadow); color: var(--label-2); transition: color .2s, transform .2s; }
 .theme-btn:hover { color: var(--accent); transform: rotate(-12deg); }
 .theme-btn svg { width: 18px; height: 18px; display: block; }
+
+.fgl { font-size: 12px; color: var(--label-3); margin-right: 2px; }
+.fsep { width: 1px; height: 22px; background: var(--hair); margin: 0 6px; }
+.fchip.src svg { width: 14px; height: 14px; color: var(--label-2); }
+.fchip.src.on svg { color: #fff; }
+.fchip:disabled { opacity: .45; cursor: default; }
+.fhint2 { color: var(--label-3); font-size: 12px; margin: -4px 0 2px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1100,7 +1107,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
   const CAT = {
     decide: { n: 1, label: "Conflict", sub: "Both sides changed it · blocks certification", c: "var(--red)", ic: "split", effort: "1 min" },
     proposal: { n: 2, label: "New option", sub: "Product decision · nothing breaks while it waits", c: "var(--accent)", ic: "sparkle", effort: "2 min" },
-    review: { n: 3, label: "Check", sub: "The agent wasn't sure · low risk", c: "var(--blue)", ic: "shield", effort: "30 s" },
+    review: { n: 3, label: "Check", sub: "The agent wasn't sure · low risk", c: "#4a7fc1", ic: "shield", effort: "30 s" },
   };
   const SRC_OF = { decide: ["figma", "code"], proposal: ["figma", "story"], review: ["figma", "code"] };
   const SRC_NAME = { figma: "Figma", code: "Code", story: "Storybook", docs: "Docs" };
@@ -1175,8 +1182,10 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
     const list = ordered().filter((i) => filter === "all" || i.kind === filter || (filter.startsWith("src:") && SRC_OF[i.kind].includes(filter.slice(4))));
     const chips = [["all", "All", ITEMS.length], ...Object.entries(CAT).map(([k, c]) => [k, c.label + (k === "decide" ? "s" : k === "proposal" ? "s" : "s"), ITEMS.filter((i) => i.kind === k).length])]
       .filter(([, , n]) => n).map(([k, l, n]) => `<button class="fchip${filter === k ? " on" : ""}" data-filter="${k}" style="${k !== "all" ? `--cat:${CAT[k].c}` : ""}">${k !== "all" ? `<i></i>` : ""}${l}<span class="mono">${n}</span></button>`).join("");
-    const srcChip = filter.startsWith("src:") ? `<button class="fchip on" data-filter="all">${SRC_NAME[filter.slice(4)]} only<span class="mono">×</span></button>` : "";
-    $("#queue").innerHTML = show ? `<div class="fbar">${srcChip}${chips}<span class="fhint">Sorted by what blocks the system first</span></div>` + list.map((i) => itemHTML(i, false)).join("") : empty;
+    const SRC_IC = { figma: "pen", code: "code", story: "list", docs: "book" };
+    const srcChips = Object.keys(SRC_NAME).map((k) => { const n = ITEMS.filter((i) => SRC_OF[i.kind].includes(k)).length;
+      return `<button class="fchip src${filter === "src:" + k ? " on" : ""}" data-filter="${filter === "src:" + k ? "all" : "src:" + k}"${n ? "" : " disabled"}><svg><use href="#i-${SRC_IC[k]}"/></svg>${SRC_NAME[k]}<span class="mono">${n}</span></button>`; }).join("");
+    $("#queue").innerHTML = show ? `<div class="fbar"><span class="fgl">Type</span>${chips}<span class="fsep"></span><span class="fgl">Source</span>${srcChips}</div><div class="fhint2">Sorted by what blocks the system first</div>` + list.map((i) => itemHTML(i, false)).join("") : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
