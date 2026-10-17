@@ -753,6 +753,16 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .run-menu{min-width:300px}.run-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding:6px 10px 4px}
 .run-menu button{align-items:flex-start}.rtx{display:flex;flex-direction:column;gap:2px}.rtx b{font-weight:500}.rtx em{font-style:normal;font-size:10px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:4px}.rtx small{color:var(--label-3);font-size:11.5px}
 .rdot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:#1e9e8b}.rdot.broken{background:#d9534f}.rdot.repaired{background:#d08a3c}
+.av-btn{border:0;cursor:pointer;width:40px;height:40px;font-size:13px;transition:box-shadow .2s}.av-btn:hover,.acct.open .av-btn{box-shadow:0 0 0 3px var(--accent-soft)}
+.acct-menu{min-width:290px;padding:8px}.am-who{display:flex;gap:12px;align-items:center;padding:8px 8px 12px;border-bottom:1px solid var(--hair);margin-bottom:4px}
+.am-who b,.am-row b{display:block;font-weight:500;font-size:13px}.am-who small,.am-row small{color:var(--label-3);font-size:11.5px}
+.am-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding:10px 10px 4px}
+.am-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 10px;border-radius:10px;cursor:default}label.am-row{cursor:pointer}label.am-row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.am-val{font-size:12px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.am-sep{height:1px;background:var(--hair);margin:6px 4px}.am-out{color:#d9534f!important}
+.sw{appearance:none;width:32px;height:19px;border-radius:999px;background:var(--fill);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.sw:checked{background:var(--accent)}.sw:checked::after{transform:translateX(13px)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -791,7 +801,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
     <div class="side-foot">
       <div class="sdd tb-runs" id="runs"></div>
       <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch to dark appearance"></button>
-      <span class="av" aria-label="Debora Moratalla">DM</span>
+      <div class="sdd acct" id="acct"><button class="av av-btn" aria-haspopup="menu" aria-expanded="false" aria-label="Account and settings">DM</button><div class="sdd-menu acct-menu" role="menu" id="acct-menu"></div></div>
     </div>
   </aside>
 
@@ -1362,6 +1372,26 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
   }
   document.addEventListener("click", (e) => { if (runsOpen && !e.target.closest("#runs")) { runsOpen = false; renderRuns(); } });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && runsOpen) { runsOpen = false; renderRuns(); } });
+  // Account menu: who you are, how the agent reaches you, how much it may do alone.
+  const prefs = { slack: true, email: false, digest: true };
+  function renderAcct() {
+    const tg = (k, l, sub) => `<label class="am-row"><span><b>${l}</b><small>${sub}</small></span><input type="checkbox" class="sw" data-pref="${k}"${prefs[k] ? " checked" : ""}></label>`;
+    $("#acct-menu").innerHTML = `<div class="am-who"><span class="av av-lg">DM</span><span><b>Debora Moratalla</b><small>Design system lead · Primer Web</small></span></div>
+      <div class="am-h">Notify me</div>${tg("slack", "Slack", "When something needs my call")}${tg("email", "Email", "Same, by email")}${tg("digest", "Weekly digest", "What the agent fixed alone")}
+      <div class="am-h">Agent</div>
+      <div class="am-row"><span><b>Apply alone above</b><small>Below this, it asks you</small></span><span class="am-val">${Math.round(D.repair.autoApply * 100)}%</span></div>
+      <div class="am-row"><span><b>Conflicts</b><small>Both sides changed</small></span><span class="am-val">Always ask</span></div>
+      <div class="am-sep"></div>
+      <button role="menuitem" data-am="sources"><svg><use href="#i-plug"/></svg>Connected sources</button>
+      <div class="am-sep"></div>
+      <button role="menuitem" class="am-out">Sign out</button>`;
+    $("#acct-menu").querySelectorAll("[data-pref]").forEach((c) => c.onchange = () => { prefs[c.dataset.pref] = c.checked; });
+    $("#acct-menu").querySelector('[data-am="sources"]').onclick = () => { closeAcct(); go("sources"); };
+  }
+  const closeAcct = () => { $("#acct").classList.remove("open"); $("#acct .av-btn").setAttribute("aria-expanded", "false"); };
+  $("#acct .av-btn").onclick = (e) => { e.stopPropagation(); const o = !$("#acct").classList.contains("open"); if (o) renderAcct(); $("#acct").classList.toggle("open", o); e.currentTarget.setAttribute("aria-expanded", o); };
+  document.addEventListener("click", (e) => { if (!e.target.closest("#acct")) closeAcct(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAcct(); });
   function render() { renderRuns(); renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
