@@ -2,7 +2,8 @@
 // the agent's repair (with Nemotron calls), the person's decision, the benchmark (Tavily),
 // and the stored strategy-lab run. Writes console/data.json.
 
-import { cpSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { cpSync, readFileSync, readdirSync, writeFileSync, mkdtempSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { certifyPrimer, sharedTokens, type PrimerCertifyInput } from "../certify-primer.js";
 import { BREAKS, makeWorkspace, primerInput } from "../demo/breaks.js";
 import { repair, resolveItem, AUTO_APPLY } from "../demo/repair.js";
@@ -29,6 +30,41 @@ const r = await repair(ws.w, ws.input, base, baselineShared, Object.assign({}, .
 const repairMs = Date.now() - t0;
 const repaired = certifyPrimer({ ...ws.input, baselineShared, renames: r.renames });
 const calls = Object.fromEntries(Object.entries(usage).map(([m, u]) => [m, { ...u }]));
+
+// What an engineer would review: the agent's code-side changes as a pull request (real diff of the files it touched)
+const pr = (() => {
+  const before: Record<string, string> = {};
+  for (const e of r.journal) for (const [f, c] of Object.entries(e.files)) if (!(f in before)) before[f] = c as string;
+  const tmp = mkdtempSync("/tmp/pr-");
+  const diffs = Object.entries(before).map(([f, old]) => {
+    const now = (() => { try { return readFileSync(f, "utf8"); } catch { return ""; } })();
+    if (now === old) return null;
+    if (f.endsWith(".json")) {
+      // JSON (Figma variables, bindings): list what changed per key instead of a one-line diff
+      const flat = (o: any, pre = "", out: Record<string, string> = {}) => { for (const [k, v] of Object.entries(o ?? {})) { const p = pre ? `${pre} · ${k}` : k; if (v && typeof v === "object" && !Array.isArray(v)) flat(v, p, out); else out[p] = JSON.stringify(v); } return out; };
+      const A = flat(JSON.parse(old)), B = flat(JSON.parse(now));
+      const lines = [...new Set([...Object.keys(A), ...Object.keys(B)])].filter((k) => A[k] !== B[k])
+        .map((k) => A[k] === undefined ? `+ ${k}: ${B[k]}` : B[k] === undefined ? `- ${k}: ${A[k]}` : `~ ${k}: ${A[k]} → ${B[k]}`);
+      const side = /snapshot|bindings/i.test(f) || /figma/i.test(f) ? "Figma" : "code";
+      return { file: f.replace(/^out\/broken\//, ""), side, diff: lines.join("\n") };
+    }
+    const a = `${tmp}/a`; writeFileSync(a, old);
+    let out = ""; try { execFileSync("diff", ["-u", a, f]); } catch (e: any) { out = String(e.stdout); }
+    const side = /figma|snapshot|bindings/i.test(f) ? "Figma" : /stor/i.test(f) ? "Storybook" : "code";
+    return { file: f.replace(/^out\/broken\//, ""), side, diff: out.split("\n").slice(2).join("\n").trim() };
+  }).filter(Boolean) as { file: string; side: string; diff: string }[];
+  const acts = r.actions.filter((a) => a.side !== "person");
+  return {
+    title: `DS Lab: re-sync Primer Web Button (${acts.length} changes, ${r.items.length} waiting on a person)`,
+    body: [
+      "Opened by DS Lab after a certification found drift.", "",
+      "### Applied by the agent", ...acts.map((a) => `- **${a.who}** → ${a.side}${a.confidence != null ? ` (${Math.round(a.confidence * 100)}%)` : ""}: ${a.what.split(/(?<=\.)\s/)[0]}`), "",
+      "### Not in this PR (waiting on the design system lead)", ...r.items.map((i) => `- ${i.title}`), "",
+      "Every change is journaled and can be undone from the DS Lab console. The `ds-sync` check re-runs the certification on this branch.",
+    ].join("\n"),
+    files: diffs,
+  };
+})();
 
 // the person's answers: approve every review/proposal, and keep Figma or code on each conflict
 const decide = r.items.find((i) => i.kind === "decide");
@@ -66,6 +102,7 @@ writeFileSync("console/data.json", JSON.stringify({
   broken: slim(broken),
   repair: { actions: r.actions, items: r.items, pending: r.pending, pendingTokens: tok ? [tok] : [], renames: r.renames, ms: repairMs, calls, journal: r.journal.map((e) => ({ id: e.id, at: e.at, what: e.what, files: Object.keys(e.files).length, undo: e.inverse ? "token" : "files" })), autoApply: AUTO_APPLY },
   repaired: slim(repaired),
+  pr,
   decisions,
   benchmark: bench,
   lab: { script: lab.script, runs: lab.runs.map((x: any) => ({ strategy: x.strategy, breaksAt: x.breaksAt ?? null, ms: x.ms,

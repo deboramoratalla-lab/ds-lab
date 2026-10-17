@@ -1,0 +1,19 @@
+# ds-sync: re-certifies Primer Web (Figma ↔ code ↔ Storybook ↔ docs) on every PR.
+# Fails the check when anything is out of sync, so drift is caught in review, not after release.
+name: ds-sync
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci || npm install
+      - run: bash fixtures/get-primer.sh
+      - name: Certify (or certify the agent's workspace when the PR carries one)
+        run: |
+          if [ -d sync/primer-web ]; then npx tsx src/cli.ts certify-primer --workspace sync/primer-web; else npx tsx src/cli.ts certify-primer; fi

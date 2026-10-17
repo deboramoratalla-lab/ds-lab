@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T10:16:09.633Z",
+ "generatedAt": "2026-10-17T18:43:27.904Z",
  "system": {
   "name": "Primer Web",
   "theme": "light",
@@ -60,6 +60,12 @@
     "passed": 2,
     "total": 2,
     "issues": []
+   },
+   {
+    "area": "Button text contrast (WCAG AA, Figma and code)",
+    "passed": 5,
+    "total": 5,
+    "issues": []
    }
   ],
   "warnings": [
@@ -84,8 +90,8 @@
    "variant=link, size=medium gap: same value, different token (Figma control/medium/gap · code base-size-8)"
   ],
   "ok": true,
-  "passed": 801,
-  "total": 801
+  "passed": 806,
+  "total": 806
  },
  "breaks": [
   {
@@ -176,6 +182,12 @@
     "passed": 2,
     "total": 2,
     "issues": []
+   },
+   {
+    "area": "Button text contrast (WCAG AA, Figma and code)",
+    "passed": 5,
+    "total": 5,
+    "issues": []
    }
   ],
   "warnings": [
@@ -194,24 +206,32 @@
    "variant=link, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)"
   ],
   "ok": false,
-  "passed": 1467,
-  "total": 1483
+  "passed": 1472,
+  "total": 1488
  },
  "repair": {
   "actions": [
+   {
+    "id": "rename-1",
+    "who": "nano",
+    "side": "code",
+    "confidence": 0.95,
+    "notify": "engineers",
+    "what": "rename control-medium-gap → control-medium-gap-inline adopted in code, old name kept as deprecated alias (confidence 0.95)"
+   },
    {
     "id": "value-2",
     "who": "ultra",
     "side": "Figma",
     "confidence": 0.95,
     "notify": "designers",
-    "what": "button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9. The commit explicitly implements design ticket DS-412 giving danger buttons a tinted background so destructive actions stand out; #ffebe9 is a red tint while #f6f8fa is a neutral gray."
+    "what": "button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9. The commit message explicitly states danger buttons should have a 'tinted background so destructive actions stand out' (design ticket DS-412). The code value #ffebe9 is a light red/pink tint that signals danger; the Figma value #f6f8fa is a neutral gray that does not. Figma appears stale."
    },
    {
     "id": "decide-3",
     "who": "ultra",
     "side": "person",
-    "what": "button-invisible-fg-color-rest: both sides changed it → a person decides (Ultra leans code)"
+    "what": "button-invisible-fg-color-rest: both sides changed it → a person decides"
    },
    {
     "id": "value-4",
@@ -219,7 +239,7 @@
     "side": "Figma",
     "confidence": 0.95,
     "notify": "designers",
-    "what": "button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37. The commit explicitly states the code value (#1a7f37) was chosen to fix a 4.5:1 contrast failure with white text in a high-contrast audit; Figma still holds the pre-fix value."
+    "what": "button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37. The commit explicitly states the code value #1a7f37 was an accessibility fix to meet 4.5:1 contrast with white text; Figma still holds the pre-fix lighter value."
    },
    {
     "id": "bind-5",
@@ -231,33 +251,20 @@
   ],
   "items": [
    {
-    "id": "review-1",
-    "kind": "review",
-    "who": "nano",
-    "confidence": 0.6,
-    "token": "control-medium-gap",
-    "change": {
-     "type": "rename",
-     "from": "control-medium-gap",
-     "to": "control-medium-gap-inline"
-    },
-    "title": "Was control-medium-gap renamed to control-medium-gap-inline?",
-    "why": "Nemotron Nano paired them with confidence 0.6, below 0.85."
-   },
-   {
     "id": "decide-3",
     "kind": "decide",
     "who": "ultra",
     "token": "button-invisible-fg-color-rest",
     "figma": "#0969da",
     "code": "#59636e",
-    "lean": "code",
+    "lean": "",
     "title": "button-invisible-fg-color-rest: both sides changed it",
-    "why": "The engineer's commit explicitly fixes a clash between blue invisible buttons and links in tables, and the code value (#59636e) reflects that fix while Figma still holds the older brand-refresh blue.",
-    "confidence": 0.85,
+    "why": "Designer wants invisible buttons to use link blue for action affordance; engineer wants default text color to avoid clashing with real links in tables. Both rationales are valid and no deprecation or platform constraint resolves it.",
+    "confidence": 0.55,
     "impact": [
      "Figma: Button invisible (3 variants)",
-     "Code: not used by Button. Changing it here won't show on screen"
+     "Code: not used by Button. Changing it here won't show on screen",
+     "Notified: the designer and the engineer who changed it"
     ],
     "people": {
      "figma": "'Brand refresh: invisible buttons use the link blue so they read as actions.'",
@@ -304,90 +311,104 @@
       },
       {
        "system": "Carbon (IBM)",
-       "summary": "Defines button size options with names and corresponding heights in px/rem.",
+       "summary": "Defines seven button size options with heights: extra small 24 / 1.5, small 32 / 2, medium 40 / 2.5, large (productive) 48 / 3, large (expressive) 48 / 3, extra large 64 / 4, and 2XL 80 / 5.",
        "values": [
-        "Extra small: 24 / 1.5",
-        "Small: 32 / 2",
-        "Medium: 40 / 2.5",
-        "Large (productive): 48 / 3",
-        "Large (expressive): 48 / 3",
-        "Extra large: 64 / 4",
+        "extra small: 24 / 1.5",
+        "small: 32 / 2",
+        "medium: 40 / 2.5",
+        "large (productive): 48 / 3",
+        "large (expressive): 48 / 3",
+        "extra large: 64 / 4",
         "2XL: 80 / 5"
        ],
        "url": "https://www.carbondesignsystem.com/building-blocks/core/components/button/specifications"
       },
       {
        "system": "Material 3",
-       "summary": "Specifies button heights: default buttons 36dp, M3 default buttons 40dp.",
+       "summary": "Defines five button size options (extra small, small, medium, large, extra large) and specifies that the default button height is 40dp (M3), whereas M2 buttons were 36dp tall.",
        "values": [
-        "Default button height: 36dp",
-        "M3 button height: 40dp"
+        "default height: 40dp"
        ],
        "url": "https://m3.material.io/components/buttons/overview"
       }
      ],
-     "dropped": 0,
+     "dropped": 1,
      "verdict": "consistent",
-     "recommendation": "The proposed xsmall button at 24px height aligns with WCAG 2.2 minimum target size and fits your scale, sitting 4px from the nearest step (28px) as your scale uses 4px increments.",
+     "recommendation": "The proposed xsmall size aligns with your computed scale—it sits 4px from the nearest step (28px), matching your pattern of 4–8px increments—and meets WCAG 2.2’s minimum 24×24px target size requirement.",
      "standard": {
       "system": "WCAG 2.2",
-      "summary": "WCAG 2.2 Target Size (Minimum) requires pointer input targets to be at least 24 by 24 CSS pixels.",
+      "summary": "WCAG 2.2 Success Criterion 2.5.8 Target Size (Minimum) (Level AA) requires that the size of the target for pointer inputs be at least 24 by 24 CSS pixels.",
       "values": [
-       "Minimum target size: 24 by 24 CSS pixels"
+       "24 by 24 CSS pixels"
       ],
-      "url": "https://www.w3.org/TR/wcag2mobile-22"
+      "url": "https://www.w3.org/TR/WCAG#dfn-relative-luminance"
      },
      "searches": 6
     },
+    "impact": [
+     "Figma: 5 new Button variants (size=xsmall)",
+     "Storybook: 1 new story",
+     "Code and docs: already ship it",
+     "Notified: designers and the Storybook owner"
+    ],
     "why": "It's missing in Figma and Storybook. Approving creates 5 Figma variants bound to the code's tokens and a story."
    }
   ],
   "pending": [
-   "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. Ultra leans code: The engineer's commit explicitly fixes a clash between blue invisible buttons and links in tables, and the code value (#59636e) reflects that fix while Figma still holds the older brand-refresh blue."
+   "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. no recommendation: Designer wants invisible buttons to use link blue for action affordance; engineer wants default text color to avoid clashing with real links in tables. Both rationales are valid and no deprecation or platform constraint resolves it."
   ],
   "pendingTokens": [
    "button-invisible-fg-color-rest"
   ],
-  "renames": {},
-  "ms": 16138,
+  "renames": {
+   "control-medium-gap": "control-medium-gap-inline"
+  },
+  "ms": 19391,
   "calls": {
    "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": {
     "calls": 1,
     "prompt": 136,
-    "completion": 46,
-    "ms": 1089
+    "completion": 47,
+    "ms": 1063
    },
    "nvidia/Nemotron-3-Ultra-550b-a55b": {
     "calls": 3,
     "prompt": 766,
-    "completion": 1357,
-    "ms": 6845
+    "completion": 924,
+    "ms": 8782
    },
    "nvidia/nemotron-3-super-120b-a12b": {
     "calls": 2,
-    "prompt": 5880,
-    "completion": 1882,
-    "ms": 9859
+    "prompt": 7309,
+    "completion": 2511,
+    "ms": 14427
    }
   },
   "journal": [
    {
+    "id": "rename-1",
+    "at": "2026-10-17T18:43:09.444Z",
+    "what": "rename control-medium-gap → control-medium-gap-inline",
+    "files": 1,
+    "undo": "files"
+   },
+   {
     "id": "value-2",
-    "at": "2026-10-08T10:15:57.938Z",
+    "at": "2026-10-17T18:43:12.484Z",
     "what": "button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9",
     "files": 1,
     "undo": "token"
    },
    {
     "id": "value-4",
-    "at": "2026-10-08T10:15:57.948Z",
+    "at": "2026-10-17T18:43:12.492Z",
     "what": "button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37",
     "files": 1,
     "undo": "token"
    },
    {
     "id": "bind-5",
-    "at": "2026-10-08T10:15:58.060Z",
+    "at": "2026-10-17T18:43:12.580Z",
     "what": "re-bind Button variants to code's tokens",
     "files": 1,
     "undo": "files"
@@ -399,19 +420,17 @@
   "checks": [
    {
     "area": "Shared tokens (Figma ↔ code, light)",
-    "passed": 675,
-    "total": 676,
+    "passed": 676,
+    "total": 677,
     "issues": [
      "button-invisible-fg-color-rest: Figma #0969da · code #59636e"
     ]
    },
    {
     "area": "Links kept since last certification",
-    "passed": 676,
+    "passed": 677,
     "total": 677,
-    "issues": [
-     "control-medium-gap: now missing in Figma"
-    ]
+    "issues": []
    },
    {
     "area": "Button properties (Figma ↔ code, by value)",
@@ -438,6 +457,12 @@
     "passed": 2,
     "total": 2,
     "issues": []
+   },
+   {
+    "area": "Button text contrast (WCAG AA, Figma and code)",
+    "passed": 5,
+    "total": 5,
+    "issues": []
    }
   ],
   "warnings": [
@@ -445,7 +470,7 @@
    "accepted exception font-stack-sans-serif: Figma can't express font fallback stacks; the file is built on SF Pro",
    "accepted exception font-stack-sans-serif-display: Figma can't express font fallback stacks; the file is built on SF Pro",
    "accepted exception font-stack-system: Figma can't express font fallback stacks; the file is built on SF Pro",
-   "out of scope: 43 Figma-only and 464 code-only tokens; 23 modelled differently (composite shadows, px vs ratio line-heights)",
+   "out of scope: 42 Figma-only and 464 code-only tokens; 23 modelled differently (composite shadows, px vs ratio line-heights)",
    "variant=default, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)",
    "variant=primary, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)",
    "variant=danger, size=small border: same value, different token (Figma button/danger/borderColor/rest · code button-default-border-color-rest)",
@@ -456,8 +481,29 @@
    "variant=link, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)"
   ],
   "ok": false,
-  "passed": 1475,
-  "total": 1483
+  "passed": 1482,
+  "total": 1489
+ },
+ "pr": {
+  "title": "DS Lab: re-sync Primer Web Button (4 changes, 2 waiting on a person)",
+  "body": "Opened by DS Lab after a certification found drift.\n\n### Applied by the agent\n- **nano** → code (95%): rename control-medium-gap → control-medium-gap-inline adopted in code, old name kept as deprecated alias (confidence 0.95)\n- **ultra** → Figma (95%): button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9.\n- **ultra** → Figma (95%): button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37.\n- **rule** → Figma: 6 Button bindings pointed at a token with a different value than code's → re-bound to the token the code uses\n\n### Not in this PR (waiting on the design system lead)\n- button-invisible-fg-color-rest: both sides changed it\n- New size=\"xsmall\" in code and docs\n\nEvery change is journaled and can be undone from the DS Lab console. The `ds-sync` check re-runs the certification on this branch.",
+  "files": [
+   {
+    "file": "commits.css",
+    "side": "code",
+    "diff": "@@ -7,3 +7,6 @@\n :root {\n   --button-invisible-fgColor-rest: #59636e;\n }\n+:root {\n+  --control-medium-gapInline: 8px;\n+}"
+   },
+   {
+    "file": "figma/part1.json",
+    "side": "Figma",
+    "diff": "~ button/danger/bgColor/rest: \"#f6f8fa\" → \"#ffebe9\"\n~ button/primary/bgColor/hover: \"#1c8139\" → \"#1a7f37\""
+   },
+   {
+    "file": "button-snapshot.json",
+    "side": "Figma",
+    "diff": "~ bindings · variant=danger, size=small · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=medium · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=large · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=invisible, size=small · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=medium · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=large · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\""
+   }
+  ]
  },
  "decisions": {
   "button-invisible-fg-color-rest": {
@@ -492,6 +538,12 @@
       "passed": 2,
       "total": 2,
       "issues": []
+     },
+     {
+      "area": "Button text contrast (WCAG AA, Figma and code)",
+      "passed": 5,
+      "total": 5,
+      "issues": []
      }
     ],
     "warnings": [
@@ -510,8 +562,8 @@
      "variant=link, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)"
     ],
     "ok": true,
-    "passed": 1517,
-    "total": 1517
+    "passed": 1522,
+    "total": 1522
    },
    "code": {
     "checks": [
@@ -544,6 +596,12 @@
       "passed": 2,
       "total": 2,
       "issues": []
+     },
+     {
+      "area": "Button text contrast (WCAG AA, Figma and code)",
+      "passed": 5,
+      "total": 5,
+      "issues": []
      }
     ],
     "warnings": [
@@ -562,8 +620,8 @@
      "variant=link, size=medium gap: same value, different token (Figma control/medium/gapInline · code base-size-8)"
     ],
     "ok": true,
-    "passed": 1517,
-    "total": 1517
+    "passed": 1522,
+    "total": 1522
    }
   }
  },
@@ -597,38 +655,37 @@
    },
    {
     "system": "Carbon (IBM)",
-    "summary": "Defines button size options with names and corresponding heights in px/rem.",
+    "summary": "Defines seven button size options with heights: extra small 24 / 1.5, small 32 / 2, medium 40 / 2.5, large (productive) 48 / 3, large (expressive) 48 / 3, extra large 64 / 4, and 2XL 80 / 5.",
     "values": [
-     "Extra small: 24 / 1.5",
-     "Small: 32 / 2",
-     "Medium: 40 / 2.5",
-     "Large (productive): 48 / 3",
-     "Large (expressive): 48 / 3",
-     "Extra large: 64 / 4",
+     "extra small: 24 / 1.5",
+     "small: 32 / 2",
+     "medium: 40 / 2.5",
+     "large (productive): 48 / 3",
+     "large (expressive): 48 / 3",
+     "extra large: 64 / 4",
      "2XL: 80 / 5"
     ],
     "url": "https://www.carbondesignsystem.com/building-blocks/core/components/button/specifications"
    },
    {
     "system": "Material 3",
-    "summary": "Specifies button heights: default buttons 36dp, M3 default buttons 40dp.",
+    "summary": "Defines five button size options (extra small, small, medium, large, extra large) and specifies that the default button height is 40dp (M3), whereas M2 buttons were 36dp tall.",
     "values": [
-     "Default button height: 36dp",
-     "M3 button height: 40dp"
+     "default height: 40dp"
     ],
     "url": "https://m3.material.io/components/buttons/overview"
    }
   ],
-  "dropped": 0,
+  "dropped": 1,
   "verdict": "consistent",
-  "recommendation": "The proposed xsmall button at 24px height aligns with WCAG 2.2 minimum target size and fits your scale, sitting 4px from the nearest step (28px) as your scale uses 4px increments.",
+  "recommendation": "The proposed xsmall size aligns with your computed scale—it sits 4px from the nearest step (28px), matching your pattern of 4–8px increments—and meets WCAG 2.2’s minimum 24×24px target size requirement.",
   "standard": {
    "system": "WCAG 2.2",
-   "summary": "WCAG 2.2 Target Size (Minimum) requires pointer input targets to be at least 24 by 24 CSS pixels.",
+   "summary": "WCAG 2.2 Success Criterion 2.5.8 Target Size (Minimum) (Level AA) requires that the size of the target for pointer inputs be at least 24 by 24 CSS pixels.",
    "values": [
-    "Minimum target size: 24 by 24 CSS pixels"
+    "24 by 24 CSS pixels"
    ],
-   "url": "https://www.w3.org/TR/wcag2mobile-22"
+   "url": "https://www.w3.org/TR/WCAG#dfn-relative-luminance"
   },
   "searches": 6
  },

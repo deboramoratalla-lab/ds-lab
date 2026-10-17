@@ -168,6 +168,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
           what: `rename ${from} → ${to} adopted in code, old name kept as deprecated alias (confidence ${m.confidence})` });
       } else {
         items.push({ id: nextId("review"), kind: "review", who: "nano", confidence: m.confidence, token: from, change,
+          impact: [...impactOf(input, normalizeName(to)).map((x) => x.replace("Changing it here won't show on screen", "only the name changes")), "Notified: engineers (code adopts the new name, old one kept as alias)"],
           title: `Was ${from} renamed to ${to}?`, why: `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
       }
     }
@@ -182,7 +183,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
     if (bothChanged) {
       const lean = r.verdict === "ask-a-human" ? "" : r.verdict === "design-is-right" ? "Figma" : "code";
       items.push({ id: nextId("decide"), kind: "decide", who: "ultra", token: r.name, figma: r.design, code: r.code, lean,
-        title: `${r.name}: both sides changed it`, why: r.why, confidence: r.confidence, impact: impactOf(input, r.name),
+        title: `${r.name}: both sides changed it`, why: r.why, confidence: r.confidence, impact: [...impactOf(input, r.name), "Notified: the designer and the engineer who changed it"],
         people: { figma: figmaNote?.replace(/^Figma change by a designer, version note: /, ""), code: codeNote?.replace(/^commit message: /, "") } });
       actions.push({ id: items[items.length - 1].id, who: "ultra", side: "person", what: `${r.name}: both sides changed it → a person decides${lean ? ` (Ultra leans ${lean})` : ""}` });
       continue;
@@ -233,6 +234,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
     if (opts.research) { try { research = await opts.research("size", opt); } catch (e) { research = { error: String(e).slice(0, 120) }; } }
     items.push({ id: nextId("proposal"), kind: "proposal", who: "rule", change: { type: "create-option", axis: "size", option: opt },
       title: `New size="${opt}" in code and docs`, research,
+      impact: [`Figma: ${propOptions(doc, "variant").length} new Button variants (size=${opt})`, `Storybook: 1 new story`, `Code and docs: already ship it`, `Notified: designers and the Storybook owner`],
       why: `It's missing in Figma and Storybook. Approving creates ${propOptions(doc, "variant").length} Figma variants bound to the code's tokens and a story.` });
   }
 

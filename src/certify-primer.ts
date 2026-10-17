@@ -116,5 +116,42 @@ export function certifyPrimer(i: PrimerCertifyInput): { checks: Check[]; warning
   checks.push({ area: "Button docs in Figma (React status ↔ docs)", passed: facts.filter((f) => f[1]).length, total: facts.length,
     issues: facts.filter((f) => !f[1]).map((f) => `Figma description doesn't say: ${f[0]}`) });
 
+  // 5. Text contrast per variant (WCAG 2.2 AA, 4.5:1), checked on both sides: a value can match and still be unreadable
+  const canvas = val(code, "bgColor-default") ?? "#ffffff";
+  let cp = 0;
+  const cIssues: string[] = [];
+  for (const v of variants) {
+    const fig = snap.bindings[`variant=${v}, size=${sizes.includes("medium") ? "medium" : sizes[0]}`];
+    const st = { ...spec.base, ...(spec.axes.variant?.[v] ?? {}) };
+    const side = (fg?: string, bg?: string) => (fg ? contrast(fg, bg && !isTransparent(bg) ? bg : canvas, canvas) : null);
+    const f = fig ? side(val(figma, fig.fg), val(figma, fig.bg)) : null;
+    const cFg = tokenOf(st.color), cBg = tokenOf(st["background-color"]);
+    const c = side(cFg ? val(code, cFg) : st.color?.value, cBg ? val(code, cBg) : st["background-color"]?.value);
+    if (f === null && c === null) { cIssues.push(`variant=${v} text: colours not resolved`); continue; }
+    const low = [f !== null && f < 4.5 && `Figma ${f.toFixed(1)}:1`, c !== null && c < 4.5 && `code ${c.toFixed(1)}:1`].filter(Boolean);
+    if (low.length) cIssues.push(`variant=${v} text: ${low.join(" · ")} (needs 4.5:1)`); else cp++;
+  }
+  checks.push({ area: "Button text contrast (WCAG AA, Figma and code)", passed: cp, total: variants.length, issues: cIssues });
+
   return { checks, warnings, ok: checks.every((c) => c.passed === c.total) };
+}
+
+// WCAG relative luminance contrast; colours with alpha are composited over the page background first.
+function rgba(c: string): [number, number, number, number] | null {
+  c = c.trim().toLowerCase();
+  let m = c.match(/^#([0-9a-f]{3,8})$/);
+  if (m) { let h = m[1]; if (h.length <= 4) h = [...h].map((x) => x + x).join(""); const n = (i: number) => parseInt(h.slice(i, i + 2), 16);
+    return [n(0), n(2), n(4), h.length === 8 ? n(6) / 255 : 1]; }
+  m = c.match(/^rgba?\(([^)]+)\)$/);
+  if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return [p[0], p[1], p[2], p[3] ?? 1]; }
+  return null;
+}
+function contrast(fg: string, bg: string, page: string): number | null {
+  const P = rgba(page) ?? [255, 255, 255, 1];
+  const over = (c: [number, number, number, number], u: number[]) => [0, 1, 2].map((i) => c[i] * c[3] + u[i] * (1 - c[3]));
+  const b0 = rgba(bg), f0 = rgba(fg); if (!b0 || !f0) return null;
+  const b = over(b0, P), f = over(f0, b);
+  const L = (x: number[]) => { const [r, g, bl] = x.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * bl; };
+  const [a, z] = [L(f), L(b)].sort((x, y) => y - x);
+  return (a + 0.05) / (z + 0.05);
 }

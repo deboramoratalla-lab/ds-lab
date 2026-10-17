@@ -759,7 +759,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .am-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding:10px 10px 4px}
 .am-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 10px;border-radius:10px;cursor:default}label.am-row{cursor:pointer}label.am-row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .am-val{font-size:12px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:999px;white-space:nowrap}
-.am-sep{height:1px;background:var(--hair);margin:6px 4px}.am-out{color:#d9534f!important}
+.am-val.off{background:var(--fill);color:var(--label-3)}.am-sep{height:1px;background:var(--hair);margin:6px 4px}.am-out{color:#d9534f!important}
 .sw{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;box-sizing:border-box;display:block;width:32px;height:19px;border-radius:999px;background:rgba(120,120,135,.28);position:relative;cursor:pointer;flex:none;transition:background .2s}
 .sw::after{content:"";position:absolute;top:50%;left:2px;margin-top:-7.5px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
 .sw:checked{background:var(--accent)}.sw:checked::after{transform:translateX(13px)}
@@ -780,6 +780,19 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 @media (max-width:760px){.crow{grid-template-columns:1fr auto 20px}.crow>span:nth-child(2),.crow>span:nth-child(3),.crow>span:nth-child(4){display:none}}
 .back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:0;margin-bottom:10px}.back .cv{transform:rotate(90deg)}
 .kpi[data-go]{cursor:pointer;border-radius:16px;transition:background .2s}.kpi[data-go]:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.aff{margin:0 16px 14px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 4%,var(--group));border:1px solid var(--hair);display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+.aff-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3)}.aff-r{display:grid;grid-template-columns:16px 110px 1fr;align-items:center;gap:8px;color:var(--label-2)}.aff-r b{font-weight:500;color:var(--label)}
+.aff svg{width:14px;height:14px;color:var(--accent)}.aff-n{display:flex;align-items:center;gap:8px;color:var(--label-3);padding-top:6px;border-top:1px solid var(--hair);margin-top:2px}
+.rep-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}.figures{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+@media (max-width:900px){.figures{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+.rb{color:#d9534f;font-weight:500}.rg{color:#1e9e8b;font-weight:500}.ra{margin:0 10px;color:var(--label-3)}
+.pr-card{padding:18px 20px;display:flex;flex-direction:column;gap:12px}.pr-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pr-t{font-weight:500;color:var(--label);font-size:15px}
+.pr-st{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px}.pr-st.open{background:rgba(30,158,139,.12);color:#1e9e8b}.pr-st.draft{background:var(--fill);color:var(--label-2)}
+.pr-f{border:1px solid var(--hair);border-radius:12px;overflow:hidden}.pr-f summary{padding:10px 14px;cursor:pointer;font-size:13px;display:flex;gap:10px;align-items:center;list-style:none}.pr-f summary::-webkit-details-marker{display:none}
+.pr-f summary b{font-weight:500}.pr-f pre{margin:0;padding:12px 14px;max-height:280px;overflow:auto;font-size:12px;line-height:1.55;background:color-mix(in srgb,var(--label) 3%,var(--group));white-space:pre}
+.pr-f .add{color:#1e9e8b}.pr-f .del{color:#d9534f}.pr-cmd{font-size:12.5px;color:var(--label-3)}
+.rep-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-top:1px solid var(--hair)}.rep-row:first-child{border-top:0}
+.rep-row .t{font-weight:500;color:var(--label);font-size:14px}.rep-row .s{color:var(--label-3);font-size:12.5px}.rep-row .v{white-space:nowrap;font-size:13px;color:var(--label-2)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -812,7 +825,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       <button data-page="decisions"><svg><use href="#i-inbox"/></svg>Decisions<span class="badge" id="nav-count">1</span></button>
       <div class="nav-label">Strategy</div>
       <button data-page="lab"><svg><use href="#i-flask"/></svg>Lab</button>
-      <button data-page="metrics"><svg><use href="#i-chart"/></svg>Metrics</button>
+      <button data-page="metrics"><svg><use href="#i-chart"/></svg>Report</button>
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
     </nav>
     <div class="side-foot">
@@ -892,6 +905,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     <div class="page" id="p-activity" hidden>
       <div class="wrap" style="gap:32px">
         <div><div class="eyebrow">Activity</div><h1>What the agent did</h1><p class="lede" id="act-note"></p></div>
+        <section><div class="sec-h">Pull request<small>What engineers review in GitHub</small></div><div class="group pr-card" id="pr"></div></section>
         <div class="cols">
           <section><div class="group" id="actions"></div></section>
           <section>
@@ -927,8 +941,10 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     <!-- METRICS -->
     <div class="page" id="p-metrics" hidden>
       <div class="wrap" style="gap:32px">
-        <div><div class="eyebrow">Metrics</div><h1>This run</h1></div>
+        <div class="rep-h"><div><div class="eyebrow">Report</div><h1>Design system health</h1><p class="lede" id="rep-lede"></p></div><button class="btn primary" id="rep-copy">Copy report</button></div>
         <div class="group figures" id="metrics"></div>
+        <section><div class="sec-h">Drift by check<small>Before the agent → after the agent</small></div><div class="group" id="rep-checks"></div></section>
+        <section><div class="sec-h">Models used<small>Nemotron on Nebius Token Factory, this run</small></div><div class="group" id="rep-models"></div></section>
         <section>
           <div class="sec-h">After adoption<small>Prediction vs reality</small></div>
           <div class="group">
@@ -1116,8 +1132,9 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     "Button properties (Figma ↔ code, by value)": "Button properties",
     "Button options (docs · code · Figma · Storybook)": "Button options",
     "Button docs in Figma (React status ↔ docs)": "Button docs in Figma",
+    "Button text contrast (WCAG AA, Figma and code)": "Text contrast",
   };
-  const SUB = { "Tokens": "Figma and code, same values", "Links since last 100%": "Nothing renamed away", "Button properties": "Each variant uses code's tokens", "Button options": "Docs, code, Figma and Storybook", "Button docs in Figma": "Status and accessibility review" };
+  const SUB = { "Text contrast": "WCAG AA 4.5:1 per variant, both sides", "Tokens": "Figma and code, same values", "Links since last 100%": "Nothing renamed away", "Button properties": "Each variant uses code's tokens", "Button options": "Docs, code, Figma and Storybook", "Button docs in Figma": "Status and accessibility review" };
   document.addEventListener("click", (e) => {
     const g = e.target.closest?.("[data-src]"); if (g) { srcF = srcF === g.dataset.src ? "all" : g.dataset.src; render(); $("#queue-sec").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     if (e.target.closest?.("[data-hub]")) { const l = $(".cv-log"); l.classList.remove("flash"); void l.offsetWidth; l.classList.add("flash"); }
@@ -1184,15 +1201,15 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
         ${stage(previewFor(i.token, color))}
         <span class="sample"><span class="chip" style="background:${color}"></span><span class="mono" style="font-size:12px">${esc(color)}</span></span>
         <span class="why">${esc((why || "").replace(/^'|'\.?$/g, ""))}</span></button>`;
-      body = `${i.impact ? `<div class="impact">${i.impact.map((x) => { const [k, ...v] = x.split(": "); return `<div><b>${esc(k)}</b> ${esc(v.join(": "))}</div>`; }).join("")}</div>` : ""}
+      body = `${i.impact ? impactHTML(i.impact) : ""}
         <div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
         <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}` : "has no recommendation"}${full ? `. ${esc(i.why)}` : ". The call is yours."}</div>`;
       actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
-        : `<span class="q-done">Both people get notified with your answer.</span>`;
+        : `<span class="q-done">Your answer goes to the designer and the engineer in the pull request.</span>`;
     } else {
       if (i.change?.type === "rename") body += `<div class="diff">${stage(`<span class="tk">control/medium/<b>gap</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="arrow">→</span>${stage(`<span class="tk">control/medium/<b>gapInline</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="dmeta mono">same value · 8px · used by Button medium</span></div>`;
       if (i.kind === "proposal" && i.change?.option) body += `<div class="diff">${stage(["xsmall", "small", "medium", "large"].map((z) => `<span class="szc${z === i.change.option ? " new" : ""}">${sized(z)}<span class="mono">${PB.size[z][0]}px${z === i.change.option ? " · new" : ""}</span></span>`).join(""), "row")}</div>`;
-      if (i.impact) body += `<div class="impact">${i.impact.map((x) => { const [k, ...v] = x.split(": "); return `<div><b>${esc(k)}</b> ${esc(v.join(": "))}</div>`; }).join("")}</div>`;
+      if (i.impact) body += impactHTML(i.impact);
       if (i.kind === "proposal" && i.research && !i.research.error) {
         const R = i.research, V = { consistent: ["st-ok", "Consistent with other systems"], review: ["st-warn", "Worth a second look"], "against-standard": ["st-bad", "Against the standard"] }[R.verdict] || ["st-off", R.verdict];
         body += `<div class="impact"><div><span class="status ${V[0]}">${V[1]}</span></div><div>${esc(R.recommendation)}</div>${full ? "" : `<div><button class="btn ghost" style="padding:0" data-go="activity">See the research</button></div>`}</div>`;
@@ -1202,7 +1219,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
         : `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>`;
     }
     const C = CAT[i.kind], open = full || expanded.has(i.id), first = ordered().find((x) => !answers[x.id])?.id === i.id;
-    const impactShort = i.kind === "decide" ? "Figma Button invisible · 3 variants" : i.kind === "proposal" ? "5 Figma variants + 1 story" : "1 token link";
+    const impactShort = (i.impact?.[0] ?? "").replace(/^[^:]+:\s*/, "").replace(/\s*\((\d+) variants\)/, " · $1 variants");
     return `<div class="group q cat-${i.kind}${open ? " open" : ""}${a ? " answered" : ""}" data-id="${i.id}" style="--cat:${C.c}">
       <button class="q-row" type="button" data-toggle="${i.id}" aria-expanded="${open}">
         <span class="q-ic"><svg><use href="#i-${C.ic}"/></svg></span>
@@ -1279,7 +1296,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
           <button class="ap-undo" data-undo="${a.id}" aria-label="${u ? "Redo" : "Undo"} this change" title="${u ? "Redo" : "Undo"}"><svg viewBox="0 0 16 16"><path d="${u ? "M12 6H6a3 3 0 0 0 0 6h4M10 3.5 12.5 6 10 8.5" : "M4 6h6a3 3 0 0 1 0 6H6M6 3.5 3.5 6 6 8.5"}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${u ? "Redo" : "Undo"}</button></div>
         <div class="ap-t">${esc(title)}</div>${sub ? `<div class="ap-s">${sub}</div>` : ""}
         ${ba}
-        <div class="ap-foot">${u ? "Undone · reverted on the next sync" : a.notify ? `${esc(a.notify[0].toUpperCase() + a.notify.slice(1))} notified` : ""}</div>
+        <div class="ap-foot">${u ? "Undone · reverted on the next sync" : a.notify ? `For ${esc(a.notify)} · in the pull request` : ""}</div>
       </div>`;
     }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent runs in step 3.</div>`;
     $("#applied-note").textContent = show ? `${acts.length} changes` : "";
@@ -1320,7 +1337,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       const [what, ...why] = a.what.split(/(?<=\.)\s/);
       return `<div class="row lead"><span class="glyph g-${g[0]}">${ic(g[1])}</span>
         <div><div class="t">${esc(what)}</div>${why.length ? `<div class="s" style="margin-top:2px">${esc(why.join(" "))}</div>` : ""}</div>
-        <div class="v"><span class="tag ${a.who === "ultra" || a.who === "nano" ? "accent" : ""}">${g[2]}</span>${a.notify ? `<div class="tertiary" style="font-size:11px;margin-top:4px">${esc(a.notify)} notified</div>` : ""}</div></div>`;
+        <div class="v"><span class="tag ${a.who === "ultra" || a.who === "nano" ? "accent" : ""}">${g[2]}</span>${a.notify ? `<div class="tertiary" style="font-size:11px;margin-top:4px">for ${esc(a.notify)}</div>` : ""}</div></div>`;
     }).join("");
     $("#act-note").textContent = `${D.repair.actions.length} actions in ${(D.repair.ms / 1000).toFixed(1)} seconds. The agent applies a model's call only at ${Math.round(D.repair.autoApply * 100)}% confidence or more; everything it applies is journaled and can be undone.`;
 
@@ -1364,13 +1381,38 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     ].map(([n, d]) => `<dt>${n}</dt><dd>${d}</dd>`).join("");
   }
 
-  function renderMetrics() {
-    $("#metrics").innerHTML = [
-      ["Detected", `${D.breaks.length} of ${D.breaks.length}`, "Changes that turned a check red"],
-      ["Applied alone", `${D.repair.actions.filter((a) => a.side !== "person").length}`, `${ITEMS.length} sent to a person`],
-      ["Agent time", `${(D.repair.ms / 1000).toFixed(1)} s`, "Plus your decision"],
-      ["Model calls", String(Object.values(D.repair.calls).reduce((a, u) => a + u.calls, 0)), `${callsOf("nano")} Nano · ${callsOf("ultra")} Ultra`],
-    ].map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
+  function renderPR() {
+    const P = D.pr; if (!P) { $("#pr").innerHTML = `<div class="empty">No code-side changes in this run.</div>`; return; }
+    const line = (l) => `<span class="${l.startsWith("+") ? "add" : l.startsWith("-") ? "del" : ""}">${esc(l)}</span>`;
+    $("#pr").innerHTML = `<div class="pr-top">${P.url ? `<span class="pr-st open">Open on GitHub</span>` : `<span class="pr-st draft">Not opened yet</span>`}<span class="pr-t">${esc(P.title)}</span></div>
+      ${P.files.map((f, n) => `<details class="pr-f"${n === 0 ? " open" : ""}><summary><span class="cst none">${esc(f.side)}</span><b>${esc(f.file)}</b><span class="tertiary">${f.diff.split("\n").filter((l) => /^[+~-]/.test(l) && !/^(\+\+\+|---)/.test(l)).length} changes</span></summary><pre>${f.diff.split("\n").map(line).join("\n")}</pre></details>`).join("")}
+      ${P.url ? `<a class="btn" href="${esc(P.url)}" target="_blank" rel="noopener">View pull request</a>` : `<div class="pr-cmd">Opened with <b>ds-lab pr --open</b>: the agent pushes a branch with these changes and the <b>ds-sync</b> check re-certifies it in CI.</div>`}`;
+  }
+  function renderMetrics() { renderPR();
+    const sum = (r) => r.checks.reduce((a, c) => [a[0] + c.passed, a[1] + c.total], [0, 0]);
+    const [bp, bt] = sum(D.broken), [rp, rt] = sum(D.repaired), off = bt - bp, left = rt - rp;
+    const acts = D.repair.actions.filter((a) => a.side !== "person");
+    const ctr = D.repaired.checks.find((c) => /contrast/i.test(c.area));
+    const comps = D.components || [];
+    const F = [
+      ["Drift found", `${off}`, `checks out of sync after ${D.breaks.length} changes`],
+      ["Closed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off} checks · ${acts.length} changes`],
+      ["Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, `${ITEMS.length} decisions left for a person`],
+      ["Text contrast", ctr ? `${ctr.passed}/${ctr.total}` : "–", "Button variants at WCAG AA"],
+      ["Coverage", `${comps.filter((c) => c.name === D.system.component).length} of ${comps.length}`, "components certified"],
+    ];
+    $("#metrics").innerHTML = F.map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
+    $("#rep-lede").textContent = `${D.system.name} · ${D.system.component} · run of ${fmtAt(D.generatedAt)}. Every number comes from the certification and repair in that run.`;
+    $("#rep-checks").innerHTML = D.broken.checks.map((c) => { const after = D.repaired.checks.find((x) => x.area === c.area) || c, name = AREAS[c.area] || c.area;
+      const bo = c.total - c.passed, ao = after.total - after.passed;
+      return `<div class="rep-row"><div><div class="t">${esc(name)}</div><div class="s">${esc(SUB[name] || "")}</div></div><div class="v num">${bo ? `<span class="rb">${bo} off</span>` : `<span class="rg">0 off</span>`}<span class="ra">→</span>${ao ? `<span class="rb">${ao} off</span>` : `<span class="rg">In sync</span>`}</div></div>`; }).join("");
+    const M = Object.entries(D.repair.calls).map(([m, u]) => [m.split("/").pop(), u]);
+    const role = (m) => /nano/i.test(m) ? "Pairs renames" : /ultra/i.test(m) ? "Judges value conflicts" : /super/i.test(m) ? "Researches new options" : "";
+    $("#rep-models").innerHTML = M.map(([m, u]) => `<div class="rep-row"><div><div class="t">${esc(m)}</div><div class="s">${role(m)}</div></div><div class="v num">${u.calls} calls · ${((u.prompt + u.completion) / 1000).toFixed(1)}k tokens · ${(u.ms / 1000).toFixed(1)} s</div></div>`).join("");
+    const md = [`# ${D.system.name} — design system health`, `Run of ${fmtAt(D.generatedAt)} · ${D.system.component}`, "", ...F.map(([k, n, d]) => `- **${k}:** ${n} — ${d}`), "", "## Drift by check",
+      ...D.broken.checks.map((c) => { const a = D.repaired.checks.find((x) => x.area === c.area) || c; return `- ${AREAS[c.area] || c.area}: ${c.total - c.passed} off → ${a.total - a.passed} off`; }),
+      "", "## Waiting on the design system lead", ...ITEMS.map((i) => `- ${i.title}`), "", D.pr?.url ? `Pull request: ${D.pr.url}` : ""].join("\n");
+    $("#rep-copy").onclick = async () => { try { await navigator.clipboard.writeText(md); $("#rep-copy").textContent = "Copied"; } catch { $("#rep-copy").textContent = "Copy failed"; } setTimeout(() => $("#rep-copy").textContent = "Copy report", 1600); };
     const G = { figma: ["design", "pen"], code: ["code", "code"], storybook: ["code", "list"], docs: ["code", "book"] };
     $("#sources").innerHTML = D.sources.map((s) => `<div class="row lead"><span class="glyph g-${G[s.id][0]}">${ic(G[s.id][1])}</span>
       <div><div class="t">${esc(s.name)}</div><div class="s">${esc(s.detail)}</div></div>
@@ -1400,19 +1442,17 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   document.addEventListener("click", (e) => { if (runsOpen && !e.target.closest("#runs")) { runsOpen = false; renderRuns(); } });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && runsOpen) { runsOpen = false; renderRuns(); } });
   // Account menu: who you are, how the agent reaches you, how much it may do alone.
-  const prefs = { slack: true, email: false, digest: true };
   function renderAcct() {
-    const tg = (k, l, sub) => `<label class="am-row"><span><b>${l}</b><small>${sub}</small></span><input type="checkbox" class="sw" data-pref="${k}"${prefs[k] ? " checked" : ""}></label>`;
     $("#acct-menu").innerHTML = `<div class="am-who"><span class="av av-lg">DM</span><span><b>Debora Moratalla</b><small>Design system lead · Primer Web</small></span></div>
-      <div class="am-h">Notify me</div>${tg("slack", "Slack", "When something needs my call")}${tg("email", "Email", "Same, by email")}${tg("digest", "Weekly digest", "What the agent fixed alone")}
+      <div class="am-h">Notifications</div>
+      <div class="am-row"><span><b>Slack</b><small>Not connected</small></span><span class="am-val off">Off</span></div>
+      <div class="am-row"><span><b>GitHub</b><small>${D.pr?.url ? "Pull requests and the ds-sync check" : "ds-sync check on every pull request"}</small></span><span class="am-val">On</span></div>
       <div class="am-h">Agent</div>
       <div class="am-row"><span><b>Apply alone above</b><small>Below this, it asks you</small></span><span class="am-val">${Math.round(D.repair.autoApply * 100)}%</span></div>
       <div class="am-row"><span><b>Conflicts</b><small>Both sides changed</small></span><span class="am-val">Always ask</span></div>
       <div class="am-sep"></div>
       <button role="menuitem" data-am="sources"><svg><use href="#i-plug"/></svg>Connected sources</button>
-      <div class="am-sep"></div>
-      <button role="menuitem" class="am-out">Sign out</button>`;
-    $("#acct-menu").querySelectorAll("[data-pref]").forEach((c) => c.onchange = () => { prefs[c.dataset.pref] = c.checked; });
+`;
     $("#acct-menu").querySelector('[data-am="sources"]').onclick = () => { closeAcct(); go("sources"); };
   }
   const closeAcct = () => { $("#acct").classList.remove("open"); $("#acct .av-btn").setAttribute("aria-expanded", "false"); };
@@ -1420,19 +1460,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   document.addEventListener("click", (e) => { if (!e.target.closest("#acct")) closeAcct(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAcct(); });
   // Scope pickers: only what has been certified is selectable; the rest says why not.
-  const SCOPES = {
-    sys: { ic: "grid", label: () => D.system.name, h: "Design system", opts: [[D.system.name, `${D.certified.total} checks certified`, true], ["Primer React", "Not connected yet", false], ["Add a design system…", "Connect Figma and a repo", false]] },
-  };
-  let scopeOpen = null;
-  function renderScope() {
-    $("#scope").innerHTML = Object.entries(SCOPES).map(([k, c]) => `<div class="sdd${scopeOpen === k ? " open" : ""}" data-scope="${k}"><button class="sdd-btn flt" aria-haspopup="listbox" aria-expanded="${scopeOpen === k}"><svg><use href="#i-${c.ic}"/></svg>${esc(c.label())}<svg class="cv"><use href="#i-chev"/></svg></button>
-      <div class="sdd-menu run-menu" role="listbox"><div class="run-h">${c.h}</div>${c.opts.map(([l, sub, on], n) => `<button role="option" aria-selected="${n === 0}"${on ? "" : " disabled"}><span class="rtx"><b>${esc(l)}</b><small>${sub}</small></span>${n === 0 ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`).join("");
-    $("#scope").querySelectorAll("[data-scope] > .sdd-btn").forEach((b) => b.onclick = (e) => { e.stopPropagation(); const k = b.parentElement.dataset.scope; scopeOpen = scopeOpen === k ? null : k; renderScope(); });
-    $("#scope").querySelectorAll('[aria-selected="true"]').forEach((b) => b.onclick = () => { scopeOpen = null; renderScope(); });
-  }
-  document.addEventListener("click", (e) => { if (scopeOpen && !e.target.closest("#scope")) { scopeOpen = null; renderScope(); } });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && scopeOpen) { scopeOpen = null; renderScope(); } });
-  // Components: every component in the system, problems first. Only certified ones have checks.
+  function renderScope() { $("#scope").innerHTML = `<span class="flt" title="The design system DS Lab is connected to"><svg><use href="#i-grid"/></svg>${esc(D.system.name)}</span>`; }
   let compQ = "", compAll = false;
   function renderComponents() {
     const C = D.components || [], cur = report(), open = openItems().length;
@@ -1452,6 +1480,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   }
   $("#comp-q").addEventListener("input", (e) => { compQ = e.target.value.trim().toLowerCase(); renderComponents(); });
   function renderCompHead() { const r = report(); $("#comp-title").textContent = D.system.component; $("#comp-lede").textContent = `${r.passed.toLocaleString()} of ${r.total.toLocaleString()} checks in sync across Figma, code, Storybook and docs · ${D.system.theme} mode. Below: what fails and what the agent changed.`; }
+  function impactHTML(list) {
+    const rows = list.filter((x) => !x.startsWith("Notified:")), note = list.find((x) => x.startsWith("Notified:"));
+    const IC = { Figma: "pen", Code: "code", Storybook: "list", "Code and docs": "book" };
+    return `<div class="aff"><div class="aff-h">Affects</div>${rows.map((x) => { const [k, ...v] = x.split(": "); return `<div class="aff-r"><svg><use href="#i-${IC[k] || "grid"}"/></svg><b>${esc(k)}</b><span>${esc(v.join(": "))}</span></div>`; }).join("")}${note ? `<div class="aff-n"><svg viewBox="0 0 16 16"><path d="M8 2.5a3.5 3.5 0 0 0-3.5 3.5v2.3L3.2 10.6h9.6L11.5 8.3V6A3.5 3.5 0 0 0 8 2.5zM6.5 12.5a1.5 1.5 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>${esc(note.replace("Notified: ", "Who should know: "))}</div>` : ""}</div>`;
+  }
   function render() { renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
@@ -1462,7 +1495,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
-    $("#crumb").textContent = p === "component" ? `Components / ${D.system.component}` : p[0].toUpperCase() + p.slice(1);
+    $("#crumb").textContent = p === "metrics" ? "Report" : p === "component" ? `Components / ${D.system.component}` : p[0].toUpperCase() + p.slice(1);
     document.querySelectorAll(".nav button").forEach((b) => { if (b.dataset.page === p) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     try { localStorage.setItem("dslab-page", p); } catch {}
   }

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { reopen } from "./lab/component-lab.js";
 import { loadTokens } from "./tokens/load.js";
 import { compareTokens } from "./tokens/drift.js";
 
@@ -122,10 +123,42 @@ if (cmd === "repair") {
   process.exit(after.ok ? 0 : 2);
 }
 
+if (cmd === "pr") {
+  // ds-lab pr            print the pull request the agent would open (from console/data.json + out/broken)
+  // ds-lab pr --open     push branch ds-sync/<date> with the agent's workspace in sync/primer-web and open the PR on GitHub
+  const { execFileSync } = await import("node:child_process");
+  const { cpSync, rmSync, readFileSync: rf, writeFileSync: wf } = await import("node:fs");
+  const d = JSON.parse(rf("console/data.json", "utf8"));
+  console.log(`${d.pr.title}\n\n${d.pr.body}\n\nFiles: ${d.pr.files.map((f: any) => f.file).join(", ")}`);
+  if (!process.argv.includes("--open")) process.exit(0);
+  const git = (...a: string[]) => execFileSync("git", a, { encoding: "utf8" }).trim();
+  const branch = `ds-sync/${d.generatedAt.slice(0, 16).replace(/[:T]/g, "-")}`, from = git("rev-parse", "--abbrev-ref", "HEAD");
+  if (git("status", "--porcelain")) { console.error("Commit or stash your changes first."); process.exit(1); }
+  git("checkout", "-b", branch);
+  try {
+    rmSync("sync/primer-web", { recursive: true, force: true });
+    cpSync("out/broken", "sync/primer-web", { recursive: true, filter: (f) => !f.endsWith("journal.json") });
+    wf("sync/primer-web/renames.json", JSON.stringify(d.repair.renames ?? {}, null, 1));
+    git("add", "-f", "sync/primer-web");
+    git("commit", "-m", `${d.pr.title}\n\n${d.pr.body}`);
+    git("push", "-u", "origin", branch);
+    const base = git("remote", "show", "origin").match(/HEAD branch: (\S+)/)?.[1] ?? "main";
+    const repo = git("remote", "get-url", "origin").match(/github\.com[/:](.+?)(\.git)?$/)![1];
+    const out = execFileSync("gh", ["api", `repos/${repo}/pulls`, "-f", `title=${d.pr.title}`, "-f", `head=${branch}`, "-f", `base=${base}`, "-f", `body=${d.pr.body}`, "--jq", ".html_url"], { encoding: "utf8" }).trim();
+    d.pr.url = out; d.pr.branch = branch;
+    console.log(`\nOpened ${out}`);
+  } finally { git("checkout", from); }
+  wf("console/data.json", JSON.stringify(d, null, 1));
+  process.exit(0);
+}
+
 if (cmd === "certify-primer" || cmd === "break") {
   // ds-lab certify-primer            certify the aligned Primer Web file
   // ds-lab break [id,id|all]         apply the demo breaks to a copy, then certify
   let input = primerInput();
+  const wsAt = process.argv.indexOf("--workspace");
+  if (cmd === "certify-primer" && wsAt > 0) { const dir = process.argv[wsAt + 1]; const rn = `${dir}/renames.json`;
+    input = { ...reopen(dir).input, baselineShared: sharedTokens(primerInput()), renames: existsSync(rn) ? JSON.parse(readFileSync(rn, "utf8")) : undefined }; }
   if (cmd === "break") {
     const ids = !designPath || designPath === "all" ? BREAKS.map((b) => b.id) : designPath.split(",");
     const ws = makeWorkspace("out/broken");

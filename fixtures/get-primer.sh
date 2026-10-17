@@ -6,3 +6,5 @@ npm pack @primer/primitives@11.10.0 --silent
 tar xzf primer-primitives-*.tgz && rm primer-primitives-*.tgz
 npm pack @primer/css@22.3.2 --silent
 mkdir -p primer-css && tar xzf primer-css-*.tgz -C primer-css && rm primer-css-*.tgz
+npm pack @primer/react@38.40.1 --silent
+mkdir -p primer-react && tar xzf primer-react-*.tgz -C primer-react && rm primer-react-*.tgz
