@@ -740,6 +740,14 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .fchip.src.on svg { color: #fff; }
 .fchip:disabled { opacity: .45; cursor: default; }
 .fhint2 { color: var(--label-3); font-size: 12px; margin: -4px 0 2px; }
+.fbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.fchips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.sdd{position:relative;margin-left:auto}.sdd-btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label);font:inherit;font-size:13px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.sdd-btn svg,.sdd-menu svg{width:15px;height:15px}.sdd-btn.on{border-color:var(--accent);color:var(--accent)}.sdd-btn .cv{opacity:.6;transition:transform .2s}.sdd.open .cv{transform:rotate(180deg)}
+.sdd-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:16px;background:var(--group);border:1px solid var(--hair);box-shadow:0 12px 32px rgba(20,10,50,.14);z-index:20;opacity:0;transform:translateY(-4px);pointer-events:none;transition:.16s}
+.sdd.open .sdd-menu{opacity:1;transform:none;pointer-events:auto}
+.sdd-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--label);font:inherit;font-size:13px;cursor:pointer;text-align:left}
+.sdd-menu button:hover:not([disabled]){background:color-mix(in srgb,var(--accent) 8%,transparent)}.sdd-menu button[disabled]{opacity:.4;cursor:default}
+.sdd-menu .mono{margin-left:auto;opacity:.6}.sdd-menu .ck{color:var(--accent)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1037,7 +1045,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
     }
     defs += "</defs>";
     const pend = (k) => (state === "repaired" || state === "decided") ? openItems().filter((i) => SRC_OF[i.kind].includes(k)).length : 0;
-    const node = (k, n) => `<g class="src${filter === "src:" + k ? " sel" : ""}" data-src="${k}" tabindex="0" role="button" aria-label="${n.name}: show its items" transform="translate(${n.x},${n.y})">
+    const node = (k, n) => `<g class="src${srcF === k ? " sel" : ""}" data-src="${k}" tabindex="0" role="button" aria-label="${n.name}: show its items" transform="translate(${n.x},${n.y})">
         <circle r="30" class="hit"/>
         <circle r="26" class="halo ${S[k]}"/>
         <circle r="20" class="pin"/>
@@ -1068,7 +1076,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
   };
   const SUB = { "Tokens": "Figma and code, same values", "Links since last 100%": "Nothing renamed away", "Button properties": "Each variant uses code's tokens", "Button options": "Docs, code, Figma and Storybook", "Button docs in Figma": "Status and accessibility review" };
   document.addEventListener("click", (e) => {
-    const g = e.target.closest?.("[data-src]"); if (g) { const f = "src:" + g.dataset.src; filter = filter === f ? "all" : f; render(); $("#queue-sec").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    const g = e.target.closest?.("[data-src]"); if (g) { srcF = srcF === g.dataset.src ? "all" : g.dataset.src; render(); $("#queue-sec").scrollIntoView({ behavior: "smooth", block: "start" }); return; }
     if (e.target.closest?.("[data-hub]")) { const l = $(".cv-log"); l.classList.remove("flash"); void l.offsetWidth; l.classList.add("flash"); }
   });
   document.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && e.target.closest?.("[data-src],[data-hub]")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
@@ -1112,7 +1120,9 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
   const SRC_OF = { decide: ["figma", "code"], proposal: ["figma", "story"], review: ["figma", "code"] };
   const SRC_NAME = { figma: "Figma", code: "Code", story: "Storybook", docs: "Docs" };
   const ordered = () => [...ITEMS].sort((a, b) => CAT[a.kind].n - CAT[b.kind].n);
-  let filter = "all";
+  let filter = "all", srcF = "all", ddOpen = false;
+  document.addEventListener("click",(e)=>{if(ddOpen&&!e.target.closest(".sdd")){ddOpen=false;renderQueue();}});
+  document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&ddOpen){ddOpen=false;renderQueue();document.querySelector(".sdd-btn")?.focus();}});
   const expanded = new Set();
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   function itemHTML(i, full) {
@@ -1179,13 +1189,16 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
     $("#queue-count").hidden = !(show && openItems().length);
     const empty = `<div class="group"><div class="empty"><b>${state === "certified" ? "Nothing for you." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to see what it needs from you."}</div></div>`;
     if (show && !expanded.size) { const f = ordered().find((x) => !answers[x.id]); if (f) expanded.add(f.id); }
-    const list = ordered().filter((i) => filter === "all" || i.kind === filter || (filter.startsWith("src:") && SRC_OF[i.kind].includes(filter.slice(4))));
-    const chips = [["all", "All", ITEMS.length], ...Object.entries(CAT).map(([k, c]) => [k, c.label + (k === "decide" ? "s" : k === "proposal" ? "s" : "s"), ITEMS.filter((i) => i.kind === k).length])]
-      .filter(([, , n]) => n).map(([k, l, n]) => `<button class="fchip${filter === k ? " on" : ""}" data-filter="${k}" style="${k !== "all" ? `--cat:${CAT[k].c}` : ""}">${k !== "all" ? `<i></i>` : ""}${l}<span class="mono">${n}</span></button>`).join("");
+    const list = ordered().filter((i) => (filter === "all" || i.kind === filter) && (srcF === "all" || SRC_OF[i.kind].includes(srcF)));
+    const inSrc = (i) => srcF === "all" || SRC_OF[i.kind].includes(srcF);
+    const chips = [["all", "All", ITEMS.filter(inSrc).length], ...Object.entries(CAT).map(([k, c]) => [k, c.label + "s", ITEMS.filter((i) => i.kind === k && inSrc(i)).length])]
+      .filter(([k, , n]) => n || k === "all" || filter === k).map(([k, l, n]) => `<button class="fchip${filter === k ? " on" : ""}" data-filter="${k}" style="${k !== "all" ? `--cat:${CAT[k].c}` : ""}">${k !== "all" ? `<i></i>` : ""}${l}<span class="mono">${n}</span></button>`).join("");
     const SRC_IC = { figma: "pen", code: "code", story: "list", docs: "book" };
-    const srcChips = Object.keys(SRC_NAME).map((k) => { const n = ITEMS.filter((i) => SRC_OF[i.kind].includes(k)).length;
-      return `<button class="fchip src${filter === "src:" + k ? " on" : ""}" data-filter="${filter === "src:" + k ? "all" : "src:" + k}"${n ? "" : " disabled"}><svg><use href="#i-${SRC_IC[k]}"/></svg>${SRC_NAME[k]}<span class="mono">${n}</span></button>`; }).join("");
-    $("#queue").innerHTML = show ? `<div class="fbar"><span class="fgl">Type</span>${chips}<span class="fsep"></span><span class="fgl">Source</span>${srcChips}</div><div class="fhint2">Sorted by what blocks the system first</div>` + list.map((i) => itemHTML(i, false)).join("") : empty;
+    const opts = [["all", "All sources", ITEMS.length, "grid"], ...Object.keys(SRC_NAME).map((k) => [k, SRC_NAME[k], ITEMS.filter((i) => SRC_OF[i.kind].includes(k)).length, SRC_IC[k]])];
+    const cur = opts.find((o) => o[0] === srcF);
+    const dd = `<div class="sdd${ddOpen ? " open" : ""}"><button class="sdd-btn${srcF !== "all" ? " on" : ""}" aria-haspopup="listbox" aria-expanded="${ddOpen}"><svg><use href="#i-${cur[3]}"/></svg>${cur[1]}<span class="cv">⌄</span></button>
+      <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
+    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2">Sorted by what blocks the system first</div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
@@ -1198,6 +1211,8 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
     document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
     document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
+    const sb = document.querySelector(".sdd-btn"); if (sb) sb.addEventListener("click", (e) => { e.stopPropagation(); ddOpen = !ddOpen; renderQueue(); if (ddOpen) document.querySelector(".sdd-menu [aria-selected=true]")?.focus(); });
+    document.querySelectorAll("[data-src-opt]").forEach((b) => b.addEventListener("click", () => { srcF = b.dataset.srcOpt; ddOpen = false; render(); }));
   }
   // Human label for a token: button-danger-bg-color-rest → "Danger button · background"
   const tokenLabel = (t) => {
