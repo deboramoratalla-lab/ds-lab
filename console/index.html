@@ -1,6 +1,6 @@
 <title>DS Lab Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: macOS-style app on a living gradient. Frosted-glass sidebar and groups; a sync map of the four sources leads.
    Taste: docs/designpowers/taste/2026-10-07-ds-lab-console-taste.md. Neutral first; purple = action, cyan = progress. */
@@ -625,6 +625,95 @@ body::before, body::after { display: none !important; }
 .nav button { border-radius: 10px; }
 
 .q::before { display: none !important; }
+
+/* ===== Reference: soft blue SaaS dashboard (2026-10-17) =====
+   Airy bluish ground, white cards with large radius and soft shadow, light geometric type, one blue with tints, hatched data. */
+:root {
+  --ground: #f3f6fb; --group: #ffffff; --group-bg: #ffffff; --fill: #eef2f8; --hair: #e7ecf4; --seg-on: #ffffff;
+  --label: #161c2d; --label-2: #6a7386; --label-3: #9aa3b5; --side: transparent; --node: #ffffff;
+  --accent: #2f5bea; --accent-soft: #e9effd; --progress: #2f5bea; --progress-text: #2f5bea; --edge-ok: #2f5bea;
+  --blue: #2f5bea; --green: #2f9e6e; --amber: #e39b3c; --red: #e05d6f;
+  --stage: #f7f9fd; --stage-dots: transparent;
+  --font: "Outfit", -apple-system, system-ui, sans-serif; --display: "Outfit", -apple-system, system-ui, sans-serif;
+  --card-r: 26px; --card-shadow: 0 1px 2px rgba(31, 54, 110, .03), 0 12px 32px -18px rgba(31, 54, 110, .18);
+  --tag-shadow: 0 1px 2px rgba(31, 54, 110, .05);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ground: #0e1320; --group: #161d2e; --group-bg: #161d2e; --fill: #1e2740; --hair: #253049; --seg-on: #1e2740;
+  --label: #eef2fb; --label-2: #a3acc0; --label-3: #6c7690; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
+  --progress: #6f8ff7; --edge-ok: #6f8ff7; --blue: #6f8ff7; --stage: #121827; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --ground: #0e1320; --group: #161d2e; --group-bg: #161d2e; --fill: #1e2740; --hair: #253049; --seg-on: #1e2740;
+  --label: #eef2fb; --label-2: #a3acc0; --label-3: #6c7690; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
+  --progress: #6f8ff7; --edge-ok: #6f8ff7; --blue: #6f8ff7; --stage: #121827; color-scheme: dark; }
+body { background: linear-gradient(180deg, #f6f8fc 0, var(--ground) 420px) fixed; background-color: var(--ground); font-weight: 400; }
+:root[data-theme="dark"] body { background: var(--ground); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { background: var(--ground); } }
+/* shell: horizontal top bar instead of a sidebar */
+.app { display: block; }
+.side { position: sticky !important; top: 0; z-index: 20; height: auto !important; flex-direction: row !important; align-items: center; gap: 18px !important; padding: 14px 40px !important;
+  background: color-mix(in srgb, var(--ground) 85%, transparent) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 0 !important; }
+.brand { font: 600 19px var(--display); letter-spacing: -.02em; padding: 0; }
+.mark { width: 24px; height: 24px; border-radius: 7px; background: var(--accent); }
+.mark::after { border-color: #fff; border-right-color: transparent; }
+.nav { flex-direction: row !important; gap: 8px; margin: 0 auto; }
+.nav-label { display: none; }
+.nav button { width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 999px !important; background: var(--group); box-shadow: var(--tag-shadow); color: var(--label-2); font-size: 0; position: relative; }
+.nav button svg { width: 17px; height: 17px; opacity: 1; }
+.nav button[aria-current="page"] { width: auto; padding: 0 18px; gap: 8px; font: 500 14px var(--font); background: var(--accent) !important; color: #fff !important; box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--accent) 70%, transparent); }
+.nav .badge { position: absolute; top: -2px; right: -2px; margin: 0; min-width: 16px; height: 16px; font-size: 10px; background: var(--red) !important; color: #fff !important; }
+.side-foot { margin: 0 !important; padding: 0 !important; flex-direction: row !important; align-items: center; gap: 14px !important; }
+.tb-date { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--group); box-shadow: var(--tag-shadow); color: var(--label-3); font-size: 13px; white-space: nowrap; }
+.side-foot .link { font-size: 12px; color: var(--label-3); }
+.side-foot .av { width: 40px; height: 40px; font-size: 13px; background: linear-gradient(135deg, #6a8cf3, #2f5bea); }
+.toolbar { display: none !important; }
+.main { padding-inline: 40px; padding-block: 8px 56px; }
+.wrap { max-width: 1240px; }
+/* page title + filters */
+.pg-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pg-title { font: 400 46px/1.1 var(--display); letter-spacing: -.03em; margin: 0; }
+.pg-filters { margin-left: auto; display: flex; gap: 10px; }
+.flt { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--group); box-shadow: var(--tag-shadow); font-size: 13.5px; color: var(--label); }
+.flt svg { width: 15px; height: 15px; color: var(--label-2); } .flt .cv { color: var(--label-3); }
+/* KPI strip in one card */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 22px 26px !important; gap: 24px; }
+.kl { color: var(--label-2); font-size: 13.5px; margin-bottom: 10px; }
+.kv { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.kn { font: 400 26px var(--display); letter-spacing: -.02em; color: var(--label); }
+.kc { font-size: 11.5px; font-weight: 500; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 999px; }
+.kt { margin-left: auto; font-size: 11.5px; font-weight: 500; }
+.kt.up { color: var(--green); } .kt.down { color: var(--red); } .kt.warn { color: var(--amber); }
+/* headline lighter */
+.headline h1 { font: 400 22px/1.3 var(--display); letter-spacing: -.01em; }
+.headline .lede { color: var(--label-2); }
+.sec-h { font: 400 22px/1.2 var(--display) !important; letter-spacing: -.015em; }
+/* cards */
+.group, .glass, .canvas, .q { border: 0 !important; border-radius: var(--card-r) !important; box-shadow: var(--card-shadow) !important; }
+.cv-head { padding: 18px 22px; border-bottom: 0; font-size: 14px; }
+.cv-body { background-color: transparent; background-image: none; min-height: 420px; }
+.cv-log { border-left: 0; margin: 0 18px 18px 0; border-radius: 20px; background: var(--stage); }
+.log-h { border-bottom: 0; font-weight: 500; }
+.pipe { border-top: 0; }
+.q-row { padding: 16px 22px; }
+.q-ic { border-radius: 12px; width: 36px; height: 36px; }
+.q-cat { font: 500 11px var(--font); letter-spacing: .02em; text-transform: none; }
+.q-title { font-weight: 500; font-size: 15px; }
+.q-body { border-top: 1px solid var(--hair); }
+/* stage: soft hatching like the reference's data fills */
+.stage { border: 0; background-color: var(--stage); background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent) 0 1px, transparent 1px 7px); border-radius: 16px; }
+.choice, .opt + .opt { border-color: var(--hair); }
+/* tags */
+.tag, .ap-who { background: var(--fill); box-shadow: none; color: var(--label-2); font-weight: 500; }
+.tag.accent, .ap-ultra { background: var(--accent-soft); color: var(--accent); }
+.fchip { background: var(--group); box-shadow: var(--tag-shadow); height: 36px; padding: 0 16px; font-size: 13px; }
+.fchip.on { background: var(--accent); color: #fff; box-shadow: 0 6px 16px -8px var(--accent); }
+.fchip.on .mono { color: rgba(255,255,255,.8); }
+.btn.primary { background: var(--accent); }
+.count { background: var(--accent-soft) !important; color: var(--accent) !important; }
+.map .hub-core { fill: var(--accent); }
+.map .pin { fill: var(--group); stroke: var(--hair); }
+@media (max-width: 980px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tb-date, .side-foot .link { display: none; } .side { padding: 12px 16px !important; flex-wrap: wrap; } .main { padding-inline: 16px; } }
+@media (max-width: 560px) { .nav button[aria-current="page"] { padding: 0 12px; } .nav { gap: 4px; } .pg-title { font-size: 34px; } .pg-filters { margin-left: 0; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -660,8 +749,9 @@ body::before, body::after { display: none !important; }
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
     </nav>
     <div class="side-foot">
+      <span class="tb-date" id="tb-date"></span>
       <button class="link" id="theme-btn" type="button">Dark appearance</button>
-      <div class="tertiary">Primer Web · Button · light</div>
+      <span class="av" aria-label="Debora Moratalla">DM</span>
     </div>
   </aside>
 
@@ -675,11 +765,12 @@ body::before, body::after { display: none !important; }
     <!-- OVERVIEW -->
     <div class="page" id="p-overview">
       <div class="wrap" style="gap:32px">
-        <header class="who-bar">
-          <span class="av av-lg" aria-hidden="true">DM</span>
-          <div class="who-txt"><div class="who-name" id="greet">Hello, Debora</div><div class="who-role">Primer Web · Button · light theme</div></div>
-          <div class="who-status" id="who-status"></div>
+        <header class="pg-head">
+          <h1 class="pg-title">Overview</h1>
+          <span id="greet" hidden></span>
+          <div class="pg-filters"><span class="flt"><svg><use href="#i-grid"/></svg>Primer Web<span class="cv">⌄</span></span><span class="flt"><svg><use href="#i-shield"/></svg>Button · light<span class="cv">⌄</span></span></div>
         </header>
+        <div class="kpis group" id="who-status"></div>
         <div class="headline">
           <h1 id="hero-title">All sources in sync</h1>
           <p class="lede" id="hero-sub"></p>
@@ -1043,14 +1134,18 @@ body::before, body::after { display: none !important; }
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   function renderWho() {
-    const r = report(), open = (state === "repaired" || state === "decided") ? openItems().length : 0, bad = r.total - r.passed;
-    const p = (dot, html) => `<span class="pill"><span class="d" style="background:${dot}"></span>${html}</span>`;
+    const r = report(), done = state === "repaired" || state === "decided", open = done ? openItems().length : 0, bad = r.total - r.passed;
+    const acts = D.repair.actions.filter((a) => a.side !== "person"), confs = acts.filter((a) => a.confidence != null).map((a) => a.confidence);
+    const k = (label, val, chip, trend) => `<div class="kpi"><div class="kl">${label}</div><div class="kv"><span class="kn">${val}</span>${chip ? `<span class="kc">${chip}</span>` : ""}${trend ? `<span class="kt ${trend[0]}">${trend[1]}</span>` : ""}</div></div>`;
     $("#who-status").innerHTML = [
-      open ? p("var(--amber)", `<b>${open}</b> to review`) : p("var(--green)", "Nothing to review"),
-      bad ? p(state === "broken" ? "var(--red)" : "var(--amber)", `<b>${bad}</b> checks out of sync`) : p("var(--green)", "Certified"),
-      p("var(--label-3)", `${D.sources.length} sources connected`),
+      k("Checks in sync", `${r.passed.toLocaleString()}`, `of ${r.total.toLocaleString()}`, bad ? ["down", `▾ ${bad} off`] : ["up", "▴ 100%"]),
+      k("Changes synced", state === "certified" ? "0" : `${D.breaks.length}`, `${D.sources.length} sources`, null),
+      k("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}% sure` : "", null),
+      k("Waiting on you", done ? `${open}` : "–", done && open ? "~3 min" : done ? "all answered" : "", open ? ["warn", "▴ review"] : null),
     ].join("");
+    $("#tb-date").textContent = new Date().toLocaleString([], { weekday: "long", day: "numeric", month: "long" }) + " · " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
+
   function renderQueue() {
     const show = state === "repaired" || state === "decided";
     $("#queue-sec").hidden = !show;

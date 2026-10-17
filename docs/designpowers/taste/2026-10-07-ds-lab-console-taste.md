@@ -47,3 +47,8 @@ Persona: design-system lead who lives in Figma and GitHub, opens the console whe
 - Show the real thing: every decision draws the component with each value (Primer Button on a dotted stage, like a Figma frame).
 - Workbench look: neutral canvas, 1px borders, Inter + JetBrains Mono; colour belongs to tokens and components; one accent of our own (purple).
 - Order: what needs me (with previews) → the agent at work → what it changed (before/after) → checks.
+
+## Reference adopted 2026-10-17 (user screenshot: soft blue SaaS dashboard)
+- Airy bluish ground, white cards with ~26px radius and soft shadow, no borders, no side stripes.
+- Light geometric type (Outfit), big light page title, top pill navigation with icon buttons.
+- One blue (#2f5bea) with tints; hatched fills for data surfaces; KPI strip inside one card.
