@@ -714,6 +714,13 @@ body { background: linear-gradient(180deg, #f6f8fc 0, var(--ground) 420px) fixed
 .map .pin { fill: var(--group); stroke: var(--hair); }
 @media (max-width: 980px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tb-date, .side-foot .link { display: none; } .side { padding: 12px 16px !important; flex-wrap: wrap; } .main { padding-inline: 16px; } }
 @media (max-width: 560px) { .nav button[aria-current="page"] { padding: 0 12px; } .nav { gap: 4px; } .pg-title { font-size: 34px; } .pg-filters { margin-left: 0; } }
+
+/* main colour back to purple (user, 2026-10-17) */
+:root { --accent: #6d48c8; --accent-soft: #f0ebfb; --progress: #6d48c8; --progress-text: #6d48c8; --edge-ok: #6d48c8; --blue: #6d48c8; --ground: #f5f4fb; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --accent: #a58bf2; --accent-soft: rgba(165,139,242,.16); --progress: #a58bf2; --edge-ok: #a58bf2; --blue: #a58bf2; --ground: #11101c; --group: #1b1a2b; --group-bg: #1b1a2b; --fill: #252438; --hair: #2e2d45; --stage: #15141f; --node: #252438; } }
+:root[data-theme="dark"] { --accent: #a58bf2; --accent-soft: rgba(165,139,242,.16); --progress: #a58bf2; --edge-ok: #a58bf2; --blue: #a58bf2; --ground: #11101c; --group: #1b1a2b; --group-bg: #1b1a2b; --fill: #252438; --hair: #2e2d45; --stage: #15141f; --node: #252438; }
+body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed; background-color: var(--ground); }
+.side-foot .av { background: linear-gradient(135deg, #9a7be6, #6d48c8); }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
