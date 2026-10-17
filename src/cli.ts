@@ -129,6 +129,37 @@ if (cmd === "pr") {
   const { execFileSync } = await import("node:child_process");
   const { cpSync, rmSync, readFileSync: rf, writeFileSync: wf } = await import("node:fs");
   const d = JSON.parse(rf("console/data.json", "utf8"));
+  // ds-lab pr --decide token=figma|code --approve all   push the person's decisions to the open PR's branch
+  const dAt = process.argv.indexOf("--decide"), aAt = process.argv.indexOf("--approve");
+  if ((dAt > 0 || aAt > 0) && d.pr.branch) {
+    const git = (...a: string[]) => execFileSync("git", a, { encoding: "utf8" }).trim();
+    const picks = Object.fromEntries((dAt > 0 ? process.argv[dAt + 1] : "").split(",").filter(Boolean).map((x) => x.split("=")));
+    const ok = aAt > 0 ? process.argv[aAt + 1] : "";
+    if (git("status", "--porcelain")) { console.error("Commit or stash your changes first."); process.exit(1); }
+    const from = git("rev-parse", "--abbrev-ref", "HEAD");
+    git("fetch", "origin", d.pr.branch); git("checkout", d.pr.branch); git("pull", "--ff-only", "origin", d.pr.branch);
+    try {
+      const dir = "sync/primer-web", { w, input } = reopen(dir), done: string[] = [];
+      const renames = existsSync(`${dir}/renames.json`) ? JSON.parse(rf(`${dir}/renames.json`, "utf8")) : {};
+      for (const item of d.repair.items) {
+        const answer = item.kind === "decide" ? picks[item.token] : (ok === "all" || ok.split(",").includes(item.id)) ? "approve" : undefined;
+        if (!answer) continue;
+        resolveItem(w, input, item, answer);
+        if (item.change?.type === "rename" && answer === "approve") renames[item.change.from] = item.change.to;
+        done.push(`- ${item.title} → ${item.kind === "decide" ? `keep ${answer}` : "approved"}`);
+      }
+      if (!done.length) { console.error("Nothing to apply. Use --decide <token>=figma|code and/or --approve all|<id>."); process.exit(1); }
+      wf(`${dir}/renames.json`, JSON.stringify(renames, null, 1));
+      rmSync(`${dir}/journal.json`, { force: true });
+      const r = certifyPrimer({ ...input, baselineShared: sharedTokens(primerInput()), renames });
+      for (const c of r.checks) console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area} ${c.passed}/${c.total}`);
+      git("add", "-f", dir);
+      git("commit", "-m", `DS Lab: apply the design system lead's decisions\n\n${done.join("\n")}`);
+      git("push", "origin", d.pr.branch);
+      console.log(`\nPushed to ${d.pr.branch}: ${r.ok ? "certified" : "still out of sync"}`);
+    } finally { git("checkout", from); }
+    process.exit(0);
+  }
   console.log(`${d.pr.title}\n\n${d.pr.body}\n\nFiles: ${d.pr.files.map((f: any) => f.file).join(", ")}`);
   if (!process.argv.includes("--open")) process.exit(0);
   const git = (...a: string[]) => execFileSync("git", a, { encoding: "utf8" }).trim();
