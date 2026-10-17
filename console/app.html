@@ -595,6 +595,34 @@ body::before, body::after { display: none !important; }
 .ap-foot { font-size: 11.5px; color: var(--label-3); }
 .ap.undone .ap-t { text-decoration: line-through; color: var(--label-3); }
 .ap.undone .ap-ba { opacity: .45; }
+
+/* softer surfaces (2026-10-17): Apple-like radius and depth for cards; pill tags with a light lift */
+:root { --card-r: 18px; --card-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 8px 24px -12px rgba(16, 24, 40, .12); --tag-shadow: 0 1px 2px rgba(16, 24, 40, .06), inset 0 0 0 .5px rgba(16, 24, 40, .06); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --card-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7); --tag-shadow: 0 1px 2px rgba(0,0,0,.4), inset 0 0 0 .5px rgba(255,255,255,.08); } }
+:root[data-theme="dark"] { --card-shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7); --tag-shadow: 0 1px 2px rgba(0,0,0,.4), inset 0 0 0 .5px rgba(255,255,255,.08); }
+.group, .glass, .canvas, .q { border-radius: var(--card-r) !important; border: 1px solid color-mix(in srgb, var(--hair) 70%, transparent) !important; box-shadow: var(--card-shadow) !important; }
+.q::before { left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0; }
+.stage { border-radius: 12px; }
+.ap-ba .stage, .stage.xs { border-radius: 10px; }
+.cv-log { border-radius: 0; }
+.q-ic { border-radius: 10px; }
+/* tags: rounded pills with a soft lift */
+.tag, .ap-who, .start, .fchip, .pill, .count, .badge, .demo-tag { border-radius: 999px !important; }
+.tag, .ap-who { padding: 3px 9px; font-weight: 600; font-size: 11px; box-shadow: var(--tag-shadow); background: var(--group); color: var(--label-2); }
+.tag.accent, .ap-ultra { background: color-mix(in srgb, var(--accent) 10%, var(--group)); color: var(--accent); }
+.ap-nano { background: color-mix(in srgb, var(--green) 10%, var(--group)); color: var(--green); }
+.ap-rule { background: var(--group); }
+.start { padding: 2px 8px; box-shadow: var(--tag-shadow); }
+.fchip { height: 30px; padding: 0 12px; border: 0; box-shadow: var(--tag-shadow); background: var(--group); }
+.fchip i { border-radius: 50%; }
+.fchip.on { box-shadow: 0 0 0 1.5px var(--label), var(--tag-shadow); }
+.pill { border: 0 !important; box-shadow: var(--tag-shadow); background: var(--group) !important; }
+.count { padding: 1px 9px; box-shadow: var(--tag-shadow); }
+.btn { border-radius: 999px; padding: 7px 16px; }
+.btn.primary { box-shadow: 0 4px 12px -4px color-mix(in srgb, var(--accent) 60%, transparent); }
+.ap-undo { border-radius: 999px; }
+.search { border-radius: 999px; }
+.nav button { border-radius: 10px; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
