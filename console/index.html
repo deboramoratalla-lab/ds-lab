@@ -778,6 +778,8 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 .cst{justify-self:start;font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px}.cst.ok{background:rgba(30,158,139,.12);color:#1e9e8b}.cst.warn{background:rgba(208,138,60,.14);color:#c07a2c}.cst.bad{background:rgba(217,83,79,.12);color:#d9534f}.cst.none{background:var(--fill);color:var(--label-3);font-weight:400}
 .crow.cmore{display:block;text-align:center;color:var(--accent);font-weight:500}div.crow.cmore{color:var(--label-3);font-weight:400;cursor:default}
 @media (max-width:760px){.crow{grid-template-columns:1fr auto 20px}.crow>span:nth-child(2),.crow>span:nth-child(3),.crow>span:nth-child(4){display:none}}
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:0;margin-bottom:10px}.back .cv{transform:rotate(90deg)}
+.kpi[data-go]{cursor:pointer;border-radius:16px;transition:background .2s}.kpi[data-go]:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -864,22 +866,25 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 
 
 
+      </div>
+    </div>
+
+    <!-- COMPONENT -->
+    <div class="page" id="p-component" hidden>
+      <div class="wrap" style="gap:32px">
+        <div><button class="back" data-go="overview"><svg class="cv"><use href="#i-chev"/></svg>Components</button><h1 id="comp-title">Button</h1><p class="lede" id="comp-lede"></p></div>
         <div class="cols">
           <section id="checks-sec">
             <div class="sec-h">Button checks<small id="checks-note"></small></div>
             <div class="group" id="checks"></div>
           </section>
           <section>
-            <div class="sec-h">Applied by the agent<small id="applied-note"></small></div>
+            <div class="sec-h">Changed by the agent<small id="applied-note"></small></div>
             <div class="group" id="applied"></div>
             <p class="footnote">Only calls at 85% confidence or more are applied. Each one can be undone.</p>
           </section>
         </div>
 
-        <section>
-          <div class="sec-h">Changes<small>The same five changes are replayed for every strategy</small></div>
-          <div class="group" id="changes"></div>
-        </section>
       </div>
     </div>
 
@@ -912,6 +917,10 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
         <div><div class="eyebrow">Lab</div><h1>Which sync strategy holds up</h1><p class="lede" id="lab-note"></p></div>
         <section><div class="group scroll"><table><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
         <section><div class="sec-h">Strategies</div><div class="group"><dl class="kv" id="lab-legend"></dl></div></section>
+        <section>
+          <div class="sec-h">Changes<small>The same five changes are replayed for every strategy</small></div>
+          <div class="group" id="changes"></div>
+        </section>
       </div>
     </div>
 
@@ -1439,20 +1448,21 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       (!compQ && shown.length > 8 ? `<button class="crow cmore" id="comp-more">${compAll ? "Show fewer" : `Show all ${shown.length}`}</button>` : "") +
       (!shown.length ? `<div class="crow cmore">No component matches “${esc(compQ)}”</div>` : "");
     $("#comp-more")?.addEventListener("click", () => { compAll = !compAll; renderComponents(); });
-    $("#comp").querySelectorAll("[data-comp]").forEach((b) => b.onclick = () => $("#checks-sec")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    $("#comp").querySelectorAll("[data-comp]").forEach((b) => b.onclick = () => go("component"));
   }
   $("#comp-q").addEventListener("input", (e) => { compQ = e.target.value.trim().toLowerCase(); renderComponents(); });
-  function render() { renderComponents(); renderScope(); renderRuns(); renderWho(); renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  function renderCompHead() { const r = report(); $("#comp-title").textContent = D.system.component; $("#comp-lede").textContent = `${r.passed.toLocaleString()} of ${r.total.toLocaleString()} checks in sync across Figma, code, Storybook and docs · ${D.system.theme} mode. Below: what fails and what the agent changed.`; }
+  function render() { renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
     render();
   }
-  const pages = ["overview", "activity", "decisions", "lab", "metrics", "sources"];
+  const pages = ["component", "overview", "activity", "decisions", "lab", "metrics", "sources"];
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
-    $("#crumb").textContent = p[0].toUpperCase() + p.slice(1);
+    $("#crumb").textContent = p === "component" ? `Components / ${D.system.component}` : p[0].toUpperCase() + p.slice(1);
     document.querySelectorAll(".nav button").forEach((b) => { if (b.dataset.page === p) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     try { localStorage.setItem("dslab-page", p); } catch {}
   }
