@@ -721,6 +721,11 @@ body { background: linear-gradient(180deg, #f6f8fc 0, var(--ground) 420px) fixed
 :root[data-theme="dark"] { --accent: #a58bf2; --accent-soft: rgba(165,139,242,.16); --progress: #a58bf2; --edge-ok: #a58bf2; --blue: #a58bf2; --ground: #11101c; --group: #1b1a2b; --group-bg: #1b1a2b; --fill: #252438; --hair: #2e2d45; --stage: #15141f; --node: #252438; }
 body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed; background-color: var(--ground); }
 .side-foot .av { background: linear-gradient(135deg, #9a7be6, #6d48c8); }
+
+/* top bar icons: perfectly centred in their circles */
+.nav button { display: inline-flex !important; align-items: center; justify-content: center; gap: 0 !important; line-height: 0; }
+.nav button svg { display: block; width: 18px; height: 18px; margin: 0; }
+.nav button[aria-current="page"] { gap: 8px !important; line-height: 1; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
