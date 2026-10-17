@@ -726,6 +726,13 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .nav button { display: inline-flex !important; align-items: center; justify-content: center; gap: 0 !important; line-height: 0; }
 .nav button svg { display: block; width: 18px; height: 18px; margin: 0; }
 .nav button[aria-current="page"] { gap: 8px !important; line-height: 1; }
+
+/* date as a tag; theme as an icon button */
+.tb-date { height: 30px !important; padding: 0 12px !important; gap: 7px; font-size: 12px !important; font-weight: 500; color: var(--label-2) !important; background: var(--group) !important; }
+.tb-date svg { width: 14px; height: 14px; color: var(--accent); }
+.theme-btn { width: 40px; height: 40px; border-radius: 999px; display: inline-grid; place-items: center; background: var(--group); box-shadow: var(--tag-shadow); color: var(--label-2); transition: color .2s, transform .2s; }
+.theme-btn:hover { color: var(--accent); transform: rotate(-12deg); }
+.theme-btn svg { width: 18px; height: 18px; display: block; }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -761,8 +768,8 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
     </nav>
     <div class="side-foot">
-      <span class="tb-date" id="tb-date"></span>
-      <button class="link" id="theme-btn" type="button">Dark appearance</button>
+      <span class="tb-date"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span id="tb-date"></span></span>
+      <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch to dark appearance"></button>
       <span class="av" aria-label="Debora Moratalla">DM</span>
     </div>
   </aside>
@@ -1323,7 +1330,9 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 
   const tb = $("#theme-btn");
   const isDark = () => document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-  const syncTb = () => { tb.textContent = isDark() ? "Light appearance" : "Dark appearance"; };
+  const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+  const syncTb = () => { const d = isDark(); tb.innerHTML = d ? SUN : MOON; tb.setAttribute("aria-label", d ? "Switch to light appearance" : "Switch to dark appearance"); tb.title = d ? "Light" : "Dark"; };
   tb.addEventListener("click", () => { document.documentElement.dataset.theme = isDark() ? "light" : "dark"; syncTb(); });
   syncTb();
 
