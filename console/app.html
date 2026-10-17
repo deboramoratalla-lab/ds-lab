@@ -760,8 +760,8 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .am-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 10px;border-radius:10px;cursor:default}label.am-row{cursor:pointer}label.am-row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .am-val{font-size:12px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:999px;white-space:nowrap}
 .am-sep{height:1px;background:var(--hair);margin:6px 4px}.am-out{color:#d9534f!important}
-.sw{appearance:none;width:32px;height:19px;border-radius:999px;background:var(--fill);position:relative;cursor:pointer;flex:none;transition:background .2s}
-.sw::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.sw{appearance:none;-webkit-appearance:none;margin:0;padding:0;border:0;box-sizing:border-box;display:block;width:32px;height:19px;border-radius:999px;background:rgba(120,120,135,.28);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;top:50%;left:2px;margin-top:-7.5px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
 .sw:checked{background:var(--accent)}.sw:checked::after{transform:translateX(13px)}
 </style>
 
