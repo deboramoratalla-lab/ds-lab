@@ -836,7 +836,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .tl{position:relative;display:flex;flex-direction:column;gap:22px}.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:1.5px;background:var(--hair)}
 .tl-step{display:grid;grid-template-columns:14px 1fr;gap:16px;position:relative}.tl-dot{width:13px;height:13px;border-radius:50%;margin-top:4px;background:var(--group);border:2px solid var(--label-3);position:relative;z-index:1}
 .tl-dot.ok{border-color:var(--green);background:var(--green)}.tl-dot.bad{border-color:var(--red);background:var(--red)}.tl-dot.warn{border-color:var(--amber);background:var(--group)}.tl-dot.idle{border-style:dashed}
-.tl-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}.tl-h b{font-weight:500;font-size:15px;color:var(--label)}.tl-h span{font-size:12.5px;color:var(--label-3)}
+.tl-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}.tl-h b{font-weight:500;font-size:15px;color:var(--label)}.tl-h span{font-size:12px;color:var(--label-2);background:rgba(120,120,140,.12);border-radius:999px;padding:1px 8px}.tl-h span:empty{display:none}
 .tl-card{padding:4px 0}.tl-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--hair);font-size:13px}.tl-row:first-child{border-top:0}.tl-row.col{flex-direction:column;align-items:stretch;gap:6px}
 .tl-src{display:inline-flex;align-items:center;gap:6px;min-width:120px;color:var(--label-2);font-size:12.5px}.tl-src svg{width:14px;height:14px;color:var(--accent)}
 .tl-t{color:var(--label);flex:1}.tl-top{display:flex;align-items:center;gap:8px}.tl-meta{font-size:12px;color:var(--label-3);flex:1}.tl-undo{padding:0!important;font-size:12.5px}
@@ -907,6 +907,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .src:focus-visible,.map [tabindex]:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px}
 .comp-nc{font-size:12px;color:var(--label-3)}.src-btn{all:unset;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--accent)}.src-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .page h1:focus{outline:none}.main>.past-run{max-width:1240px;margin:0 auto 16px}.past-run[hidden]{display:none}.past-run{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,var(--amber) 14%,var(--group));font-size:13px;color:var(--label)}.past-run button{all:unset;cursor:pointer;font-weight:600;color:var(--accent);margin-left:auto}
+.ov-tags{margin-top:12px!important}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -976,6 +977,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="headline">
           <h2 id="hero-title" class="hero-h">All sources in sync</h2>
           <p class="lede" id="hero-sub"></p>
+          <div class="run-line ov-tags" id="ov-tags"></div>
         </div>
 
         <div class="kpis" id="who-status"></div>
@@ -1160,6 +1162,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       head[1] = role === "designer" ? "Your reason shows on each card. Laura makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The ds-sync check tells you when it's safe to merge.`;
     }
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
+    $("#ov-tags").innerHTML = `<span>${esc(D.system.name)} · ${esc(D.system.component)}</span><span>${D.sources.length} sources</span>${D.pr?.url ? `<span class="pr-check" style="margin:0"><span class="pr-dot ${openItems().length && (state === "repaired" || state === "decided") ? "red" : "green"}"></span>PR #${LK.pr?.number ?? ""} · ds-sync ${openItems().length && (state === "repaired" || state === "decided") ? "waiting on you" : "passes"}</span>` : ""}`;
     const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
     // log: new lines type in one by one
@@ -1566,10 +1569,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="tl-t">${esc(title)}</div>${m ? `<div class="tl-ba">${sw(m[2])}<span class="tl-arr">→</span>${sw(m[3])}</div>` : ""}${why ? `<div class="tl-why">${esc(why)}</div>` : ""}${(() => { const jp = (D.repair.journal.find((j) => j.id === a.id)?.paths) || []; const ls = [...new Set(jp)].map((f) => xlink(ghFile(f), `${f.split("/").pop()} on GitHub`)).join("") + (a.side === "Figma" ? xlink(figmaURL(), "Open in Figma") : ""); return ls ? `<div class="tl-links">${ls}</div>` : ""; })()}${u ? `<div class="tl-why">Undone here. Reverted in the pull request on the next push.</div>` : ""}</div>`; }).join("")}</div>`;
     const sent = ITEMS.length ? `<div class="group tl-card">${ordered().map((i) => { const C = CAT[i.kind], a = answers[i.id]; return `<div class="tl-row"><span class="tl-cat" style="--cat:${C.c}"><i></i>${C.label}</span><span class="tl-t">${esc(qTitle(i))}</span>${a ? `<span class="status st-ok">Answered</span>` : `<button class="btn ghost" data-go="overview">Open</button>`}</div>`; }).join("")}</div>` : `<div class="tl-empty">Nothing needed a person.</div>`;
     const prLine = D.pr ? `<div class="tl-empty">${D.pr.url ? `Opened <a href="${esc(D.pr.url)}" target="_blank" rel="noopener">${esc(D.pr.title)}</a>` : `Ready to open: ${esc(D.pr.title)}`}</div>` : "";
-    $("#timeline").innerHTML = step("bad", "Drift detected", `${D.breaks.length} changes · ${D.broken.total - D.broken.passed} checks out of sync`, detected)
-      + step("ok", "Fixed alone", `${acts.length} changes · Nemotron on Token Factory`, fixed)
-      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Needs you" : "Needs Laura", ITEMS.length ? `${ITEMS.length} decisions` : "none", sent)
-      + step(D.pr?.url ? "ok" : "idle", "Pull request", "ds-sync re-certifies it", prLine);
+    $("#timeline").innerHTML = step("bad", "Drift detected", `${D.breaks.length}`, detected)
+      + step("ok", "Fixed alone", `${acts.length}`, fixed)
+      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Needs you" : "Needs Laura", ITEMS.length ? `${ITEMS.length}` : "0", sent)
+      + step(D.pr?.url ? "ok" : "idle", "Pull request", "", prLine);
     document.querySelectorAll("#timeline [data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo, was = undone.has(id); was ? undone.delete(id) : undone.add(id); render(); renderActivity();
       toast(was ? "Change restored." : "Change undone. It's reverted in the pull request on the next push, and checks run again.", was ? "" : "Redo", () => { undone.delete(id); render(); renderActivity(); }); }));
     document.querySelectorAll("#timeline [data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
