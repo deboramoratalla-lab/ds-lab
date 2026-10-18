@@ -2,6 +2,8 @@
 
 **Keeps Figma, code, Storybook and docs in sync for a design system, and only asks a person when it should.**
 
+**Live demo:** https://seamline-five.vercel.app
+
 Seamline certifies a design system across its four sources, lets NVIDIA Nemotron models on Nebius Token Factory repair the drift they are sure about, sends everything else to the design-system lead, and opens a real GitHub pull request whose `ds-sync` check stays red until those decisions are made.
 
 It runs on GitHub's real [Primer](https://primer.style) system: `@primer/primitives`, `@primer/react`, the Primer Web Figma file and Primer's Storybook stories.
@@ -40,7 +42,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
   - **Ultra** (`nvidia/Nemotron-3-Ultra-550b-a55b`): judges which side is right from commits and tickets; summarises conflicts without picking a side; triages drift in the other 73 components.
   - **Super** (`nvidia/nemotron-3-super-120b-a12b`): reads Tavily research on other design systems and WCAG, writes the proposal for new options.
 - **Token Factory Sandboxes**: one checkpoint with the five changes, forked four times in parallel (one per strategy) for the benchmark.
-- **Nebius Serverless Endpoints** (ready, not live): `.github/workflows/deploy-nebius.yml` deploys the console and the "Send answers" endpoint once a Nebius AI Cloud project exists. The hackathon credits cover Token Factory only, so the public demo is hosted elsewhere.
+- **Nebius Serverless Endpoints** (ready, not live): `.github/workflows/deploy-nebius.yml` deploys the console and the "Send answers" endpoint once a Nebius AI Cloud project exists. The hackathon credits cover Token Factory only, so the public demo runs on Vercel (same server image).
 - **Tavily**: searches official design-system sites and WCAG before the agent proposes anything new.
 
 ## Run it
