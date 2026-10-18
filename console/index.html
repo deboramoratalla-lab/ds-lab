@@ -981,10 +981,6 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         </div>
 
         <div class="kpis" id="who-status"></div>
-        <section id="queue-sec" hidden>
-          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small><span class="sec-pr" id="queue-pr"></span></div>
-          <div class="queue" id="queue"></div>
-        </section>
         <section class="canvas" aria-label="Agent">
           <div class="cv-head">
             <span class="live" id="live"><span class="ld"></span><span id="cv-state">Agent</span></span>
@@ -998,6 +994,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           <ol class="pipe" id="pipe" aria-label="Steps of the last sync"></ol>
         </section>
 
+        <section id="queue-sec" hidden>
+          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small><span class="sec-pr" id="queue-pr"></span></div>
+          <div class="queue" id="queue"></div>
+        </section>
         <section id="comp-sec"><div class="sec-h">Components<small id="comp-sub"></small></div>
           <div class="comp-bar"><label class="comp-search"><svg><use href="#i-search"/></svg><input id="comp-q" placeholder="Search components" autocomplete="off"></label></div>
           <div class="group comp-tbl" id="comp"></div></section>
