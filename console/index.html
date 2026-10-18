@@ -802,6 +802,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 #run-id{display:none}
 .av{background:linear-gradient(135deg,#6d48c8,#e39b3c)!important;color:#fff}
 .log{max-height:none!important;overflow:visible!important}.log-more{border:0;background:none;padding:0;font:inherit;font-size:12px;font-weight:500;color:var(--accent);cursor:pointer}.log-more:hover{text-decoration:underline}
+.am-seg{display:flex;gap:4px;margin:2px 10px 6px;padding:3px;border-radius:999px;background:var(--fill)}.am-seg button{flex:1;border:0;background:none;border-radius:999px;padding:6px 0;font:inherit;font-size:12.5px;color:var(--label-2);cursor:pointer}.am-seg button[aria-checked=true]{background:var(--group);color:var(--label);font-weight:500;box-shadow:var(--tag-shadow)}
+.nav button[hidden]{display:none!important}
+.am-note{font-size:11.5px;color:var(--label-3);padding:0 10px 6px}
+body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
+.opt[disabled]{cursor:default;opacity:1}.opt[disabled]:hover{background:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1034,12 +1039,19 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0].replace(/\s*\(confidence [\d.]+\)/, "").replace(/\.$/, "")}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}`);
     for (const i of ITEMS) {
       const ans = answers[i.id];
-      add("you", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to you: ${qTitle(i)}`);
+      add(role === "lead" ? "you" : "laura", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to ${role === "lead" ? "you" : "Laura"}: ${qTitle(i)}`);
     }
     if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
     return L;
   }
   let shownLines = 0, logAll = false;
+  // Roles: same data, different entry point, default filter and permissions. Only the lead decides.
+  const ROLES = {
+    lead: { name: "Debora Moratalla", title: "Design system lead", src: "all", decides: true, hide: [] },
+    designer: { name: "Marta (view)", title: "Product designer", src: "figma", decides: false, hide: ["metrics", "lab"] },
+    engineer: { name: "Dani (view)", title: "Frontend engineer", src: "code", decides: false, hide: ["metrics", "lab"] },
+  };
+  let role = "lead";
   function renderCanvas() {
     const r = report(), open = openItems().length, bad = r.total - r.passed;
     const head = {
@@ -1048,6 +1060,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       repaired: [open ? `Your turn: ${open} ${open === 1 ? "decision" : "decisions"}` : "All answered", `The agent fixed what it was at least ${Math.round(D.repair.autoApply * 100)}% sure of, in ${(D.repair.ms / 1000).toFixed(0)} s. It left the rest for you.`],
       decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. The next certification checks them again." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
     }[state];
+    if (role !== "lead" && (state === "repaired" || state === "decided")) {
+      const mine = openItems().filter((i) => SRC_OF[i.kind].includes(ROLES[role].src)).length;
+      head[0] = mine ? `${mine} ${mine === 1 ? "change touches" : "changes touch"} ${role === "designer" ? "Figma" : "code"}` : `Nothing waiting on ${role === "designer" ? "Figma" : "code"}`;
+      head[1] = role === "designer" ? "Your reason shows on each card. Laura makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The ds-sync check tells you when it's safe to merge.`;
+    }
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
     const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
@@ -1066,7 +1083,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       ["Pair renames", !done ? (state === "broken" ? "run" : "idle") : "ok", done ? `nano · ${ITEMS.filter((i) => i.who === "nano").length} to review` : "nano"],
       ["Judge values", !done ? "idle" : "ok", done ? `ultra · ${acts.filter((a) => a.who === "ultra").length} applied` : "ultra"],
       ["Fix bindings", !done ? "idle" : "ok", done ? `rule · ${acts.filter((a) => a.who === "rule").length} applied` : "rule"],
-      ["Your review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
+      [role === "lead" ? "Your review" : "Laura's review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
       ["Certify", state === "decided" && !bad ? "ok" : state === "certified" ? "ok" : "idle", state === "decided" && !bad ? "100%" : state === "certified" ? "100%" : "—"],
     ];
     if ($("#pipe")) $("#pipe").innerHTML = P.map(([n, st, m]) => `<li class="${st}"><span class="pi"></span><span class="pn">${n}</span><span class="pm mono">${m}</span></li>`).join("");
@@ -1215,16 +1232,16 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     ].join("");
     let body = "", actions = "";
     if (i.kind === "decide") {
-      const opt = (side, color, who, why) => `<button class="opt${a === side ? " kept" : ""}" type="button" data-item="${i.id}" data-answer="${side}" aria-pressed="${a === side}">
+      const opt = (side, color, who, why) => `<button class="opt${a === side ? " kept" : ""}" type="button" ${ROLES[role].decides ? `data-item="${i.id}" data-answer="${side}"` : "disabled"} aria-pressed="${a === side}">
         <span class="who">${who}</span>
         ${stage(previewFor(i.token, color))}
         <span class="sample"><span class="chip" style="background:${color}"></span><span style="font-size:12px">${esc(color)}</span></span>
         <span class="why">“${esc((why || "").replace(/^'|'\.?$/g, ""))}”</span>
-        <span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span></button>`;
+        ${ROLES[role].decides || a === side ? `<span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span>` : ""}</button>`;
       body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
         <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why)}</div>
         ${i.impact ? impactHTML(i.impact) : ""}`;
-      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : "";
+      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Laura decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
     } else {
       if (i.change?.type === "rename") body += `<div class="diff">${stage(`<span class="tk">control/medium/<b>gap</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="arrow">→</span>${stage(`<span class="tk">control/medium/<b>gapInline</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="dmeta mono">same value · 8px · used by Button medium</span></div>`;
       if (i.kind === "proposal" && i.change?.option) body += `<div class="diff">${stage(["xsmall", "small", "medium", "large"].map((z) => `<span class="szc${z === i.change.option ? " new" : ""}">${sized(z)}<span class="mono">${PB.size[z][0]}px${z === i.change.option ? " · new" : ""}</span></span>`).join(""), "row")}</div>`;
@@ -1235,7 +1252,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       }
       const yes = i.kind === "proposal" ? "Create it" : "Apply", no = i.kind === "proposal" ? "Not now" : "Reject";
       actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
-        : `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>`;
+        : ROLES[role].decides ? `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>` : `<span class="q-done"><b>Laura ${i.kind === "proposal" ? "approves new options" : "reviews this"}.</b> Comment on the pull request if you know something she doesn't.</span>`;
     }
     const C = CAT[i.kind], open = full || expanded.has(i.id), first = ordered().find((x) => !answers[x.id])?.id === i.id;
     const impactShort = (i.impact?.[0] ?? "").replace(/^[^:]+:\s*/, "").replace(/\s*\((\d+) variants\)/, " · $1 variants");
@@ -1245,7 +1262,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
         <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(qTitle(i))}</span>${i.token ? `<span class="q-tok">${esc(i.token)}</span>` : ""}</span>
         <span class="q-side">${a ? `<span class="status st-ok">Done</span>` : `<span class="q-imp">${impactShort}</span><span class="q-eff mono">~${C.effort}</span>`}<span class="chev">›</span></span>
       </button>
-      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
+      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Laura picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   function renderWho() {
@@ -1462,7 +1479,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && runsOpen) { runsOpen = false; renderRuns(); } });
   // Account menu: who you are, how the agent reaches you, how much it may do alone.
   function renderAcct() {
+    const R = ROLES[role];
     $("#acct-menu").innerHTML = `<div class="am-who"><span class="av av-lg">DM</span><span><b>Debora Moratalla</b><small>Design system lead · Primer Web</small></span></div>
+      <div class="am-h">View as</div>
+      <div class="am-seg" role="radiogroup" aria-label="View as">${Object.entries({ lead: "Lead", designer: "Designer", engineer: "Engineer" }).map(([k, l]) => `<button role="radio" aria-checked="${role === k}" data-role="${k}">${l}</button>`).join("")}</div>
+      <div class="am-note">${role === "lead" ? "Everything, and you decide." : `What ${R.title.toLowerCase()}s see: ${R.src === "figma" ? "Figma" : "code"} first, no decisions, no Report.`}</div>
       <div class="am-h">Notifications</div>
       <div class="am-row"><span><b>Slack</b><small>Not connected</small></span><span class="am-val off">Off</span></div>
       <div class="am-row"><span><b>GitHub</b><small>${D.pr?.url ? "Pull requests and the ds-sync check" : "ds-sync check on every pull request"}</small></span><span class="am-val">On</span></div>
@@ -1472,6 +1493,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       <div class="am-sep"></div>
       <button role="menuitem" data-am="sources"><svg><use href="#i-plug"/></svg>Connected sources</button>
 `;
+    $("#acct-menu").querySelectorAll("[data-role]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); role = b.dataset.role; srcF = ROLES[role].src; filter = "all"; const pg = document.querySelector(".nav button[aria-current=page]")?.dataset.page; render(); renderAcct(); if (ROLES[role].hide.includes(pg)) go("overview"); });
     $("#acct-menu").querySelector('[data-am="sources"]').onclick = () => { closeAcct(); go("sources"); };
   }
   const closeAcct = () => { $("#acct").classList.remove("open"); $("#acct .av-btn").setAttribute("aria-expanded", "false"); };
@@ -1504,7 +1526,12 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     const IC = { Figma: "pen", Code: "code", Storybook: "list", "Code and docs": "book" };
     return `<div class="aff"><div class="aff-h">Affects</div>${rows.map((x) => { const [k, ...v] = x.split(": "); return `<div class="aff-r"><svg><use href="#i-${IC[k] || "grid"}"/></svg><b>${esc(k)}</b><span>${esc(v.join(": "))}</span></div>`; }).join("")}${note ? `<div class="aff-n"><svg viewBox="0 0 16 16"><path d="M8 2.5a3.5 3.5 0 0 0-3.5 3.5v2.3L3.2 10.6h9.6L11.5 8.3V6A3.5 3.5 0 0 0 8 2.5zM6.5 12.5a1.5 1.5 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>${esc(note.replace("Notified: ", "Who should know: "))}</div>` : ""}</div>`;
   }
-  function render() { renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  function applyRole() {
+    const R = ROLES[role];
+    document.querySelectorAll(".nav button[data-page]").forEach((b) => { b.hidden = R.hide.includes(b.dataset.page); });
+    document.body.dataset.role = role;
+  }
+  function render() { applyRole(); renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
