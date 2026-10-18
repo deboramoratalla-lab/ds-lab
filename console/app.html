@@ -828,7 +828,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .map .arc{stroke-width:1.6;opacity:.85}
 @media (prefers-reduced-motion: reduce){.map .comet{display:none}.map .hub-mark animateTransform,.map .hub-mark animate{display:none}}
 .map .map-cap{font-size:11.5px;fill:var(--label-2);font-family:var(--font)}
-.map .trav circle{filter:drop-shadow(0 0 3px currentColor)}
+.map .trav circle{filter:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1576,13 +1576,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       if (state === "repaired" && dot) dot.setAttribute("r", (1.7 + 0.6 * (0.5 + 0.5 * Math.sin(t / 300)) * (target < 0.1 ? 1 : 0)).toFixed(2)); raf = requestAnimationFrame(tick); };
     // a dot with a short fading tail that follows a path
     const travel = (pathEl, reverse, color, ms) => new Promise((res) => { if (!pathEl || !alive) return res(); const L = pathEl.getTotalLength(), g = document.createElementNS(NS, "g"); g.setAttribute("class", "trav");
-      const parts = [...Array(7)].map((_, i) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("r", (3.2 - i * 0.35).toFixed(2)); c.setAttribute("fill", color); c.setAttribute("opacity", (1 - i / 7).toFixed(2)); g.appendChild(c); return c; });
+      const parts = [...Array(10)].map((_, i) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("r", (2.4 - i * 0.18).toFixed(2)); c.setAttribute("fill", color); c.setAttribute("opacity", (0.8 * Math.pow(1 - i / 10, 1.6)).toFixed(2)); g.appendChild(c); return c; });
       svg.insertBefore(g, svg.querySelector(".src")); const t0 = performance.now();
       const step = (t) => { if (!alive) { g.remove(); return res(); } let p = Math.min(1, (t - t0) / ms); const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-        parts.forEach((c, i) => { const q = Math.max(0, e - i * 0.025), pt = pathEl.getPointAtLength((reverse ? 1 - q : q) * L); c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); });
+        parts.forEach((c, i) => { const q = Math.max(0, e - i * 0.014), pt = pathEl.getPointAtLength((reverse ? 1 - q : q) * L); c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); });
         if (p < 1) requestAnimationFrame(step); else { g.remove(); res(); } };
       requestAnimationFrame(step); });
-    const flash = (k, color) => { const n = svg.querySelector(`[data-src="${k}"] .pin-ring`); if (!n) return; n.animate([{ strokeWidth: 1.5, stroke: color }, { strokeWidth: 5, stroke: color }, { strokeWidth: 1.5 }], { duration: 700, easing: "ease-out" }); };
+    const flash = (k, color) => { const n = svg.querySelector(`[data-src="${k}"] .pin-ring`); if (!n) return; n.animate([{ strokeWidth: 1.5, stroke: color }, { strokeWidth: 2.6, stroke: color }, { strokeWidth: 1.5 }], { duration: 900, easing: "ease-in-out" }); };
     const say = (txt) => { if (!cap) return; cap.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, fill: "forwards" }); cap.textContent = txt; };
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const arcOf = (k) => svg.querySelector(`#arc-${k}`);
