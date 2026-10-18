@@ -878,8 +878,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .aff-r .xlink{margin-left:auto}
 .lab-t th{vertical-align:middle}.lab-t th.c{text-align:center}.lab-h{position:relative;border-bottom:1px dotted var(--label-3);cursor:help}.lab-h::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:180px;padding:8px 10px;border-radius:10px;background:var(--label);color:var(--group);font-size:12px;font-weight:400;line-height:1.35;text-transform:none;letter-spacing:0;text-align:left;white-space:normal;opacity:0;pointer-events:none;transition:opacity .15s;z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.18)}.lab-h:hover::after,.lab-h:focus-visible::after{opacity:1}.lab-t th small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--label-3);max-width:120px;line-height:1.3;margin-top:4px}
 .lab-t td small{display:block;font-size:12px;color:var(--label-2);margin-top:2px}.lab-t td b{font-weight:600}.lab-sb{display:block;font-size:11px;color:var(--label-3);margin-top:4px}
-.lab-t td.c{text-align:center}.lab-t th:last-child,.lab-t td:last-child{text-align:left!important}.lab-t td.num{white-space:nowrap}.lab-no{color:var(--label-3)}.lab-off{font-size:12.5px;color:var(--label-2)}.lab-ow{color:var(--red)!important}
+.lab-t td.c{text-align:center}.lab-t th:nth-last-child(2),.lab-t td:nth-last-child(2){text-align:left!important}.lab-t td.num{white-space:nowrap}.lab-no{color:var(--label-3)}.lab-off{font-size:12.5px;color:var(--label-2)}.lab-ow{color:var(--red)!important}
 .lab-win td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.lab-r{cursor:pointer}.lab-r:hover td{background:color-mix(in srgb,var(--label) 3%,transparent)}.lab-cv{width:14px;height:14px;margin-left:8px;vertical-align:middle;color:var(--label-3);transition:transform .2s}.lab-r.open .lab-cv{transform:rotate(180deg)}
+.lab-cost small{color:var(--label-3)!important}.lab-d td{background:color-mix(in srgb,var(--label) 2.5%,transparent)}.lab-dd{display:grid;grid-template-columns:1fr 1.4fr;gap:28px;padding:6px 4px 10px;font-size:12.5px;color:var(--label-2)}
+.lab-dd ul{margin:6px 0 14px;padding-left:16px;display:flex;flex-direction:column;gap:3px}.lab-a{display:flex;justify-content:space-between;margin-top:8px;color:var(--label)}.lab-a b{font-weight:500}.lab-dd p{margin:6px 0}
+.lab-heat td small{display:block;font-size:11px;color:var(--label-3)}.hm{display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 8px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--label);background:color-mix(in srgb,var(--red) calc(var(--a)*100%),transparent)}.hm.wait{background:color-mix(in srgb,var(--amber) 22%,transparent)}.hm.z{color:var(--green);font-weight:400}
+@media (max-width:760px){.lab-dd{grid-template-columns:1fr}}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -1031,7 +1036,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       <div class="wrap" style="gap:32px">
         <div class="pg-head"><h1 class="pg-title" id="lab-title">Benchmark</h1><p class="lede act-lede">The same five changes, synced four ways. Each strategy runs in its own Nebius Token Factory Sandbox, forked from one checkpoint.</p></div>
         <div class="run-line" id="lab-note"></div>
-        <section><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
+        <section><div class="sec-h">Result<small>Select a strategy to see what broke</small></div><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
+        <section><div class="sec-h">Where each one breaks<small>Checks still off after the sync. The agent's are waiting on a person</small></div><div class="group scroll"><table class="lab-t lab-heat" id="lab-heat"></table></div></section>
       </div>
     </div>
 
@@ -1562,13 +1568,29 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const ag = L.runs.find((r) => r.strategy === "agent"), best = Math.max(...L.runs.filter((r) => r.strategy !== "agent").map((r) => r.keptCount));
     $("#lab-title").textContent = ag?.keptCount === 5 ? `Only the agent keeps all five changes` : "Benchmark";
     $("#lab-note").innerHTML = `<span>${esc(fmtAt(L.ranAt))}</span><span><b>${L.runs.length}</b> sandboxes in parallel · ${L.total_s} s</span><span>checkpoint ${esc(L.checkpoint.slice(0, 8))}</span><span>others keep at most <b>${best}</b> of 5</span>`;
-    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c"><span class="lab-h" tabindex="0" data-tip="${esc(d)}">${n}</span></th>`).join("")}<th>Kept</th><th>Result</th></tr>`;
-    $("#lab-body").innerHTML = L.runs.map((r) => { const A = r.strategy === "agent", off = r.total - r.passed; return `<tr class="${A ? "lab-win" : ""}">
-      <td><b>${NAME[r.strategy][0]}</b><small>${NAME[r.strategy][1]}</small><span class="lab-sb">sandbox ${esc(r.sandbox.slice(0, 8))} · ${r.wall_s} s</span></td>
+    const calls = (r) => Object.values(r.calls || {}).reduce((x, y) => x + y, 0);
+    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c"><span class="lab-h" tabindex="0" data-tip="${esc(d)}">${n}</span></th>`).join("")}<th>Kept</th><th>Cost</th><th>Result</th><th aria-label="Details"></th></tr>`;
+    $("#lab-body").innerHTML = L.runs.map((r) => { const A = r.strategy === "agent", off = r.total - r.passed, open = labOpen.has(r.strategy);
+      const issues = r.checks.filter((c) => c.issues?.length);
+      const detail = `<tr class="lab-d"${open ? "" : " hidden"}><td colspan="${COLS.length + 5}"><div class="lab-dd">
+        <div><div class="side-h">What it did</div><ul>${(r.actions || []).map((x) => `<li>${esc(typeof x === "string" ? x : (x.what || "").split(/(?<=\.)\s/)[0])}</li>`).join("") || "<li>Nothing. Each side kept its own edits.</li>"}</ul>
+        ${r.queue?.length ? `<div class="side-h">Sent to a person</div><ul>${r.queue.map((q) => `<li>${esc(q.title)}</li>`).join("")}</ul>` : ""}</div>
+        <div><div class="side-h">Still off</div>${issues.length ? issues.map((c) => `<div class="lab-a"><b>${esc(c.area)}</b><span>${c.total - c.passed} off</span></div><ul>${c.issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`).join("") : "<p>Nothing.</p>"}
+        <div class="lab-sb">Sandbox ${esc(r.sandbox)}</div></div></div></td></tr>`;
+      return `<tr class="lab-r${A ? " lab-win" : ""}${open ? " open" : ""}" data-lab="${r.strategy}" tabindex="0" aria-expanded="${open}">
+      <td><b>${NAME[r.strategy][0]}</b><small>${NAME[r.strategy][1]}</small></td>
       ${COLS.map(([k]) => `<td class="c">${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="lab-no" aria-label="lost">–</span>`}</td>`).join("")}
       <td class="num"><b>${r.keptCount}</b> of 5</td>
-      <td>${A ? `<span class="status st-warn">${r.queue?.length || 0} to a person</span>` : off ? `<span class="lab-off">${off} checks off</span>` : `<span class="status st-ok">all</span>`}${r.overwrote ? `<small class="lab-ow">${esc(r.overwrote)}</small>` : ""}</td></tr>`; }).join("");
+      <td class="num lab-cost">${r.wall_s} s<small>${calls(r) ? `${calls(r)} Nemotron calls` : "no model"}</small></td>
+      <td>${A ? `<span class="status st-warn">${r.queue?.length || 0} to a person</span>` : off ? `<span class="lab-off">${off} checks off</span>` : `<span class="status st-ok">all</span>`}${r.overwrote ? `<small class="lab-ow">${esc(r.overwrote)}</small>` : ""}</td><td class="c"><svg class="lab-cv"><use href="#i-chev"/></svg></td></tr>${detail}`; }).join("");
+    document.querySelectorAll("[data-lab]").forEach((tr) => { const t = () => { const k = tr.dataset.lab; labOpen.has(k) ? labOpen.delete(k) : labOpen.add(k); renderLab(); };
+      tr.addEventListener("click", t); tr.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } }); });
+    const areas = L.runs[0].checks.map((c) => c.area), mx = Math.max(1, ...L.runs.flatMap((r) => r.checks.map((c) => c.total - c.passed)));
+    const short = (a) => a.replace(/\s*\(.*\)/, "");
+    $("#lab-heat").innerHTML = `<thead><tr><th>Area</th>${L.runs.map((r) => `<th class="c">${NAME[r.strategy][0]}</th>`).join("")}</tr></thead><tbody>${areas.map((a) => `<tr><td>${esc(short(a))}<small>${esc((a.match(/\((.*)\)/) || [])[1] || "")}</small></td>${L.runs.map((r) => { const c = r.checks.find((x) => x.area === a), o = c ? c.total - c.passed : 0;
+      return `<td class="c"><span class="hm${o ? "" : " z"}${r.strategy === "agent" && o ? " wait" : ""}" style="--a:${o ? 0.12 + 0.6 * o / mx : 0}">${o ? o : "✓"}</span></td>`; }).join("")}</tr>`).join("")}</tbody>`;
   }
+  const labOpen = new Set();
 
   // deep links to where a change actually lives: the file on the ds-sync branch, the PR's diff, the Figma file
   const LK = D.links || {};
