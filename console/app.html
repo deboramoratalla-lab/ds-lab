@@ -857,6 +857,15 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .kcard{background:var(--group);border-radius:22px;box-shadow:var(--card-shadow);padding:20px 22px 18px;display:flex;flex-direction:column;min-width:0}
 .kcard .kl{margin-bottom:8px}.kchart{margin-top:14px;min-height:46px;display:flex;flex-direction:column;justify-content:flex-end}.kfoot{margin-top:10px;font-size:12px;color:var(--label-3)}
 .spark{width:100%;height:auto;overflow:visible}.spark-x{font-size:10px;fill:var(--label-3);font-family:var(--font)}
+.kring{display:flex;align-items:center;gap:12px}.kring svg{flex:none}.kring .kr-t{font-size:12px;color:var(--label-2);line-height:1.45}
+.pips{display:flex;flex-wrap:wrap;gap:6px}.pip{font-size:12px;color:var(--label-2);background:rgba(120,120,140,.1);border-radius:999px;padding:2px 9px;white-space:nowrap}
+.dplot{position:relative;height:30px;margin-top:6px}.dplot .tr{position:absolute;left:0;right:0;top:12px;height:4px;border-radius:2px;background:var(--fill,rgba(120,120,140,.14))}
+.dplot .ok{position:absolute;right:0;top:12px;height:4px;border-radius:0 2px 2px 0;background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.dplot .th{position:absolute;top:6px;width:1px;height:16px;background:var(--label-3)}.dplot .dt{position:absolute;top:9px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--group)}
+.dplot-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--label-3)}
+.krows{display:flex;flex-direction:column;gap:7px}.krow{display:grid;grid-template-columns:84px 1fr 44px;gap:10px;align-items:center;font-size:12px;color:var(--label-2)}.krow b{font-weight:500;color:var(--label)}
+.krow>span:last-child{text-align:right}.krow .bt{height:4px;border-radius:2px;background:var(--fill,rgba(120,120,140,.14));overflow:hidden}.krow .bt span{display:block;height:100%;border-radius:2px;background:var(--label-3)}.krow.hi .bt span{background:var(--accent)}
+.kflow{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--label-2);flex-wrap:wrap}.kflow b{font-size:15px;font-weight:500;color:var(--label);margin-right:3px}.kflow .ar{color:var(--label-3)}
 .segbar{display:flex;gap:2px;height:10px}.segbar span{border-radius:4px;min-width:6px}
 .seglegend{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font-size:11.5px;color:var(--label-2)}.seglegend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
 .minibars{display:flex;align-items:flex-end;gap:10px;height:56px}.mb{flex:1;max-width:44px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
@@ -1356,6 +1365,20 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   function minibars(items, max) {
     return `<div class="minibars">${items.map((it) => `<div class="mb" title="${esc(it.t)}"><span style="height:${Math.max(8, it.v / max * 100)}%;background:${it.c}"></span><small>${esc(it.l)}</small></div>`).join("")}</div>`;
   }
+  function ring(pct, text) {
+    const R = 18, C = 2 * Math.PI * R, d = Math.max(0, Math.min(1, pct)) * C;
+    return `<div class="kring"><svg width="46" height="46" viewBox="0 0 46 46" role="img" aria-label="${Math.round(pct * 100)}%"><circle cx="23" cy="23" r="${R}" fill="none" stroke="var(--sep)" stroke-width="5"/><circle cx="23" cy="23" r="${R}" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${d} ${C}" transform="rotate(-90 23 23)"/></svg><div class="kr-t">${text}</div></div>`;
+  }
+  function pips(items) { return `<div class="pips">${items.map((t) => `<span class="pip">${esc(t)}</span>`).join("")}</div>`; }
+  function dotplot(vals, thr) {
+    const lo = 50, x = (v) => `${(Math.max(lo, v) - lo) / (100 - lo) * 100}%`;
+    return `<div class="dplot" role="img" aria-label="Confidence ${vals.map((v) => v.l).join(", ")}; threshold ${thr}%"><div class="tr"></div><div class="ok" style="left:${x(thr)}"></div><div class="th" style="left:${x(thr)}"></div>${vals.map((v) => `<div class="dt" style="left:${x(v.v)}" title="${esc(v.t)} · ${v.l}"></div>`).join("")}</div><div class="dplot-x"><span>${lo}%</span><span>applies at ${thr}%</span><span>100%</span></div>`;
+  }
+  function rows(items, hi) {
+    const max = Math.max(...items.map((i) => i.v), 1);
+    return `<div class="krows">${items.filter((i) => i.v).map((i) => `<div class="krow${i.t === hi ? " hi" : ""}"><b>${esc(i.t)}</b><div class="bt"><span style="width:${i.v / max * 100}%"></span></div><span>${i.f ?? i.v}</span></div>`).join("")}</div>`;
+  }
+  function flow(steps) { return `<div class="kflow">${steps.map((s) => `<span><b>${s.v}</b>${esc(s.t)}</span>`).join('<span class="ar">→</span>')}</div>`; }
   function renderWho() {
     const r = report(), done = state === "repaired" || state === "decided", open = done ? openItems().length : 0, bad = r.total - r.passed;
     const acts = D.repair.actions.filter((a) => a.side !== "person"), confs = acts.filter((a) => a.confidence != null).map((a) => a.confidence);
@@ -1367,10 +1390,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const confBars = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : accentMix, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: `${a.who}: ${a.what.split(/(?<=\.)\s/)[0]}` }));
     const byKind = Object.keys(CAT).map((k) => ({ v: openItems().filter((i) => i.kind === k).length, c: CAT[k].c, t: CAT[k].label }));
     $("#who-status").innerHTML = [
-      kcard("Checks in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, spark(hist, f1), bad ? `${bad} still off` : "Everything agrees"),
-      kcard("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "this run", state === "certified" ? "" : segbar([{ v: SRCN.code, c: "var(--accent)", t: "Code" }, { v: SRCN.figma, c: accentMix, t: "Figma" }, { v: SRCN.both, c: "var(--amber)", t: "Both" }]), ""),
-      kcard("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? minibars(confBars, 100) : "", done ? `Applies only at ≥ ${Math.round(D.repair.autoApply * 100)}%` : ""),
-      kcard("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? segbar(byKind) : "", ""),
+      kcard("Checks in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, ring(r.passed / r.total, `${f1(pct(r))} in sync<br>${f1(pct(D.broken))} after the drift`), bad ? `${bad} still off` : "Everything agrees"),
+      kcard("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "this run", state === "certified" ? "" : pips([SRCN.code && `Code ${SRCN.code}`, SRCN.figma && `Figma ${SRCN.figma}`, SRCN.both && `Both ${SRCN.both}`].filter(Boolean)), ""),
+      kcard("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? dotplot(confBars.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)) : "", done && confBars.some((b) => b.l === "rule") ? "Plus 1 by rule, no model needed" : ""),
+      kcard("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? rows(byKind.map((b) => ({ v: b.v, t: b.t }))) : "", ""),
     ].join("");
     renderRuns();
   }
@@ -1478,10 +1501,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const MC = { Nano: "color-mix(in srgb, var(--accent) 45%, var(--group))", Ultra: "var(--accent)", Super: "var(--amber)" };
     const actsK = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : MC.Nano, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: a.what.split(/(?<=\.)\s/)[0] }));
     $("#act-sum").innerHTML = [
-      kcard("Run", fmtAt(start.toISOString()).split(", ")[1], fmtAt(start.toISOString()).split(", ")[0], segbar([{ v: D.breaks.length, c: "var(--red)", t: "Changes in" }, { v: acts.length, c: "var(--green)", t: "Fixed" }, { v: ITEMS.length, c: "var(--amber)", t: "To you" }]), ""),
-      kcard("Took", `${(D.repair.ms / 1000).toFixed(0)} s`, `${calls} calls`, segbar(MM.map((x) => ({ v: Math.round(x.u.ms / 100) / 10, c: MC[x.m], t: `${x.m} s` }))), ""),
-      kcard("Fixed alone", acts.length, `≥ ${Math.round(D.repair.autoApply * 100)}% sure`, minibars(actsK, 100), ""),
-      kcard("Sent to you", ITEMS.length, ITEMS.length ? "in Needs you" : "", segbar(Object.keys(CAT).map((kk) => ({ v: ITEMS.filter((i) => i.kind === kk).length, c: CAT[kk].c, t: CAT[kk].label }))), ""),
+      kcard("Run", fmtAt(start.toISOString()).split(", ")[1], fmtAt(start.toISOString()).split(", ")[0], flow([{ v: D.breaks.length, t: "in" }, { v: acts.length, t: "fixed" }, { v: ITEMS.length, t: "to you" }]), ""),
+      kcard("Took", `${(D.repair.ms / 1000).toFixed(0)} s`, `${calls} calls`, rows(MM.map((x) => ({ v: x.u.ms, t: x.m, f: `${(x.u.ms / 1000).toFixed(1)} s` })), "Ultra"), ""),
+      kcard("Fixed alone", acts.length, `≥ ${Math.round(D.repair.autoApply * 100)}% sure`, dotplot(actsK.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)), actsK.some((b) => b.l === "rule") ? "Plus 1 by rule" : ""),
+      kcard("Sent to you", ITEMS.length, ITEMS.length ? "in Needs you" : "", rows(Object.keys(CAT).map((kk) => ({ v: ITEMS.filter((i) => i.kind === kk).length, t: CAT[kk].label }))), ""),
     ].join("");
     $("#act-note").textContent = "What the agent saw, what it fixed on its own, and what it left for a person. Everything it applied is journaled and can be undone.";
     const step = (dot, title, meta, body) => `<div class="tl-step"><span class="tl-dot ${dot}"></span><div class="tl-main"><div class="tl-h"><b>${title}</b><span>${meta}</span></div>${body}</div></div>`;
