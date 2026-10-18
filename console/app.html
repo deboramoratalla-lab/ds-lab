@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>DS Lab Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap">
@@ -800,6 +801,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 .note{padding:12px 16px;font-size:12.5px;color:var(--label-2);border-top:1px solid var(--hair)}
 #run-id{display:none}
 .av{background:linear-gradient(135deg,#6d48c8,#e39b3c)!important;color:#fff}
+.log{max-height:none!important;overflow:visible!important}.log-more{border:0;background:none;padding:0;font:inherit;font-size:12px;font-weight:500;color:var(--accent);cursor:pointer}.log-more:hover{text-decoration:underline}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1029,7 +1031,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     add("detect", "bad", `${D.breaks.length} changes landed · ${D.broken.total - D.broken.passed} checks out of sync`);
     for (const b of D.breaks) add(b.who === "designer" ? "figma" : b.who === "engineer" ? "code" : "both", "dim", b.title);
     if (state === "broken") { add("agent", "run", "Starting repair on Nemotron · Token Factory"); return L; }
-    for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0].replace(/\s*\(confidence [\d.]+\)/, "")}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}`);
+    for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0].replace(/\s*\(confidence [\d.]+\)/, "").replace(/\.$/, "")}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}`);
     for (const i of ITEMS) {
       const ans = answers[i.id];
       add("you", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to you: ${qTitle(i)}`);
@@ -1037,7 +1039,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
     return L;
   }
-  let shownLines = 0;
+  let shownLines = 0, logAll = false;
   function renderCanvas() {
     const r = report(), open = openItems().length, bad = r.total - r.passed;
     const head = {
@@ -1051,9 +1053,12 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
     // log: new lines type in one by one
     const lines = logLines(), ol = $("#log");
-    const html = lines.map((l, k) => `<li class="${l.cls}${k >= shownLines ? " in" : ""}" style="--d:${Math.max(0, k - shownLines) * 90}ms"><span class="lt">${l.t}</span><span class="lx">${esc(l.txt)}</span></li>`).join("");
-    ol.innerHTML = html; shownLines = lines.length; ol.scrollTop = ol.scrollHeight;
-    $("#log-n").textContent = `${lines.length} events`;
+    // Newest events only, never cut: the rest is one click away instead of hidden behind a scroll.
+    const LIMIT = 7, hidden = logAll ? 0 : Math.max(0, lines.length - LIMIT);
+    const html = lines.slice(hidden).map((l, j) => { const k = j + hidden; return `<li class="${l.cls}${k >= shownLines ? " in" : ""}" style="--d:${Math.max(0, k - shownLines) * 90}ms"><span class="lt">${l.t}</span><span class="lx">${esc(l.txt)}</span></li>`; }).join("");
+    ol.innerHTML = html; shownLines = lines.length;
+    $("#log-n").innerHTML = lines.length > LIMIT ? `<button class="log-more" type="button">${logAll ? "Show latest" : `Show all ${lines.length}`}</button>` : `${lines.length} events`;
+    $("#log-n .log-more")?.addEventListener("click", () => { logAll = !logAll; renderCanvas(); });
     // pipeline
     const acts = D.repair.actions.filter((a) => a.side !== "person"), done = state === "repaired" || state === "decided";
     const P = [
