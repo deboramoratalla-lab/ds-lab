@@ -215,7 +215,7 @@
     "id": "rename-1",
     "who": "nano",
     "side": "code",
-    "confidence": "0.9",
+    "confidence": 0.9,
     "notify": "engineers",
     "what": "rename control-medium-gap → control-medium-gap-inline adopted in code, old name kept as deprecated alias (confidence 0.9)"
    },

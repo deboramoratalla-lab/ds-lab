@@ -166,10 +166,10 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
         renames[from] = to;
         const id = nextId("rename");
         applyChange(w, input, id, change, `rename ${from} → ${to}`);
-        actions.push({ id, who: "nano", side: "code", confidence: m.confidence, notify: "engineers",
+        actions.push({ id, who: "nano", side: "code", confidence: Number(m.confidence), notify: "engineers",
           what: `rename ${from} → ${to} adopted in code, old name kept as deprecated alias (confidence ${m.confidence})` });
       } else {
-        items.push({ id: nextId("review"), kind: "review", who: "nano", confidence: m.confidence, token: from, change,
+        items.push({ id: nextId("review"), kind: "review", who: "nano", confidence: Number(m.confidence), token: from, change,
           impact: [...impactOf(input, normalizeName(to)).map((x) => x.replace("Changing it here won't show on screen", "only the name changes")), "Notified: engineers (code adopts the new name, old one kept as alias)"],
           title: `Was ${from} renamed to ${to}?`, why: paused(tk) ? `You rejected ${STREAK_LIMIT} ${LABEL[tk]} in a row. These now come to you first.` : `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
       }
