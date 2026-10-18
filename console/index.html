@@ -918,6 +918,152 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .side-panel{--label-3:var(--label-2)}.side-panel .pill,.side-panel .badge{color:var(--label)}
 .side-panel .pr-card{padding:0!important;background:none;box-shadow:none;gap:10px;display:flex;flex-direction:column}
 .side-panel .mdl{padding:10px 0}.side-panel .mdl:first-child{padding-top:0}
+
+/* Seamline tokens, generated from the Figma library (1 · Primitives → 2 · Semantic → 3 · Component). Do not edit by hand. */
+:root {
+  /* 1 · Primitives */
+  --color-white: #ffffff;
+  --color-violet-50: #f0ebfb;
+  --color-violet-300: #a58bf2;
+  --color-violet-600: #6d48c8;
+  --color-ink-400: #646d80;
+  --color-ink-600: #535c6f;
+  --color-ink-900: #161c2d;
+  --color-mist-50: #f7f9fd;
+  --color-mist-100: #f5f4fb;
+  --color-mist-200: #eef2f8;
+  --color-mist-300: #e7ecf4;
+  --color-night-600: #2e2d45;
+  --color-night-700: #252438;
+  --color-night-800: #1b1a2b;
+  --color-night-900: #15141f;
+  --color-night-950: #11101c;
+  --color-snow-50: #eef2fb;
+  --color-snow-300: #b6bed0;
+  --color-snow-500: #8e98b0;
+  --color-green-300: #3cc2ad;
+  --color-green-600: #2f9e6e;
+  --color-amber-300: #e8a65c;
+  --color-amber-500: #e39b3c;
+  --color-red-300: #ec7a8b;
+  --color-red-500: #e05d6f;
+  --color-violet-300-a16: #a58bf229;
+  --color-green-600-a12: #2f9e6e1f;
+  --color-green-300-a16: #3cc2ad29;
+  --color-amber-500-a14: #e39b3c24;
+  --color-amber-300-a16: #e8a65c29;
+  --color-red-500-a12: #e05d6f1f;
+  --color-red-300-a16: #ec7a8b29;
+  --space-0: 0px; --space-2: 2px; --space-4: 4px; --space-6: 6px; --space-8: 8px; --space-10: 10px; --space-12: 12px; --space-14: 14px;
+  --space-16: 16px; --space-20: 20px; --space-24: 24px; --space-32: 32px; --space-40: 40px; --space-48: 48px;
+  --radius-6: 6px; --radius-10: 10px; --radius-12: 12px; --radius-14: 14px; --radius-18: 18px; --radius-26: 26px; --radius-999: 999px;
+  --font-size-11: 11px; --font-size-12: 12px; --font-size-13: 13px; --font-size-15: 15px; --font-size-22: 22px; --font-size-26: 26px; --font-size-46: 46px;
+  /* 2 · Semantic */
+  --color-bg-canvas: var(--color-mist-100);
+  --color-bg-surface: var(--color-white);
+  --color-bg-subtle: var(--color-mist-200);
+  --color-bg-stage: var(--color-mist-50);
+  --color-border-default: var(--color-mist-300);
+  --color-text-primary: var(--color-ink-900);
+  --color-text-secondary: var(--color-ink-600);
+  --color-text-tertiary: var(--color-ink-400);
+  --color-text-on-accent: var(--color-white);
+  --color-accent-default: var(--color-violet-600);
+  --color-accent-subtle: var(--color-violet-50);
+  --color-status-success: var(--color-green-600);
+  --color-status-success-subtle: var(--color-green-600-a12);
+  --color-status-warning: var(--color-amber-500);
+  --color-status-warning-subtle: var(--color-amber-500-a14);
+  --color-status-danger: var(--color-red-500);
+  --color-status-danger-subtle: var(--color-red-500-a12);
+  --space-2xs: var(--space-4); --space-xs: var(--space-6); --space-sm: var(--space-8); --space-md: var(--space-12);
+  --space-lg: var(--space-16); --space-xl: var(--space-20); --space-2xl: var(--space-24); --space-3xl: var(--space-32);
+  --radius-sm: var(--radius-10); --radius-md: var(--radius-14); --radius-lg: var(--radius-18); --radius-card: var(--radius-26); --radius-pill: var(--radius-999);
+  /* 3 · Component */
+  --button-primary-bg: var(--color-accent-default);
+  --button-primary-fg: var(--color-text-on-accent);
+  --button-secondary-bg: var(--color-bg-surface);
+  --button-secondary-fg: var(--color-text-primary);
+  --button-secondary-border: var(--color-border-default);
+  --button-ghost-fg: var(--color-accent-default);
+  --chip-bg: var(--color-bg-surface);
+  --chip-fg: var(--color-text-primary);
+  --chip-count: var(--color-text-tertiary);
+  --chip-bg-selected: var(--color-accent-default);
+  --chip-fg-selected: var(--color-text-on-accent);
+  --tag-bg: var(--color-accent-subtle);
+  --tag-fg: var(--color-accent-default);
+  --nav-item-bg: var(--color-bg-surface);
+  --nav-item-fg: var(--color-text-secondary);
+  --nav-item-bg-active: var(--color-accent-default);
+  --nav-item-fg-active: var(--color-text-on-accent);
+  --card-bg: var(--color-bg-surface);
+  --card-border: var(--color-border-default);
+  --kpi-label: var(--color-text-secondary);
+  --kpi-value: var(--color-text-primary);
+  --kpi-chip-bg: var(--color-accent-subtle);
+  --kpi-chip-fg: var(--color-accent-default);
+  --queue-conflict: var(--color-status-danger);
+  --queue-conflict-bg: var(--color-status-danger-subtle);
+  --queue-option: var(--color-accent-default);
+  --queue-option-bg: var(--color-accent-subtle);
+  --queue-check: var(--color-status-warning);
+  --queue-check-bg: var(--color-status-warning-subtle);
+  --status-in-sync-bg: var(--color-status-success-subtle);
+  --status-in-sync-fg: var(--color-status-success);
+  --status-out-of-sync-bg: var(--color-status-danger-subtle);
+  --status-out-of-sync-fg: var(--color-status-danger);
+  --status-none-bg: var(--color-bg-subtle);
+  --status-none-fg: var(--color-text-tertiary);
+  --table-header-fg: var(--color-text-tertiary);
+  --table-row-border: var(--color-border-default);
+  --menu-bg: var(--color-bg-surface);
+  --menu-border: var(--color-border-default);
+  --menu-item-hover: var(--color-accent-subtle);
+  --stage-bg: var(--color-bg-stage);
+  --button-radius: var(--radius-pill);
+  --chip-radius: var(--radius-pill);
+  --card-radius: var(--radius-card);
+  --menu-radius: var(--radius-lg);
+  --queue-icon-radius: var(--radius-md);
+  --button-padding-x: var(--space-lg);
+  --chip-padding-x: var(--space-lg);
+  --card-padding: var(--space-2xl);
+  --card-gap: var(--space-lg);
+  --menu-padding: var(--space-xs);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --color-bg-canvas: var(--color-night-950); --color-bg-surface: var(--color-night-800); --color-bg-subtle: var(--color-night-700);
+  --color-bg-stage: var(--color-night-900); --color-border-default: var(--color-night-600);
+  --color-text-primary: var(--color-snow-50); --color-text-secondary: var(--color-snow-300); --color-text-tertiary: var(--color-snow-500);
+  --color-text-on-accent: var(--color-night-950); --color-accent-default: var(--color-violet-300); --color-accent-subtle: var(--color-violet-300-a16);
+  --color-status-success: var(--color-green-300); --color-status-success-subtle: var(--color-green-300-a16);
+  --color-status-warning: var(--color-amber-300); --color-status-warning-subtle: var(--color-amber-300-a16);
+  --color-status-danger: var(--color-red-300); --color-status-danger-subtle: var(--color-red-300-a16);
+} }
+:root[data-theme="dark"] {
+  --color-bg-canvas: var(--color-night-950); --color-bg-surface: var(--color-night-800); --color-bg-subtle: var(--color-night-700);
+  --color-bg-stage: var(--color-night-900); --color-border-default: var(--color-night-600);
+  --color-text-primary: var(--color-snow-50); --color-text-secondary: var(--color-snow-300); --color-text-tertiary: var(--color-snow-500);
+  --color-text-on-accent: var(--color-night-950); --color-accent-default: var(--color-violet-300); --color-accent-subtle: var(--color-violet-300-a16);
+  --color-status-success: var(--color-green-300); --color-status-success-subtle: var(--color-green-300-a16);
+  --color-status-warning: var(--color-amber-300); --color-status-warning-subtle: var(--color-amber-300-a16);
+  --color-status-danger: var(--color-red-300); --color-status-danger-subtle: var(--color-red-300-a16);
+}
+
+/* Console aliases → library tokens. The console's legacy names now resolve through the three tiers. */
+:root, :root[data-theme="dark"] {
+  --label: var(--color-text-primary); --label-2: var(--color-text-secondary); --label-3: var(--color-text-tertiary);
+  --accent: var(--color-accent-default); --accent-soft: var(--color-accent-subtle);
+  --ground: var(--color-bg-canvas); --group: var(--card-bg); --stage: var(--stage-bg); --hair: var(--color-border-default);
+  --green: var(--color-status-success); --amber: var(--color-status-warning); --red: var(--color-status-danger);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --label: var(--color-text-primary); --label-2: var(--color-text-secondary); --label-3: var(--color-text-tertiary);
+  --accent: var(--color-accent-default); --accent-soft: var(--color-accent-subtle);
+  --ground: var(--color-bg-canvas); --group: var(--card-bg); --stage: var(--stage-bg); --hair: var(--color-border-default);
+  --green: var(--color-status-success); --amber: var(--color-status-warning); --red: var(--color-status-danger);
+} }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">

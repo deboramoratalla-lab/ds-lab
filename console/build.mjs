@@ -20,6 +20,9 @@ if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
   if (existsSync(tri)) { const T = JSON.parse(readFileSync(tri, "utf8")); d.triage = { at: T.at, ms: T.ms }; for (const c of d.components) if (T.items[c.name]?.fix) c.triage = T.items[c.name]; }
 }
 const data = JSON.stringify(d).replace(/</g, "\\u003c");
-const html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);
+let html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);
+// the 3-tier tokens exported from the Figma library load last, so every console colour resolves through them
+const tok = readFileSync(new URL("./tokens.css", import.meta.url), "utf8"), at = html.lastIndexOf("</style>");
+html = html.slice(0, at) + "\n" + tok + html.slice(at);
 writeFileSync(new URL("./index.html", import.meta.url), html);
 console.log("console/index.html", (html.length / 1024).toFixed(0) + " KB");
