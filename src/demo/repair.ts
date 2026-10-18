@@ -174,6 +174,11 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
           title: `Was ${from} renamed to ${to}?`, why: paused(tk) ? `You rejected ${STREAK_LIMIT} ${LABEL[tk]} in a row. These now come to you first.` : `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
       }
     }
+    // a link that broke and nobody explained must never disappear silently: it goes to a person
+    const covered = new Set(matches.flatMap((m) => [m.code, m.design]));
+    if (matches.length || !items.some((i) => i.failed)) for (const k of lost.filter((k) => !covered.has(k)))
+      items.push({ id: nextId("review"), kind: "review", who: "nano", token: k,
+        title: `${k} disappeared from ${figma.has(k) ? "code" : "Figma"}`, why: "Nemotron Nano found no renamed match for it. Was it renamed or deleted on purpose?" });
   }
 
   // 2. Value conflicts (Ultra)

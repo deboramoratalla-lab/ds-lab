@@ -630,7 +630,7 @@ body::before, body::after { display: none !important; }
    Airy bluish ground, white cards with large radius and soft shadow, light geometric type, one blue with tints, hatched data. */
 :root {
   --ground: #f3f6fb; --group: #ffffff; --group-bg: #ffffff; --fill: #eef2f8; --hair: #e7ecf4; --seg-on: #ffffff;
-  --label: #161c2d; --label-2: #6a7386; --label-3: #9aa3b5; --side: transparent; --node: #ffffff;
+  --label: #161c2d; --label-2: #535c6f; --label-3: #646d80; --side: transparent; --node: #ffffff;
   --accent: #2f5bea; --accent-soft: #e9effd; --progress: #2f5bea; --progress-text: #2f5bea; --edge-ok: #2f5bea;
   --blue: #2f5bea; --green: #2f9e6e; --amber: #e39b3c; --red: #e05d6f;
   --stage: #f7f9fd; --stage-dots: transparent;
@@ -640,11 +640,11 @@ body::before, body::after { display: none !important; }
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --ground: #0e1320; --group: #161d2e; --group-bg: #161d2e; --fill: #1e2740; --hair: #253049; --seg-on: #1e2740;
-  --label: #eef2fb; --label-2: #a3acc0; --label-3: #6c7690; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
+  --label: #eef2fb; --label-2: #b6bed0; --label-3: #8e98b0; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
   --progress: #6f8ff7; --edge-ok: #6f8ff7; --blue: #6f8ff7; --stage: #121827; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --ground: #0e1320; --group: #161d2e; --group-bg: #161d2e; --fill: #1e2740; --hair: #253049; --seg-on: #1e2740;
-  --label: #eef2fb; --label-2: #a3acc0; --label-3: #6c7690; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
+  --label: #eef2fb; --label-2: #b6bed0; --label-3: #8e98b0; --node: #1e2740; --accent: #6f8ff7; --accent-soft: rgba(111,143,247,.15);
   --progress: #6f8ff7; --edge-ok: #6f8ff7; --blue: #6f8ff7; --stage: #121827; color-scheme: dark; }
 body { background: linear-gradient(180deg, #f6f8fc 0, var(--ground) 420px) fixed; background-color: var(--ground); font-weight: 400; }
 :root[data-theme="dark"] body { background: var(--ground); }
@@ -744,7 +744,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .sdd{position:relative;margin-left:auto}.sdd-btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label);font:inherit;font-size:13px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
 .sdd-btn svg,.sdd-menu svg{width:15px;height:15px}.sdd-btn.on{border-color:var(--accent);color:var(--accent)}.sdd-btn .cv{opacity:.6;transition:transform .2s}.sdd.open .cv{transform:rotate(180deg)}
 .sdd-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:200px;padding:6px;border-radius:16px;background:var(--group);border:1px solid var(--hair);box-shadow:0 12px 32px rgba(20,10,50,.14);z-index:20;opacity:0;transform:translateY(-4px);pointer-events:none;transition:.16s}
-.sdd.open .sdd-menu{opacity:1;transform:none;pointer-events:auto}
+.sdd:not(.open) .sdd-menu{visibility:hidden;transition:opacity .15s,transform .15s,visibility 0s .15s}.sdd.open .sdd-menu{opacity:1;transform:none;pointer-events:auto;visibility:visible}
 .sdd-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--label);font:inherit;font-size:13px;cursor:pointer;text-align:left}
 .sdd-menu button:hover:not([disabled]){background:color-mix(in srgb,var(--accent) 8%,transparent)}.sdd-menu button[disabled]{opacity:.4;cursor:default}
 .sdd-menu .mono{margin-left:auto;opacity:.6}.sdd-menu .ck{color:var(--accent)}
@@ -796,7 +796,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 .rep-row .t{font-weight:500;color:var(--label);font-size:14px}.rep-row .s{color:var(--label-3);font-size:12.5px}.rep-row .v{white-space:nowrap;font-size:13px;color:var(--label-2)}
 .q-tok{display:block;font-size:11.5px;color:var(--label-3);margin-top:2px}
 .opt{cursor:pointer;border-radius:0}.opt:hover{background:color-mix(in srgb,var(--accent) 4%,transparent)}.opt .why{color:var(--label-2);font-size:12.5px}
-.opt .keep{align-self:flex-start;margin-top:4px;font-size:12.5px;font-weight:500;padding:6px 14px;border-radius:999px;background:var(--group);box-shadow:0 0 0 1px var(--hair),0 1px 2px rgba(0,0,0,.06);color:var(--label)}
+.opt .keep{align-self:flex-start;margin-top:4px;font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;background:var(--accent);color:#fff}.opt.kept .keep{background:var(--green)}.opt .conseq{font-size:12px;color:var(--label-2)}.pv-wrap{position:relative;display:block;width:100%}.pv-cap{position:absolute;top:6px;left:10px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--label-2);z-index:1}
 .opt:hover .keep{background:var(--accent);color:#fff;box-shadow:none}.opt.kept .keep{background:rgba(30,158,139,.12);color:#1e9e8b;box-shadow:none}
 .note{padding:12px 16px;font-size:12.5px;color:var(--label-2);border-top:1px solid var(--hair)}
 #run-id{display:none}
@@ -893,6 +893,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 @media (max-width:860px){.hiw-r{grid-template-columns:28px 1fr}.hiw-r>div:nth-child(n+3){grid-column:2}}
 .rep-ba{display:flex;flex-direction:column;gap:6px;width:min(320px,45%)}.rep-ba .krow{grid-template-columns:48px 1fr 28px;font-size:11.5px}
 .src-n{font-size:12px;font-weight:400;color:var(--label-3);margin-left:6px}.src-v{display:flex;align-items:center}.src-miss{font-size:12px;color:var(--label-3)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;max-width:min(560px,calc(100vw - 32px));padding:12px 16px;border-radius:14px;background:var(--label);color:var(--group);font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:opacity .2s,transform .2s;z-index:50}
+#toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}#toast button{all:unset;cursor:pointer;font-weight:600;color:inherit;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}#toast button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
+.nav button:not([aria-current="page"])::after{content:attr(data-tip);position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:8px;background:var(--label);color:var(--group);font:500 12px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s;z-index:40}
+.nav button:not([aria-current="page"]):hover::after,.nav button:not([aria-current="page"]):focus-visible::after{opacity:1}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -1028,7 +1033,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- DECISIONS -->
     <div class="page" id="p-decisions" hidden>
       <div class="wrap" style="gap:32px">
-        <div class="pg-head"><h1 class="pg-title">Your queue</h1><p class="lede act-lede">What the agent won't decide alone: conflicts where both sides changed, calls it wasn't sure about, and new options it won't create without you.</p></div>
+        <div class="pg-head"><h1 class="pg-title">Decisions</h1><p class="lede act-lede">What the agent won't decide alone: conflicts where both sides changed, calls it wasn't sure about, and new options it won't create without you.</p></div>
         <div class="run-line" id="q-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">To decide<small>Conflicts first: they block certification</small></div><div class="queue" id="queue-full"></div></section>
@@ -1137,7 +1142,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const head = {
       certified: ["All sources in sync", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: [`${bad} checks out of sync`, `${D.breaks.length} changes landed in Figma and code. The agent is picking them up.`],
-      repaired: [open ? `Your turn: ${open} ${open === 1 ? "decision" : "decisions"}` : "All answered", `The agent fixed what it was at least ${Math.round(D.repair.autoApply * 100)}% sure of, in ${(D.repair.ms / 1000).toFixed(0)} s. It left the rest for you.`],
+      repaired: [open ? `Needs you: ${open} ${open === 1 ? "decision" : "decisions"}` : "All answered", `The agent fixed what it was at least ${Math.round(D.repair.autoApply * 100)}% sure of, in ${(D.repair.ms / 1000).toFixed(0)} s. It left the rest for you.`],
       decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. The next certification checks them again." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
     }[state];
     if (role !== "lead" && (state === "repaired" || state === "decided")) {
@@ -1282,7 +1287,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   function previewFor(token, value) {
     if (/danger-bg/.test(token)) return btn({ ...PB.danger, bg: value }, "Delete");
     if (/primary-bg-color-hover/.test(token)) return btn({ ...PB.primary, bg: value }, "Save · hover");
-    if (/invisible-fg/.test(token)) return btn({ ...PB.invisible, fg: value }, "Cancel");
+    if (/invisible-fg/.test(token)) return btn({ ...PB.invisible, fg: value }, "Invisible button");
     return `<span class="sw" style="background:${value}"></span>`;
   }
   // Categories, in the order a lead should handle them: what blocks first, decisions next, checks last.
@@ -1324,12 +1329,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     if (i.kind === "decide") {
       const opt = (side, color, who, why) => `<button class="opt${a === side ? " kept" : ""}" type="button" ${ROLES[role].decides ? `data-item="${i.id}" data-answer="${side}"` : "disabled"} aria-pressed="${a === side}">
         <span class="who">${who}</span>
-        ${stage(previewFor(i.token, color))}
+        <span class="pv-wrap" aria-hidden="true"><span class="pv-cap">Preview</span>${stage(previewFor(i.token, color))}</span>
         <span class="sample"><span class="chip" style="background:${color}"></span><span style="font-size:12px">${esc(color)}</span></span>
         <span class="why">“${esc((why || "").replace(/^'|'\.?$/g, ""))}”</span>
-        ${ROLES[role].decides || a === side ? `<span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span>` : ""}</button>`;
+        ${ROLES[role].decides || a === side ? `<span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span><span class="conseq">${a === side ? `${side === "figma" ? "Code" : "Figma"} now uses ${esc(color)}` : `${side === "figma" ? "Code" : "Figma"} will change to ${esc(color)}`}</span>` : ""}</button>`;
       body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
-        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why)}</div>
+        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why || "")}</div>
         ${i.impact ? impactHTML(i.impact) : ""}`;
       actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Laura decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
     } else {
@@ -1405,19 +1410,25 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#who-status").innerHTML = [
       kcard("Checks in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, ring(r.passed / r.total, `${f1(pct(r))} in sync<br>${f1(pct(D.broken))} after the drift`), bad ? `${bad} still off` : "Everything agrees"),
       kcard("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "this run", state === "certified" ? "" : pips([SRCN.code && `Code ${SRCN.code}`, SRCN.figma && `Figma ${SRCN.figma}`, SRCN.both && `Both ${SRCN.both}`].filter(Boolean)), ""),
-      kcard("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? dotplot(confBars.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)) : "", done && confBars.some((b) => b.l === "rule") ? "Plus 1 by rule, no model needed" : ""),
-      kcard("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? rows(byKind.map((b) => ({ v: b.v, t: b.t }))) : "", ""),
+      kcard("Changes fixed by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? dotplot(confBars.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)) : "", done && confBars.some((b) => b.l === "rule") ? "Plus 1 by rule, no model needed" : ""),
+      kcard("Needs you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? rows(byKind.map((b) => ({ v: b.v, t: b.t }))) : "", ""),
     ].join("");
     renderRuns();
   }
 
+  function toast(msg, action, fn) {
+    let t = document.getElementById("toast"); if (!t) { t = document.createElement("div"); t.id = "toast"; t.setAttribute("role", "status"); t.setAttribute("aria-live", "polite"); document.body.appendChild(t); }
+    t.innerHTML = `<span>${msg}</span>${action ? `<button type="button">${action}</button>` : ""}`; t.className = "show";
+    if (action) t.querySelector("button").onclick = () => { fn(); t.className = ""; };
+    clearTimeout(t._h); t._h = setTimeout(() => (t.className = ""), 6000);
+  }
   function renderQueueSide(show) {
     const all = ITEMS, open = show ? openItems() : [], done = all.length - open.length, blocking = open.filter((i) => i.kind === "decide").length;
     const mins = open.reduce((x, i) => x + (i.kind === "decide" ? 1 : 2), 0);
     const nice = (w) => w.replace(/^the /, "").replace(/ who changed it$/, "").replace(/s$/, "").replace(/^./, (c) => c.toUpperCase());
     const who = {}; for (const i of open) { const n = (i.impact || []).find((x) => x.startsWith("Notified:")); if (n) for (const w of n.replace(/^Notified:\s*/, "").split(/,\s*| and /)) { const k = nice(w.trim()); if (k) (who[k] = who[k] || []).push(qTitle(i)); } }
-    $("#q-sum").innerHTML = `<span><b>${open.length}</b> to decide${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking} conflict${blocking > 1 ? "s are" : " is"} answered` : "passes"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
-    $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${esc(String(a))}` : ""}</small></span></button>`; }).join("")}</div>`;
+    $("#q-sum").innerHTML = `<span><b>${open.length}</b> need you${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking} conflict${blocking > 1 ? "s are" : " is"} answered` : "passes"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
+    $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${({ figma: "kept Figma", code: "kept code", approve: "approved", reject: "not now" })[a] || "answered"}` : ""}</small></span></button>`; }).join("")}</div>`;
     const P = D.pr;
     $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking === 1 ? "the conflict is" : `${blocking} conflicts are`} answered` : "passes"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div><small>Your answers are pushed with <b>ds-lab pr --decide</b>.</small></div>` : `<small>No pull request for this run.</small>`;
     document.querySelectorAll("[data-qjump]").forEach((b) => b.addEventListener("click", () => { expanded.add(b.dataset.qjump); renderQueue(); document.querySelector(`#queue-full [data-id="${b.dataset.qjump}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
@@ -1444,9 +1455,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
     $("#nav-count").textContent = open; $("#nav-count").hidden = !open;
+    const nb = $("#nav-count").closest("button"); nb.setAttribute("aria-label", open ? `Decisions, ${open} need you` : "Decisions");
     document.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
-      if (b.dataset.answer) { answers[b.dataset.item] = b.dataset.answer; expanded.delete(b.dataset.item); const nx = ordered().find((x) => !answers[x.id]); if (nx) expanded.add(nx.id); }
-      else delete answers[b.dataset.item];
+      const id = b.dataset.item, it = ITEMS.find((x) => x.id === id), prev = answers[id];
+      if (b.dataset.answer) { answers[id] = b.dataset.answer; expanded.delete(id); const nx = ordered().find((x) => !answers[x.id]); if (nx) expanded.add(nx.id);
+        const left = openItems().length, A = { figma: "Kept Figma", code: "Kept code", approve: "Approved", reject: "Not now" }[b.dataset.answer] || "Answered";
+        toast(`${A}: ${esc(qTitle(it))}. ${left ? `${left} left.` : "All answered. ds-sync will pass once your answers are pushed to the PR."}`, "Change", () => { if (prev) answers[id] = prev; else delete answers[id]; expanded.add(id); syncState(); render(); }); }
+      else delete answers[id];
       syncState(); render();
     }));
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
@@ -1482,7 +1497,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       </div>`;
     }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent hasn&#39;t run on this state.</div>`;
     $("#applied-note").textContent = show ? `${acts.length} changes` : "";
-    document.querySelectorAll("[data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); }));
+    document.querySelectorAll("[data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo, was = undone.has(id); was ? undone.delete(id) : undone.add(id); render();
+      toast(was ? "Change restored." : "Change undone. It's reverted in the pull request on the next push, and checks run again.", was ? "" : "Redo", () => { undone.delete(id); render(); }); }));
   }
 
 
@@ -1497,7 +1513,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       let st, sub;
       if (state === "certified") st = `<span class="status st-off">Not yet</span>`;
       else if (state === "broken") st = `<span class="status st-bad">Out of sync</span>`;
-      else if (it && !answered(it)) st = `<span class="status st-warn">In your queue</span>`;
+      else if (it && !answered(it)) st = `<span class="status st-warn">Needs you</span>`;
       else if (it && answers[it.id] === "reject") st = `<span class="status st-off">Rejected</span>`;
       else st = `<span class="status st-ok">Fixed</span>`;
       if (!(state === "repaired" || state === "decided")) sub = b.who === "both" ? "Designer and engineer" : b.who === "designer" ? "Designer" : "Engineer";
@@ -1525,7 +1541,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const MM = Object.entries(D.repair.calls).map(([m, u]) => ({ m: /nano/i.test(m) ? "Nano" : /ultra/i.test(m) ? "Ultra" : "Super", u }));
     const MC = { Nano: "color-mix(in srgb, var(--accent) 45%, var(--group))", Ultra: "var(--accent)", Super: "var(--amber)" };
     const actsK = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : MC.Nano, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: a.what.split(/(?<=\.)\s/)[0] }));
-    $("#act-sum").innerHTML = `<span>${esc(fmtAt(start.toISOString()))}</span><span>${(D.repair.ms / 1000).toFixed(0)} s · ${calls} model calls</span><span><b>${D.breaks.length}</b> changes → <b>${acts.length}</b> fixed alone → <b>${ITEMS.length}</b> to you</span>`;
+    $("#act-sum").innerHTML = `<span>${esc(fmtAt(start.toISOString()))}</span><span>${(D.repair.ms / 1000).toFixed(0)} s · ${calls} model calls</span><span><b>${D.breaks.length}</b> changes → <b>${acts.length}</b> fixed alone → <b>${ITEMS.length}</b> need you</span>`;
     $("#act-note").textContent = "What the agent saw, what it fixed on its own, and what it left for a person. Everything it applied is journaled and can be undone.";
     const step = (dot, title, meta, body) => `<div class="tl-step"><span class="tl-dot ${dot}"></span><div class="tl-main"><div class="tl-h"><b>${title}</b><span>${meta}</span></div>${body}</div></div>`;
     const sw = (h) => `<span class="tl-sw" style="background:${h}"></span><span>${h}</span>`;
@@ -1539,9 +1555,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const prLine = D.pr ? `<div class="tl-empty">${D.pr.url ? `Opened <a href="${esc(D.pr.url)}" target="_blank" rel="noopener">${esc(D.pr.title)}</a>` : `Ready to open: ${esc(D.pr.title)}`}</div>` : "";
     $("#timeline").innerHTML = step("bad", "Drift detected", `${D.breaks.length} changes · ${D.broken.total - D.broken.passed} checks out of sync`, detected)
       + step("ok", "Fixed alone", `${acts.length} changes · Nemotron on Token Factory`, fixed)
-      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Sent to you" : "Sent to Laura", ITEMS.length ? `${ITEMS.length} decisions` : "none", sent)
+      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Needs you" : "Needs Laura", ITEMS.length ? `${ITEMS.length} decisions` : "none", sent)
       + step(D.pr?.url ? "ok" : "idle", "Pull request", "ds-sync re-certifies it", prLine);
-    document.querySelectorAll("#timeline [data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); renderActivity(); }));
+    document.querySelectorAll("#timeline [data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo, was = undone.has(id); was ? undone.delete(id) : undone.add(id); render(); renderActivity();
+      toast(was ? "Change restored." : "Change undone. It's reverted in the pull request on the next push, and checks run again.", was ? "" : "Redo", () => { undone.delete(id); render(); renderActivity(); }); }));
     document.querySelectorAll("#timeline [data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
   }
 
@@ -1619,7 +1636,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const comps = D.components || [];
     const F = [
       ["Drift found", `${off}`, `checks out of sync after ${D.breaks.length} changes`],
-      ["Closed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off} checks · ${acts.length} changes`],
+      ["Checks fixed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off} checks · ${acts.length} changes`],
       ["Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, `${ITEMS.length} decisions left for a person`],
       ["Text contrast", ctr ? `${ctr.passed}/${ctr.total}` : "–", "Button variants at WCAG AA"],
       ["Coverage", `${comps.filter((c) => c.name === D.system.component).length} of ${comps.length}`, "components certified"],
@@ -1628,8 +1645,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const cov = comps.filter((c) => c.name === D.system.component).length;
     $("#metrics").innerHTML = [
       kcard("Drift found", off, "checks", pips(Object.entries(SRCN).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`)), `After ${D.breaks.length} changes`),
-      kcard("Closed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off}`, ring((off - left) / off, `${acts.length} changes applied<br>${left} checks wait on a person`), ""),
-      kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "closed" }, { v: ITEMS.length, t: "to you" }]), ""),
+      kcard("Checks fixed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off}`, ring((off - left) / off, `${acts.length} changes applied<br>${left} checks wait on a person`), ""),
+      kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "fixed" }, { v: ITEMS.length, t: "need you" }]), ""),
       kcard("Coverage", `${cov}`, `of ${comps.length} components`, ring(cov / Math.max(1, comps.length), `${comps.length - cov} not certified yet`), ""),
     ].join("");
     const tok = Object.values(D.repair.calls).reduce((x, u) => x + u.prompt + u.completion, 0), nc = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
@@ -1828,6 +1845,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.querySelectorAll(".row").forEach((el) => { el.style.opacity = !q || el.textContent.toLowerCase().includes(q) ? "" : ".3"; });
   });
 
+  document.querySelectorAll(".nav button[data-page]").forEach((b) => { b.dataset.tip = b.textContent.trim().replace(/\d+$/, ""); if (!b.getAttribute("aria-label")) b.setAttribute("aria-label", b.dataset.tip); });
   render(); renderActivity(); renderLab(); renderMetrics(); renderPR(); go(start);
 })();
 </script>
