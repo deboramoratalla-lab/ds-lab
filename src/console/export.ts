@@ -2,6 +2,7 @@
 // the agent's repair (with Nemotron calls), the person's decision, the benchmark (Tavily),
 // and the stored strategy-lab run. Writes console/data.json.
 
+process.env.DS_LAB_TRUST ??= "out/trust-export.json"; // simulated answers must not change the team's real trust state
 import { cpSync, readFileSync, readdirSync, writeFileSync, mkdtempSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { certifyPrimer, sharedTokens, type PrimerCertifyInput } from "../certify-primer.js";

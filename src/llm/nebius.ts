@@ -1,3 +1,4 @@
+import { VOICE } from "./voice.js";
 // Thin client for Nebius Token Factory (OpenAI-compatible) with per-model usage tracking.
 // Model roles follow the hackathon brief: Nano for fast, frequent calls; Super for building;
 // Ultra for the few decisions that need serious reasoning.
@@ -31,7 +32,9 @@ export async function chat(o: ChatOptions): Promise<string> {
   const body: Record<string, unknown> = {
     model,
     max_tokens: o.maxTokens ?? (o.think ? 4000 : 1500),
-    messages: [...(o.system ? [{ role: "system", content: o.system }] : []), { role: "user", content: o.user }],
+    messages: [...(o.system ? [{ role: "system", content: `${o.system}
+
+${VOICE}` }] : []), { role: "user", content: o.user }],
     chat_template_kwargs: { enable_thinking: o.think ?? false },
   };
   if (o.json) body.response_format = { type: "json_object" };

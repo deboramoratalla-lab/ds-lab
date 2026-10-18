@@ -1044,7 +1044,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
       certified: ["All sources in sync", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: [`${bad} checks out of sync`, `${D.breaks.length} changes landed in Figma and code. The agent is picking them up.`],
       repaired: [open ? `Your turn: ${open} ${open === 1 ? "decision" : "decisions"}` : "All answered", `The agent fixed what it was at least ${Math.round(D.repair.autoApply * 100)}% sure of, in ${(D.repair.ms / 1000).toFixed(0)} s. It left the rest for you.`],
-      decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. They'll be checked on the next sync." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
+      decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. The next certification checks them again." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
     }[state];
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
     const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
@@ -1205,7 +1205,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     const meta = [
       `<span class="tag ${i.kind === "decide" ? "" : "accent"}">${kind[0]}</span>`,
       i.confidence != null && i.kind !== "decide" ? `<span class="tag">${Math.round(i.confidence * 100)}% sure</span>` : "",
-      i.failed ? `<span class="tag" style="color:var(--red)">Model didn't answer</span>` : "",
+      i.failed ? `<span class="tag" style="color:var(--red)">Nemotron didn't answer</span>` : "",
       i.who === "nano" ? `<span class="tag">Nemotron Nano</span>` : i.who === "ultra" ? `<span class="tag">Nemotron Ultra</span>` : "",
     ].join("");
     let body = "", actions = "";
@@ -1310,9 +1310,9 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
           <button class="ap-undo" data-undo="${a.id}" aria-label="${u ? "Redo" : "Undo"} this change" title="${u ? "Redo" : "Undo"}"><svg viewBox="0 0 16 16"><path d="${u ? "M12 6H6a3 3 0 0 0 0 6h4M10 3.5 12.5 6 10 8.5" : "M4 6h6a3 3 0 0 1 0 6H6M6 3.5 3.5 6 6 8.5"}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${u ? "Redo" : "Undo"}</button></div>
         <div class="ap-t">${esc(title)}</div>${sub ? `<div class="ap-s">${sub}</div>` : ""}
         ${ba}
-        <div class="ap-foot">${u ? "Undone · reverted on the next sync" : a.notify ? `For ${esc(a.notify)} · in the pull request` : ""}</div>
+        <div class="ap-foot">${u ? `Undone. ${esc(a.side)} goes back to ${m ? esc(m[2]) : "its previous value"}; the change stays in the journal. Applies with <b>ds-lab repair --revert ${esc(a.id)}</b>.` : a.notify ? `For ${esc(a.notify)} · in the pull request` : ""}</div>
       </div>`;
-    }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent runs in step 3.</div>`;
+    }).join("") : `<div class="empty"><b>Nothing applied yet.</b>The agent hasn&#39;t run on this state.</div>`;
     $("#applied-note").textContent = show ? `${acts.length} changes` : "";
     document.querySelectorAll("[data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); }));
   }

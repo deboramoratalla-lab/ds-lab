@@ -1,3 +1,4 @@
+import { kindOf, paused, recordAnswer, LABEL, STREAK_LIMIT } from "./trust.js";
 // The agent repairs a broken system back to certified.
 // Nano pairs renames, Ultra judges one-sided value changes using what people wrote (commits,
 // Figma notes), rules do the mechanical fixes. Three gates keep people in charge:
@@ -160,7 +161,8 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
     for (const m of matches) {
       const [from, to] = lostSet.has(m.code) ? [m.code, m.design] : [m.design, m.code];
       const change = { type: "rename" as const, from, to };
-      if (m.confidence >= AUTO_APPLY) {
+      const tk = kindOf("nano", "rename");
+      if (m.confidence >= AUTO_APPLY && !paused(tk)) {
         renames[from] = to;
         const id = nextId("rename");
         applyChange(w, input, id, change, `rename ${from} → ${to}`);
@@ -169,7 +171,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
       } else {
         items.push({ id: nextId("review"), kind: "review", who: "nano", confidence: m.confidence, token: from, change,
           impact: [...impactOf(input, normalizeName(to)).map((x) => x.replace("Changing it here won't show on screen", "only the name changes")), "Notified: engineers (code adopts the new name, old one kept as alias)"],
-          title: `Was ${from} renamed to ${to}?`, why: `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
+          title: `Was ${from} renamed to ${to}?`, why: paused(tk) ? `You rejected ${STREAK_LIMIT} ${LABEL[tk]} in a row. These now come to you first.` : `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
       }
     }
   }
@@ -192,7 +194,8 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
     const change = r.verdict === "code-is-right" ? { type: "set-figma" as const, token: r.name, value: r.code }
       : r.verdict === "design-is-right" ? { type: "set-code" as const, token: r.name, value: r.design } : undefined;
     const label = r.verdict === "code-is-right" ? `code is right → Figma ${r.design} → ${r.code}` : `design is right → code ${r.code} → ${r.design}`;
-    if (change && !failed && r.confidence >= AUTO_APPLY) {
+    const tk = kindOf("ultra", change?.type);
+    if (change && !failed && r.confidence >= AUTO_APPLY && !paused(tk)) {
       const id = nextId("value");
       applyChange(w, input, id, change, `${r.name}: ${label}`);
       actions.push({ id, who: "ultra", side: change.type === "set-figma" ? "Figma" : "code", confidence: r.confidence,
@@ -201,7 +204,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
       items.push({ id: nextId("review"), kind: "review", who: "ultra", token: r.name, figma: r.design, code: r.code, change, failed,
         confidence: r.confidence, impact: impactOf(input, r.name),
         title: change ? `${r.name}: ${label}?` : `${r.name}: Figma ${r.design} vs code ${r.code}`,
-        why: failed ? r.why : `${r.why} (confidence ${r.confidence}, below ${AUTO_APPLY})` });
+        why: failed ? `Nemotron didn't answer. Sent to you with both values.` : paused(tk) ? `You rejected ${STREAK_LIMIT} ${LABEL[tk]} in a row. These now come to you first. ${r.why}` : `${r.why} (confidence ${r.confidence}, below ${AUTO_APPLY})` });
     }
   }
 
@@ -249,5 +252,6 @@ export function resolveItem(w: Workspace, input: PrimerCertifyInput, item: Item,
     applyChange(w, input, item.id, { type: answer === "figma" ? "set-code" : "set-figma", token: item.token, value }, `person kept ${answer} for ${item.token}`);
     return;
   }
+  if (item.kind === "review" && (answer === "approve" || answer === "reject")) recordAnswer(kindOf(item.who, item.change?.type), answer);
   if (answer === "approve" && item.change) applyChange(w, input, item.id, item.change, item.title);
 }
