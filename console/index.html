@@ -813,6 +813,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
 .ar-tx{display:flex;flex-direction:column;min-width:0;flex:1}.ar-tx b{font-weight:500;font-size:13px}.ar-tx small{color:var(--label-3);font-size:11.5px}.am-roles .ck{color:var(--accent);font-size:13px}
 body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .mark{background:none!important;display:block}.mark::after{display:none!important}
+.map .arc.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:arcIn .9s cubic-bezier(.3,.7,.2,1) forwards;animation-delay:calc(var(--i) * .12s)}
+.map .arc.draw.bad{animation:arcIn .9s cubic-bezier(.3,.7,.2,1) forwards;animation-delay:calc(var(--i) * .12s)}
+@keyframes arcIn{to{stroke-dashoffset:0}}
+.map .src{transition:transform .25s}.map .src:hover .pin-ring{stroke-width:2.5}
+.map .pulse{transition:opacity .3s}
+@media (prefers-reduced-motion: reduce){.map .arc.draw{stroke-dashoffset:0;animation:none}.map animateTransform{display:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1050,7 +1056,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
     return L;
   }
-  let shownLines = 0, logAll = false;
+  let shownLines = 0, logAll = false, mapDrawn = false;
   // Roles: same data, different entry point, default filter and permissions. Only the lead decides.
   const ROLES = {
     lead: { name: "Debora Moratalla", ini: "DM", title: "Design system lead", note: "Everything · decides", grad: "135deg,#6d48c8,#e39b3c", src: "all", decides: true, hide: [] },
@@ -1130,7 +1136,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       const d = arc(n), st = S[k], id = "arc-" + k;
       defs += `<linearGradient id="g-${k}" gradientUnits="userSpaceOnUse" x1="${n.x}" y1="${n.y}" x2="${H.x}" y2="${H.y}">
         <stop offset="0" stop-color="${col(st)}" stop-opacity=".15"/><stop offset=".5" stop-color="${col(st)}" stop-opacity=".9"/><stop offset="1" stop-color="${col(st)}" stop-opacity=".25"/></linearGradient>`;
-      paths += `<path id="${id}" d="${d}" class="arc-base"/><path d="${d}" class="arc ${st}" stroke="url(#g-${k})"/>`;
+      paths += `<path id="${id}" d="${d}" class="arc-base"/><path d="${d}" class="arc ${st}${mapDrawn ? "" : " draw"}"${mapDrawn ? "" : ` pathLength="1" style="--i:${i}"`} stroke="url(#g-${k})"/>`;
       // pulse travelling source → agent; a second one agent → source once the agent is repairing
       const dur = st === "ok" ? 2.6 : 1.6;
       pulses += `<circle r="3.2" class="pulse" fill="${col(st)}" visibility="hidden"><set attributeName="visibility" to="visible" begin="${(i * .45).toFixed(2)}s"/><animateMotion dur="${dur}s" begin="${(i * .45).toFixed(2)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`;
@@ -1149,13 +1155,17 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <text y="54" text-anchor="middle" class="src-sub">${n.sub}</text>
         ${pend(k) ? `<g class="cnt" transform="translate(17,-17)"><circle r="9"/><text y="3.5" text-anchor="middle">${pend(k)}</text></g>` : S[k] !== "ok" ? `<circle cx="15" cy="-15" r="5" fill="${col(S[k])}" class="flag"/>` : ""}
       </g>`;
+    const firstPaint = !mapDrawn; mapDrawn = true;
     $("#map").innerHTML = defs + `<rect x="0" y="0" width="520" height="320" fill="url(#dots)" mask="url(#dotmask)" opacity=".35"/>
       <circle cx="${H.x}" cy="${H.y}" r="70" fill="url(#hubglow)" class="hub-glow"/>` + paths + pulses +
       Object.entries(N).map(([k, n]) => node(k, n)).join("") +
       `<g transform="translate(${H.x},${H.y})" class="hub" data-hub tabindex="0" role="button" aria-label="Agent: open the log">
         <circle r="34" class="hub-ring r1"/><circle r="34" class="hub-ring r2"/>
         <rect x="-26" y="-26" width="52" height="52" rx="15" class="hub-core"/>
-        <g transform="translate(-26 -26) scale(2.1667)"><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/><circle cx="16.6" cy="7.6" r="1.7" fill="#fff"/></g>
+        <g transform="translate(-26 -26) scale(2.1667)" class="hub-mark">
+          <g><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="${{ broken: "1.4s", repaired: "7s", decided: "14s", certified: "14s" }[state]}" repeatCount="indefinite" calcMode="${state === "broken" ? "linear" : "spline"}" keyTimes="0;1" keySplines="0.45 0 0.55 1"/></g>
+          <circle cx="16.6" cy="7.6" r="1.7" fill="${state === "repaired" ? "var(--amber)" : "#fff"}">${state === "repaired" ? '<animate attributeName="r" values="1.7;2.5;1.7" dur="1.8s" repeatCount="indefinite"/>' : ""}</circle></g>
         <text y="46" text-anchor="middle" class="src-name">DS Lab agent</text>
         <text y="60" text-anchor="middle" class="src-sub">Nemotron · Token Factory</text>
       </g>`;
