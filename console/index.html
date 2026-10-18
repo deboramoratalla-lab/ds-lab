@@ -812,6 +812,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
 .ar-av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:500;flex:none}
 .ar-tx{display:flex;flex-direction:column;min-width:0;flex:1}.ar-tx b{font-weight:500;font-size:13px}.ar-tx small{color:var(--label-3);font-size:11.5px}.am-roles .ck{color:var(--accent);font-size:13px}
 body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
+.mark{background:none!important;display:block}.mark::after{display:none!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -836,7 +837,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 
 <div class="app">
   <aside class="side">
-    <div class="brand"><span class="mark"></span>DS Lab</div>
+    <div class="brand"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="var(--accent)"/><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/><circle cx="16.6" cy="7.6" r="1.7" fill="#fff"/></svg>DS Lab</div>
     <nav class="nav" aria-label="Sections">
       <div class="nav-label">System</div>
       <button data-page="overview" aria-current="page"><svg><use href="#i-grid"/></svg>Overview</button>
@@ -1154,7 +1155,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       `<g transform="translate(${H.x},${H.y})" class="hub" data-hub tabindex="0" role="button" aria-label="Agent: open the log">
         <circle r="34" class="hub-ring r1"/><circle r="34" class="hub-ring r2"/>
         <rect x="-26" y="-26" width="52" height="52" rx="15" class="hub-core"/>
-        <circle r="9" fill="none" stroke="var(--progress)" stroke-width="3" stroke-dasharray="40 17" class="hub-spin"/>
+        <g transform="translate(-26 -26) scale(2.1667)"><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/><circle cx="16.6" cy="7.6" r="1.7" fill="#fff"/></g>
         <text y="46" text-anchor="middle" class="src-name">DS Lab agent</text>
         <text y="60" text-anchor="middle" class="src-sub">Nemotron · Token Factory</text>
       </g>`;
