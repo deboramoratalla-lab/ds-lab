@@ -1,0 +1,24 @@
+# Called by the console's "Send answers" (server/server.mjs) or by hand: pushes the lead's decisions
+# to the open ds-sync PR; the ds-sync check then re-certifies it.
+name: apply-decisions
+on:
+  workflow_dispatch:
+    inputs:
+      decide: { description: "token=figma|code, comma-separated", required: false, default: "" }
+      approve: { description: "all, or item ids, comma-separated", required: false, default: "" }
+permissions: { contents: write, pull-requests: write }
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci || npm install
+      - run: bash fixtures/get-primer.sh
+      - run: |
+          git config user.name "seamline-agent"; git config user.email "seamline-agent@users.noreply.github.com"
+          ARGS=""; [ -n "${{ inputs.decide }}" ] && ARGS="$ARGS --decide ${{ inputs.decide }}"; [ -n "${{ inputs.approve }}" ] && ARGS="$ARGS --approve ${{ inputs.approve }}"
+          npx tsx src/cli.ts pr $ARGS

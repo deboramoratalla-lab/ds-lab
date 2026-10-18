@@ -1,0 +1,42 @@
+# Publishes the console on Nebius Serverless Endpoints.
+# 1. Builds the image and pushes it to GitHub Container Registry (public package).
+# 2. Authenticates the Nebius CLI with a service account and (re)creates the endpoint.
+# Secrets: NEBIUS_SA_ID, NEBIUS_SA_PUBLIC_KEY_ID, NEBIUS_SA_PRIVATE_KEY (PEM), NEBIUS_PROJECT_ID, GH_DISPATCH_TOKEN (optional,
+# a fine-grained token with Actions: write on this repo, so "Send answers" works).
+# Variables: NEBIUS_PLATFORM and NEBIUS_PRESET (a CPU platform/preset from your project).
+name: deploy-nebius
+on:
+  workflow_dispatch:
+  push: { branches: [main], paths: ["console/index.html", "server/**", "Dockerfile"] }
+permissions: { contents: read, packages: write }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ vars.NEBIUS_PLATFORM != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Build and push
+        run: |
+          IMG=ghcr.io/${GITHUB_REPOSITORY,,}/console:${GITHUB_SHA::7}
+          docker build -t $IMG . && docker push $IMG && echo "IMG=$IMG" >> $GITHUB_ENV
+      - name: Nebius CLI
+        run: |
+          curl -sSL https://storage.eu-north1.nebius.cloud/cli/install.sh | bash
+          echo "$HOME/.nebius/bin" >> $GITHUB_PATH
+      - name: Authenticate
+        env: { KEY: "${{ secrets.NEBIUS_SA_PRIVATE_KEY }}" }
+        run: |
+          printf '%s' "$KEY" > /tmp/sa.pem
+          nebius profile create --endpoint api.nebius.cloud --service-account-id ${{ secrets.NEBIUS_SA_ID }} \
+            --public-key-id ${{ secrets.NEBIUS_SA_PUBLIC_KEY_ID }} --private-key-file /tmp/sa.pem --profile ci --parent-id ${{ secrets.NEBIUS_PROJECT_ID }}
+      - name: Deploy endpoint
+        run: |
+          OLD=$(nebius ai endpoint list --format json | jq -r '.items[]? | select(.metadata.name=="seamline-console") | .metadata.id')
+          [ -n "$OLD" ] && nebius ai endpoint delete --id "$OLD" || true
+          nebius ai endpoint create --name seamline-console --image "$IMG" --container-port 8000 \
+            --platform ${{ vars.NEBIUS_PLATFORM }} --preset ${{ vars.NEBIUS_PRESET }} --disk-size 20Gi \
+            --env "GITHUB_REPO=${{ github.repository }},GH_DISPATCH_TOKEN=${{ secrets.GH_DISPATCH_TOKEN }}"
+          ID=$(nebius ai endpoint list --format json | jq -r '.items[] | select(.metadata.name=="seamline-console") | .metadata.id')
+          nebius ai endpoint get "$ID" --format json | jq -r '.status.public_endpoints[]?' | tee -a $GITHUB_STEP_SUMMARY

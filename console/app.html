@@ -1429,6 +1429,15 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     renderRuns();
   }
 
+  const API = { decisions: false };
+  if (/^https?:/.test(location.protocol)) fetch("/api/health").then((r) => r.ok ? r.json() : null).then((j) => { if (j?.decisions) { API.decisions = true; render(); } }).catch(() => {});
+  async function sendAnswers() {
+    const decide = ITEMS.filter((i) => i.kind === "decide" && (answers[i.id] === "figma" || answers[i.id] === "code")).map((i) => `${i.token}=${answers[i.id]}`).join(",");
+    const approve = ITEMS.filter((i) => i.kind !== "decide" && answers[i.id] === "approve").map((i) => i.id).join(",");
+    try { const r = await fetch("/api/decide", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ decide, approve }) }); const j = await r.json();
+      toast(r.ok ? `Sent. GitHub is applying your answers to the PR; ds-sync re-runs in a minute or two. <a href="${esc(j.runs)}" target="_blank" rel="noopener" style="color:inherit">See the run</a>` : `Couldn't send: ${esc(j.error || r.status)}`); }
+    catch (e) { toast("Couldn't reach the server."); }
+  }
   function prTag() {
     if (!D.pr?.url) return "";
     const blk = openItems().some((i) => i.kind === "decide");
@@ -1452,7 +1461,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#q-sum").innerHTML = `<span><b>${open.length}</b> need you${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking} conflict${blocking > 1 ? "s are" : " is"} answered` : "passes"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
     $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${({ figma: "kept Figma", code: "kept code", approve: "approved", reject: "not now" })[a] || "answered"}` : ""}</small></span></button>`; }).join("")}</div>`;
     const P = D.pr;
-    $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking === 1 ? "the conflict is" : `${blocking} conflicts are`} answered` : "passes"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div><small>Your answers go to this pull request.</small></div>` : `<small>No pull request for this run.</small>`;
+    $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking === 1 ? "the conflict is" : `${blocking} conflicts are`} answered` : "passes"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div>${API.decisions ? `<button class="btn primary q-send" type="button" ${open.length ? "disabled" : ""}>${open.length ? `Answer ${open.length} more to send` : "Send answers to the PR"}</button>` : `<small>Your answers go to this pull request.</small>`}</div>` : `<small>No pull request for this run.</small>`;
+    $("#q-unblock .q-send")?.addEventListener("click", sendAnswers);
     document.querySelectorAll("[data-qjump]").forEach((b) => b.addEventListener("click", () => { expanded.add(b.dataset.qjump); renderQueue(); document.querySelector(`#queue-full [data-id="${b.dataset.qjump}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   }
   function renderQueue() {
