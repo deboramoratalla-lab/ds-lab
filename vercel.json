@@ -1,0 +1,7 @@
+{
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": "console",
+  "rewrites": [{ "source": "/", "destination": "/index.html" }],
+  "headers": [{ "source": "/(data|catalog|catalog-triage|lab-sandbox).json", "headers": [{ "key": "cache-control", "value": "no-store" }] }]
+}
