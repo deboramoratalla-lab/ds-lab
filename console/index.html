@@ -907,7 +907,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .src:focus-visible,.map [tabindex]:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px}
 .comp-nc{font-size:12px;color:var(--label-3)}.src-btn{all:unset;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--accent)}.src-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .page h1:focus{outline:none}.main>.past-run{max-width:1240px;margin:0 auto 16px}.past-run[hidden]{display:none}.past-run{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,var(--amber) 14%,var(--group));font-size:13px;color:var(--label)}.past-run button{all:unset;cursor:pointer;font-weight:600;color:var(--accent);margin-left:auto}
-.ov-tags{margin-top:-16px!important}.ov-tags:empty{display:none}.ov-pr{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair);color:var(--label-2);text-decoration:none}.ov-pr:hover{color:var(--label)}.ov-pr svg{width:10px;height:10px}.ov-pr .pr-dot{margin:0}
+.ov-tags{margin-top:-16px!important}.ov-tags:empty{display:none}.q-ci{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.q-ci .ov-pr{font-size:12.5px}.ov-pr{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair);color:var(--label-2);text-decoration:none}.ov-pr:hover{color:var(--label)}.ov-pr svg{width:10px;height:10px}.ov-pr .pr-dot{margin:0}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -974,10 +974,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           <span id="greet" hidden></span>
           <div class="pg-filters" id="scope"></div>
         </header>
-        <div class="headline">
+        <div class="headline" hidden>
           <h2 id="hero-title" class="hero-h" hidden>All sources in sync</h2>
           <p class="lede" id="hero-sub" hidden></p>
-          <div class="run-line ov-tags" id="ov-tags"></div>
+          <div class="run-line ov-tags" id="ov-tags" hidden></div>
         </div>
 
         <div class="kpis" id="who-status"></div>
@@ -1162,8 +1162,6 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       head[1] = role === "designer" ? "Your reason shows on each card. Laura makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The ds-sync check tells you when it's safe to merge.`;
     }
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
-    const blk = openItems().length && (state === "repaired" || state === "decided");
-    $("#ov-tags").innerHTML = D.pr?.url ? `<a class="ov-pr" href="${esc(D.pr.url)}" target="_blank" rel="noopener"><span class="pr-dot ${blk ? "red" : "green"}"></span>PR #${LK.pr?.number ?? ""} · ds-sync ${blk ? "waiting on you" : "passes"}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5 3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : "";
     const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
     // log: new lines type in one by one
@@ -1429,6 +1427,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     renderRuns();
   }
 
+  function prTag() {
+    if (!D.pr?.url) return "";
+    const blk = openItems().some((i) => i.kind === "decide");
+    return `<a class="ov-pr" href="${esc(D.pr.url)}" target="_blank" rel="noopener"><span class="pr-dot ${blk ? "red" : "green"}"></span>PR #${(D.links?.pr?.number) ?? ""} · ds-sync ${blk ? "waiting on you" : "will pass"}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5 3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`;
+  }
   const modelName = (m) => /nano/i.test(m) ? "Nemotron Nano" : /ultra/i.test(m) ? "Nemotron Ultra" : /super/i.test(m) ? "Nemotron Super" : m;
   document.documentElement.lang = "en";
   document.addEventListener("click", (e) => { const c = e.target.closest("[data-connect]"); if (c) toast("To link Figma, set FIGMA_FILE_URL (and FIGMA_BUTTON_NODE) in .env and run the export again."); });
@@ -1466,7 +1469,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const cur = opts.find((o) => o[0] === srcF);
     const dd = `<div class="sdd${ddOpen ? " open" : ""}"><button class="sdd-btn${srcF !== "all" ? " on" : ""}" aria-haspopup="listbox" aria-expanded="${ddOpen}"><svg><use href="#i-${cur[3]}"/></svg>${cur[1]}<svg class="cv"><use href="#i-chev"/></svg></button>
       <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
-    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2">Conflicts first: they block certification</div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
+    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2 q-ci">${prTag()}<span>${openItems().some((i) => i.kind === "decide") ? "Conflicts first: they block the check" : openItems().length ? "Proposals never block the check" : ""}</span></div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     renderQueueSide(show);
     const open = show ? openItems().length : 0;
