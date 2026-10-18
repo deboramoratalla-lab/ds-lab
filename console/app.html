@@ -871,6 +871,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .minibars{display:flex;align-items:flex-end;gap:10px;height:56px}.mb{flex:1;max-width:44px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
 .mb span{width:100%;border-radius:4px 4px 1px 1px;display:block}.mb small{font-size:10.5px;color:var(--label-3)}
 @media (max-width:980px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
+.tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
 .act-side{gap:16px!important}.side-panel{background:color-mix(in srgb,var(--label) 3%,var(--ground));border:1px solid var(--hair);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
 .side-h{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--label-2);font-weight:600}
 .side-panel{--label-3:var(--label-2)}.side-panel .pill,.side-panel .badge{color:var(--label)}
@@ -1515,7 +1517,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       const title = m ? tokenLabel(m[1]) : a.who === "rule" ? `${(a.what.match(/^(\d+)/) || [])[1] || ""} Button bindings re-linked` : a.who === "nano" ? "Token rename adopted in code" : a.what.split(/(?<=\.)\s/)[0];
       const why = a.what.split(/(?<=\.)\s/).slice(1).join(" ").replace(/\s*\(confidence [\d.]+\)/, "");
       return `<div class="tl-row col${u ? " undone" : ""}"><div class="tl-top"><span class="tag ${a.who === "rule" ? "" : "accent"}">${M[a.who]}</span><span class="tl-meta">→ ${esc(a.side)}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}${J[a.id] ? ` · ${rel(J[a.id])}` : ""}</span><button class="btn ghost tl-undo" data-undo="${a.id}">${u ? "Redo" : "Undo"}</button></div>
-        <div class="tl-t">${esc(title)}</div>${m ? `<div class="tl-ba">${sw(m[2])}<span class="tl-arr">→</span>${sw(m[3])}</div>` : ""}${why ? `<div class="tl-why">${esc(why)}</div>` : ""}${u ? `<div class="tl-why">Undone here. Applies with <b>ds-lab repair --revert ${esc(a.id)}</b>.</div>` : ""}</div>`; }).join("")}</div>`;
+        <div class="tl-t">${esc(title)}</div>${m ? `<div class="tl-ba">${sw(m[2])}<span class="tl-arr">→</span>${sw(m[3])}</div>` : ""}${why ? `<div class="tl-why">${esc(why)}</div>` : ""}${(() => { const jp = (D.repair.journal.find((j) => j.id === a.id)?.paths) || []; const ls = [...new Set(jp)].map((f) => xlink(ghFile(f), `${f.split("/").pop()} on GitHub`)).join("") + (a.side === "Figma" ? xlink(figmaURL(), "Open in Figma") : ""); return ls ? `<div class="tl-links">${ls}</div>` : ""; })()}${u ? `<div class="tl-why">Undone here. Applies with <b>ds-lab repair --revert ${esc(a.id)}</b>.</div>` : ""}</div>`; }).join("")}</div>`;
     const sent = ITEMS.length ? `<div class="group tl-card">${ordered().map((i) => { const C = CAT[i.kind], a = answers[i.id]; return `<div class="tl-row"><span class="tl-cat" style="--cat:${C.c}"><i></i>${C.label}</span><span class="tl-t">${esc(qTitle(i))}</span>${a ? `<span class="status st-ok">Answered</span>` : `<button class="btn ghost" data-go="overview">Open</button>`}</div>`; }).join("")}</div>` : `<div class="tl-empty">Nothing needed a person.</div>`;
     const prLine = D.pr ? `<div class="tl-empty">${D.pr.url ? `Opened <a href="${esc(D.pr.url)}" target="_blank" rel="noopener">${esc(D.pr.title)}</a>` : `Ready to open: ${esc(D.pr.title)}`}</div>` : "";
     $("#timeline").innerHTML = step("bad", "Drift detected", `${D.breaks.length} changes · ${D.broken.total - D.broken.passed} checks out of sync`, detected)
@@ -1554,6 +1556,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     ].map(([n, d]) => `<dt>${n}</dt><dd>${d}</dd>`).join("");
   }
 
+  // deep links to where a change actually lives: the file on the ds-sync branch, the PR's diff, the Figma file
+  const LK = D.links || {};
+  const ghFile = (f) => LK.pr ? `${LK.repo}/blob/${LK.pr.branch}/${LK.dir}/${f.replace(/^out\/broken\//, "")}` : null;
+  const figmaURL = () => LK.figma ? (LK.figmaButton ? `${LK.figma.split("?")[0]}?node-id=${LK.figmaButton.replace(":", "-")}` : LK.figma) : null;
+  const xlink = (href, label) => href ? `<a class="xlink" href="${esc(href)}" target="_blank" rel="noopener">${label}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5 3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : "";
   function renderPR() {
     const P = D.pr; if (!P) { $("#pr").innerHTML = `<div class="empty">No changes to review in this run.</div>`; return; }
     const line = (l) => `<span class="${l.startsWith("+") ? "add" : l.startsWith("-") ? "del" : ""}">${esc(l)}</span>`;
@@ -1561,8 +1568,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#pr").innerHTML = `<div class="pr-top">${P.url ? `<span class="pr-st open">Open</span>` : `<span class="pr-st draft">Not opened yet</span>`}<span class="pr-meta">${P.files.length} files · ${n} changes</span></div>
       <div class="pr-t">${esc(P.title.replace(/^Seamline: /, ""))}</div>
       <div class="pr-check"><span class="pr-dot ${ITEMS.some((i) => !answers[i.id]) ? "red" : "green"}"></span>ds-sync ${ITEMS.some((i) => !answers[i.id]) ? `fails until the ${openItems().length} decisions are made` : "passes: everything is in sync"}</div>
-      <div class="pr-actions">${P.url ? `<a class="btn" href="${esc(P.url)}" target="_blank" rel="noopener">View in GitHub</a>` : `<span class="pr-cmd">Opens with <b>ds-lab pr --open</b></span>`}</div>
-      <details class="pr-more"><summary>Show the diff</summary>${P.files.map((f) => `<div class="pr-f"><div class="pr-fh"><span class="cst none">${esc(f.side)}</span><b>${esc(f.file)}</b></div><pre>${f.diff.split("\n").map(line).join("\n")}</pre></div>`).join("")}</details>`;
+      <div class="pr-actions">${P.url ? `<a class="btn" href="${esc(P.url)}" target="_blank" rel="noopener">Open PR #${LK.pr?.number ?? ""} in GitHub</a>${xlink(P.url + "/files", "Files changed")}${xlink(P.url + "/checks", "ds-sync check")}` : `<span class="pr-cmd">Opens with <b>ds-lab pr --open</b></span>`}</div>
+      <details class="pr-more"><summary>Show the diff</summary>${P.files.map((f) => `<div class="pr-f"><div class="pr-fh"><span class="cst none">${esc(f.side)}</span><b>${esc(f.file)}</b>${xlink(ghFile(f.file), "GitHub")}${f.side === "Figma" ? xlink(figmaURL(), "Figma") : ""}</div><pre>${f.diff.split("\n").map(line).join("\n")}</pre></div>`).join("")}</details>`;
     const M = Object.entries(D.repair.calls).map(([m, u]) => [m.split("/").pop(), u]);
     const role = (m) => /nano/i.test(m) ? "Pairs renames" : /ultra/i.test(m) ? "Judges value conflicts" : /super/i.test(m) ? "Researches new options" : "";
     if ($("#act-models")) $("#act-models").innerHTML = M.map(([m, u]) => `<div class="mdl"><div><div class="t">${esc(m.replace(/^NVIDIA-/, ""))}</div><div class="s">${role(m)}</div></div><div class="v">${u.calls} ${u.calls === 1 ? "call" : "calls"}<small>${((u.prompt + u.completion) / 1000).toFixed(1)}k tokens · ${(u.ms / 1000).toFixed(1)} s</small></div></div>`).join("");

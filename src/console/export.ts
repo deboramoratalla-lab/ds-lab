@@ -67,6 +67,15 @@ const pr = (() => {
   };
 })();
 
+// where each change lives, so the console can deep-link: the open ds-sync PR on GitHub and the team's Figma file
+const links = (() => {
+  const repo = process.env.DS_LAB_REPO ?? "deboramoratalla-lab/ds-lab", dir = "sync/primer-web";
+  let pr: any = null;
+  try { pr = JSON.parse(execFileSync("gh", ["api", `repos/${repo}/pulls?state=open&per_page=50`, "--jq", "[.[] | select(.head.ref | startswith(\"ds-sync/\"))][0] | {url: .html_url, branch: .head.ref, number}"], { encoding: "utf8" }).trim() || "null"); } catch {}
+  return { repo: `https://github.com/${repo}`, dir, pr, figma: process.env.FIGMA_FILE_URL ?? null, figmaButton: process.env.FIGMA_BUTTON_NODE ?? null };
+})();
+if (links.pr) (pr as any).url = links.pr.url;
+
 // the person's answers: approve every review/proposal, and keep Figma or code on each conflict
 const decide = r.items.find((i) => i.kind === "decide");
 const tok = decide?.token ?? "";
@@ -101,9 +110,10 @@ writeFileSync("console/data.json", JSON.stringify({
   certified: slim(certified),
   breaks: BREAKS.map((b) => ({ id: b.id, who: b.who, title: b.title, notes: b.notes ?? {} })),
   broken: slim(broken),
-  repair: { actions: r.actions, items: r.items, pending: r.pending, pendingTokens: tok ? [tok] : [], renames: r.renames, ms: repairMs, calls, journal: r.journal.map((e) => ({ id: e.id, at: e.at, what: e.what, files: Object.keys(e.files).length, undo: e.inverse ? "token" : "files" })), autoApply: AUTO_APPLY },
+  repair: { actions: r.actions, items: r.items, pending: r.pending, pendingTokens: tok ? [tok] : [], renames: r.renames, ms: repairMs, calls, journal: r.journal.map((e) => ({ id: e.id, at: e.at, what: e.what, files: Object.keys(e.files).length, paths: Object.keys(e.files), undo: e.inverse ? "token" : "files" })), autoApply: AUTO_APPLY },
   repaired: slim(repaired),
   pr,
+  links,
   decisions,
   benchmark: bench,
   lab: { script: lab.script, runs: lab.runs.map((x: any) => ({ strategy: x.strategy, breaksAt: x.breaksAt ?? null, ms: x.ms,
