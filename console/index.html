@@ -174,9 +174,9 @@ section > h2, .sec-h { font: 600 20px/1.2 var(--display); letter-spacing: -.015e
 .issue { color: var(--red); display: block; margin-top: 6px; word-break: break-word; }
 .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
 .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.st-ok { color: var(--green); }
-.st-bad { color: var(--red); }
-.st-warn { color: var(--amber); }
+.st-ok { color: var(--green-ink, var(--green)); }
+.st-bad { color: var(--red-ink, var(--red)); }
+.st-warn { color: var(--amber-ink, var(--amber)); }
 .st-off { color: var(--label-3); }
 .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 5px; background: var(--fill); color: var(--label-2); }
 .tag.accent { background: var(--accent-soft); color: var(--accent); }
@@ -883,7 +883,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .lab-r{cursor:pointer}.lab-r:hover td{background:color-mix(in srgb,var(--label) 3%,transparent)}.lab-cv{width:14px;height:14px;margin-left:8px;vertical-align:middle;color:var(--label-3);transition:transform .2s}.lab-r.open .lab-cv{transform:rotate(180deg)}
 .lab-cost small{color:var(--label-3)!important}.lab-d td{background:color-mix(in srgb,var(--label) 2.5%,transparent)}.lab-dd{display:grid;grid-template-columns:1fr 1.4fr;gap:28px;padding:6px 4px 10px;font-size:12.5px;color:var(--label-2)}
 .lab-dd ul{margin:6px 0 14px;padding-left:16px;display:flex;flex-direction:column;gap:3px}.lab-a{display:flex;justify-content:space-between;margin-top:8px;color:var(--label)}.lab-a b{font-weight:500}.lab-dd p{margin:6px 0}
-.lab-heat td small{display:block;font-size:11px;color:var(--label-3)}.hm{display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 8px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--label);background:color-mix(in srgb,var(--red) calc(var(--a)*100%),transparent)}.hm.wait{background:color-mix(in srgb,var(--amber) 22%,transparent)}.hm.z{color:var(--green);font-weight:400}
+.lab-heat td small{display:block;font-size:11px;color:var(--label-3)}.hm{--a2:calc(var(--a)*.7);display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 8px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--label);background:color-mix(in srgb,var(--red) calc(var(--a2)*100%),transparent)}.hm.wait{background:color-mix(in srgb,var(--amber) 22%,transparent)}.hm.z{color:var(--green);font-weight:400}
 @media (max-width:760px){.lab-dd{grid-template-columns:1fr}}
 .hiw-r{display:grid;grid-template-columns:28px 1.3fr 1.3fr 1fr;gap:18px;align-items:start;padding:16px 20px;border-top:1px solid var(--hair)}.hiw-r:first-child{border-top:0}
 .hiw-r b{display:block;font-weight:500;color:var(--label);font-size:14px}.hiw-r small{display:block;font-size:12.5px;color:var(--label-2);margin-top:4px;line-height:1.4}
@@ -900,6 +900,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .nav button:not([aria-current="page"]):hover::after,.nav button:not([aria-current="page"]):focus-visible::after{opacity:1}
 @media (max-width:600px){.kpis{grid-template-columns:1fr!important}.cv-body{min-height:0!important}.cv-map{display:none}.cv-log{margin:0 12px 12px!important}.cv-log,.log{height:auto!important;min-height:0!important;max-height:none!important;flex:none!important}
 .aff-r{grid-template-columns:16px 1fr auto!important}.aff-r span{grid-column:2/4}.choice{grid-template-columns:1fr}.cv-head .cv-right{display:none}.run-line>span{font-size:12px}}
+:root{--green-ink:#1d7550;--amber-ink:#94570f;--red-ink:#b0303e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--green-ink:var(--green);--amber-ink:var(--amber);--red-ink:var(--red)}}:root[data-theme="dark"]{--green-ink:var(--green);--amber-ink:var(--amber);--red-ink:var(--red)}
+.status.st-ok,.cst.ok{color:var(--green-ink)}.status.st-warn,.cst.warn{color:var(--amber-ink)}.status.st-bad,.cst.bad,.lab-ow{color:var(--red-ink)!important}
+.spark-x,.mb small,.lab-sb,.dplot-x,.lab-t th small,.hiw-n{font-size:12px!important}.log-more{min-height:24px;padding:4px 0!important}
+.src:focus-visible,.map [tabindex]:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px}
+.comp-nc{font-size:12px;color:var(--label-3)}.src-btn{all:unset;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--accent)}.src-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.page h1:focus{outline:none}.main>.past-run{max-width:1240px;margin:0 auto 16px}.past-run[hidden]{display:none}.past-run{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,var(--amber) 14%,var(--group));font-size:13px;color:var(--label)}.past-run button{all:unset;cursor:pointer;font-weight:600;color:var(--accent);margin-left:auto}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -984,7 +991,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           </div>
           <div class="cv-body">
             <div class="cv-map"><svg class="map" id="map" viewBox="0 10 520 320" role="img" aria-label="The agent between Figma, code, Storybook and docs"></svg></div>
-            <div class="cv-log"><div class="log-h"><span>Agent log</span><span class="mono" id="log-n"></span></div><ol class="log" id="log" aria-live="polite"></ol></div>
+            <div class="cv-log"><div class="log-h"><span>Agent log</span><span class="mono" id="log-n"></span></div><ol class="log" id="log" aria-live="off"></ol></div>
           </div>
           <ol class="pipe" id="pipe" aria-label="Steps of the last sync"></ol>
         </section>
@@ -1419,6 +1426,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   }
 
   const modelName = (m) => /nano/i.test(m) ? "Nemotron Nano" : /ultra/i.test(m) ? "Nemotron Ultra" : /super/i.test(m) ? "Nemotron Super" : m;
+  document.documentElement.lang = "en";
+  document.addEventListener("click", (e) => { const c = e.target.closest("[data-connect]"); if (c) toast("To link Figma, set FIGMA_FILE_URL (and FIGMA_BUTTON_NODE) in .env and run the export again."); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && document.activeElement?.classList.contains("lab-h")) document.activeElement.blur(); });
   function toast(msg, action, fn) {
     let t = document.getElementById("toast"); if (!t) { t = document.createElement("div"); t.id = "toast"; t.setAttribute("role", "status"); t.setAttribute("aria-live", "polite"); document.body.appendChild(t); }
     t.innerHTML = `<span>${msg}</span>${action ? `<button type="button">${action}</button>` : ""}`; t.className = "show";
@@ -1590,7 +1600,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     renderHow(); $("#lab-title").textContent = ag?.keptCount === 5 ? `Only Seamline keeps all five changes` : "Results";
     $("#lab-note").innerHTML = `<span>${esc(fmtAt(L.ranAt))}</span><span><b>${L.runs.length}</b> sandboxes in parallel · ${L.total_s} s</span><span>checkpoint ${esc(L.checkpoint.slice(0, 8))}</span><span>others keep at most <b>${best}</b> of 5</span>`;
     const calls = (r) => Object.values(r.calls || {}).reduce((x, y) => x + y, 0);
-    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c"><span class="lab-h" tabindex="0" data-tip="${esc(d)}">${n}</span></th>`).join("")}<th>Kept</th><th>Cost</th><th>Result</th><th aria-label="Details"></th></tr>`;
+    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c"><span class="lab-h" tabindex="0" data-tip="${esc(d)}" aria-label="${esc(n)}: ${esc(d)}">${n}</span></th>`).join("")}<th>Kept</th><th>Cost</th><th>Result</th><th aria-label="Details"></th></tr>`;
     $("#lab-body").innerHTML = L.runs.map((r) => { const A = r.strategy === "agent", off = r.total - r.passed, open = labOpen.has(r.strategy);
       const issues = r.checks.filter((c) => c.issues?.length);
       const detail = `<tr class="lab-d"${open ? "" : " hidden"}><td colspan="${COLS.length + 5}"><div class="lab-dd">
@@ -1670,7 +1680,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const READ = { figma: "Variables and Button bindings, exported", code: "CSS custom properties and Button CSS", storybook: "Story files, by option", docs: "Generated component docs" };
     $("#sources").innerHTML = D.sources.map((s) => `<div class="row lead"><span class="glyph g-${G[s.id][0]}">${ic(G[s.id][1])}</span>
       <div><div class="t">${esc(s.name)} <span class="src-n">${s.count.toLocaleString()} ${esc(s.unit)}</span></div><div class="s">${esc(s.detail)} · ${READ[s.id]}</div></div>
-      <div class="v src-v">${LINK[s.id][0] ? xlink(LINK[s.id][0], LINK[s.id][1]) : `<span class="src-miss">Link not set</span>`}</div></div>`).join("");
+      <div class="v src-v">${LINK[s.id][0] ? xlink(LINK[s.id][0], LINK[s.id][1]) : `<button class="src-btn" type="button" data-connect="figma">Connect</button>`}</div></div>`).join("");
     const res = (D.repair.items || []).find((i) => i.research)?.research;
     const SV = [
       ["Nebius Token Factory", "NVIDIA Nemotron Nano, Super and Ultra", nc ? `${nc} calls last run` : null, "sparkle"],
@@ -1701,6 +1711,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         return `<button role="option" aria-selected="${on}" data-run="${r.st}"><span class="rdot ${r.st}"></span><span class="rtx"><b>${r.label}${n === 0 ? ' <em>Latest</em>' : ""}</b><small>${r.at ? fmtAt(r.at) : "Before the breaks"} · ${r.sub}</small></span>${on ? '<span class="ck">✓</span>' : ""}</button>`; }).join("")}</div>`;
     $("#runs .sdd-btn").onclick = (e) => { e.stopPropagation(); runsOpen = !runsOpen; renderRuns(); };
     $("#runs").querySelectorAll("[data-run]").forEach((b) => b.onclick = () => { runsOpen = false; setState(b.dataset.run); });
+    let pr = $("#past-run"); if (!pr) { pr = document.createElement("div"); pr.id = "past-run"; pr.className = "past-run"; pr.setRole = 1; pr.setAttribute("role", "status"); document.querySelector(".main").prepend(pr); }
+    pr.hidden = latest; if (!latest) { pr.innerHTML = `<span>You're viewing an earlier step: <b>${esc(cur.label)}</b>.</span><button type="button">Back to latest</button>`; pr.querySelector("button").onclick = () => setState(RUNS[0].st); }
   }
   document.addEventListener("click", (e) => { if (runsOpen && !e.target.closest("#runs")) { runsOpen = false; renderRuns(); } });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && runsOpen) { runsOpen = false; renderRuns(); } });
@@ -1737,7 +1749,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const shown = rows.filter((r) => r.name.toLowerCase().includes(compQ));
     const list = compAll || compQ ? shown : shown.slice(0, 3);
     $("#comp-sub").textContent = `${rows.filter((r) => r.cert).length} of ${rows.length} certified`;
-    const st = (r) => !r.cert ? `<span class="cst none">Not certified yet</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
+    const st = (r) => !r.cert ? `<span class="comp-nc">Not checked yet</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
     $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Figma</span><span>Storybook</span><span>Modes</span><span>Status</span><span></span></div>` +
       list.map((r) => `<button class="crow${r.cert ? "" : " dim"}" ${r.cert ? 'data-comp="1"' : "disabled"}><span class="cn">${esc(r.name)}</span><span>${r.figma ? r.figma + " variables" : "—"}</span><span>${r.story ? "Stories" : r.cert ? "None" : "Not checked"}</span><span>${r.cert ? D.system.theme : "—"}</span>${st(r)}<svg class="cv go"><use href="#i-chev"/></svg></button>`).join("") +
       (!compQ && shown.length > 3 ? `<button class="crow cmore" id="comp-more">${compAll ? "Show fewer" : `Show all ${shown.length}`}</button>` : "") +
@@ -1830,7 +1842,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#crumb").textContent = p === "metrics" ? "Report" : p === "component" ? `Components / ${D.system.component}` : p[0].toUpperCase() + p.slice(1);
     document.querySelectorAll(".nav button").forEach((b) => { if (b.dataset.page === p) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     try { localStorage.setItem("dslab-page", p); } catch {}
+    const TT = { overview: "Overview", activity: "Activity", decisions: "Decisions", metrics: "Report", sources: "Sources", lab: "How it works", component: D.system.component };
+    document.title = `${TT[p] || "Seamline"} · Seamline`;
+    if (navigated) { const h = $("#p-" + p + " h1"); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } window.scrollTo(0, 0); }
+    navigated = true;
   }
+  let navigated = false;
   document.querySelectorAll(".nav button").forEach((b) => b.addEventListener("click", () => go(b.dataset.page)));
   let start = DEMO ? "" : location.hash.slice(1);
   if (!start) { try { start = localStorage.getItem("dslab-page") || ""; } catch {} }
