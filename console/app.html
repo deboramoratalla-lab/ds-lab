@@ -827,6 +827,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 @keyframes cometBack{0%{stroke-dashoffset:-.95;opacity:0}15%{opacity:.9}85%{opacity:.9}100%{stroke-dashoffset:.05;opacity:0}}
 .map .arc{stroke-width:1.6;opacity:.85}
 @media (prefers-reduced-motion: reduce){.map .comet{display:none}.map .hub-mark animateTransform,.map .hub-mark animate{display:none}}
+.map .map-cap{font-size:11.5px;fill:var(--label-2);font-family:var(--font)}
+.map .trav circle{filter:drop-shadow(0 0 3px currentColor)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1147,8 +1149,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       paths += `<path id="${id}" d="${d}" class="arc-base"/><path d="${d}" class="arc ${st}${mapDrawn ? "" : " draw"}"${mapDrawn ? "" : ` pathLength="1" style="--i:${i}"`} stroke="url(#g-${k})"/>`;
       // comets: a short bright stroke that travels source → agent (and agent → source while repairing). Calmer when in sync.
       const dur = st === "ok" ? 3.4 : st === "warn" ? 2.2 : 1.5, delay = (i * 0.37).toFixed(2);
-      pulses += `<path d="${d}" pathLength="1" class="comet ${st}" stroke="${col(st)}" style="--dur:${dur}s;--delay:${delay}s"/>`;
-      if (outbound) pulses += `<path d="${d}" pathLength="1" class="comet back" stroke="var(--accent)" style="--dur:2.2s;--delay:${(i * 0.37 + 0.9).toFixed(2)}s"/>`;
+      if (false) pulses += `<path d="${d}" pathLength="1" class="comet ${st}" stroke="${col(st)}" style="--dur:${dur}s;--delay:${delay}s"/>`;
+      if (false) pulses += `<path d="${d}" pathLength="1" class="comet back" stroke="var(--accent)" style="--dur:2.2s;--delay:${(i * 0.37 + 0.9).toFixed(2)}s"/>`;
       i++;
     }
     defs += "</defs>";
@@ -1171,11 +1173,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <circle r="34" class="hub-ring r1"/><circle r="34" class="hub-ring r2"/>
         <rect x="-26" y="-26" width="52" height="52" rx="15" class="hub-core"/>
         <g transform="translate(-26 -26) scale(2.1667)" class="hub-mark">
-          ${(() => { const T = { broken: 1.6, repaired: 4.8, decided: 9, certified: 9 }[state], sp = 'calcMode="spline" keyTimes="0;0.5;1" keySplines="0.6 0 0.4 1;0.6 0 0.4 1"';
-            return `<path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"><animateTransform attributeName="transform" type="rotate" values="0 12 12;180 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></path>
-            <path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"><animateTransform attributeName="transform" type="rotate" values="0 12 12;140 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></path>
-            <g><circle cx="16.6" cy="7.6" r="1.7" fill="${state === "repaired" ? "var(--amber)" : "#fff"}">${state === "repaired" ? '<animate attributeName="r" values="1.7;2.4;1.7" dur="1.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>' : ""}</circle>
-              <animateTransform attributeName="transform" type="rotate" values="0 12 12;180 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></g>`; })()}</g>
+          <g id="hm-a"><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/></g>
+          <g id="hm-b"><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/></g>
+          <g id="hm-d"><circle id="hm-dot" cx="16.6" cy="7.6" r="1.7" fill="#fff"/></g></g>
+        <text id="map-cap" x="0" y="${330 - H.y - 2}" text-anchor="middle" class="map-cap"></text>
         <text y="46" text-anchor="middle" class="src-name">DS Lab agent</text>
         <text y="60" text-anchor="middle" class="src-sub">Nemotron · Token Factory</text>
       </g>`;
@@ -1557,7 +1558,59 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.body.dataset.role = role;
     const av = $("#acct .av-btn"); av.textContent = R.ini; av.style.setProperty("background", `linear-gradient(${R.grad})`, "important"); av.setAttribute("aria-label", `${R.name} · account and view`);
   }
-  function render() { applyRole(); renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
+  // ---------- narrative motion: replays the last run on the map ----------
+  // Each real change travels from its source to the agent, the mark spins while it works, and each outcome
+  // goes back: fixed → to the side that was updated; needs a person → the mark's dot turns amber.
+  let narrStop = null;
+  function startNarrative() {
+    if (narrStop) narrStop();
+    const svg = $("#map"); if (!svg) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const A = svg.querySelector("#hm-a"), B = svg.querySelector("#hm-b"), Dg = svg.querySelector("#hm-d"), dot = svg.querySelector("#hm-dot"), cap = svg.querySelector("#map-cap");
+    const NS = "http://www.w3.org/2000/svg"; let alive = true, raf = 0, angle = 0, gap = 0, speed = 0.02, target = 0.02, last = performance.now();
+    const waitingColor = getComputedStyle(document.documentElement).getPropertyValue("--amber").trim() || "#e39b3c";
+    const setDot = (amber) => { dot.setAttribute("fill", amber ? waitingColor : "#fff"); };
+    // the mark: arcs turn together; the second lags and catches up (the gap opens, then the loop closes)
+    const tick = (t) => { if (!alive) return; const dt = Math.min(64, t - last); last = t; speed += (target - speed) * 0.06; angle = (angle + speed * dt) % 360; gap = Math.sin(t / 900) * 22 * Math.min(1, speed / 0.12);
+      A?.setAttribute("transform", `rotate(${angle} 12 12)`); B?.setAttribute("transform", `rotate(${angle - gap} 12 12)`); Dg?.setAttribute("transform", `rotate(${angle} 12 12)`);
+      if (state === "repaired" && dot) dot.setAttribute("r", (1.7 + 0.6 * (0.5 + 0.5 * Math.sin(t / 300)) * (target < 0.1 ? 1 : 0)).toFixed(2)); raf = requestAnimationFrame(tick); };
+    // a dot with a short fading tail that follows a path
+    const travel = (pathEl, reverse, color, ms) => new Promise((res) => { if (!pathEl || !alive) return res(); const L = pathEl.getTotalLength(), g = document.createElementNS(NS, "g"); g.setAttribute("class", "trav");
+      const parts = [...Array(7)].map((_, i) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("r", (3.2 - i * 0.35).toFixed(2)); c.setAttribute("fill", color); c.setAttribute("opacity", (1 - i / 7).toFixed(2)); g.appendChild(c); return c; });
+      svg.insertBefore(g, svg.querySelector(".src")); const t0 = performance.now();
+      const step = (t) => { if (!alive) { g.remove(); return res(); } let p = Math.min(1, (t - t0) / ms); const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        parts.forEach((c, i) => { const q = Math.max(0, e - i * 0.025), pt = pathEl.getPointAtLength((reverse ? 1 - q : q) * L); c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); });
+        if (p < 1) requestAnimationFrame(step); else { g.remove(); res(); } };
+      requestAnimationFrame(step); });
+    const flash = (k, color) => { const n = svg.querySelector(`[data-src="${k}"] .pin-ring`); if (!n) return; n.animate([{ strokeWidth: 1.5, stroke: color }, { strokeWidth: 5, stroke: color }, { strokeWidth: 1.5 }], { duration: 700, easing: "ease-out" }); };
+    const say = (txt) => { if (!cap) return; cap.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, fill: "forwards" }); cap.textContent = txt; };
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const arcOf = (k) => svg.querySelector(`#arc-${k}`);
+    const SRC = { designer: ["figma"], engineer: ["code"], both: ["figma", "code"] };
+    const SIDE = { Figma: "figma", code: "code", Storybook: "story" };
+    const green = "var(--edge-ok)", accent = "var(--accent)", amber = waitingColor;
+    const story = async () => {
+      while (alive) {
+        if (state === "certified") { target = 0.012; say(""); setDot(false); await sleep(4000); continue; }
+        setDot(false); target = 0.03;
+        for (const b of D.breaks) { if (!alive) return; say(b.title.replace(/\s*\(.*?\)\s*$/, "")); const srcs = b.id === "xsmall" ? ["code", "docs"] : SRC[b.who] || ["code"];
+          srcs.forEach((k) => flash(k, "var(--red)")); await Promise.all(srcs.map((k) => travel(arcOf(k), false, "var(--red)", 1100))); target = Math.min(0.5, target + 0.08); }
+        if (state === "broken") { say("The agent is working on it"); target = 0.45; await sleep(2600); continue; }
+        say("Nemotron checks each change against commits and notes"); target = 0.5; await sleep(1400);
+        for (const a of D.repair.actions.filter((x) => x.side !== "person")) { if (!alive) return; const k = SIDE[a.side] || "figma"; say(`${a.who === "rule" ? "Rule" : a.who === "nano" ? "Nano" : "Ultra"} fixed it in ${a.side}`);
+          await travel(arcOf(k), true, green, 1000); flash(k, green); }
+        target = 0.05;
+        const open = openItems();
+        if (open.length) { say(`${open.length} ${open.length === 1 ? "decision" : "decisions"} sent to ${role === "lead" ? "you" : "Laura"}`); setDot(true); }
+        else { say("Certified again"); }
+        await sleep(5200);
+      }
+    };
+    if (reduce) { setDot(state === "repaired" && openItems().length > 0); return; }
+    raf = requestAnimationFrame(tick); story();
+    narrStop = () => { alive = false; cancelAnimationFrame(raf); svg.querySelectorAll(".trav").forEach((n) => n.remove()); };
+  }
+  function render() { applyRole(); renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); startNarrative(); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
     state = st; for (const k of Object.keys(answers)) delete answers[k]; undone.clear(); shownLines = 0;
     if (state === "decided") for (const i of ITEMS) answers[i.id] = i.kind === "decide" ? "code" : "approve";
