@@ -532,15 +532,16 @@
     "diff": "~ bindings · variant=danger, size=small · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=medium · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=large · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=invisible, size=small · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=medium · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=large · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\""
    }
   ],
-  "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/1"
+  "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/2",
+  "branch": "ds-sync/2026-10-18-13-25"
  },
  "links": {
   "repo": "https://github.com/deboramoratalla-lab/ds-lab",
   "dir": "sync/primer-web",
   "pr": {
-   "branch": "ds-sync/2026-10-17-18-43",
-   "number": 1,
-   "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/1"
+   "branch": "ds-sync/2026-10-18-13-25",
+   "number": 2,
+   "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/2"
   },
   "figma": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
   "figmaButton": null
