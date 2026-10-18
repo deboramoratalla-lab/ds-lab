@@ -16,6 +16,8 @@ if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
     .map((n) => ({ name: n, figma: seg[n.toLowerCase()] || 0, story: stories.has(n) }));
   const cat = new URL("./catalog.json", import.meta.url);
   if (existsSync(cat)) { const C = Object.fromEntries(JSON.parse(readFileSync(cat, "utf8")).map((c) => [c.name, c])); for (const c of d.components) Object.assign(c, { cat: C[c.name] || null }); }
+  const tri = new URL("./catalog-triage.json", import.meta.url);
+  if (existsSync(tri)) { const T = JSON.parse(readFileSync(tri, "utf8")); d.triage = { at: T.at, ms: T.ms }; for (const c of d.components) if (T.items[c.name]?.fix) c.triage = T.items[c.name]; }
 }
 const data = JSON.stringify(d).replace(/</g, "\\u003c");
 const html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);
