@@ -907,7 +907,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .src:focus-visible,.map [tabindex]:focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px}
 .comp-nc{font-size:12px;color:var(--label-3)}.src-btn{all:unset;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--accent)}.src-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .page h1:focus{outline:none}.main>.past-run{max-width:1240px;margin:0 auto 16px}.past-run[hidden]{display:none}.past-run{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,var(--amber) 14%,var(--group));font-size:13px;color:var(--label)}.past-run button{all:unset;cursor:pointer;font-weight:600;color:var(--accent);margin-left:auto}
-.ov-tags{margin-top:-16px!important}.ov-tags:empty{display:none}.q-ci{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.q-ci .ov-pr{font-size:12.5px}.ov-pr{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair);color:var(--label-2);text-decoration:none}.ov-pr:hover{color:var(--label)}.ov-pr svg{width:10px;height:10px}.ov-pr .pr-dot{margin:0}
+.ov-tags{margin-top:-16px!important}.ov-tags:empty{display:none}.sec-pr{margin-left:auto;font-size:12.5px}.sec-pr .ov-pr{font-size:12.5px}.q-ci{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.q-ci .ov-pr{font-size:12.5px}.ov-pr{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair);color:var(--label-2);text-decoration:none}.ov-pr:hover{color:var(--label)}.ov-pr svg{width:10px;height:10px}.ov-pr .pr-dot{margin:0}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -982,7 +982,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 
         <div class="kpis" id="who-status"></div>
         <section id="queue-sec" hidden>
-          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small><button class="xlink sec-link" data-go="lab">How it decides</button></div>
+          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small><span class="sec-pr" id="queue-pr"></span></div>
           <div class="queue" id="queue"></div>
         </section>
         <section class="canvas" aria-label="Agent">
@@ -1469,9 +1469,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const cur = opts.find((o) => o[0] === srcF);
     const dd = `<div class="sdd${ddOpen ? " open" : ""}"><button class="sdd-btn${srcF !== "all" ? " on" : ""}" aria-haspopup="listbox" aria-expanded="${ddOpen}"><svg><use href="#i-${cur[3]}"/></svg>${cur[1]}<svg class="cv"><use href="#i-chev"/></svg></button>
       <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
-    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2 q-ci">${prTag()}<span>${openItems().some((i) => i.kind === "decide") ? "Conflicts first: they block the check" : openItems().length ? "Proposals never block the check" : ""}</span></div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
+    $("#queue").innerHTML = show ? (ITEMS.length > 4 || role !== "lead" ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div>` : "") + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
-    renderQueueSide(show);
+    renderQueueSide(show); $("#queue-pr").innerHTML = show ? prTag() : "";
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
     $("#nav-count").textContent = open; $("#nav-count").hidden = !open;
