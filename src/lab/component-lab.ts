@@ -15,7 +15,7 @@ export const STRATEGIES: { id: StrategyId; name: string; description: string }[]
   { id: "manual", name: "Manual", description: "Each side edits on its own; nobody syncs until someone notices." },
   { id: "figma-first", name: "Figma first", description: "Figma variables are exported and regenerate the code. Code-only changes are overwritten." },
   { id: "code-first", name: "Code first", description: "Code tokens are pushed into Figma variables. Figma-only changes are overwritten; components aren't touched." },
-  { id: "agent", name: "DS Lab agent", description: "Merges from the last certification: Nano pairs renames, Ultra judges one-sided changes, rules fix bindings and variants, a person decides when both sides changed." },
+  { id: "agent", name: "Seamline agent", description: "Merges from the last certification: Nano pairs renames, Ultra judges one-sided changes, rules fix bindings and variants, a person decides when both sides changed." },
 ];
 
 const figmaKeys = (input: PrimerCertifyInput) =>

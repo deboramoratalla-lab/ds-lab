@@ -498,8 +498,8 @@
   "total": 1488
  },
  "pr": {
-  "title": "DS Lab: re-sync Primer Web Button (3 changes, 3 waiting on a person)",
-  "body": "Opened by DS Lab after a certification found drift.\n\n### Applied by the agent\n- **ultra** → Figma (92%): button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9.\n- **ultra** → Figma (98%): button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37.\n- **rule** → Figma: 6 Button bindings pointed at a token with a different value than code's → re-bound to the token the code uses\n\n### Not in this PR (waiting on the design system lead)\n- Was control-medium-gap renamed to control-medium-gap-inline?\n- button-invisible-fg-color-rest: both sides changed it\n- New size=\"xsmall\" in code and docs\n\nEvery change is journaled and can be undone from the DS Lab console. The `ds-sync` check re-runs the certification on this branch.",
+  "title": "Seamline: re-sync Primer Web Button (3 changes, 3 waiting on a person)",
+  "body": "Opened by Seamline after a certification found drift.\n\n### Applied by the agent\n- **ultra** → Figma (92%): button-danger-bg-color-rest: code is right → Figma #f6f8fa → #ffebe9.\n- **ultra** → Figma (98%): button-primary-bg-color-hover: code is right → Figma #1c8139 → #1a7f37.\n- **rule** → Figma: 6 Button bindings pointed at a token with a different value than code's → re-bound to the token the code uses\n\n### Not in this PR (waiting on the design system lead)\n- Was control-medium-gap renamed to control-medium-gap-inline?\n- button-invisible-fg-color-rest: both sides changed it\n- New size=\"xsmall\" in code and docs\n\nEvery change is journaled and can be undone from the Seamline console. The `ds-sync` check re-runs the certification on this branch.",
   "files": [
    {
     "file": "figma/part1.json",

@@ -43,7 +43,7 @@ export const codeFirst: Strategy = {
  */
 export const agent: Strategy = {
   id: "agent",
-  name: "DS Lab agent (3-way merge + Nemotron)",
+  name: "Seamline agent (3-way merge + Nemotron)",
   description: "Propagates changes from either side, detects renames, resolves conflicts or asks a person.",
   async sync(s, base, notes) {
     const out = clone(s);

@@ -1,8 +1,10 @@
-# DS Lab
+# Seamline
 
-Everyone wants to sync their design system. Nobody knows what works. DS Lab measures it.
+> Formerly Seamline. Repo, CLI (`ds-lab`) and the `ds-sync` check keep their names.
 
-DS Lab runs several Figma ↔ code sync strategies in parallel on **your** design system, replays the same real changes against each one, and tells you which strategy holds up. After you adopt it, it keeps measuring whether it actually works.
+Everyone wants to sync their design system. Nobody knows what works. Seamline measures it.
+
+Seamline runs several Figma ↔ code sync strategies in parallel on **your** design system, replays the same real changes against each one, and tells you which strategy holds up. After you adopt it, it keeps measuring whether it actually works.
 
 Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineering track). Work in progress.
 
@@ -60,7 +62,7 @@ Every strategy gets the same 5 changes on Primer's 1,036 shared tokens: a design
 | No sync (status quo) | step 1 | 0/5 |
 | Figma is the source of truth | step 1 | 1/5, overwrites code's change silently |
 | Code is the source of truth | step 1 | 1/5, overwrites Figma's change silently |
-| DS Lab agent (3-way merge + Nemotron) | never | 5/5 |
+| Seamline agent (3-way merge + Nemotron) | never | 5/5 |
 
 Caveat: the one-way strategies model the common "export and overwrite" pipelines, and the script was written alongside the agent. The lab's value is in running your own changes against your own system.
 

@@ -56,12 +56,12 @@ const pr = (() => {
   }).filter(Boolean) as { file: string; side: string; diff: string }[];
   const acts = r.actions.filter((a) => a.side !== "person");
   return {
-    title: `DS Lab: re-sync Primer Web Button (${acts.length} changes, ${r.items.length} waiting on a person)`,
+    title: `Seamline: re-sync Primer Web Button (${acts.length} changes, ${r.items.length} waiting on a person)`,
     body: [
-      "Opened by DS Lab after a certification found drift.", "",
+      "Opened by Seamline after a certification found drift.", "",
       "### Applied by the agent", ...acts.map((a) => `- **${a.who}** → ${a.side}${a.confidence != null ? ` (${Math.round(a.confidence * 100)}%)` : ""}: ${a.what.split(/(?<=\.)\s/)[0]}`), "",
       "### Not in this PR (waiting on the design system lead)", ...r.items.map((i) => `- ${i.title}`), "",
-      "Every change is journaled and can be undone from the DS Lab console. The `ds-sync` check re-runs the certification on this branch.",
+      "Every change is journaled and can be undone from the Seamline console. The `ds-sync` check re-runs the certification on this branch.",
     ].join("\n"),
     files: diffs,
   };

@@ -154,7 +154,7 @@ if (cmd === "pr") {
       const r = certifyPrimer({ ...input, baselineShared: sharedTokens(primerInput()), renames });
       for (const c of r.checks) console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area} ${c.passed}/${c.total}`);
       git("add", "-f", dir);
-      git("commit", "-m", `DS Lab: apply the design system lead's decisions\n\n${done.join("\n")}`);
+      git("commit", "-m", `Seamline: apply the design system lead's decisions\n\n${done.join("\n")}`);
       git("push", "origin", d.pr.branch);
       console.log(`\nPushed to ${d.pr.branch}: ${r.ok ? "certified" : "still out of sync"}`);
     } finally { git("checkout", from); }
