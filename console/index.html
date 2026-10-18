@@ -885,6 +885,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .lab-dd ul{margin:6px 0 14px;padding-left:16px;display:flex;flex-direction:column;gap:3px}.lab-a{display:flex;justify-content:space-between;margin-top:8px;color:var(--label)}.lab-a b{font-weight:500}.lab-dd p{margin:6px 0}
 .lab-heat td small{display:block;font-size:11px;color:var(--label-3)}.hm{display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 8px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--label);background:color-mix(in srgb,var(--red) calc(var(--a)*100%),transparent)}.hm.wait{background:color-mix(in srgb,var(--amber) 22%,transparent)}.hm.z{color:var(--green);font-weight:400}
 @media (max-width:760px){.lab-dd{grid-template-columns:1fr}}
+.hiw-r{display:grid;grid-template-columns:28px 1.3fr 1.3fr 1fr;gap:18px;align-items:start;padding:16px 20px;border-top:1px solid var(--hair)}.hiw-r:first-child{border-top:0}
+.hiw-r b{display:block;font-weight:500;color:var(--label);font-size:14px}.hiw-r small{display:block;font-size:12.5px;color:var(--label-2);margin-top:4px;line-height:1.4}
+.hiw-n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:var(--label-2);background:rgba(120,120,140,.12)}
+.run-line.hiw-g{margin-top:0}.hiw-proof{display:flex;flex-direction:column;gap:8px;padding-top:24px;border-top:1px solid var(--hair)}.hiw-h2{font:400 30px/1.15 var(--display);letter-spacing:-.02em;margin:0}
+.sec-link{all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;font-weight:500;color:var(--accent)}.sec-link:hover{text-decoration:underline}
+@media (max-width:860px){.hiw-r{grid-template-columns:28px 1fr}.hiw-r>div:nth-child(n+3){grid-column:2}}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -924,9 +930,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       <button data-page="activity"><svg><use href="#i-list"/></svg>Activity</button>
       <button data-page="decisions"><svg><use href="#i-inbox"/></svg>Decisions<span class="badge" id="nav-count">1</span></button>
       <div class="nav-label">Strategy</div>
-      <button data-page="lab"><svg><use href="#i-flask"/></svg>Benchmark</button>
       <button data-page="metrics"><svg><use href="#i-chart"/></svg>Report</button>
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
+      <button data-page="lab"><svg><use href="#i-flask"/></svg>How it works</button>
     </nav>
     <div class="side-foot">
       <div class="sdd tb-runs" id="runs"></div>
@@ -970,7 +976,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         </section>
 
         <section id="queue-sec" hidden>
-          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small></div>
+          <div class="sec-h">Needs you <span class="count" id="queue-count"></span><small id="queue-note"></small><button class="xlink sec-link" data-go="lab">How it decides</button></div>
           <div class="queue" id="queue"></div>
         </section>
         <section id="comp-sec"><div class="sec-h">Components<small id="comp-sub"></small></div>
@@ -1034,9 +1040,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- LAB -->
     <div class="page" id="p-lab" hidden>
       <div class="wrap" style="gap:32px">
-        <div class="pg-head"><h1 class="pg-title" id="lab-title">Benchmark</h1><p class="lede act-lede">The same five changes, synced four ways. Each strategy runs in its own Nebius Token Factory Sandbox, forked from one checkpoint.</p></div>
-        <div class="run-line" id="lab-note"></div>
-        <section><div class="sec-h">Result<small>Select a strategy to see what broke</small></div><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
+        <div class="pg-head"><h1 class="pg-title">How it works</h1><p class="lede act-lede">Figma, code, Storybook and docs drift in five ways, whatever the component. Seamline treats each one differently: some it fixes, some it proposes, some only you can decide.</p></div>
+        <section><div class="sec-h">Five kinds of change<small>Who handles each one, and what happens</small></div><div class="hiw" id="hiw"></div></section>
+        <section><div class="sec-h">Guardrails</div><div class="run-line hiw-g"><span>Applies only at ≥ 85% confidence</span><span>Every change is journaled and can be undone</span><span>3 rejections pause auto-apply for that kind</span><span>ds-sync re-certifies every pull request</span></div></section>
+        <div class="hiw-proof"><div class="sec-h" style="margin:0">The proof<small>Tested on a real component</small></div><h2 class="hiw-h2" id="lab-title"></h2><p class="lede act-lede">We took Primer's Button, made the five changes, and synced them four ways. Each strategy ran in its own Nebius Token Factory Sandbox, forked from the same checkpoint.</p><div class="run-line" id="lab-note" style="margin-top:4px"></div></div>
+        <section><div class="sec-h">Result<small>Select a row to see what broke</small></div><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
         <section><div class="sec-h">Where each one breaks<small>Checks still off after the sync. The agent's are waiting on a person</small></div><div class="group scroll"><table class="lab-t lab-heat" id="lab-heat"></table></div></section>
       </div>
     </div>
@@ -1560,13 +1568,23 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     "code-first": ["Code first", "Code is the source of truth. Figma is overwritten from it."],
     agent: ["Seamline agent", "Merges from the last sync. Nano for renames, Ultra for conflicts, a person when both sides changed."],
   };
+  function renderHow() {
+    const K = [
+      ["One side changes a value", "An engineer gives the danger button a red background in code only.", "Nemotron Ultra", "Reads the commit and the ticket, decides which side is right.", "Applied if ≥ 85% sure, otherwise asks", "ok"],
+      ["A token is renamed", "A designer renames control/medium/gap in Figma.", "Nemotron Nano", "Pairs the old name with the new one so no link breaks.", "Asks you to confirm the rename", "warn"],
+      ["An urgent hotfix", "An engineer darkens the primary hover to pass contrast.", "Nemotron Ultra", "Checks the evidence, and the WCAG check confirms it.", "Applied to the other side", "ok"],
+      ["A new option on one side", "Size xsmall ships in code and docs, not in Figma.", "Nemotron Super + Tavily", "Researches how other systems do it before proposing.", "Proposed, never created alone", "warn"],
+      ["Both sides change the same thing", "Designer makes a text blue, engineer makes it grey, same week.", "You", "The model summarises both sides but never picks one.", "Your call, always", "bad"],
+    ];
+    $("#hiw").innerHTML = `<div class="group">${K.map(([t, ex, who, how, out, c], i) => `<div class="hiw-r"><span class="hiw-n">${i + 1}</span><div><b>${t}</b><small>${ex}</small></div><div><span class="tag ${who === "You" ? "" : "accent"}">${who}</span><small>${how}</small></div><div><span class="status st-${c}">${out}</span></div></div>`).join("")}</div>`;
+  }
   function renderLab() {
     const L = D.sandboxLab;
     if (!L) { $("#lab-note").innerHTML = "<span>Run lab/run_sandboxes.py to fill this in.</span>"; return; }
     const COLS = [["silent", "Silent bug", "Engineer gives the danger button a red background, code only"], ["rename", "Rename", "Designer renames a gap token in Figma"], ["hotfix", "Hotfix", "Engineer darkens the primary hover for contrast"], ["xsmall", "New size", "xsmall ships in code and docs, not in Figma"], ["conflict", "Conflict", "Both sides change the invisible button text the same week"]];
     const NAME = { manual: ["Manual", "Each side edits alone. Nobody syncs."], "figma-first": ["Figma first", "Figma regenerates code. Code-only changes are lost."], "code-first": ["Code first", "Code is pushed to Figma. Figma-only changes are lost."], agent: ["Seamline agent", "Nemotron judges each change. A person decides conflicts."] };
     const ag = L.runs.find((r) => r.strategy === "agent"), best = Math.max(...L.runs.filter((r) => r.strategy !== "agent").map((r) => r.keptCount));
-    $("#lab-title").textContent = ag?.keptCount === 5 ? `Only the agent keeps all five changes` : "Benchmark";
+    renderHow(); $("#lab-title").textContent = ag?.keptCount === 5 ? `Only Seamline keeps all five changes` : "Results";
     $("#lab-note").innerHTML = `<span>${esc(fmtAt(L.ranAt))}</span><span><b>${L.runs.length}</b> sandboxes in parallel · ${L.total_s} s</span><span>checkpoint ${esc(L.checkpoint.slice(0, 8))}</span><span>others keep at most <b>${best}</b> of 5</span>`;
     const calls = (r) => Object.values(r.calls || {}).reduce((x, y) => x + y, 0);
     $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c"><span class="lab-h" tabindex="0" data-tip="${esc(d)}">${n}</span></th>`).join("")}<th>Kept</th><th>Cost</th><th>Result</th><th aria-label="Details"></th></tr>`;
