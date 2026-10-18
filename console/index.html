@@ -819,6 +819,14 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .map .src{transition:transform .25s}.map .src:hover .pin-ring{stroke-width:2.5}
 .map .pulse{transition:opacity .3s}
 @media (prefers-reduced-motion: reduce){.map .arc.draw{stroke-dashoffset:0;animation:none}.map animateTransform{display:none}}
+.map .comet{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:.07 .93;stroke-dashoffset:.07;opacity:0;animation:comet var(--dur) cubic-bezier(.45,0,.55,1) var(--delay) infinite;filter:drop-shadow(0 0 3px currentColor)}
+.map .comet.ok{stroke-width:2;animation-name:cometSoft}
+.map .comet.back{stroke-dasharray:.05 .95;animation-name:cometBack;stroke-width:2.2}
+@keyframes comet{0%{stroke-dashoffset:.07;opacity:0}12%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:-.93;opacity:0}}
+@keyframes cometSoft{0%{stroke-dashoffset:.07;opacity:0}20%{opacity:.55}80%{opacity:.55}100%{stroke-dashoffset:-.93;opacity:0}}
+@keyframes cometBack{0%{stroke-dashoffset:-.95;opacity:0}15%{opacity:.9}85%{opacity:.9}100%{stroke-dashoffset:.05;opacity:0}}
+.map .arc{stroke-width:1.6;opacity:.85}
+@media (prefers-reduced-motion: reduce){.map .comet{display:none}.map .hub-mark animateTransform,.map .hub-mark animate{display:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1137,10 +1145,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       defs += `<linearGradient id="g-${k}" gradientUnits="userSpaceOnUse" x1="${n.x}" y1="${n.y}" x2="${H.x}" y2="${H.y}">
         <stop offset="0" stop-color="${col(st)}" stop-opacity=".15"/><stop offset=".5" stop-color="${col(st)}" stop-opacity=".9"/><stop offset="1" stop-color="${col(st)}" stop-opacity=".25"/></linearGradient>`;
       paths += `<path id="${id}" d="${d}" class="arc-base"/><path d="${d}" class="arc ${st}${mapDrawn ? "" : " draw"}"${mapDrawn ? "" : ` pathLength="1" style="--i:${i}"`} stroke="url(#g-${k})"/>`;
-      // pulse travelling source → agent; a second one agent → source once the agent is repairing
-      const dur = st === "ok" ? 2.6 : 1.6;
-      pulses += `<circle r="3.2" class="pulse" fill="${col(st)}" visibility="hidden"><set attributeName="visibility" to="visible" begin="${(i * .45).toFixed(2)}s"/><animateMotion dur="${dur}s" begin="${(i * .45).toFixed(2)}s" repeatCount="indefinite"><mpath href="#${id}"/></animateMotion></circle>`;
-      if (outbound) pulses += `<circle r="2.6" class="pulse" fill="var(--accent)" visibility="hidden"><set attributeName="visibility" to="visible" begin="${(i * .45 + .8).toFixed(2)}s"/><animateMotion dur="2.2s" begin="${(i * .45 + .8).toFixed(2)}s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#${id}"/></animateMotion></circle>`;
+      // comets: a short bright stroke that travels source → agent (and agent → source while repairing). Calmer when in sync.
+      const dur = st === "ok" ? 3.4 : st === "warn" ? 2.2 : 1.5, delay = (i * 0.37).toFixed(2);
+      pulses += `<path d="${d}" pathLength="1" class="comet ${st}" stroke="${col(st)}" style="--dur:${dur}s;--delay:${delay}s"/>`;
+      if (outbound) pulses += `<path d="${d}" pathLength="1" class="comet back" stroke="var(--accent)" style="--dur:2.2s;--delay:${(i * 0.37 + 0.9).toFixed(2)}s"/>`;
       i++;
     }
     defs += "</defs>";
@@ -1163,9 +1171,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <circle r="34" class="hub-ring r1"/><circle r="34" class="hub-ring r2"/>
         <rect x="-26" y="-26" width="52" height="52" rx="15" class="hub-core"/>
         <g transform="translate(-26 -26) scale(2.1667)" class="hub-mark">
-          <g><path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"/>
-            <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="${{ broken: "1.4s", repaired: "7s", decided: "14s", certified: "14s" }[state]}" repeatCount="indefinite" calcMode="${state === "broken" ? "linear" : "spline"}" keyTimes="0;1" keySplines="0.45 0 0.55 1"/></g>
-          <circle cx="16.6" cy="7.6" r="1.7" fill="${state === "repaired" ? "var(--amber)" : "#fff"}">${state === "repaired" ? '<animate attributeName="r" values="1.7;2.5;1.7" dur="1.8s" repeatCount="indefinite"/>' : ""}</circle></g>
+          ${(() => { const T = { broken: 1.6, repaired: 4.8, decided: 9, certified: 9 }[state], sp = 'calcMode="spline" keyTimes="0;0.5;1" keySplines="0.6 0 0.4 1;0.6 0 0.4 1"';
+            return `<path d="M7 12a5 5 0 0 1 8.5-3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"><animateTransform attributeName="transform" type="rotate" values="0 12 12;180 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></path>
+            <path d="M17 12a5 5 0 0 1-8.5 3.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".6" fill="none"><animateTransform attributeName="transform" type="rotate" values="0 12 12;140 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></path>
+            <g><circle cx="16.6" cy="7.6" r="1.7" fill="${state === "repaired" ? "var(--amber)" : "#fff"}">${state === "repaired" ? '<animate attributeName="r" values="1.7;2.4;1.7" dur="1.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>' : ""}</circle>
+              <animateTransform attributeName="transform" type="rotate" values="0 12 12;180 12 12;360 12 12" dur="${T}s" repeatCount="indefinite" ${sp}/></g>`; })()}</g>
         <text y="46" text-anchor="middle" class="src-name">DS Lab agent</text>
         <text y="60" text-anchor="middle" class="src-sub">Nemotron · Token Factory</text>
       </g>`;
