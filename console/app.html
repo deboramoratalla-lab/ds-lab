@@ -853,6 +853,19 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .mdl .v{text-align:right;font-size:13px;color:var(--label)}.mdl .v small{display:block;font-size:11.5px;color:var(--label-3)}
 .rs{margin-top:10px;border:1px solid var(--hair);border-radius:14px;overflow:hidden}.rs-h{font-size:11.5px;color:var(--label-3);padding:10px 14px;background:color-mix(in srgb,var(--label) 3%,var(--group))}
 .rs-r{display:grid;grid-template-columns:130px 1fr auto;gap:12px;align-items:baseline;padding:10px 14px;border-top:1px solid var(--hair);font-size:12.5px}.rs-r b{font-weight:500;color:var(--label)}.rs-r span{color:var(--label-2)}.rs-r a{color:var(--accent);font-size:12px}.rs-r small{color:var(--label-3)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:0!important;background:none!important;box-shadow:none!important}
+.kcard{background:var(--group);border-radius:22px;box-shadow:var(--card-shadow);padding:20px 22px 18px;display:flex;flex-direction:column;min-width:0}
+.kcard .kl{margin-bottom:8px}.kchart{margin-top:14px;min-height:46px;display:flex;flex-direction:column;justify-content:flex-end}.kfoot{margin-top:10px;font-size:12px;color:var(--label-3)}
+.spark{width:100%;height:auto;overflow:visible}.spark-x{font-size:10px;fill:var(--label-3);font-family:var(--font)}
+.segbar{display:flex;gap:2px;height:10px}.segbar span{border-radius:4px;min-width:6px}
+.seglegend{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font-size:11.5px;color:var(--label-2)}.seglegend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
+.minibars{display:flex;align-items:flex-end;gap:10px;height:56px}.mb{flex:1;max-width:44px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.mb span{width:100%;border-radius:4px 4px 1px 1px;display:block}.mb small{font-size:10.5px;color:var(--label-3)}
+@media (max-width:980px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.act-side{gap:16px!important}.side-panel{background:color-mix(in srgb,var(--label) 3%,var(--ground));border:1px solid var(--hair);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.side-h{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--label-3);font-weight:500}
+.side-panel .pr-card{padding:0!important;background:none;box-shadow:none;gap:10px;display:flex;flex-direction:column}
+.side-panel .mdl{padding:10px 0}.side-panel .mdl:first-child{padding-top:0}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -910,7 +923,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           <span id="greet" hidden></span>
           <div class="pg-filters" id="scope"></div>
         </header>
-        <div class="kpis group" id="who-status"></div>
+        <div class="kpis" id="who-status"></div>
         <div class="headline">
           <h1 id="hero-title">All sources in sync</h1>
           <p class="lede" id="hero-sub"></p>
@@ -965,12 +978,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <div class="page" id="p-activity" hidden>
       <div class="wrap" style="gap:32px">
         <div class="pg-head"><h1 class="pg-title">Activity</h1><p class="lede act-lede" id="act-note"></p></div>
-        <div class="kpis group" id="act-sum"></div>
+        <div class="kpis" id="act-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">Timeline<small>Last run, in order</small></div><div class="tl" id="timeline"></div></section>
-          <aside class="act-side">
-            <section><div class="sec-h">Pull request<small>What engineers review</small></div><div class="group pr-card" id="pr"></div></section>
-            <section><div class="sec-h">Models<small>Nemotron on Nebius Token Factory</small></div><div class="group" id="act-models"></div></section>
+          <aside class="act-side" aria-label="Details">
+            <section class="side-panel"><div class="side-h">Pull request</div><div class="pr-card" id="pr"></div></section>
+            <section class="side-panel"><div class="side-h">Models · Nemotron on Token Factory</div><div id="act-models"></div></section>
           </aside>
         </div>
       </div>
@@ -1320,15 +1333,44 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Laura picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
+  // KPI card: label, value, context chip, and a small chart built from the same run data. Text stays in ink; marks carry colour.
+  function kcard(label, value, chip, chart, foot) {
+    return `<div class="kpi kcard"><div class="kl">${label}</div><div class="kv"><span class="kn">${value}</span>${chip ? `<span class="kc">${chip}</span>` : ""}</div><div class="kchart">${chart || ""}</div>${foot ? `<div class="kfoot">${foot}</div>` : ""}</div>`;
+  }
+  // horizontal segmented bar: [{v, c, t}] with 2px surface gaps and rounded ends
+  function segbar(parts) {
+    const tot = parts.reduce((x, p) => x + p.v, 0) || 1;
+    return `<div class="segbar" role="img" aria-label="${parts.map((p) => `${p.t}: ${p.v}`).join(", ")}">${parts.filter((p) => p.v).map((p) => `<span style="flex:${p.v / tot};background:${p.c}" title="${esc(p.t)}: ${p.v}"></span>`).join("")}</div>
+      <div class="seglegend">${parts.filter((p) => p.v).map((p) => `<span><i style="background:${p.c}"></i>${esc(p.t)} ${p.v}</span>`).join("")}</div>`;
+  }
+  // tiny line over runs, single series, labelled ends
+  function spark(points, fmt) {
+    const W = 220, Hh = 44, P = 6, min = Math.min(...points.map((p) => p.v)), max = Math.max(...points.map((p) => p.v)), span = max - min || 1;
+    const xy = points.map((p, i) => [P + i * (W - 2 * P) / (points.length - 1), P + (1 - (p.v - min) / span) * (Hh - 2 * P)]);
+    return `<svg class="spark" viewBox="0 0 ${W} ${Hh + 14}" role="img" aria-label="${points.map((p) => `${p.t} ${fmt(p.v)}`).join(", ")}">
+      <polyline points="${xy.map((q) => q.join(",")).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${xy.map((q, i) => `<circle cx="${q[0]}" cy="${q[1]}" r="${i === xy.length - 1 ? 4 : 3}" fill="${i === xy.length - 1 ? "var(--accent)" : "var(--group)"}" stroke="var(--accent)" stroke-width="2"><title>${points[i].t}: ${fmt(points[i].v)}</title></circle>`).join("")}
+      ${xy.map((q, i) => `<text x="${q[0]}" y="${Hh + 12}" text-anchor="${i === 0 ? "start" : i === xy.length - 1 ? "end" : "middle"}" class="spark-x">${points[i].t}</text>`).join("")}</svg>`;
+  }
+  // small vertical bars, one per item, baseline-anchored
+  function minibars(items, max) {
+    return `<div class="minibars">${items.map((it) => `<div class="mb" title="${esc(it.t)}"><span style="height:${Math.max(8, it.v / max * 100)}%;background:${it.c}"></span><small>${esc(it.l)}</small></div>`).join("")}</div>`;
+  }
   function renderWho() {
     const r = report(), done = state === "repaired" || state === "decided", open = done ? openItems().length : 0, bad = r.total - r.passed;
     const acts = D.repair.actions.filter((a) => a.side !== "person"), confs = acts.filter((a) => a.confidence != null).map((a) => a.confidence);
     const k = (label, val, chip, trend) => `<div class="kpi"><div class="kl">${label}</div><div class="kv"><span class="kn">${val}</span>${chip ? `<span class="kc">${chip}</span>` : ""}${trend ? `<span class="kt ${trend[0]}">${trend[1]}</span>` : ""}</div></div>`;
+    const pct = (x) => x.passed / x.total * 100, f1 = (v) => `${v.toFixed(1)}%`;
+    const hist = [{ t: "Baseline", v: pct(D.certified) }, { t: "Drift", v: pct(D.broken) }, { t: state === "decided" ? "Now" : "After agent", v: pct(r) }];
+    const SRCN = { figma: 0, code: 0, both: 0 }; for (const b of D.breaks) SRCN[b.who === "designer" ? "figma" : b.who === "both" ? "both" : "code"]++;
+    const accentMix = "color-mix(in srgb, var(--accent) 45%, var(--group))";
+    const confBars = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : accentMix, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: `${a.who}: ${a.what.split(/(?<=\.)\s/)[0]}` }));
+    const byKind = Object.keys(CAT).map((k) => ({ v: openItems().filter((i) => i.kind === k).length, c: CAT[k].c, t: CAT[k].label }));
     $("#who-status").innerHTML = [
-      k("Checks in sync", `${r.passed.toLocaleString()}`, `of ${r.total.toLocaleString()}`, bad ? ["down", `▾ ${bad} off`] : ["up", "▴ 100%"]),
-      k("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "in Figma and code", null),
-      k("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}% confidence` : "", null),
-      k("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", null),
+      kcard("Checks in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, spark(hist, f1), bad ? `${bad} still off` : "Everything agrees"),
+      kcard("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "this run", state === "certified" ? "" : segbar([{ v: SRCN.code, c: "var(--accent)", t: "Code" }, { v: SRCN.figma, c: accentMix, t: "Figma" }, { v: SRCN.both, c: "var(--amber)", t: "Both" }]), ""),
+      kcard("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? minibars(confBars, 100) : "", done ? `Applies only at ≥ ${Math.round(D.repair.autoApply * 100)}%` : ""),
+      kcard("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? segbar(byKind) : "", ""),
     ].join("");
     renderRuns();
   }
@@ -1432,7 +1474,15 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const rel = (at) => at ? `+${Math.max(0, (new Date(at) - start) / 1000).toFixed(1)} s` : "";
     const calls = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
     const k = (l, v, c) => `<div class="kpi"><div class="kl">${l}</div><div class="kv"><span class="kn">${v}</span>${c ? `<span class="kc">${c}</span>` : ""}</div></div>`;
-    $("#act-sum").innerHTML = [k("Run", fmtAt(start.toISOString()), ""), k("Took", `${(D.repair.ms / 1000).toFixed(0)} s`, `${calls} Nemotron calls`), k("Fixed alone", acts.length, `≥ ${Math.round(D.repair.autoApply * 100)}% sure`), k("Sent to you", ITEMS.length, ITEMS.length ? "in Needs you" : "")].join("");
+    const MM = Object.entries(D.repair.calls).map(([m, u]) => ({ m: /nano/i.test(m) ? "Nano" : /ultra/i.test(m) ? "Ultra" : "Super", u }));
+    const MC = { Nano: "color-mix(in srgb, var(--accent) 45%, var(--group))", Ultra: "var(--accent)", Super: "var(--amber)" };
+    const actsK = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : MC.Nano, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: a.what.split(/(?<=\.)\s/)[0] }));
+    $("#act-sum").innerHTML = [
+      kcard("Run", fmtAt(start.toISOString()).split(", ")[1], fmtAt(start.toISOString()).split(", ")[0], segbar([{ v: D.breaks.length, c: "var(--red)", t: "Changes in" }, { v: acts.length, c: "var(--green)", t: "Fixed" }, { v: ITEMS.length, c: "var(--amber)", t: "To you" }]), ""),
+      kcard("Took", `${(D.repair.ms / 1000).toFixed(0)} s`, `${calls} calls`, segbar(MM.map((x) => ({ v: Math.round(x.u.ms / 100) / 10, c: MC[x.m], t: `${x.m} s` }))), ""),
+      kcard("Fixed alone", acts.length, `≥ ${Math.round(D.repair.autoApply * 100)}% sure`, minibars(actsK, 100), ""),
+      kcard("Sent to you", ITEMS.length, ITEMS.length ? "in Needs you" : "", segbar(Object.keys(CAT).map((kk) => ({ v: ITEMS.filter((i) => i.kind === kk).length, c: CAT[kk].c, t: CAT[kk].label }))), ""),
+    ].join("");
     $("#act-note").textContent = "What the agent saw, what it fixed on its own, and what it left for a person. Everything it applied is journaled and can be undone.";
     const step = (dot, title, meta, body) => `<div class="tl-step"><span class="tl-dot ${dot}"></span><div class="tl-main"><div class="tl-h"><b>${title}</b><span>${meta}</span></div>${body}</div></div>`;
     const sw = (h) => `<span class="tl-sw" style="background:${h}"></span><span>${h}</span>`;
