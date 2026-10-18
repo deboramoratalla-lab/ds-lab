@@ -755,7 +755,7 @@ body { background: linear-gradient(180deg, #f8f7fd 0, var(--ground) 420px) fixed
 .run-menu button{align-items:flex-start}.rtx{display:flex;flex-direction:column;gap:2px}.rtx b{font-weight:500}.rtx em{font-style:normal;font-size:10px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:4px}.rtx small{color:var(--label-3);font-size:11.5px}
 .rdot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:none;background:#1e9e8b}.rdot.broken{background:#d9534f}.rdot.repaired{background:#d08a3c}
 .av-btn{border:0;cursor:pointer;width:40px;height:40px;font-size:13px;transition:box-shadow .2s}.av-btn:hover,.acct.open .av-btn{box-shadow:0 0 0 3px var(--accent-soft)}
-.acct-menu{min-width:290px;padding:8px}.am-who{display:flex;gap:12px;align-items:center;padding:8px 8px 12px;border-bottom:1px solid var(--hair);margin-bottom:4px}
+.acct-menu{min-width:300px;padding:8px}.am-who{display:flex;gap:12px;align-items:center;padding:8px 8px 12px;border-bottom:1px solid var(--hair);margin-bottom:4px}
 .am-who b,.am-row b{display:block;font-weight:500;font-size:13px}.am-who small,.am-row small{color:var(--label-3);font-size:11.5px}
 .am-h{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding:10px 10px 4px}
 .am-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 10px;border-radius:10px;cursor:default}label.am-row{cursor:pointer}label.am-row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
@@ -807,6 +807,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 .am-note{font-size:11.5px;color:var(--label-3);padding:0 10px 6px}
 body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
 .opt[disabled]{cursor:default;opacity:1}.opt[disabled]:hover{background:none}
+.am-roles{display:flex;flex-direction:column;gap:2px;padding:0 2px 6px}.am-roles button{display:flex;align-items:center;gap:10px;width:100%;padding:7px 8px;border:0;border-radius:12px;background:none;font:inherit;text-align:left;cursor:pointer;color:var(--label)}
+.am-roles button:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}.am-roles button[aria-checked=true]{background:var(--accent-soft)}
+.ar-av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:500;flex:none}
+.ar-tx{display:flex;flex-direction:column;min-width:0;flex:1}.ar-tx b{font-weight:500;font-size:13px}.ar-tx small{color:var(--label-3);font-size:11.5px}.am-roles .ck{color:var(--accent);font-size:13px}
+body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1047,9 +1052,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
   let shownLines = 0, logAll = false;
   // Roles: same data, different entry point, default filter and permissions. Only the lead decides.
   const ROLES = {
-    lead: { name: "Debora Moratalla", title: "Design system lead", src: "all", decides: true, hide: [] },
-    designer: { name: "Marta (view)", title: "Product designer", src: "figma", decides: false, hide: ["metrics", "lab"] },
-    engineer: { name: "Dani (view)", title: "Frontend engineer", src: "code", decides: false, hide: ["metrics", "lab"] },
+    lead: { name: "Debora Moratalla", ini: "DM", title: "Design system lead", note: "Everything · decides", grad: "135deg,#6d48c8,#e39b3c", src: "all", decides: true, hide: [] },
+    designer: { name: "Marta Ruiz", ini: "MR", title: "Product designer", note: "Figma first · read-only", grad: "135deg,#2f9e6e,#6d48c8", src: "figma", decides: false, hide: ["metrics", "lab"] },
+    engineer: { name: "Dani Ortega", ini: "DO", title: "Frontend engineer", note: "Code first · read-only", grad: "135deg,#e05d6f,#6d48c8", src: "code", decides: false, hide: ["metrics", "lab"] },
   };
   let role = "lead";
   function renderCanvas() {
@@ -1480,10 +1485,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
   // Account menu: who you are, how the agent reaches you, how much it may do alone.
   function renderAcct() {
     const R = ROLES[role];
-    $("#acct-menu").innerHTML = `<div class="am-who"><span class="av av-lg">DM</span><span><b>Debora Moratalla</b><small>Design system lead · Primer Web</small></span></div>
+    $("#acct-menu").innerHTML = `<div class="am-who"><span class="av av-lg" style="background:linear-gradient(${R.grad})!important">${R.ini}</span><span><b>${R.name}</b><small>${R.title}${role === "lead" ? " · Primer Web" : " · preview"}</small></span></div>
       <div class="am-h">View as</div>
-      <div class="am-seg" role="radiogroup" aria-label="View as">${Object.entries({ lead: "Lead", designer: "Designer", engineer: "Engineer" }).map(([k, l]) => `<button role="radio" aria-checked="${role === k}" data-role="${k}">${l}</button>`).join("")}</div>
-      <div class="am-note">${role === "lead" ? "Everything, and you decide." : `What ${R.title.toLowerCase()}s see: ${R.src === "figma" ? "Figma" : "code"} first, no decisions, no Report.`}</div>
+      <div class="am-roles" role="radiogroup" aria-label="View as">${Object.entries(ROLES).map(([k, r]) => `<button role="radio" aria-checked="${role === k}" data-role="${k}"><span class="ar-av" style="background:linear-gradient(${r.grad})">${r.ini}</span><span class="ar-tx"><b>${r.name}</b><small>${r.title}</small></span>${role === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div>
       <div class="am-h">Notifications</div>
       <div class="am-row"><span><b>Slack</b><small>Not connected</small></span><span class="am-val off">Off</span></div>
       <div class="am-row"><span><b>GitHub</b><small>${D.pr?.url ? "Pull requests and the ds-sync check" : "ds-sync check on every pull request"}</small></span><span class="am-val">On</span></div>
@@ -1530,6 +1534,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:0 0 0 2px var(--amber)}
     const R = ROLES[role];
     document.querySelectorAll(".nav button[data-page]").forEach((b) => { b.hidden = R.hide.includes(b.dataset.page); });
     document.body.dataset.role = role;
+    const av = $("#acct .av-btn"); av.textContent = R.ini; av.style.setProperty("background", `linear-gradient(${R.grad})`, "important"); av.setAttribute("aria-label", `${R.name} · account and view`);
   }
   function render() { applyRole(); renderCompHead(); renderComponents(); renderScope(); renderRuns(); renderWho(); { const k = $("#who-status").querySelectorAll(".kpi")[2]; if (k) { k.dataset.go = "activity"; k.title = "See what the agent did"; k.onclick = () => go("activity"); } } renderCanvas(); renderMap(report()); renderChecks(); renderQueue(); renderApplied(); renderChanges(); }
   function setState(st) {
