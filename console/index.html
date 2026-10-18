@@ -793,6 +793,12 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
 .pr-f .add{color:#1e9e8b}.pr-f .del{color:#d9534f}.pr-cmd{font-size:12.5px;color:var(--label-3)}
 .rep-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-top:1px solid var(--hair)}.rep-row:first-child{border-top:0}
 .rep-row .t{font-weight:500;color:var(--label);font-size:14px}.rep-row .s{color:var(--label-3);font-size:12.5px}.rep-row .v{white-space:nowrap;font-size:13px;color:var(--label-2)}
+.q-tok{display:block;font-size:11.5px;color:var(--label-3);margin-top:2px}
+.opt{cursor:pointer;border-radius:0}.opt:hover{background:color-mix(in srgb,var(--accent) 4%,transparent)}.opt .why{color:var(--label-2);font-size:12.5px}
+.opt .keep{align-self:flex-start;margin-top:4px;font-size:12.5px;font-weight:500;padding:6px 14px;border-radius:999px;background:var(--group);box-shadow:0 0 0 1px var(--hair),0 1px 2px rgba(0,0,0,.06);color:var(--label)}
+.opt:hover .keep{background:var(--accent);color:#fff;box-shadow:none}.opt.kept .keep{background:rgba(30,158,139,.12);color:#1e9e8b;box-shadow:none}
+.note{padding:12px 16px;font-size:12.5px;color:var(--label-2);border-top:1px solid var(--hair)}
+#run-id{display:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1022,10 +1028,10 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     add("detect", "bad", `${D.breaks.length} changes landed · ${D.broken.total - D.broken.passed} checks out of sync`);
     for (const b of D.breaks) add(b.who === "designer" ? "figma" : b.who === "engineer" ? "code" : "both", "dim", b.title);
     if (state === "broken") { add("agent", "run", "Starting repair on Nemotron · Token Factory"); return L; }
-    for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0]}${a.confidence != null ? ` (${Math.round(a.confidence * 100)}%)` : ""}`);
+    for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0].replace(/\s*\(confidence [\d.]+\)/, "")}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}`);
     for (const i of ITEMS) {
       const ans = answers[i.id];
-      add(ans ? "you" : "queue", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${i.title} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to you: ${i.title}`);
+      add("you", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to you: ${qTitle(i)}`);
     }
     if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
     return L;
@@ -1036,11 +1042,11 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     const head = {
       certified: ["All sources in sync", `${r.passed.toLocaleString()} checks agree across Figma, code, Storybook and docs.`],
       broken: [`${bad} checks out of sync`, `${D.breaks.length} changes landed in Figma and code. The agent is picking them up.`],
-      repaired: [`${open} ${open === 1 ? "decision" : "decisions"} waiting for you`, `The agent fixed what it was sure about in ${(D.repair.ms / 1000).toFixed(0)} s. The rest needs your call.`],
+      repaired: [open ? `Your turn: ${open} ${open === 1 ? "decision" : "decisions"}` : "All answered", `The agent fixed what it was at least ${Math.round(D.repair.autoApply * 100)}% sure of, in ${(D.repair.ms / 1000).toFixed(0)} s. It left the rest for you.`],
       decided: [bad ? `${bad} checks still open` : "Certified again", bad ? "Some answers were rejected or undone. They'll be checked on the next sync." : `${r.passed.toLocaleString()} checks agree. Every change kept its author's intent.`],
     }[state];
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
-    const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Waiting on you"], decided: ["ok", "Certified"] }[state];
+    const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
     // log: new lines type in one by one
     const lines = logLines(), ol = $("#log");
@@ -1168,23 +1174,30 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
   function previewFor(token, value) {
     if (/danger-bg/.test(token)) return btn({ ...PB.danger, bg: value }, "Delete");
     if (/primary-bg-color-hover/.test(token)) return btn({ ...PB.primary, bg: value }, "Save · hover");
-    if (/invisible-fg/.test(token)) return btn({ ...PB.invisible, fg: value }, "Show more");
+    if (/invisible-fg/.test(token)) return btn({ ...PB.invisible, fg: value }, "Cancel");
     return `<span class="sw" style="background:${value}"></span>`;
   }
   // Categories, in the order a lead should handle them: what blocks first, decisions next, checks last.
   const CAT = {
-    decide: { n: 1, label: "Conflict", sub: "Both sides changed it · blocks certification", c: "var(--red)", ic: "split", effort: "1 min" },
-    proposal: { n: 2, label: "New option", sub: "Product decision · nothing breaks while it waits", c: "var(--accent)", ic: "sparkle", effort: "2 min" },
-    review: { n: 3, label: "Check", sub: "The agent wasn't sure · low risk", c: "#4a7fc1", ic: "shield", effort: "30 s" },
+    decide: { n: 1, label: "Conflict", sub: "The designer and the engineer both changed it. Pick which value stays; the other side gets updated", c: "var(--red)", ic: "split", effort: "1 min" },
+    proposal: { n: 2, label: "New option", sub: "Code and docs already ship it. Nothing breaks while it waits", c: "var(--accent)", ic: "sparkle", effort: "2 min" },
+    review: { n: 3, label: "Check", sub: "The agent wasn't sure enough to apply it alone", c: "#4a7fc1", ic: "shield", effort: "30 s" },
   };
   const SRC_OF = { decide: ["figma", "code"], proposal: ["figma", "story"], review: ["figma", "code"] };
   const SRC_NAME = { figma: "Figma", code: "Code", story: "Storybook", docs: "Docs" };
   const ordered = () => [...ITEMS].sort((a, b) => CAT[a.kind].n - CAT[b.kind].n);
   let filter = "all", srcF = "all", ddOpen = false;
   document.addEventListener("click",(e)=>{if(ddOpen&&!e.target.closest(".sdd")){ddOpen=false;renderQueue();}});
-  document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&ddOpen){ddOpen=false;renderQueue();document.querySelector(".sdd-btn")?.focus();}});
+  document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&ddOpen){ddOpen=false;renderQueue();$("#queue .sdd-btn")?.focus();}});
   const expanded = new Set();
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
+  // Titles in plain words; the token name stays visible underneath for people who search by it.
+  function qTitle(i) {
+    if (i.kind === "decide") return `${tokenLabel(i.token)}: Figma and code disagree`;
+    if (i.kind === "proposal" && i.change?.option) return `Add ${i.change.axis} “${i.change.option}” to Figma and Storybook?`;
+    if (i.change?.type === "rename") return `Was ${i.change.from} renamed to ${i.change.to}?`;
+    return i.title;
+  }
   function itemHTML(i, full) {
     const kind = KIND[i.kind];
     const a = answers[i.id];
@@ -1196,16 +1209,16 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     ].join("");
     let body = "", actions = "";
     if (i.kind === "decide") {
-      const opt = (side, color, who, why) => `<button class="opt" type="button" data-item="${i.id}" data-answer="${side}" aria-pressed="${a === side}">
-        <span class="who">${who}${a === side ? "<b>Kept</b>" : ""}</span>
+      const opt = (side, color, who, why) => `<button class="opt${a === side ? " kept" : ""}" type="button" data-item="${i.id}" data-answer="${side}" aria-pressed="${a === side}">
+        <span class="who">${who}</span>
         ${stage(previewFor(i.token, color))}
-        <span class="sample"><span class="chip" style="background:${color}"></span><span class="mono" style="font-size:12px">${esc(color)}</span></span>
-        <span class="why">${esc((why || "").replace(/^'|'\.?$/g, ""))}</span></button>`;
-      body = `${i.impact ? impactHTML(i.impact) : ""}
-        <div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
-        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}` : "has no recommendation"}${full ? `. ${esc(i.why)}` : ". The call is yours."}</div>`;
-      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
-        : `<span class="q-done">Your answer goes to the designer and the engineer in the pull request.</span>`;
+        <span class="sample"><span class="chip" style="background:${color}"></span><span style="font-size:12px">${esc(color)}</span></span>
+        <span class="why">“${esc((why || "").replace(/^'|'\.?$/g, ""))}”</span>
+        <span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span></button>`;
+      body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
+        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why)}</div>
+        ${i.impact ? impactHTML(i.impact) : ""}`;
+      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : "";
     } else {
       if (i.change?.type === "rename") body += `<div class="diff">${stage(`<span class="tk">control/medium/<b>gap</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="arrow">→</span>${stage(`<span class="tk">control/medium/<b>gapInline</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="dmeta mono">same value · 8px · used by Button medium</span></div>`;
       if (i.kind === "proposal" && i.change?.option) body += `<div class="diff">${stage(["xsmall", "small", "medium", "large"].map((z) => `<span class="szc${z === i.change.option ? " new" : ""}">${sized(z)}<span class="mono">${PB.size[z][0]}px${z === i.change.option ? " · new" : ""}</span></span>`).join(""), "row")}</div>`;
@@ -1223,10 +1236,10 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     return `<div class="group q cat-${i.kind}${open ? " open" : ""}${a ? " answered" : ""}" data-id="${i.id}" style="--cat:${C.c}">
       <button class="q-row" type="button" data-toggle="${i.id}" aria-expanded="${open}">
         <span class="q-ic"><svg><use href="#i-${C.ic}"/></svg></span>
-        <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(i.title)}</span></span>
+        <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(qTitle(i))}</span>${i.token ? `<span class="q-tok">${esc(i.token)}</span>` : ""}</span>
         <span class="q-side">${a ? `<span class="status st-ok">Done</span>` : `<span class="q-imp">${impactShort}</span><span class="q-eff mono">~${C.effort}</span>`}<span class="chev">›</span></span>
       </button>
-      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(C.sub)}. ${esc(i.why)}</div><div class="q-meta">${meta}</div></div></div>${body}<div class="q-actions">${actions}</div></div>` : ""}</div>`;
+      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   function renderWho() {
@@ -1235,9 +1248,9 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     const k = (label, val, chip, trend) => `<div class="kpi"><div class="kl">${label}</div><div class="kv"><span class="kn">${val}</span>${chip ? `<span class="kc">${chip}</span>` : ""}${trend ? `<span class="kt ${trend[0]}">${trend[1]}</span>` : ""}</div></div>`;
     $("#who-status").innerHTML = [
       k("Checks in sync", `${r.passed.toLocaleString()}`, `of ${r.total.toLocaleString()}`, bad ? ["down", `▾ ${bad} off`] : ["up", "▴ 100%"]),
-      k("Changes synced", state === "certified" ? "0" : `${D.breaks.length}`, `${D.sources.length} sources`, null),
-      k("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}% sure` : "", null),
-      k("Waiting on you", done ? `${open}` : "–", done && open ? "~3 min" : done ? "all answered" : "", open ? ["warn", "▴ review"] : null),
+      k("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "in Figma and code", null),
+      k("Applied by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}% confidence` : "", null),
+      k("Waiting on you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", null),
     ].join("");
     renderRuns();
   }
@@ -1258,7 +1271,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     const cur = opts.find((o) => o[0] === srcF);
     const dd = `<div class="sdd${ddOpen ? " open" : ""}"><button class="sdd-btn${srcF !== "all" ? " on" : ""}" aria-haspopup="listbox" aria-expanded="${ddOpen}"><svg><use href="#i-${cur[3]}"/></svg>${cur[1]}<svg class="cv"><use href="#i-chev"/></svg></button>
       <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
-    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2">Sorted by what blocks the system first</div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
+    $("#queue").innerHTML = show ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div><div class="fhint2">Conflicts first: they block certification</div>` + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
@@ -1271,7 +1284,7 @@ button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
     document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
     document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
-    const sb = document.querySelector(".sdd-btn"); if (sb) sb.addEventListener("click", (e) => { e.stopPropagation(); ddOpen = !ddOpen; renderQueue(); if (ddOpen) document.querySelector(".sdd-menu [aria-selected=true]")?.focus(); });
+    const sb = $("#queue .sdd-btn"); if (sb) sb.addEventListener("click", (e) => { e.stopPropagation(); ddOpen = !ddOpen; renderQueue(); if (ddOpen) $("#queue .sdd-menu [aria-selected=true]")?.focus(); });
     document.querySelectorAll("[data-src-opt]").forEach((b) => b.addEventListener("click", () => { srcF = b.dataset.srcOpt; ddOpen = false; render(); }));
   }
   // Human label for a token: button-danger-bg-color-rest → "Danger button · background"
