@@ -1,64 +1,37 @@
 {
- "at": "2026-10-18T18:11:59.832Z",
- "ms": 1726,
- "usage": {
-  "nvidia/Nemotron-3-Ultra-550b-a55b": {
-   "calls": 10,
-   "prompt": 3351,
-   "completion": 339,
-   "ms": 15413
-  }
- },
+ "at": "2026-10-18T19:07:11.022Z",
+ "ms": 441,
+ "usage": {},
  "items": {
-  "TabNav": {
-   "fix": "Update Figma status from Alpha to Deprecated to match docs",
-   "side": "figma",
-   "confidence": 1
-  },
-  "SelectPanel": {
-   "fix": "Add the anchored variant to Figma SelectPanel component",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "Pagehead": {
-   "fix": "Update Figma status from Alpha to deprecated for Pagehead",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "SegmentedControl": {
-   "fix": "Add the medium size token to the SegmentedControl component in code",
-   "side": "code",
-   "confidence": 0.9
-  },
   "DataTable": {
-   "fix": "Change Figma status from Draft to alpha",
-   "side": "figma",
-   "confidence": 0.95
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
   },
   "NavList": {
-   "fix": "Change NavList status in Figma from Beta to alpha to match docs",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "ProgressBar": {
-   "fix": "Remove --progressBar-track-borderColor token or add corresponding Figma variable",
-   "side": "code",
-   "confidence": 0.7
-  },
-  "StateLabel": {
-   "fix": "Add missing variant=small, variant=normal, size=medium to Figma StateLabel component",
-   "side": "figma",
-   "confidence": 0.9
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
   },
   "ActionList": {
-   "fix": "Add variant 'full' to the component options in the React implementation.",
-   "side": "code",
-   "confidence": 0.95
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
   },
   "InlineMessage": {
-   "fix": "Add variant 'unavailable' to Primer React and Figma to match docs",
-   "side": "code",
-   "confidence": 0.85
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "ProgressBar": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "Pagehead": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "SelectPanel": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "SegmentedControl": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "StateLabel": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
+  },
+  "TabNav": {
+   "error": "Error: nvidia/Nemotron-3-Ultra-550b-a55b: 401 {\"detail\":\"Couldn't authenticate. Reason: Unable authenticate\"}"
   }
  }
 }
