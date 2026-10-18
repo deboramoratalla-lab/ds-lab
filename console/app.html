@@ -876,6 +876,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .qu{display:flex;flex-direction:column;gap:8px}.qu-t{font-size:13.5px;font-weight:500;color:var(--label)}.side-panel>div>small,.qu small{font-size:12px;color:var(--label-2)}
 .qn{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.qn b{font-weight:500;color:var(--label)}.qn small{font-size:12px;color:var(--label-2)}
 .aff-r .xlink{margin-left:auto}
+.run-line{display:flex;flex-wrap:wrap;gap:6px 0;margin-top:-16px;font-size:13.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px}.run-line>span+span::before{content:'·';margin:0 12px;color:var(--label-3)}.run-line b{font-weight:600;color:var(--label)}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
 .act-side{gap:16px!important}.side-panel{background:color-mix(in srgb,var(--label) 3%,var(--ground));border:1px solid var(--hair);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
@@ -995,7 +996,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <div class="page" id="p-activity" hidden>
       <div class="wrap" style="gap:32px">
         <div class="pg-head"><h1 class="pg-title">Activity</h1><p class="lede act-lede" id="act-note"></p></div>
-        <div class="kpis" id="act-sum"></div>
+        <div class="run-line" id="act-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">Timeline<small>Last run, in order</small></div><div class="tl" id="timeline"></div></section>
           <aside class="act-side" aria-label="Details">
@@ -1010,7 +1011,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <div class="page" id="p-decisions" hidden>
       <div class="wrap" style="gap:32px">
         <div class="pg-head"><h1 class="pg-title">Your queue</h1><p class="lede act-lede">What the agent won't decide alone: conflicts where both sides changed, calls it wasn't sure about, and new options it won't create without you.</p></div>
-        <div class="kpis" id="q-sum"></div>
+        <div class="run-line" id="q-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">To decide<small>Conflicts first: they block certification</small></div><div class="queue" id="queue-full"></div></section>
           <aside class="act-side" aria-label="Details">
@@ -1418,12 +1419,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const mins = open.reduce((x, i) => x + (i.kind === "decide" ? 1 : 2), 0);
     const nice = (w) => w.replace(/^the /, "").replace(/ who changed it$/, "").replace(/s$/, "").replace(/^./, (c) => c.toUpperCase());
     const who = {}; for (const i of open) { const n = (i.impact || []).find((x) => x.startsWith("Notified:")); if (n) for (const w of n.replace(/^Notified:\s*/, "").split(/,\s*| and /)) { const k = nice(w.trim()); if (k) (who[k] = who[k] || []).push(qTitle(i)); } }
-    $("#q-sum").innerHTML = [
-      kcard("Waiting on you", open.length, open.length ? `~${mins} min` : "all answered", rows(Object.keys(CAT).map((k) => ({ v: open.filter((i) => i.kind === k).length, t: CAT[k].label }))), ""),
-      kcard("Answered", `${done}`, `of ${all.length}`, ring(all.length ? done / all.length : 1, done === all.length ? "Queue clear" : `${open.length} left this run`), ""),
-      kcard("ds-sync check", blocking ? "Failing" : "Passing", blocking ? `${blocking} conflict${blocking > 1 ? "s" : ""}` : "ready to merge", `<div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>${blocking ? "Proposals never block it" : "Nothing blocks certification."}</div>`, xlink(D.pr?.url && D.pr.url + "/checks", "See the check")),
-      kcard("People waiting", Object.keys(who).length, Object.keys(who).length ? "get a note" : "nobody", pips(Object.keys(who).map(nice)), "Notified once you answer"),
-    ].join("");
+    $("#q-sum").innerHTML = `<span><b>${open.length}</b> to decide${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking} conflict${blocking > 1 ? "s are" : " is"} answered` : "passes"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
     $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${esc(String(a))}` : ""}</small></span></button>`; }).join("")}</div>`;
     const P = D.pr;
     $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>ds-sync ${blocking ? `fails until ${blocking === 1 ? "the conflict is" : `${blocking} conflicts are`} answered` : "passes"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div><small>Your answers are pushed with <b>ds-lab pr --decide</b>.</small></div>` : `<small>No pull request for this run.</small>`;
@@ -1532,12 +1528,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const MM = Object.entries(D.repair.calls).map(([m, u]) => ({ m: /nano/i.test(m) ? "Nano" : /ultra/i.test(m) ? "Ultra" : "Super", u }));
     const MC = { Nano: "color-mix(in srgb, var(--accent) 45%, var(--group))", Ultra: "var(--accent)", Super: "var(--amber)" };
     const actsK = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : MC.Nano, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: a.what.split(/(?<=\.)\s/)[0] }));
-    $("#act-sum").innerHTML = [
-      kcard("Run", fmtAt(start.toISOString()).split(", ")[1], fmtAt(start.toISOString()).split(", ")[0], flow([{ v: D.breaks.length, t: "in" }, { v: acts.length, t: "fixed" }, { v: ITEMS.length, t: "to you" }]), ""),
-      kcard("Took", `${(D.repair.ms / 1000).toFixed(0)} s`, `${calls} calls`, rows(MM.map((x) => ({ v: x.u.ms, t: x.m, f: `${(x.u.ms / 1000).toFixed(1)} s` })), "Ultra"), ""),
-      kcard("Fixed alone", acts.length, `≥ ${Math.round(D.repair.autoApply * 100)}% sure`, dotplot(actsK.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)), actsK.some((b) => b.l === "rule") ? "Plus 1 by rule" : ""),
-      kcard("Sent to you", ITEMS.length, ITEMS.length ? "in Needs you" : "", rows(Object.keys(CAT).map((kk) => ({ v: ITEMS.filter((i) => i.kind === kk).length, t: CAT[kk].label }))), ""),
-    ].join("");
+    $("#act-sum").innerHTML = `<span>${esc(fmtAt(start.toISOString()))}</span><span>${(D.repair.ms / 1000).toFixed(0)} s · ${calls} model calls</span><span><b>${D.breaks.length}</b> changes → <b>${acts.length}</b> fixed alone → <b>${ITEMS.length}</b> to you</span>`;
     $("#act-note").textContent = "What the agent saw, what it fixed on its own, and what it left for a person. Everything it applied is journaled and can be undone.";
     const step = (dot, title, meta, body) => `<div class="tl-step"><span class="tl-dot ${dot}"></span><div class="tl-main"><div class="tl-h"><b>${title}</b><span>${meta}</span></div>${body}</div></div>`;
     const sw = (h) => `<span class="tl-sw" style="background:${h}"></span><span>${h}</span>`;
