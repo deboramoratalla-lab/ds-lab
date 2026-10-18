@@ -876,7 +876,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .qu{display:flex;flex-direction:column;gap:8px}.qu-t{font-size:13.5px;font-weight:500;color:var(--label)}.side-panel>div>small,.qu small{font-size:12px;color:var(--label-2)}
 .qn{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.qn b{font-weight:500;color:var(--label)}.qn small{font-size:12px;color:var(--label-2)}
 .aff-r .xlink{margin-left:auto}
-.lab-t th{vertical-align:bottom}.lab-t th small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--label-3);max-width:120px;line-height:1.3;margin-top:4px}
+.lab-t th{vertical-align:middle}.lab-t th.c{text-align:center}.lab-h{border-bottom:1px dotted var(--label-3);cursor:help}.lab-t th small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--label-3);max-width:120px;line-height:1.3;margin-top:4px}
 .lab-t td small{display:block;font-size:12px;color:var(--label-2);margin-top:2px}.lab-t td b{font-weight:600}.lab-sb{display:block;font-size:11px;color:var(--label-3);margin-top:4px}
 .lab-t td.c{text-align:center}.lab-t td.num{white-space:nowrap}.lab-no{color:var(--label-3)}.lab-off{font-size:12.5px;color:var(--label-2)}.lab-ow{color:var(--red)!important}
 .lab-win td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
@@ -1562,7 +1562,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const ag = L.runs.find((r) => r.strategy === "agent"), best = Math.max(...L.runs.filter((r) => r.strategy !== "agent").map((r) => r.keptCount));
     $("#lab-title").textContent = ag?.keptCount === 5 ? `Only the agent keeps all five changes` : "Benchmark";
     $("#lab-note").innerHTML = `<span>${esc(fmtAt(L.ranAt))}</span><span><b>${L.runs.length}</b> sandboxes in parallel · ${L.total_s} s</span><span>checkpoint ${esc(L.checkpoint.slice(0, 8))}</span><span>others keep at most <b>${best}</b> of 5</span>`;
-    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th title="${esc(d)}">${n}<small>${esc(d)}</small></th>`).join("")}<th>Kept</th><th>Result</th></tr>`;
+    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th class="c" title="${esc(d)}"><span class="lab-h">${n}</span></th>`).join("")}<th>Kept</th><th>Result</th></tr>`;
     $("#lab-body").innerHTML = L.runs.map((r) => { const A = r.strategy === "agent", off = r.total - r.passed; return `<tr class="${A ? "lab-win" : ""}">
       <td><b>${NAME[r.strategy][0]}</b><small>${NAME[r.strategy][1]}</small><span class="lab-sb">sandbox ${esc(r.sandbox.slice(0, 8))} · ${r.wall_s} s</span></td>
       ${COLS.map(([k]) => `<td class="c">${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="lab-no" aria-label="lost">–</span>`}</td>`).join("")}
