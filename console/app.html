@@ -908,6 +908,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .comp-nc{font-size:12px;color:var(--label-3)}.src-btn{all:unset;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--accent)}.src-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .page h1:focus{outline:none}.main>.past-run{max-width:1240px;margin:0 auto 16px}.past-run[hidden]{display:none}.past-run{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;background:color-mix(in srgb,var(--amber) 14%,var(--group));font-size:13px;color:var(--label)}.past-run button{all:unset;cursor:pointer;font-weight:600;color:var(--accent);margin-left:auto}
 .ov-tags{margin-top:-16px!important}.ov-tags:empty{display:none}.sec-pr{margin-left:auto;font-size:12.5px}.sec-pr .ov-pr{font-size:12.5px}.q-ci{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.q-ci .ov-pr{font-size:12.5px}.ov-pr{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair);color:var(--label-2);text-decoration:none}.ov-pr:hover{color:var(--label)}.ov-pr svg{width:10px;height:10px}.ov-pr .pr-dot{margin:0}
+.crow .chev svg{width:14px;height:14px;transform:rotate(-90deg)}.cat-iss{margin:6px 0 0;padding-left:16px;font-size:12.5px;color:var(--label-2);display:flex;flex-direction:column;gap:2px}.crow .deep{font-style:normal;font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 7px;margin-left:6px}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -1010,14 +1011,15 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- COMPONENT -->
     <div class="page" id="p-component" hidden>
       <div class="wrap" style="gap:32px">
-        <div><button class="back" data-go="overview"><svg class="cv"><use href="#i-chev"/></svg>Components</button><h1 id="comp-title">Button</h1><p class="lede" id="comp-lede"></p></div>
+        <div><button class="back" data-go="overview"><svg class="cv"><use href="#i-chev"/></svg>Components</button><h1 id="comp-title" class="pg-title">Button</h1><p class="lede" id="comp-lede"></p></div>
         <div class="cols">
+          <section id="cat-sec" hidden><div class="sec-h">Checks<small id="cat-note"></small></div><div class="group" id="cat-checks"></div><p class="footnote" id="cat-foot"></p></section>
           <section id="checks-sec">
             <div class="sec-h">Button checks<small id="checks-note"></small></div>
             <div class="group" id="checks"></div>
           </section>
           <section>
-            <div class="sec-h">Changed by the agent<small id="applied-note"></small></div>
+            <div class="sec-h" id="applied-h">Changed by the agent<small id="applied-note"></small></div>
             <div class="group" id="applied"></div>
             <p class="footnote">Only calls at 85% confidence or more are applied. Each one can be undone.</p>
           </section>
@@ -1662,12 +1664,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["Coverage", `${comps.filter((c) => c.name === D.system.component).length} of ${comps.length}`, "components certified"],
     ];
     const SRCN = { Code: 0, Figma: 0, Both: 0 }; for (const b of D.breaks) SRCN[b.who === "designer" ? "Figma" : b.who === "both" ? "Both" : "Code"]++;
-    const cov = comps.filter((c) => c.name === D.system.component).length;
+    const cov = comps.filter((c) => c.name === D.system.component || c.cat?.total).length, drifted = comps.filter((c) => c.name !== D.system.component && c.cat && c.cat.passed < c.cat.total).length;
     $("#metrics").innerHTML = [
       kcard("Drift found", off, "checks", pips(Object.entries(SRCN).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`)), `After ${D.breaks.length} changes`),
       kcard("Checks fixed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off}`, ring((off - left) / off, `${acts.length} changes applied<br>${left} checks wait on a person`), ""),
       kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "fixed" }, { v: ITEMS.length, t: "need you" }]), ""),
-      kcard("Coverage", `${cov}`, `of ${comps.length} components`, ring(cov / Math.max(1, comps.length), `${comps.length - cov} not certified yet`), ""),
+      kcard("Coverage", `${cov}`, `of ${comps.length} components checked`, ring(cov / Math.max(1, comps.length), `${drifted + 1} with drift<br>Agent repairs: ${esc(D.system.component)}`), ""),
     ].join("");
     const tok = Object.values(D.repair.calls).reduce((x, u) => x + u.prompt + u.completion, 0), nc = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
     $("#rep-tags").innerHTML = `<span>${esc(D.system.name)} · ${esc(D.system.component)}</span><span>${esc(fmtAt(D.generatedAt))}</span><span><b>${nc}</b> Nemotron calls · ${(tok / 1000).toFixed(1)}k tokens</span>${ctr ? `<span>Contrast <b>${ctr.passed}/${ctr.total}</b> at WCAG AA</span>` : ""}`;
@@ -1750,22 +1752,33 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   let compQ = "", compAll = false;
   function renderComponents() {
     const C = D.components || [], cur = report(), open = openItems().length;
-    const isCert = (c) => c.name === D.system.component;
-    const rows = C.map((c) => ({ ...c, cert: isCert(c), off: isCert(c) ? cur.total - cur.passed : 0, wait: isCert(c) ? open : 0 }))
-      .sort((a, b) => (b.cert - a.cert) || (b.off + b.wait - a.off - a.wait) || (b.figma - a.figma) || a.name.localeCompare(b.name));
+    const deep = (c) => c.name === D.system.component;
+    const rows = C.map((c) => { const k = c.cat; const d = deep(c);
+      return { ...c, deep: d, cert: d || !!(k && k.total), off: d ? cur.total - cur.passed : k ? k.total - k.passed : 0, wait: d ? open : 0, inFigma: d || !!k?.figma }; })
+      .sort((a, b) => (b.deep - a.deep) || (b.off + b.wait - a.off - a.wait) || (b.cert - a.cert) || a.name.localeCompare(b.name));
     const shown = rows.filter((r) => r.name.toLowerCase().includes(compQ));
     const list = compAll || compQ ? shown : shown.slice(0, 3);
-    $("#comp-sub").textContent = `${rows.filter((r) => r.cert).length} of ${rows.length} certified`;
-    const st = (r) => !r.cert ? `<span class="comp-nc">Not checked yet</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
-    $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Figma</span><span>Storybook</span><span>Modes</span><span>Status</span><span></span></div>` +
-      list.map((r) => `<button class="crow${r.cert ? "" : " dim"}" ${r.cert ? 'data-comp="1"' : "disabled"}><span class="cn">${esc(r.name)}</span><span>${r.figma ? r.figma + " variables" : "—"}</span><span>${r.story ? "Stories" : r.cert ? "None" : "Not checked"}</span><span>${r.cert ? D.system.theme : "—"}</span>${st(r)}<svg class="cv go"><use href="#i-chev"/></svg></button>`).join("") +
+    $("#comp-sub").textContent = `${rows.filter((r) => r.cert).length} of ${rows.length} checked · ${rows.filter((r) => r.cert && !r.off && !r.wait).length} in sync`;
+    const st = (r) => !r.cert ? `<span class="comp-nc">No checks apply</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
+    $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Figma</span><span>Storybook</span><span>Checks</span><span>Status</span><span></span></div>` +
+      list.map((r) => `<button class="crow" data-comp="${esc(r.name)}"><span class="cn">${esc(r.name)}${r.deep ? ' <em class="deep">Agent</em>' : ""}</span><span>${r.inFigma ? "Component set" : "Not in Figma"}</span><span>${r.story ? "Stories" : "Not read"}</span><span>${r.deep ? `${cur.total.toLocaleString()}` : r.cat?.total || "—"}</span><span>${st(r)}</span><span class="chev"><svg><use href="#i-chev"/></svg></span></button>`).join("") +
       (!compQ && shown.length > 3 ? `<button class="crow cmore" id="comp-more">${compAll ? "Show fewer" : `Show all ${shown.length}`}</button>` : "") +
       (!shown.length ? `<div class="crow cmore">No component matches “${esc(compQ)}”</div>` : "");
     $("#comp-more")?.addEventListener("click", () => { compAll = !compAll; renderComponents(); });
-    $("#comp").querySelectorAll("[data-comp]").forEach((b) => b.onclick = () => go("component"));
+    $("#comp").querySelectorAll("[data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
   }
   $("#comp-q").addEventListener("input", (e) => { compQ = e.target.value.trim().toLowerCase(); renderComponents(); });
-  function renderCompHead() { const r = report(); $("#comp-title").textContent = D.system.component; $("#comp-lede").textContent = `${r.passed.toLocaleString()} of ${r.total.toLocaleString()} checks in sync across Figma, code, Storybook and docs · ${D.system.theme} mode. Below: what fails and what the agent changed.`; }
+  let compSel = D.system.component;
+  function renderCompHead() { const r = report(); const deep = compSel === D.system.component;
+    for (const id of ["#checks-sec", "#applied", "#applied-h"]) $(id).hidden = !deep; $("#applied").parentElement.hidden = !deep; $("#cat-sec").hidden = deep;
+    if (!deep) { const c = (D.components || []).find((x) => x.name === compSel) || { name: compSel }, k = c.cat;
+      $("#comp-title").textContent = compSel;
+      $("#comp-lede").textContent = k && k.total ? `${k.passed} of ${k.total} checks in sync across docs, code and ${k.figma ? "Figma" : "tokens"}. Status in docs: ${k.status || "—"}.` : "No checks apply yet: it has no variant or size options and uses no shared tokens.";
+      $("#cat-note").innerHTML = k?.figma ? xlink(`${LK.figma || "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web"}?node-id=${k.figma.id.replace(":", "-")}`, `${esc(k.figma.name)} in Figma`) : "Not found in the Figma file";
+      $("#cat-checks").innerHTML = (k?.checks || []).map((x) => `<div class="rep-row"><div><div class="t">${esc(x.area)}</div>${x.issues.length ? `<ul class="cat-iss">${x.issues.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}</div><div class="v num">${x.passed === x.total ? `<span class="status st-ok">${x.total}</span>` : `<span class="status st-bad">${x.total - x.passed} of ${x.total} off</span>`}</div></div>`).join("") || `<div class="empty">Nothing to check.</div>`;
+      $("#cat-foot").textContent = "Light check: options, tokens and status. The agent repairs Button today; other components are reported, not repaired yet.";
+      return; }
+    $("#comp-title").textContent = D.system.component; $("#comp-lede").textContent = `${r.passed.toLocaleString()} of ${r.total.toLocaleString()} checks in sync across Figma, code, Storybook and docs · ${D.system.theme} mode. Below: what fails and what the agent changed.`; }
   function affLink(k) {
     const f = { Code: "ButtonBase.css", Storybook: "Button.stories.tsx", "Code and docs": "components.json" }[k];
     return k === "Figma" ? xlink(figmaURL(), "Figma") : f ? xlink(ghFile(f), "GitHub") : "";

@@ -14,6 +14,8 @@ if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
   const dist = fx("primer-react/package/dist/");
   d.components = readdirSync(dist).filter((n) => /^[A-Z]/.test(n) && statSync(new URL(n, dist)).isDirectory())
     .map((n) => ({ name: n, figma: seg[n.toLowerCase()] || 0, story: stories.has(n) }));
+  const cat = new URL("./catalog.json", import.meta.url);
+  if (existsSync(cat)) { const C = Object.fromEntries(JSON.parse(readFileSync(cat, "utf8")).map((c) => [c.name, c])); for (const c of d.components) Object.assign(c, { cat: C[c.name] || null }); }
 }
 const data = JSON.stringify(d).replace(/</g, "\\u003c");
 const html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);

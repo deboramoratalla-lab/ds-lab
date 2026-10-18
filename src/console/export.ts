@@ -105,7 +105,7 @@ writeFileSync("console/data.json", JSON.stringify({
     { id: "figma", name: "Figma", detail: "Primer Web (Community), duplicated and aligned", count: figmaVars, unit: "variables" },
     { id: "code", name: "Code", detail: `@primer/primitives ${pkg("fixtures/package/package.json")} · @primer/react ${pkg("fixtures/primer-react/package/package.json")}`, count: loadTokens(base.codeTokens).size, unit: "tokens" },
     { id: "storybook", name: "Storybook", detail: "primer/react Button stories (main)", count: base.stories.length, unit: "story files" },
-    { id: "docs", name: "Docs", detail: "@primer/react generated/components.json (primer.style)", count: 1, unit: "component" },
+    { id: "docs", name: "Docs", detail: "@primer/react generated/components.json (primer.style)", count: 80, unit: "components" },
   ],
   certified: slim(certified),
   breaks: BREAKS.map((b) => ({ id: b.id, who: b.who, title: b.title, notes: b.notes ?? {} })),

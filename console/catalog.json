@@ -1,0 +1,1970 @@
+[
+ {
+  "name": "ActionBar",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 9,
+    "total": 9,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 13,
+  "total": 13,
+  "figma": null,
+  "css": true,
+  "tokens": 9
+ },
+ {
+  "name": "ActionList",
+  "status": "beta",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 3,
+    "issues": [
+     "variant=full: missing in code"
+    ]
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 47,
+    "total": 47,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 27,
+    "total": 27,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 77,
+  "total": 78,
+  "figma": {
+   "id": "15614:56202",
+   "name": "ActionList"
+  },
+  "css": true,
+  "tokens": 47
+ },
+ {
+  "name": "ActionMenu",
+  "status": "beta",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 2,
+  "total": 2,
+  "figma": {
+   "id": "26998:2424",
+   "name": "ActionMenu"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "AnchoredOverlay",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   }
+  ],
+  "passed": 5,
+  "total": 5,
+  "figma": null,
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "Autocomplete",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 2,
+  "total": 2,
+  "figma": {
+   "id": "35998:101114",
+   "name": "Autocomplete"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "Avatar",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 3,
+  "total": 3,
+  "figma": {
+   "id": "3805:11",
+   "name": "Avatar"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "AvatarStack",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 4,
+  "total": 4,
+  "figma": {
+   "id": "3805:24",
+   "name": "AvatarStack"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "Banner",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 28,
+    "total": 28,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 15,
+    "total": 15,
+    "issues": []
+   }
+  ],
+  "passed": 48,
+  "total": 48,
+  "figma": {
+   "id": "34303:2712",
+   "name": "Banner"
+  },
+  "css": true,
+  "tokens": 28
+ },
+ {
+  "name": "Blankslate",
+  "status": "draft",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 20,
+    "total": 20,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 26,
+  "total": 26,
+  "figma": {
+   "id": "4398:2383",
+   "name": "Blankslate"
+  },
+  "css": true,
+  "tokens": 20
+ },
+ {
+  "name": "BranchName",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 8,
+    "total": 8,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 12,
+  "total": 12,
+  "figma": {
+   "id": "3655:7208",
+   "name": "BranchName"
+  },
+  "css": true,
+  "tokens": 8
+ },
+ {
+  "name": "Breadcrumbs",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 18,
+    "total": 18,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 6,
+    "total": 6,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 25,
+  "total": 25,
+  "figma": {
+   "id": "20135:70690",
+   "name": "Breadcrumbs"
+  },
+  "css": true,
+  "tokens": 18
+ },
+ {
+  "name": "Button",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 8,
+    "total": 8,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 123,
+    "total": 123,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 57,
+    "total": 92,
+    "issues": [
+     "--buttonKeybindingHint-default-bgColor-disabled has no Figma variable",
+     "--buttonKeybindingHint-default-borderColor-disabled has no Figma variable",
+     "--buttonKeybindingHint-default-fgColor-disabled has no Figma variable",
+     "--buttonKeybindingHint-default-bgColor-rest has no Figma variable",
+     "--buttonKeybindingHint-default-borderColor-rest has no Figma variable",
+     "--buttonKeybindingHint-default-fgColor-rest has no Figma variable"
+    ]
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 189,
+  "total": 224,
+  "figma": {
+   "id": "30258:5582",
+   "name": "Button"
+  },
+  "css": true,
+  "tokens": 123
+ },
+ {
+  "name": "ButtonGroup",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 2,
+  "total": 2,
+  "figma": {
+   "id": "36325:3634",
+   "name": "ButtonGroup"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "Card",
+  "status": "draft",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 21,
+    "total": 21,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   }
+  ],
+  "passed": 26,
+  "total": 26,
+  "figma": null,
+  "css": true,
+  "tokens": 21
+ },
+ {
+  "name": "Checkbox",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 14,
+    "total": 14,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 10,
+    "total": 10,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 25,
+  "total": 25,
+  "figma": {
+   "id": "15341:46321",
+   "name": "Checkbox"
+  },
+  "css": true,
+  "tokens": 14
+ },
+ {
+  "name": "CheckboxGroup",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "CircleBadge",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 6,
+  "total": 6,
+  "figma": null,
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "ConfirmationDialog",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "CounterLabel",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 10,
+    "total": 10,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 18,
+  "total": 18,
+  "figma": {
+   "id": "18959:64970",
+   "name": "CounterLabel"
+  },
+  "css": true,
+  "tokens": 10
+ },
+ {
+  "name": "DataTable",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 20,
+    "total": 20,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 9,
+    "total": 9,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "docs say alpha, Figma says Draft"
+    ]
+   }
+  ],
+  "passed": 29,
+  "total": 30,
+  "figma": {
+   "id": "28509:38091",
+   "name": "DataTable"
+  },
+  "css": true,
+  "tokens": 20
+ },
+ {
+  "name": "Details",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "Dialog",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 17,
+    "total": 17,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 22,
+  "total": 22,
+  "figma": {
+   "id": "16593:65798",
+   "name": "Dialog"
+  },
+  "css": true,
+  "tokens": 17
+ },
+ {
+  "name": "FeatureFlags",
+  "status": "draft",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "FilteredActionList",
+  "status": "",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 12,
+    "total": 12,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   }
+  ],
+  "passed": 17,
+  "total": 17,
+  "figma": null,
+  "css": true,
+  "tokens": 12
+ },
+ {
+  "name": "Flash",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 17,
+    "total": 17,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 13,
+    "total": 13,
+    "issues": []
+   }
+  ],
+  "passed": 34,
+  "total": 34,
+  "figma": null,
+  "css": true,
+  "tokens": 17
+ },
+ {
+  "name": "FormControl",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 10,
+    "total": 10,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   }
+  ],
+  "passed": 13,
+  "total": 13,
+  "figma": null,
+  "css": true,
+  "tokens": 10
+ },
+ {
+  "name": "Header",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 11,
+  "total": 11,
+  "figma": {
+   "id": "26738:6196",
+   "name": "Header"
+  },
+  "css": true,
+  "tokens": 7
+ },
+ {
+  "name": "Heading",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 9,
+  "total": 9,
+  "figma": {
+   "id": "21069:78785",
+   "name": "Heading"
+  },
+  "css": true,
+  "tokens": 5
+ },
+ {
+  "name": "Hidden",
+  "status": "draft",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "InlineMessage",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 5,
+    "total": 7,
+    "issues": [
+     "variant=unvailable: missing in code and Figma",
+     "variant=unavailable: in Figma, not in docs"
+    ]
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 9,
+    "total": 9,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   }
+  ],
+  "passed": 19,
+  "total": 21,
+  "figma": {
+   "id": "32109:348",
+   "name": "InlineMessage"
+  },
+  "css": true,
+  "tokens": 9
+ },
+ {
+  "name": "KeybindingHint",
+  "status": "draft",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   }
+  ],
+  "passed": 4,
+  "total": 4,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "Label",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 12,
+    "total": 12,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 26,
+    "total": 26,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 18,
+    "total": 18,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 57,
+  "total": 57,
+  "figma": {
+   "id": "18959:65008",
+   "name": "Label"
+  },
+  "css": true,
+  "tokens": 26
+ },
+ {
+  "name": "LabelGroup",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
+  "figma": null,
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "Link",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 5,
+  "total": 5,
+  "figma": {
+   "id": "20953:78768",
+   "name": "Link"
+  },
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "NavList",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "docs say alpha, Figma says Beta"
+    ]
+   }
+  ],
+  "passed": 4,
+  "total": 5,
+  "figma": {
+   "id": "15175:71561",
+   "name": "NavList"
+  },
+  "css": true,
+  "tokens": 3
+ },
+ {
+  "name": "Octicon",
+  "status": "deprecated",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "Overlay",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 5,
+  "total": 5,
+  "figma": {
+   "id": "9685:44751",
+   "name": "Overlay"
+  },
+  "css": true,
+  "tokens": 3
+ },
+ {
+  "name": "PageHeader",
+  "status": "beta",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 8,
+  "total": 8,
+  "figma": {
+   "id": "40002:2161",
+   "name": "PageHeader"
+  },
+  "css": true,
+  "tokens": 7
+ },
+ {
+  "name": "PageLayout",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 5,
+  "total": 5,
+  "figma": null,
+  "css": true,
+  "tokens": 4
+ },
+ {
+  "name": "Pagehead",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "docs say deprecated, Figma says Alpha"
+    ]
+   }
+  ],
+  "passed": 3,
+  "total": 4,
+  "figma": {
+   "id": "4065:363",
+   "name": "Pagehead"
+  },
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "Pagination",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 12,
+    "total": 12,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   }
+  ],
+  "passed": 19,
+  "total": 19,
+  "figma": {
+   "id": "34607:94621",
+   "name": "Pagination"
+  },
+  "css": true,
+  "tokens": 12
+ },
+ {
+  "name": "Popover",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 16,
+    "total": 16,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 19,
+  "total": 19,
+  "figma": {
+   "id": "19015:63778",
+   "name": "Popover"
+  },
+  "css": true,
+  "tokens": 16
+ },
+ {
+  "name": "Portal",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "ProgressBar",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "--progressBar-track-borderColor has no Figma variable"
+    ]
+   }
+  ],
+  "passed": 2,
+  "total": 3,
+  "figma": {
+   "id": "34727:143491",
+   "name": "ProgressBar"
+  },
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "Radio",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 13,
+  "total": 13,
+  "figma": {
+   "id": "15341:46367",
+   "name": "Radio"
+  },
+  "css": true,
+  "tokens": 7
+ },
+ {
+  "name": "RadioGroup",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "RelativeTime",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "ScrollableRegion",
+  "status": "",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "SegmentedControl",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 15,
+    "total": 16,
+    "issues": [
+     "size=medium: missing in code"
+    ]
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 24,
+    "total": 24,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 11,
+    "total": 11,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 51,
+  "total": 52,
+  "figma": {
+   "id": "16122:79604",
+   "name": "SegmentedControl"
+  },
+  "css": true,
+  "tokens": 24
+ },
+ {
+  "name": "Select",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 5,
+  "total": 5,
+  "figma": {
+   "id": "15341:46907",
+   "name": "Select"
+  },
+  "css": true,
+  "tokens": 1
+ },
+ {
+  "name": "SelectPanel",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 1,
+    "total": 3,
+    "issues": [
+     "variant=anchored: missing in Figma",
+     "variant=popover: in Figma, not in docs"
+    ]
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 20,
+    "total": 20,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 12,
+    "total": 12,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 34,
+  "total": 36,
+  "figma": {
+   "id": "40704:73019",
+   "name": "SelectPanel"
+  },
+  "css": true,
+  "tokens": 20
+ },
+ {
+  "name": "Skeleton",
+  "status": "",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 4,
+  "total": 4,
+  "figma": null,
+  "css": true,
+  "tokens": 3
+ },
+ {
+  "name": "SkeletonAvatar",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": {
+   "id": "29994:6840",
+   "name": "SkeletonAvatar"
+  },
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "SkeletonText",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 8,
+    "total": 8,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 18,
+    "total": 18,
+    "issues": []
+   }
+  ],
+  "passed": 26,
+  "total": 26,
+  "figma": {
+   "id": "30013:6946",
+   "name": "SkeletonText"
+  },
+  "css": true,
+  "tokens": 18
+ },
+ {
+  "name": "Spinner",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 6,
+  "total": 6,
+  "figma": {
+   "id": "11025:38126",
+   "name": "Spinner"
+  },
+  "css": true,
+  "tokens": 2
+ },
+ {
+  "name": "SplitPageLayout",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": false,
+  "tokens": 0
+ },
+ {
+  "name": "Stack",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 8,
+    "total": 8,
+    "issues": []
+   }
+  ],
+  "passed": 8,
+  "total": 8,
+  "figma": null,
+  "css": true,
+  "tokens": 8
+ },
+ {
+  "name": "StateLabel",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 1,
+    "total": 7,
+    "issues": [
+     "variant=small: missing in Figma",
+     "variant=normal: missing in Figma",
+     "variant=issue: in Figma, not in docs",
+     "variant=pull request: in Figma, not in docs",
+     "size=medium: missing in Figma",
+     "size=normal: in Figma, not in docs"
+    ]
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 21,
+    "total": 21,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 11,
+    "total": 13,
+    "issues": [
+     "--bgColor-draft-emphasis has no Figma variable",
+     "--borderColor-draft-emphasis has no Figma variable"
+    ]
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 34,
+  "total": 42,
+  "figma": {
+   "id": "18959:64962",
+   "name": "StateLabel"
+  },
+  "css": true,
+  "tokens": 21
+ },
+ {
+  "name": "SubNav",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 11,
+    "total": 11,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 17,
+  "total": 17,
+  "figma": {
+   "id": "19008:62778",
+   "name": "SubNav"
+  },
+  "css": true,
+  "tokens": 11
+ },
+ {
+  "name": "TabNav",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 9,
+    "total": 9,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "docs say deprecated, Figma says Alpha"
+    ]
+   }
+  ],
+  "passed": 13,
+  "total": 14,
+  "figma": {
+   "id": "24375:94677",
+   "name": "TabNav"
+  },
+  "css": true,
+  "tokens": 9
+ },
+ {
+  "name": "Text",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 10,
+    "total": 10,
+    "issues": []
+   }
+  ],
+  "passed": 13,
+  "total": 13,
+  "figma": null,
+  "css": true,
+  "tokens": 10
+ },
+ {
+  "name": "TextInput",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 6,
+    "total": 6,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 12,
+  "total": 12,
+  "figma": {
+   "id": "15341:46504",
+   "name": "TextInput"
+  },
+  "css": true,
+  "tokens": 3
+ },
+ {
+  "name": "TextInputWithTokens",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 12,
+  "total": 12,
+  "figma": null,
+  "css": true,
+  "tokens": 7
+ },
+ {
+  "name": "Textarea",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 6,
+  "total": 6,
+  "figma": {
+   "id": "30948:151237",
+   "name": "Textarea"
+  },
+  "css": true,
+  "tokens": 3
+ },
+ {
+  "name": "Timeline",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 25,
+    "total": 25,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 15,
+    "total": 15,
+    "issues": []
+   }
+  ],
+  "passed": 40,
+  "total": 40,
+  "figma": null,
+  "css": true,
+  "tokens": 25
+ },
+ {
+  "name": "ToggleSwitch",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 26,
+    "total": 26,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 19,
+    "total": 19,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 48,
+  "total": 48,
+  "figma": {
+   "id": "13518:50189",
+   "name": "ToggleSwitch"
+  },
+  "css": true,
+  "tokens": 26
+ },
+ {
+  "name": "Token",
+  "status": "alpha",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 23,
+    "total": 23,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 35,
+  "total": 35,
+  "figma": {
+   "id": "10351:34099",
+   "name": "Token"
+  },
+  "css": true,
+  "tokens": 23
+ },
+ {
+  "name": "Tooltip",
+  "status": "deprecated",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   }
+  ],
+  "passed": 9,
+  "total": 9,
+  "figma": null,
+  "css": true,
+  "tokens": 7
+ },
+ {
+  "name": "TooltipV2",
+  "status": "",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 9,
+    "total": 9,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   }
+  ],
+  "passed": 11,
+  "total": 11,
+  "figma": null,
+  "css": true,
+  "tokens": 9
+ },
+ {
+  "name": "TopicTag",
+  "status": "draft",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 13,
+    "total": 13,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   }
+  ],
+  "passed": 18,
+  "total": 18,
+  "figma": null,
+  "css": true,
+  "tokens": 13
+ },
+ {
+  "name": "TreeView",
+  "status": "beta",
+  "checks": [
+   {
+    "area": "Tokens exist in code",
+    "passed": 14,
+    "total": 14,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   }
+  ],
+  "passed": 21,
+  "total": 21,
+  "figma": {
+   "id": "35020:46073",
+   "name": "TreeView"
+  },
+  "css": true,
+  "tokens": 14
+ },
+ {
+  "name": "Truncate",
+  "status": "alpha",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ },
+ {
+  "name": "UnderlineNav",
+  "status": "beta",
+  "checks": [
+   {
+    "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Tokens exist in code",
+    "passed": 10,
+    "total": 10,
+    "issues": []
+   },
+   {
+    "area": "Colour tokens match Figma",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Status (docs ↔ Figma)",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 15,
+  "total": 15,
+  "figma": {
+   "id": "26717:1390",
+   "name": "UnderlineNav"
+  },
+  "css": true,
+  "tokens": 10
+ },
+ {
+  "name": "VisuallyHidden",
+  "status": "",
+  "checks": [],
+  "passed": 0,
+  "total": 0,
+  "figma": null,
+  "css": true,
+  "tokens": 0
+ }
+]
