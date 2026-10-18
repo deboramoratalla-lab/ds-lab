@@ -891,6 +891,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .run-line.hiw-g{margin-top:0}.hiw-proof{display:flex;flex-direction:column;gap:8px;padding-top:24px;border-top:1px solid var(--hair)}.hiw-h2{font:400 30px/1.15 var(--display);letter-spacing:-.02em;margin:0}
 .sec-link{all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;font-weight:500;color:var(--accent)}.sec-link:hover{text-decoration:underline}
 @media (max-width:860px){.hiw-r{grid-template-columns:28px 1fr}.hiw-r>div:nth-child(n+3){grid-column:2}}
+.rep-ba{display:flex;flex-direction:column;gap:6px;width:min(320px,45%)}.rep-ba .krow{grid-template-columns:48px 1fr 28px;font-size:11.5px}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -1053,23 +1054,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- METRICS -->
     <div class="page" id="p-metrics" hidden>
       <div class="wrap" style="gap:32px">
-        <div class="rep-h"><div><div class="eyebrow">Report</div><h1>Design system health</h1><p class="lede" id="rep-lede"></p></div><button class="btn primary" id="rep-copy">Copy report</button></div>
-        <div class="group figures" id="metrics"></div>
-        <section><div class="sec-h">Drift by check<small>Before the agent → after the agent</small></div><div class="group" id="rep-checks"></div></section>
-        <section><div class="sec-h">Models used<small>Nemotron on Nebius Token Factory, this run</small></div><div class="group" id="rep-models"></div></section>
-        <section>
-          <div class="sec-h">After adoption<small>Prediction vs reality</small></div>
-          <div class="group">
-            <div class="empty"><b>Tracking starts when a team adopts a strategy.</b>Each week the same checks run against the live Figma file and repository, and the results are compared with what the lab predicted.</div>
-            <dl class="kv" style="border-top:1px solid var(--hair)">
-              <dt>Drift opened</dt><dd>Checks that went red, by source</dd>
-              <dt>Time to repair</dt><dd>From a change landing to certified again</dd>
-              <dt>Fixed without a person</dt><dd>Share of drift the agent closed alone</dd>
-              <dt>Wrong calls</dt><dd>Agent decisions a person reverted</dd>
-              <dt>Waiting</dt><dd>Open decisions and how long they've waited</dd>
-            </dl>
-          </div>
-        </section>
+        <div class="rep-h"><div class="pg-head"><h1 class="pg-title">Design system health</h1><p class="lede act-lede">What drifted in the last run, what the agent closed, and what it cost. Every number comes from that run's certification.</p></div><button class="btn primary" id="rep-copy">Copy report</button></div>
+        <div class="run-line" id="rep-tags"></div>
+        <div class="kpis" id="metrics"></div>
+        <section><div class="sec-h">Drift by check<small>Checks off before the agent and after it</small></div><div class="group" id="rep-checks"></div></section>
       </div>
     </div>
 
@@ -1642,14 +1630,23 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["Text contrast", ctr ? `${ctr.passed}/${ctr.total}` : "–", "Button variants at WCAG AA"],
       ["Coverage", `${comps.filter((c) => c.name === D.system.component).length} of ${comps.length}`, "components certified"],
     ];
-    $("#metrics").innerHTML = F.map(([k, n, d]) => `<div class="figure"><div class="k">${k}</div><div class="n num">${n}</div><div class="d">${d}</div></div>`).join("");
-    $("#rep-lede").textContent = `${D.system.name} · ${D.system.component} · run of ${fmtAt(D.generatedAt)}. Every number comes from the certification and repair in that run.`;
+    const SRCN = { Code: 0, Figma: 0, Both: 0 }; for (const b of D.breaks) SRCN[b.who === "designer" ? "Figma" : b.who === "both" ? "Both" : "Code"]++;
+    const cov = comps.filter((c) => c.name === D.system.component).length;
+    $("#metrics").innerHTML = [
+      kcard("Drift found", off, "checks", pips(Object.entries(SRCN).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`)), `After ${D.breaks.length} changes`),
+      kcard("Closed by the agent", `${Math.round((off - left) / off * 100)}%`, `${off - left} of ${off}`, ring((off - left) / off, `${acts.length} changes applied<br>${left} checks wait on a person`), ""),
+      kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "closed" }, { v: ITEMS.length, t: "to you" }]), ""),
+      kcard("Coverage", `${cov}`, `of ${comps.length} components`, ring(cov / Math.max(1, comps.length), `${comps.length - cov} not certified yet`), ""),
+    ].join("");
+    const tok = Object.values(D.repair.calls).reduce((x, u) => x + u.prompt + u.completion, 0), nc = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
+    $("#rep-tags").innerHTML = `<span>${esc(D.system.name)} · ${esc(D.system.component)}</span><span>${esc(fmtAt(D.generatedAt))}</span><span><b>${nc}</b> Nemotron calls · ${(tok / 1000).toFixed(1)}k tokens</span>${ctr ? `<span>Contrast <b>${ctr.passed}/${ctr.total}</b> at WCAG AA</span>` : ""}`;
+    const mx = Math.max(1, ...D.broken.checks.map((c) => c.total - c.passed));
     $("#rep-checks").innerHTML = D.broken.checks.map((c) => { const after = D.repaired.checks.find((x) => x.area === c.area) || c, name = AREAS[c.area] || c.area;
       const bo = c.total - c.passed, ao = after.total - after.passed;
-      return `<div class="rep-row"><div><div class="t">${esc(name)}</div><div class="s">${esc(SUB[name] || "")}</div></div><div class="v num">${bo ? `<span class="rb">${bo} off</span>` : `<span class="rg">0 off</span>`}<span class="ra">→</span>${ao ? `<span class="rb">${ao} off</span>` : `<span class="rg">In sync</span>`}</div></div>`; }).join("");
+      return `<div class="rep-row"><div><div class="t">${esc(name)}</div><div class="s">${esc(SUB[name] || "")}</div></div><div class="rep-ba" aria-label="${bo} off before, ${ao} after"><div class="krow"><span>Before</span><div class="bt"><span style="width:${bo / mx * 100}%"></span></div><span>${bo}</span></div><div class="krow hi"><span>After</span><div class="bt"><span style="width:${ao / mx * 100}%"></span></div><span>${ao || "✓"}</span></div></div></div>`; }).join("");
     const M = Object.entries(D.repair.calls).map(([m, u]) => [m.split("/").pop(), u]);
     const role = (m) => /nano/i.test(m) ? "Pairs renames" : /ultra/i.test(m) ? "Judges value conflicts" : /super/i.test(m) ? "Researches new options" : "";
-    $("#rep-models").innerHTML = M.map(([m, u]) => `<div class="rep-row"><div><div class="t">${esc(m)}</div><div class="s">${role(m)}</div></div><div class="v num">${u.calls} calls · ${((u.prompt + u.completion) / 1000).toFixed(1)}k tokens · ${(u.ms / 1000).toFixed(1)} s</div></div>`).join("");
+    if ($("#rep-models")) $("#rep-models").innerHTML = M.map(([m, u]) => `<div class="rep-row"><div><div class="t">${esc(m)}</div><div class="s">${role(m)}</div></div><div class="v num">${u.calls} calls · ${((u.prompt + u.completion) / 1000).toFixed(1)}k tokens · ${(u.ms / 1000).toFixed(1)} s</div></div>`).join("");
     const md = [`# ${D.system.name} — design system health`, `Run of ${fmtAt(D.generatedAt)} · ${D.system.component}`, "", ...F.map(([k, n, d]) => `- **${k}:** ${n} — ${d}`), "", "## Drift by check",
       ...D.broken.checks.map((c) => { const a = D.repaired.checks.find((x) => x.area === c.area) || c; return `- ${AREAS[c.area] || c.area}: ${c.total - c.passed} off → ${a.total - a.passed} off`; }),
       "", "## Waiting on the design system lead", ...ITEMS.map((i) => `- ${i.title}`), "", D.pr?.url ? `Pull request: ${D.pr.url}` : ""].join("\n");
