@@ -1314,7 +1314,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   let filter = "all", srcF = "all", ddOpen = false;
   document.addEventListener("click",(e)=>{if(ddOpen&&!e.target.closest(".sdd")){ddOpen=false;renderQueue();}});
   document.addEventListener("keydown",(e)=>{if(e.key==="Escape"&&ddOpen){ddOpen=false;renderQueue();$("#queue .sdd-btn")?.focus();}});
-  const expanded = new Set();
+  const expanded = new Set(); let autoOpened = false;
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   // Titles in plain words; the token name stays visible underneath for people who search by it.
   const researchOpen = new Set();
@@ -1455,7 +1455,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#queue-count").textContent = show ? openItems().length || "" : "";
     $("#queue-count").hidden = !(show && openItems().length);
     const empty = `<div class="group"><div class="empty"><b>${state === "certified" ? "Nothing for you." : "The agent hasn't run yet."}</b>${state === "certified" ? "Figma, code, Storybook and docs agree." : "Choose Agent repairs to see what it needs from you."}</div></div>`;
-    if (show && !expanded.size) { const f = ordered().find((x) => !answers[x.id]); if (f) expanded.add(f.id); }
+    if (show && !autoOpened) { autoOpened = true; const f = ordered().find((x) => !answers[x.id]); if (f) expanded.add(f.id); }
     const list = ordered().filter((i) => (filter === "all" || i.kind === filter) && (srcF === "all" || SRC_OF[i.kind].includes(srcF)));
     const inSrc = (i) => srcF === "all" || SRC_OF[i.kind].includes(srcF);
     const chips = [["all", "All", ITEMS.filter(inSrc).length], ...Object.entries(CAT).map(([k, c]) => [k, c.label + "s", ITEMS.filter((i) => i.kind === k && inSrc(i)).length])]
