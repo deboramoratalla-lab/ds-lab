@@ -30,7 +30,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
 - **Pull request + CI** (`ds-lab pr`, `.github/workflows/ds-sync.yml`): pushes the agent's workspace, opens the PR, and the check fails until the lead answers.
 - **Benchmark** (`lab/run_sandboxes.py`): the same five changes synced four ways, each strategy in its own Token Factory Sandbox forked from one checkpoint.
 - **Console** (`console/`): one HTML page for the lead (Overview, Activity, Decisions, Report, Sources, How it works), role views for designers and engineers.
-- **Server** (`server/server.mjs`, `Dockerfile`): serves the console on Nebius Serverless Endpoints and turns "Send answers" into a real GitHub Actions run.
+- **Server** (`server/server.mjs`, `Dockerfile`): serves the console (ready for Nebius Serverless Endpoints) and turns "Send answers" into a real GitHub Actions run.
 
 ## How Nebius and NVIDIA are used
 
@@ -40,7 +40,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
   - **Ultra** (`nvidia/Nemotron-3-Ultra-550b-a55b`): judges which side is right from commits and tickets; summarises conflicts without picking a side; triages drift in the other 73 components.
   - **Super** (`nvidia/nemotron-3-super-120b-a12b`): reads Tavily research on other design systems and WCAG, writes the proposal for new options.
 - **Token Factory Sandboxes**: one checkpoint with the five changes, forked four times in parallel (one per strategy) for the benchmark.
-- **Nebius Serverless Endpoints**: hosts the console and the "Send answers" endpoint (`.github/workflows/deploy-nebius.yml`).
+- **Nebius Serverless Endpoints** (ready, not live): `.github/workflows/deploy-nebius.yml` deploys the console and the "Send answers" endpoint once a Nebius AI Cloud project exists. The hackathon credits cover Token Factory only, so the public demo is hosted elsewhere.
 - **Tavily**: searches official design-system sites and WCAG before the agent proposes anything new.
 
 ## Run it
