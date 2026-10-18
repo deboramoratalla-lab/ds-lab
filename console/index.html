@@ -845,6 +845,14 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .tl-cat{display:inline-flex;align-items:center;gap:6px;min-width:100px;font-size:12px;color:var(--cat);font-weight:500}.tl-cat i{width:7px;height:7px;border-radius:50%;background:var(--cat)}
 .tl-empty{font-size:13px;color:var(--label-2);padding:2px 0}.tl-empty a{color:var(--accent)}
 #act-sum{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pr-top{display:flex;align-items:center;gap:10px}.pr-meta{font-size:12px;color:var(--label-3)}.pr-t{font-size:14px;font-weight:500;color:var(--label);line-height:1.4}
+.pr-check{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--label-2)}.pr-dot{width:8px;height:8px;border-radius:50%}.pr-dot.red{background:var(--red)}.pr-dot.green{background:var(--green)}
+.pr-actions{display:flex;gap:8px}.pr-more summary{cursor:pointer;font-size:12.5px;color:var(--accent);font-weight:500;list-style:none}.pr-more summary::-webkit-details-marker{display:none}
+.pr-more[open] summary{margin-bottom:10px}.pr-more .pr-f{margin-top:8px;border:1px solid var(--hair);border-radius:12px;overflow:hidden}.pr-fh{display:flex;gap:8px;align-items:center;padding:8px 12px;font-size:12.5px}.pr-more pre{margin:0;padding:10px 12px;font-size:11.5px;max-height:220px;overflow:auto;background:color-mix(in srgb,var(--label) 3%,var(--group))}
+.mdl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--hair)}.mdl:first-child{border-top:0}.mdl .t{font-size:13px;font-weight:500;color:var(--label)}.mdl .s{font-size:12px;color:var(--label-3)}
+.mdl .v{text-align:right;font-size:13px;color:var(--label)}.mdl .v small{display:block;font-size:11.5px;color:var(--label-3)}
+.rs{margin-top:10px;border:1px solid var(--hair);border-radius:14px;overflow:hidden}.rs-h{font-size:11.5px;color:var(--label-3);padding:10px 14px;background:color-mix(in srgb,var(--label) 3%,var(--group))}
+.rs-r{display:grid;grid-template-columns:130px 1fr auto;gap:12px;align-items:baseline;padding:10px 14px;border-top:1px solid var(--hair);font-size:12.5px}.rs-r b{font-weight:500;color:var(--label)}.rs-r span{color:var(--label-2)}.rs-r a{color:var(--accent);font-size:12px}.rs-r small{color:var(--label-3)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -962,8 +970,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           <section><div class="sec-h">Timeline<small>Last run, in order</small></div><div class="tl" id="timeline"></div></section>
           <aside class="act-side">
             <section><div class="sec-h">Pull request<small>What engineers review</small></div><div class="group pr-card" id="pr"></div></section>
-            <section><div class="sec-h">Research<small id="bench-note"></small></div><div class="group" id="research"></div>
-              <p class="footnote">Only numbers found in the cited source are kept. The verdict sees nothing else.</p></section>
+            <section><div class="sec-h">Models<small>Nemotron on Nebius Token Factory</small></div><div class="group" id="act-models"></div></section>
           </aside>
         </div>
       </div>
@@ -1258,6 +1265,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const expanded = new Set();
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   // Titles in plain words; the token name stays visible underneath for people who search by it.
+  const researchOpen = new Set();
+  function researchHTML(B) {
+    const refs = [...(B.findings || []), ...(B.standard ? [B.standard] : [])].filter((f, i, arr) => arr.findIndex((g) => g.system === f.system && g.values.join() === f.values.join()) === i);
+    return `<div class="rs"><div class="rs-h">${B.searches} Tavily searches · Nemotron Super · only numbers found in the cited source are kept</div>${refs.map((f) => `<div class="rs-r"><b>${esc(f.system)}</b><span>${esc(f.values.join(" · "))}</span>${f.url === "local" ? `<small>Read from your code</small>` : `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(new URL(f.url).hostname)}</a>`}</div>`).join("")}</div>`;
+  }
   function qTitle(i) {
     if (i.kind === "decide") return `${tokenLabel(i.token)}: Figma and code disagree`;
     if (i.kind === "proposal" && i.change?.option) return `Add ${i.change.axis} “${i.change.option}” to Figma and Storybook?`;
@@ -1291,7 +1303,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       if (i.impact) body += impactHTML(i.impact);
       if (i.kind === "proposal" && i.research && !i.research.error) {
         const R = i.research, V = { consistent: ["st-ok", "Consistent with other systems"], review: ["st-warn", "Worth a second look"], "against-standard": ["st-bad", "Against the standard"] }[R.verdict] || ["st-off", R.verdict];
-        body += `<div class="impact"><div><span class="status ${V[0]}">${V[1]}</span></div><div>${esc(R.recommendation)}</div>${full ? "" : `<div><button class="btn ghost" style="padding:0" data-go="activity">See the research</button></div>`}</div>`;
+        body += `<div class="impact"><div><span class="status ${V[0]}">${V[1]}</span></div><div>${esc(R.recommendation)}</div>${`<div><button class="btn ghost" style="padding:0" data-research="${i.id}">${researchOpen.has(i.id) ? "Hide the research" : "See the research"}</button></div>${researchOpen.has(i.id) ? researchHTML(R) : ""}`}</div>`;
       }
       const yes = i.kind === "proposal" ? "Create it" : "Apply", no = i.kind === "proposal" ? "Not now" : "Reject";
       actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
@@ -1350,6 +1362,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
     document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
     document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
+    document.querySelectorAll("[data-research]").forEach((b) => b.addEventListener("click", (e) => { e.stopPropagation(); const id = b.dataset.research; researchOpen.has(id) ? researchOpen.delete(id) : researchOpen.add(id); renderQueue(); }));
     const sb = $("#queue .sdd-btn"); if (sb) sb.addEventListener("click", (e) => { e.stopPropagation(); ddOpen = !ddOpen; renderQueue(); if (ddOpen) $("#queue .sdd-menu [aria-selected=true]")?.focus(); });
     document.querySelectorAll("[data-src-opt]").forEach((b) => b.addEventListener("click", () => { srcF = b.dataset.srcOpt; ddOpen = false; render(); }));
   }
@@ -1437,16 +1450,6 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       + step(D.pr?.url ? "ok" : "idle", "Pull request", "ds-sync re-certifies it", prLine);
     document.querySelectorAll("#timeline [data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo; undone.has(id) ? undone.delete(id) : undone.add(id); render(); renderActivity(); }));
     document.querySelectorAll("#timeline [data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
-    const B = D.benchmark;
-    if (!B || B.error) { $("#research").innerHTML = `<div class="empty"><b>Research didn't run.</b>${esc(B?.error || "")}</div>`; return; }
-    const V = { consistent: ["st-ok", "Consistent"], review: ["st-warn", "Worth a second look"], "against-standard": ["st-bad", "Against the standard"] }[B.verdict] || ["st-off", B.verdict];
-    $("#bench-note").textContent = `${B.searches} Tavily searches · Nemotron Super`;
-    const refs = [...B.findings, ...(B.standard ? [B.standard] : [])].filter((f, i, arr) => arr.findIndex((g) => g.system === f.system && g.values.join() === f.values.join()) === i);
-    $("#research").innerHTML = `
-      <div class="row"><div><div class="t">New option: size “xsmall”</div><div class="s mono">${Object.entries(B.proposal.ours).map(([k, x]) => `${k} ${x}`).join(" · ")}</div></div><div class="v"><span class="status ${V[0]}">${V[1]}</span></div>
-        <div class="full secondary" style="margin-top:6px">${esc(B.recommendation)}</div></div>
-      ${refs.map((f) => `<div class="row"><div><div class="t">${esc(f.system)}</div><div class="s">${esc(f.values.join(" · "))}</div>
-        <div class="s">${f.url === "local" ? "Read from your code" : `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(new URL(f.url).hostname)}</a>`}</div></div></div>`).join("")}`;
   }
 
   const STRAT = {
@@ -1478,11 +1481,17 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   }
 
   function renderPR() {
-    const P = D.pr; if (!P) { $("#pr").innerHTML = `<div class="empty">No code-side changes in this run.</div>`; return; }
+    const P = D.pr; if (!P) { $("#pr").innerHTML = `<div class="empty">No changes to review in this run.</div>`; return; }
     const line = (l) => `<span class="${l.startsWith("+") ? "add" : l.startsWith("-") ? "del" : ""}">${esc(l)}</span>`;
-    $("#pr").innerHTML = `<div class="pr-top">${P.url ? `<span class="pr-st open">Open on GitHub</span>` : `<span class="pr-st draft">Not opened yet</span>`}<span class="pr-t">${esc(P.title)}</span></div>
-      ${P.files.map((f, n) => `<details class="pr-f"${n === 0 ? " open" : ""}><summary><span class="cst none">${esc(f.side)}</span><b>${esc(f.file)}</b><span class="tertiary">${f.diff.split("\n").filter((l) => /^[+~-]/.test(l) && !/^(\+\+\+|---)/.test(l)).length} changes</span></summary><pre>${f.diff.split("\n").map(line).join("\n")}</pre></details>`).join("")}
-      ${P.url ? `<a class="btn" href="${esc(P.url)}" target="_blank" rel="noopener">View pull request</a>` : `<div class="pr-cmd">Opened with <b>ds-lab pr --open</b>: the agent pushes a branch with these changes and the <b>ds-sync</b> check re-certifies it in CI.</div>`}`;
+    const n = P.files.reduce((x, f) => x + f.diff.split("\n").filter((l) => /^[+~-]/.test(l) && !/^(\+\+\+|---)/.test(l)).length, 0);
+    $("#pr").innerHTML = `<div class="pr-top">${P.url ? `<span class="pr-st open">Open</span>` : `<span class="pr-st draft">Not opened yet</span>`}<span class="pr-meta">${P.files.length} files · ${n} changes</span></div>
+      <div class="pr-t">${esc(P.title.replace(/^Seamline: /, ""))}</div>
+      <div class="pr-check"><span class="pr-dot ${ITEMS.some((i) => !answers[i.id]) ? "red" : "green"}"></span>ds-sync ${ITEMS.some((i) => !answers[i.id]) ? `fails until the ${openItems().length} decisions are made` : "passes: everything is in sync"}</div>
+      <div class="pr-actions">${P.url ? `<a class="btn" href="${esc(P.url)}" target="_blank" rel="noopener">View in GitHub</a>` : `<span class="pr-cmd">Opens with <b>ds-lab pr --open</b></span>`}</div>
+      <details class="pr-more"><summary>Show the diff</summary>${P.files.map((f) => `<div class="pr-f"><div class="pr-fh"><span class="cst none">${esc(f.side)}</span><b>${esc(f.file)}</b></div><pre>${f.diff.split("\n").map(line).join("\n")}</pre></div>`).join("")}</details>`;
+    const M = Object.entries(D.repair.calls).map(([m, u]) => [m.split("/").pop(), u]);
+    const role = (m) => /nano/i.test(m) ? "Pairs renames" : /ultra/i.test(m) ? "Judges value conflicts" : /super/i.test(m) ? "Researches new options" : "";
+    if ($("#act-models")) $("#act-models").innerHTML = M.map(([m, u]) => `<div class="mdl"><div><div class="t">${esc(m.replace(/^NVIDIA-/, ""))}</div><div class="s">${role(m)}</div></div><div class="v">${u.calls} ${u.calls === 1 ? "call" : "calls"}<small>${((u.prompt + u.completion) / 1000).toFixed(1)}k tokens · ${(u.ms / 1000).toFixed(1)} s</small></div></div>`).join("");
   }
   function renderMetrics() { renderPR();
     const sum = (r) => r.checks.reduce((a, c) => [a[0] + c.passed, a[1] + c.total], [0, 0]);
@@ -1677,6 +1686,6 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.querySelectorAll(".row").forEach((el) => { el.style.opacity = !q || el.textContent.toLowerCase().includes(q) ? "" : ".3"; });
   });
 
-  render(); renderActivity(); renderLab(); renderMetrics(); go(start);
+  render(); renderActivity(); renderLab(); renderMetrics(); renderPR(); go(start);
 })();
 </script>
