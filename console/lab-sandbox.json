@@ -1,8 +1,8 @@
 {
- "ranAt": "2026-10-08T12:18:00+0200",
+ "ranAt": "2026-10-18T14:42:25+0200",
  "where": "Nebius Token Factory Sandboxes",
  "image": "node:22-slim",
- "checkpoint": "d72c8699-73fd-496c-a1ff-5f007023356f",
+ "checkpoint": "dc025ff5-c59b-44b0-be69-8800b85a8a08",
  "broken": [
   [
    "Shared tokens (Figma \u2194 code, light)",
@@ -28,14 +28,19 @@
    "Button docs in Figma (React status \u2194 docs)",
    2,
    2
+  ],
+  [
+   "Button text contrast (WCAG AA, Figma and code)",
+   5,
+   5
   ]
  ],
  "files": 23,
- "total_s": 11.6,
+ "total_s": 47.5,
  "runs": [
   {
    "strategy": "manual",
-   "ms": 43,
+   "ms": 40,
    "kept": {
     "silent": false,
     "rename": false,
@@ -88,21 +93,27 @@
      "passed": 2,
      "total": 2,
      "issues": []
+    },
+    {
+     "area": "Button text contrast (WCAG AA, Figma and code)",
+     "passed": 5,
+     "total": 5,
+     "issues": []
     }
    ],
-   "passed": 1467,
-   "total": 1483,
+   "passed": 1472,
+   "total": 1488,
    "pending": [],
    "overwrote": "",
    "actions": [],
    "queue": [],
    "calls": {},
-   "sandbox": "d72c8699-73fd-496c-a1ff-5f007023356f",
-   "wall_s": 1.7
+   "sandbox": "dc025ff5-c59b-44b0-be69-8800b85a8a08",
+   "wall_s": 1.3
   },
   {
    "strategy": "figma-first",
-   "ms": 149,
+   "ms": 132,
    "kept": {
     "silent": false,
     "rename": true,
@@ -147,10 +158,16 @@
      "passed": 2,
      "total": 2,
      "issues": []
+    },
+    {
+     "area": "Button text contrast (WCAG AA, Figma and code)",
+     "passed": 5,
+     "total": 5,
+     "issues": []
     }
    ],
-   "passed": 1474,
-   "total": 1478,
+   "passed": 1479,
+   "total": 1483,
    "pending": [],
    "overwrote": "engineer's change overwritten",
    "actions": [
@@ -159,12 +176,12 @@
    ],
    "queue": [],
    "calls": {},
-   "sandbox": "71208e2f-8a45-4490-b794-af6b18a3484e",
-   "wall_s": 1.4
+   "sandbox": "86854c8c-9248-4eff-b5dd-22194a74f532",
+   "wall_s": 1.6
   },
   {
    "strategy": "code-first",
-   "ms": 48,
+   "ms": 50,
    "kept": {
     "silent": false,
     "rename": false,
@@ -211,10 +228,16 @@
      "passed": 2,
      "total": 2,
      "issues": []
+    },
+    {
+     "area": "Button text contrast (WCAG AA, Figma and code)",
+     "passed": 5,
+     "total": 5,
+     "issues": []
     }
    ],
-   "passed": 1472,
-   "total": 1484,
+   "passed": 1477,
+   "total": 1489,
    "pending": [],
    "overwrote": "designer's change overwritten",
    "actions": [
@@ -223,12 +246,12 @@
    ],
    "queue": [],
    "calls": {},
-   "sandbox": "f213c55b-7ac9-4fb8-9cdc-5a4438e82544",
-   "wall_s": 1.7
+   "sandbox": "9a3750d8-44c5-414e-8fdc-a0023427f99e",
+   "wall_s": 1.6
   },
   {
    "strategy": "agent",
-   "ms": 5185,
+   "ms": 38911,
    "kept": {
     "silent": true,
     "rename": true,
@@ -279,12 +302,18 @@
      "passed": 2,
      "total": 2,
      "issues": []
+    },
+    {
+     "area": "Button text contrast (WCAG AA, Figma and code)",
+     "passed": 5,
+     "total": 5,
+     "issues": []
     }
    ],
-   "passed": 1475,
-   "total": 1483,
+   "passed": 1480,
+   "total": 1488,
    "pending": [
-    "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. Ultra leans Figma: The Figma change is a deliberate brand refresh establishing that invisible buttons should use link blue for action affordance. The code change was a reactive fix for a table-specific clash that over-corrected by removing the action signal globally."
+    "button-invisible-fg-color-rest: Figma #0969da vs code #59636e, both changed since last certification. no recommendation: Designer set Figma to link blue (#0969da) for brand refresh so invisible buttons read as actions. Engineer set code to default text gray (#59636e) because blue clashed with links in tables. Both changes are intentional and address different concerns (brand consistency vs. table usability)."
    ],
    "overwrote": "",
    "actions": [
@@ -292,23 +321,23 @@
      "id": "value-2",
      "who": "ultra",
      "side": "Figma",
-     "confidence": 0.92,
+     "confidence": 0.9,
      "notify": "designers",
-     "what": "button-danger-bg-color-rest: code is right \u2192 Figma #f6f8fa \u2192 #ffebe9. The commit explicitly implements design ticket DS-412 to give danger buttons a tinted (reddish) background; #ffebe9 is that tint while #f6f8fa is a neutral gray, so Figma is stale."
+     "what": "button-danger-bg-color-rest: code is right \u2192 Figma #f6f8fa \u2192 #ffebe9. The commit 'feat: danger buttons get a tinted background so destructive actions stand out (design ticket DS-412)' explicitly describes adding a tinted background for danger buttons. The code value #ffebe9 is a light red tint matching that intent, while the Figma value #f6f8fa is a neutral gray-blue."
     },
     {
      "id": "decide-3",
      "who": "ultra",
      "side": "person",
-     "what": "button-invisible-fg-color-rest: both sides changed it \u2192 a person decides (Ultra leans Figma)"
+     "what": "button-invisible-fg-color-rest: both sides changed it \u2192 a person decides"
     },
     {
      "id": "value-4",
      "who": "ultra",
      "side": "Figma",
-     "confidence": 0.98,
+     "confidence": 0.95,
      "notify": "designers",
-     "what": "button-primary-bg-color-hover: code is right \u2192 Figma #1c8139 \u2192 #1a7f37. The commit history explicitly states the code value #1a7f37 was chosen to fix a 4.5:1 contrast failure with white text in a high-contrast audit \u2014 the Figma value is the pre-fix color that failed accessibility."
+     "what": "button-primary-bg-color-hover: code is right \u2192 Figma #1c8139 \u2192 #1a7f37. The commit explicitly documents an accessibility fix darkening the hover color to #1a7f37 to meet 4.5:1 contrast with white text; Figma still holds the pre-fix value."
     },
     {
      "id": "bind-5",
@@ -339,8 +368,8 @@
     "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 1,
     "nvidia/Nemotron-3-Ultra-550b-a55b": 3
    },
-   "sandbox": "df2dfa92-d013-4317-b8c7-1ec156b412c0",
-   "wall_s": 6.7
+   "sandbox": "d4be6eb6-2c9a-4faa-91c6-5b3873870db0",
+   "wall_s": 40.4
   }
  ]
 }

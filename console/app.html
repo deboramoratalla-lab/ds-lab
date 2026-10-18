@@ -876,6 +876,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .qu{display:flex;flex-direction:column;gap:8px}.qu-t{font-size:13.5px;font-weight:500;color:var(--label)}.side-panel>div>small,.qu small{font-size:12px;color:var(--label-2)}
 .qn{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.qn b{font-weight:500;color:var(--label)}.qn small{font-size:12px;color:var(--label-2)}
 .aff-r .xlink{margin-left:auto}
+.lab-t th{vertical-align:bottom}.lab-t th small{display:block;font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--label-3);max-width:120px;line-height:1.3;margin-top:4px}
+.lab-t td small{display:block;font-size:12px;color:var(--label-2);margin-top:2px}.lab-t td b{font-weight:600}.lab-sb{display:block;font-size:11px;color:var(--label-3);margin-top:4px}
+.lab-t td.c{text-align:center}.lab-t td.num{white-space:nowrap}.lab-no{color:var(--label-3)}.lab-off{font-size:12.5px;color:var(--label-2)}.lab-ow{color:var(--red)!important}
+.lab-win td{background:color-mix(in srgb,var(--accent) 5%,transparent)}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -915,7 +919,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       <button data-page="activity"><svg><use href="#i-list"/></svg>Activity</button>
       <button data-page="decisions"><svg><use href="#i-inbox"/></svg>Decisions<span class="badge" id="nav-count">1</span></button>
       <div class="nav-label">Strategy</div>
-      <button data-page="lab"><svg><use href="#i-flask"/></svg>Lab</button>
+      <button data-page="lab"><svg><use href="#i-flask"/></svg>Benchmark</button>
       <button data-page="metrics"><svg><use href="#i-chart"/></svg>Report</button>
       <button data-page="sources"><svg><use href="#i-plug"/></svg>Sources</button>
     </nav>
@@ -1025,13 +1029,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- LAB -->
     <div class="page" id="p-lab" hidden>
       <div class="wrap" style="gap:32px">
-        <div><div class="eyebrow">Lab</div><h1>Which sync strategy holds up</h1><p class="lede" id="lab-note"></p></div>
-        <section><div class="group scroll"><table><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
-        <section><div class="sec-h">Strategies</div><div class="group"><dl class="kv" id="lab-legend"></dl></div></section>
-        <section>
-          <div class="sec-h">Changes<small>The same five changes are replayed for every strategy</small></div>
-          <div class="group" id="changes"></div>
-        </section>
+        <div class="pg-head"><h1 class="pg-title" id="lab-title">Benchmark</h1><p class="lede act-lede">The same five changes, synced four ways. Each strategy runs in its own Nebius Token Factory Sandbox, forked from one checkpoint.</p></div>
+        <div class="run-line" id="lab-note"></div>
+        <section><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
       </div>
     </div>
 
@@ -1495,7 +1495,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   };
   const itemFor = (id) => id === "conflict" ? DEC : id === "xsmall" ? ITEMS.find((i) => i.kind === "proposal") : id === "rename" ? ITEMS.find((i) => i.change?.type === "rename" || /renamed|disappeared/.test(i.title)) : null;
   function renderChanges() {
-    $("#changes").innerHTML = D.breaks.map((b) => {
+    if ($("#changes")) $("#changes").innerHTML = D.breaks.map((b) => {
       const [kind, by, what] = BREAK[b.id], it = itemFor(b.id);
       let st, sub;
       if (state === "certified") st = `<span class="status st-off">Not yet</span>`;
@@ -1556,24 +1556,18 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   };
   function renderLab() {
     const L = D.sandboxLab;
-    if (!L) { $("#lab-note").textContent = "Run lab/run_sandboxes.py to fill this in."; return; }
-    const COLS = [["silent", "Silent bug"], ["rename", "Rename"], ["hotfix", "Hotfix"], ["xsmall", "New size"], ["conflict", "Conflict"]];
-    const NAME = { manual: "Manual", "figma-first": "Figma first", "code-first": "Code first", agent: "Seamline agent" };
-    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n]) => `<th>${n}</th>`).join("")}<th>Kept</th><th>Checks</th><th>Sandbox</th></tr>`;
-    $("#lab-body").innerHTML = L.runs.map((r) => `<tr>
-      <td style="font-weight:${r.strategy === "agent" ? 700 : 500}">${NAME[r.strategy]}${r.overwrote ? `<div class="s" style="color:var(--red);font-weight:400;font-size:12px">${esc(r.overwrote)}</div>` : ""}${r.queue?.length ? `<div class="s" style="color:var(--amber);font-weight:400;font-size:12px">${r.queue.length} sent to a person</div>` : ""}</td>
-      ${COLS.map(([k]) => `<td>${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="mark-bad" aria-label="lost">✕</span>`}</td>`).join("")}
-      <td class="num" style="font-weight:700">${r.keptCount} of 5</td>
-      <td class="num">${!(r.total - r.passed) ? `<span class="status st-ok">all</span>` : r.queue?.length ? `<span class="status st-warn">${r.queue.length} in queue</span>` : `<span class="status st-bad">${r.total - r.passed} off</span>`}</td>
-      <td class="tertiary num" style="font-size:12px"><span class="mono">${esc(r.sandbox.slice(0, 8))}</span><br>${r.wall_s}s</td></tr>`).join("");
-    $("#lab-note").textContent = `The same five changes, forked into ${L.runs.length} Nebius Token Factory Sandboxes from one checkpoint and run in parallel. ${L.total_s} s end to end, ${L.files} files uploaded.`;
-    $("#lab-legend").innerHTML = [
-      ["Manual", "Each side edits on its own; nobody syncs until someone notices."],
-      ["Figma first", "Figma variables are exported and regenerate the code. Code-only changes are overwritten."],
-      ["Code first", "Code tokens are pushed into Figma. Figma-only changes are undone; components aren't touched."],
-      ["Seamline agent", "Merges from the last certification. Nano pairs renames, Ultra judges one-sided changes, rules fix bindings and variants, a person decides when both sides changed."],
-      ["Checkpoint", `<span class="mono">${esc(L.checkpoint)}</span> · certified Primer Web plus the five changes`],
-    ].map(([n, d]) => `<dt>${n}</dt><dd>${d}</dd>`).join("");
+    if (!L) { $("#lab-note").innerHTML = "<span>Run lab/run_sandboxes.py to fill this in.</span>"; return; }
+    const COLS = [["silent", "Silent bug", "Engineer gives the danger button a red background, code only"], ["rename", "Rename", "Designer renames a gap token in Figma"], ["hotfix", "Hotfix", "Engineer darkens the primary hover for contrast"], ["xsmall", "New size", "xsmall ships in code and docs, not in Figma"], ["conflict", "Conflict", "Both sides change the invisible button text the same week"]];
+    const NAME = { manual: ["Manual", "Each side edits alone. Nobody syncs."], "figma-first": ["Figma first", "Figma regenerates code. Code-only changes are lost."], "code-first": ["Code first", "Code is pushed to Figma. Figma-only changes are lost."], agent: ["Seamline agent", "Nemotron judges each change. A person decides conflicts."] };
+    const ag = L.runs.find((r) => r.strategy === "agent"), best = Math.max(...L.runs.filter((r) => r.strategy !== "agent").map((r) => r.keptCount));
+    $("#lab-title").textContent = ag?.keptCount === 5 ? `Only the agent keeps all five changes` : "Benchmark";
+    $("#lab-note").innerHTML = `<span>${esc(fmtAt(L.ranAt))}</span><span><b>${L.runs.length}</b> sandboxes in parallel · ${L.total_s} s</span><span>checkpoint ${esc(L.checkpoint.slice(0, 8))}</span><span>others keep at most <b>${best}</b> of 5</span>`;
+    $("#lab-head").innerHTML = `<tr><th>Strategy</th>${COLS.map(([, n, d]) => `<th title="${esc(d)}">${n}<small>${esc(d)}</small></th>`).join("")}<th>Kept</th><th>Result</th></tr>`;
+    $("#lab-body").innerHTML = L.runs.map((r) => { const A = r.strategy === "agent", off = r.total - r.passed; return `<tr class="${A ? "lab-win" : ""}">
+      <td><b>${NAME[r.strategy][0]}</b><small>${NAME[r.strategy][1]}</small><span class="lab-sb">sandbox ${esc(r.sandbox.slice(0, 8))} · ${r.wall_s} s</span></td>
+      ${COLS.map(([k]) => `<td class="c">${r.kept[k] ? `<span class="mark-ok" aria-label="kept">✓</span>` : `<span class="lab-no" aria-label="lost">–</span>`}</td>`).join("")}
+      <td class="num"><b>${r.keptCount}</b> of 5</td>
+      <td>${A ? `<span class="status st-warn">${r.queue?.length || 0} to a person</span>` : off ? `<span class="lab-off">${off} checks off</span>` : `<span class="status st-ok">all</span>`}${r.overwrote ? `<small class="lab-ow">${esc(r.overwrote)}</small>` : ""}</td></tr>`; }).join("");
   }
 
   // deep links to where a change actually lives: the file on the ds-sync branch, the PR's diff, the Figma file
