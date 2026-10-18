@@ -1,91 +1,89 @@
 # Seamline
 
-> Formerly Seamline. Repo, CLI (`ds-lab`) and the `ds-sync` check keep their names.
+**Keeps Figma, code, Storybook and docs in sync for a design system, and only asks a person when it should.**
 
-Everyone wants to sync their design system. Nobody knows what works. Seamline measures it.
+Seamline certifies a design system across its four sources, lets NVIDIA Nemotron models on Nebius Token Factory repair the drift they are sure about, sends everything else to the design-system lead, and opens a real GitHub pull request whose `ds-sync` check stays red until those decisions are made.
 
-Seamline runs several Figma ↔ code sync strategies in parallel on **your** design system, replays the same real changes against each one, and tells you which strategy holds up. After you adopt it, it keeps measuring whether it actually works.
+It runs on GitHub's real [Primer](https://primer.style) system: `@primer/primitives`, `@primer/react`, the Primer Web Figma file and Primer's Storybook stories.
 
-Built for the Nebius × NVIDIA Global AI Hackathon (Coding and Agentic Engineering track). Work in progress.
+> Formerly DS Lab. The repo, the CLI (`ds-lab`) and the `ds-sync` check keep their names.
 
-## Status
+## The problem
 
-- [x] Token drift engine (design tokens vs code tokens)
-- [x] Rendered-screen audit (Playwright): token coverage on what users actually see
-- [x] Strategy lab: 4 sync strategies × the same scripted changes, scored per step (in-process runner)
-- [ ] Same lab on Token Factory Sandboxes: one fork per strategy, checkpoint per step
-- [x] Nemotron agents: Nano finds renamed tokens, Ultra resolves Figma ↔ code conflicts
-- [x] Token migration between Figma variables, W3C DTCG JSON, CSS and Tailwind v4, verified by read-back
-- [x] Component migration sample: Primer Button, code → Figma, 12 variants bound to variables, verified 96/96
-- [x] Documentation: the design system's own docs (Primer components.json) synced into Figma, never rewritten
-- [x] Storybook: four-way check of every variant and size across docs, code, Figma and Storybook
-- [ ] Super builds screens inside the lab
-- [ ] Post-adoption tracking with Nebius Serverless Jobs
-- [ ] Dashboard
+Design systems drift in five ways, whatever the component: one side changes a value, a token is renamed, someone ships a hotfix, a new option appears on one side, or both sides change the same thing. Today's sync tools pick a winner ("Figma first" or "code first") and silently overwrite the other side's work. Seamline treats each kind of change differently.
 
-## Try the drift engine
+| Kind of change | Who handles it | What happens |
+|---|---|---|
+| One side changes a value | Nemotron Ultra reads the commit and ticket | Applied if ≥ 85% sure, otherwise asks |
+| A token is renamed | Nemotron Nano pairs old and new names | Applied or confirmed by a person |
+| An urgent hotfix | Nemotron Ultra + the WCAG contrast check | Applied to the other side |
+| A new option on one side | Nemotron Super researches it with Tavily | Proposed, never created alone |
+| Both sides change the same thing | The lead | Always a person's call |
+
+Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and can be undone, three rejections of one kind pause auto-apply for it, and `ds-sync` re-certifies every PR.
+
+## What's in the repo
+
+- **Agent** (`src/demo/repair.ts`): certify → repair → escalate, with an undo journal and a trust ledger.
+- **Certification** (`src/certify-primer.ts`): shared tokens, links kept since last certification, Button properties by value, options in docs/code/Figma/Storybook, docs in Figma, WCAG AA text contrast.
+- **All 74 components** (`src/certify-catalog.ts`, `src/triage-catalog.ts`): options, tokens and status checked across docs, code and the real Figma file; Nemotron Ultra suggests one fix per drifting component.
+- **Pull request + CI** (`ds-lab pr`, `.github/workflows/ds-sync.yml`): pushes the agent's workspace, opens the PR, and the check fails until the lead answers.
+- **Benchmark** (`lab/run_sandboxes.py`): the same five changes synced four ways, each strategy in its own Token Factory Sandbox forked from one checkpoint.
+- **Console** (`console/`): one HTML page for the lead (Overview, Activity, Decisions, Report, Sources, How it works), role views for designers and engineers.
+- **Server** (`server/server.mjs`, `Dockerfile`): serves the console on Nebius Serverless Endpoints and turns "Send answers" into a real GitHub Actions run.
+
+## How Nebius and NVIDIA are used
+
+- **Nebius Token Factory** serves every model call (OpenAI-compatible API, JSON mode, per-model usage tracking in `src/llm/nebius.ts`).
+- **NVIDIA Nemotron 3**, each for what it's good at:
+  - **Nano** (`nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`, thinking off): fast, frequent rename pairing.
+  - **Ultra** (`nvidia/Nemotron-3-Ultra-550b-a55b`): judges which side is right from commits and tickets; summarises conflicts without picking a side; triages drift in the other 73 components.
+  - **Super** (`nvidia/nemotron-3-super-120b-a12b`): reads Tavily research on other design systems and WCAG, writes the proposal for new options.
+- **Token Factory Sandboxes**: one checkpoint with the five changes, forked four times in parallel (one per strategy) for the benchmark.
+- **Nebius Serverless Endpoints**: hosts the console and the "Send answers" endpoint (`.github/workflows/deploy-nebius.yml`).
+- **Tavily**: searches official design-system sites and WCAG before the agent proposes anything new.
+
+## Run it
+
+Requirements: Node 22, `gh` (GitHub CLI) for pull requests, Python 3.11 + `contree-sdk` only for the sandbox benchmark.
 
 ```bash
 npm install
-npx tsx src/cli.ts drift design-tokens.json tokens.css
+cp .env.example .env                 # NEBIUS_API_KEY, TAVILY_API_KEY (and FIGMA_FILE_URL for links)
+bash fixtures/get-primer.sh          # downloads @primer/primitives and @primer/react
+
+npx tsx src/cli.ts certify-primer    # certify Primer Web (Button): 1,520+ checks
+npx tsx src/console/export.ts        # break → agent repair with Nemotron → console/data.json
+npx tsx src/certify-catalog.ts       # check all 74 components
+npx tsx src/triage-catalog.ts        # Nemotron Ultra suggestions for the ones that drift
+node console/build.mjs               # → console/index.html (open it in a browser)
+
+npx tsx src/cli.ts pr --open         # push the agent's workspace and open the ds-sync PR
+npx tsx src/cli.ts pr --decide button-invisible-fg-color-rest=code --approve all   # answer, CI goes green
+node server/server.mjs               # console + /api/decide on :8000
+npx esbuild src/lab/component-lab.ts --bundle --platform=node --format=esm --outfile=out/sandbox/lab.mjs
+python lab/run_sandboxes.py          # the benchmark on Token Factory Sandboxes
+npm test
 ```
 
-Accepts Figma variable / W3C DTCG JSON and CSS custom properties. Values are normalized (`#FFF` = `#ffffff` = `rgb(255,255,255)`, `1rem` = `16px`) so only real drift shows up. Exit code is `2` when drift is found, so it works in CI.
+### Automation
 
-## Audit a rendered screen
+- `agent-run.yml` runs the whole agent every morning and opens the PR. Add repo secrets `NEBIUS_API_KEY` and `TAVILY_API_KEY`.
+- `apply-decisions.yml` applies the lead's answers to the open PR. The console's "Send answers" triggers it through the server.
+- `deploy-nebius.yml` builds the image (GHCR) and creates the Nebius Serverless endpoint. Add secrets `NEBIUS_SA_ID`, `NEBIUS_SA_PUBLIC_KEY_ID`, `NEBIUS_SA_PRIVATE_KEY`, `NEBIUS_PROJECT_ID`, optional `GH_DISPATCH_TOKEN` (fine-grained, Actions: write), and variables `NEBIUS_PLATFORM`, `NEBIUS_PRESET` (a CPU platform and preset from your project).
 
-```bash
-npm run primer   # downloads Primer fixtures once
-npx tsx src/cli.ts audit <tokens> fixtures/screens/settings.html
-```
+## Built during the hackathon
 
-Opens the screen in Chromium, reads every computed color, spacing, font size and radius, and checks each against tokens of the right category. Off-system values come with the nearest token as a suggestion.
+The project started on 6 October 2026, inside the submission period. Everything here was built for this hackathon: the drift engine, the agent and its guardrails, the Primer certification, the sandbox benchmark, the PR and CI flow, the console, the 74-component check and the Nebius deployment.
 
-## Migrate tokens
+## Feedback on Nebius and NVIDIA tools
 
-```bash
-npx tsx src/cli.ts migrate <source-tokens> dtcg|figma|css|tailwind --out <file>
-```
-
-The output is read back with the same loader and compared with the source by the drift engine. A migration only passes at 100% sync, so nothing is lost silently. Primer's 1,164 Figma tokens pass in all four formats.
-
-## Run the lab
-
-```bash
-npx tsx src/cli.ts lab <design-tokens> <code-tokens> --json lab-run.json
-```
-
-Every strategy gets the same 5 changes on Primer's 1,036 shared tokens: a designer rename, an engineering hotfix, a new token, a deletion, and a conflict where both sides changed the same token.
-
-| Strategy | Breaks at | Handled correctly |
-|---|---|---|
-| No sync (status quo) | step 1 | 0/5 |
-| Figma is the source of truth | step 1 | 1/5, overwrites code's change silently |
-| Code is the source of truth | step 1 | 1/5, overwrites Figma's change silently |
-| Seamline agent (3-way merge + Nemotron) | never | 5/5 |
-
-Caveat: the one-way strategies model the common "export and overwrite" pipelines, and the script was written alongside the agent. The lab's value is in running your own changes against your own system.
-
-## Where does each option live?
-
-```bash
-npx tsx src/cli.ts where <components.json> <Component.css> --name Button --base prc-Button-ButtonBase \
-  --figma "variant=default,primary,danger,invisible;size=small,medium,large"
-```
-
-Checks every variant and size against the official docs, the code, Figma and Storybook stories. On Primer's Button: 7/8 in sync; `variant=link` is missing in Figma.
-
-## Reconcile with Nemotron
-
-```bash
-cp .env.example .env   # add your Token Factory key
-npx tsx src/cli.ts reconcile <design-tokens> <code-tokens>
-```
-
-Nemotron 3 Nano pairs tokens that were renamed between Figma and code (thinking off: fast, cheap). Nemotron 3 Ultra decides, for each conflicting value, whether Figma or code holds the intended decision, or that a person must decide, and says what to change. On Primer it calls the font-stack conflicts in favour of code (Figma can't express fallback stacks) and flags one it can't settle for a human.
-
-Behind an HTTPS proxy, run Node with `NODE_USE_ENV_PROXY=1`.
+- **Token Factory** was the easiest part: OpenAI-compatible, JSON mode works, and having Nano, Super and Ultra behind one key made routing by task trivial. Per-request usage in the response made cost tracking per model easy.
+- **Nemotron 3 Nano** with thinking off is fast and right for mechanical pairing, but too weak for judgment. In our triage test it invented a commit; Ultra on the same prompt gave grounded answers. Clear guidance on "which tier for which task" in the docs would help.
+- **Nemotron 3 Ultra** was the most reliable judge we tried for "which side is right" from commit messages, and it respected "don't pick a side" instructions.
+- **Token Factory Sandboxes**: checkpoint once, fork many is exactly what a benchmark needs. A way to diff two sandboxes' file systems directly would save a step.
+- **Serverless Endpoints**: deploying from CI needs the service-account profile flow from a different page than the endpoint docs, and the CPU platform/preset names aren't listed next to the endpoint example. One end-to-end "deploy a web app from GitHub Actions" guide would close that gap.
 
 ## License
 
-MIT
+MIT, see [LICENSE](LICENSE).
