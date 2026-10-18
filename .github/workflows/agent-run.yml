@@ -32,4 +32,6 @@ jobs:
           git commit -m "agent-run: $(date -u +%F) certification and repair" || echo "nothing new"
           git push origin HEAD:main
       - name: Open the ds-sync pull request
-        run: npx tsx src/cli.ts pr --open && git add console && (git commit -m "agent-run: link PR" && git push origin HEAD:main || true)
+        run: |
+          npx tsx src/cli.ts pr --open
+          git add console && (git commit -m "agent-run - link PR" && git push origin HEAD:main || true)
