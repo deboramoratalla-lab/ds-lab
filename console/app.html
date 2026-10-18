@@ -892,6 +892,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .sec-link{all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;font-weight:500;color:var(--accent)}.sec-link:hover{text-decoration:underline}
 @media (max-width:860px){.hiw-r{grid-template-columns:28px 1fr}.hiw-r>div:nth-child(n+3){grid-column:2}}
 .rep-ba{display:flex;flex-direction:column;gap:6px;width:min(320px,45%)}.rep-ba .krow{grid-template-columns:48px 1fr 28px;font-size:11.5px}
+.src-n{font-size:12px;font-weight:400;color:var(--label-3);margin-left:6px}.src-v{display:flex;align-items:center}.src-miss{font-size:12px;color:var(--label-3)}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
 .xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
@@ -1064,17 +1065,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- SOURCES -->
     <div class="page" id="p-sources" hidden>
       <div class="wrap" style="gap:32px">
-        <div><div class="eyebrow">Sources</div><h1>Where the system lives</h1></div>
-        <section><div class="group" id="sources"></div></section>
-        <section>
-          <div class="sec-h">Models<small>NVIDIA Nemotron on Nebius Token Factory</small></div>
-          <div class="group"><dl class="kv">
-            <dt>Nemotron Nano</dt><dd>Pairs renamed tokens. Fast and cheap, called often.</dd>
-            <dt>Nemotron Super</dt><dd>Reads research from other design systems and writes the recommendation.</dd>
-            <dt>Nemotron Ultra</dt><dd>Decides who is right when Figma and code disagree, using commits and Figma notes.</dd>
-            <dt>Tavily</dt><dd>Searches official design-system sites and WCAG for the research step.</dd>
-          </dl></div>
-        </section>
+        <div class="pg-head"><h1 class="pg-title">Sources</h1><p class="lede act-lede">Where the design system lives, and the services Seamline uses to keep it in sync.</p></div>
+        <div class="run-line" id="src-tags"></div>
+        <section><div class="sec-h">Design system<small>Read on every run</small></div><div class="group" id="sources"></div></section>
+        <section><div class="sec-h">Services<small>What the agent runs on</small></div><div class="group" id="services"></div></section>
       </div>
     </div>
   </div></main>
@@ -1652,9 +1646,20 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       "", "## Waiting on the design system lead", ...ITEMS.map((i) => `- ${i.title}`), "", D.pr?.url ? `Pull request: ${D.pr.url}` : ""].join("\n");
     $("#rep-copy").onclick = async () => { try { await navigator.clipboard.writeText(md); $("#rep-copy").textContent = "Copied"; } catch { $("#rep-copy").textContent = "Copy failed"; } setTimeout(() => $("#rep-copy").textContent = "Copy report", 1600); };
     const G = { figma: ["design", "pen"], code: ["code", "code"], storybook: ["code", "list"], docs: ["code", "book"] };
+    const LINK = { figma: [figmaURL(), "Open in Figma"], code: ["https://www.npmjs.com/package/@primer/primitives/v/11.10.0", "npm"], storybook: ["https://github.com/primer/react", "GitHub"], docs: ["https://primer.style", "primer.style"] };
+    const READ = { figma: "Variables and Button bindings, exported", code: "CSS custom properties and Button CSS", storybook: "Story files, by option", docs: "Generated component docs" };
     $("#sources").innerHTML = D.sources.map((s) => `<div class="row lead"><span class="glyph g-${G[s.id][0]}">${ic(G[s.id][1])}</span>
-      <div><div class="t">${esc(s.name)}</div><div class="s">${esc(s.detail)}</div></div>
-      <div class="v num">${s.count.toLocaleString()} ${esc(s.unit)}</div></div>`).join("");
+      <div><div class="t">${esc(s.name)} <span class="src-n">${s.count.toLocaleString()} ${esc(s.unit)}</span></div><div class="s">${esc(s.detail)} · ${READ[s.id]}</div></div>
+      <div class="v src-v">${LINK[s.id][0] ? xlink(LINK[s.id][0], LINK[s.id][1]) : `<span class="src-miss">Link not set</span>`}</div></div>`).join("");
+    const res = (D.repair.items || []).find((i) => i.research)?.research;
+    const SV = [
+      ["Nebius Token Factory", "NVIDIA Nemotron Nano, Super and Ultra", nc ? `${nc} calls last run` : null, "sparkle"],
+      ["Token Factory Sandboxes", "Runs the benchmark, one sandbox per strategy", D.sandboxLab ? `${D.sandboxLab.runs.length} sandboxes · ${fmtAt(D.sandboxLab.ranAt)}` : null, "flask"],
+      ["Tavily", "Searches other design systems and WCAG before proposing", res ? `${res.searches} searches last run` : null, "search"],
+      ["GitHub", "Opens the sync pull request, runs the ds-sync check", LK.pr ? `PR #${LK.pr.number} open` : null, "code"],
+    ];
+    $("#services").innerHTML = SV.map(([n, d, st, i]) => `<div class="row lead"><span class="glyph g-code">${ic(i)}</span><div><div class="t">${n}</div><div class="s">${d}</div></div><div class="v">${st ? `<span class="status st-ok">${esc(st)}</span>` : `<span class="src-miss">Not used yet</span>`}</div></div>`).join("");
+    $("#src-tags").innerHTML = `<span><b>${D.sources.length}</b> sources</span><span>Read ${esc(fmtAt(D.generatedAt))}</span><span>${esc(D.system.name)}</span>`;
   }
 
   // Run history: each entry is a real run in data.json; selecting one shows the system as it was after that run.
