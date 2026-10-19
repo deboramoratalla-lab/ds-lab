@@ -38,8 +38,8 @@ jobs:
           git config user.name "seamline-agent"; git config user.email "seamline-agent@users.noreply.github.com"
           git add console/data.json console/catalog.json console/catalog-triage.json console/index.html
           git commit -m "agent-run: $(date -u +%F) certification and repair" || echo "nothing new"
-          git push origin HEAD:main
+          git pull --rebase -X theirs origin main && git push origin HEAD:main
       - name: Open the ds-sync pull request
         run: |
           npx tsx src/cli.ts pr --open
-          git add console && (git commit -m "agent-run - link PR" && git push origin HEAD:main || true)
+          git add console && (git commit -m "agent-run - link PR" && git pull --rebase -X theirs origin main && git push origin HEAD:main || true)
