@@ -23,7 +23,11 @@ jobs:
       - name: Check the Token Factory key (stop instead of publishing a degraded run)
         run: |
           code=$(curl -s -o /dev/null -w "%{http_code}" https://api.tokenfactory.nebius.com/v1/models -H "Authorization: Bearer $NEBIUS_API_KEY")
+          K="$NEBIUS_API_KEY"; T=$(printf %s "$K" | tr -d ' \r\n"'"'"'')
+          echo "key length ${#K} (trimmed ${#T}), starts with ${T:0:3}, has whitespace: $([ "$K" != "$(printf %s "$K" | tr -d ' \r\n\t')" ] && echo yes || echo no)"
+          [ "$code" = "200" ] || code=$(curl -s -o /dev/null -w "%{http_code}" https://api.tokenfactory.nebius.com/v1/models -H "Authorization: Bearer $T")
           [ "$code" = "200" ] || { echo "::error::Token Factory said $code. Check the NEBIUS_API_KEY secret (paste the key only, no quotes or spaces)."; exit 1; }
+          echo "NEBIUS_API_KEY=$T" >> $GITHUB_ENV
       - name: Agent run (Nemotron on Token Factory)
         run: npx tsx src/console/export.ts
       - name: Check every component
