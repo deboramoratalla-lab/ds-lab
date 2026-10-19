@@ -1,64 +1,64 @@
 {
- "at": "2026-10-19T10:26:53.346Z",
- "ms": 1452,
+ "at": "2026-10-19T13:32:04.352Z",
+ "ms": 1566,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 367,
-   "ms": 13940
+   "completion": 369,
+   "ms": 12864
   }
  },
  "items": {
-  "SegmentedControl": {
-   "fix": "Add size=medium to the code implementation",
+  "ActionList": {
+   "fix": "Add the full variant to the ActionList component in code.",
    "side": "code",
    "confidence": 0.95
-  },
-  "TabNav": {
-   "fix": "Update Figma status to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.9
   },
   "SelectPanel": {
-   "fix": "Add variant=anchored to Figma to match docs and code",
+   "fix": "Add variant=anchored to Figma",
    "side": "figma",
    "confidence": 0.9
-  },
-  "Pagehead": {
-   "fix": "Change Figma status from Alpha to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "StateLabel": {
-   "fix": "Add StateLabel variants small, normal, issue, pull request and size medium to Figma.",
-   "side": "figma",
-   "confidence": 0.85
-  },
-  "ProgressBar": {
-   "fix": "Add --progressBar-track-borderColor variable in Figma to match docs and code",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "NavList": {
-   "fix": "Set the status badge to alpha in the Primer Web library",
-   "side": "figma",
-   "confidence": 0.95
   },
   "DataTable": {
-   "fix": "Update the DataTable status from Draft to alpha in Figma",
+   "fix": "update Figma status from Draft to alpha",
    "side": "figma",
    "confidence": 0.95
   },
-  "ActionList": {
-   "fix": "Add the missing 'full' variant to the code implementation to match docs and Figma.",
+  "Pagehead": {
+   "fix": "Set Figma status to deprecated for Pagehead",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "TabNav": {
+   "fix": "Update Figma status from Alpha to Deprecated to match docs",
+   "side": "figma",
+   "confidence": 1
+  },
+  "NavList": {
+   "fix": "Update Figma status from Beta to alpha for NavList",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "InlineMessage": {
+   "fix": "Add variant=unavailable to docs to match Figma and code",
+   "side": "docs",
+   "confidence": 0.9
+  },
+  "SegmentedControl": {
+   "fix": "Add the missing size=medium token to the code implementation to match docs and Figma",
    "side": "code",
    "confidence": 0.95
   },
-  "InlineMessage": {
-   "fix": "Remove variant 'unvailable' from docs and add variant 'unavailable' to docs; remove variant 'unavailable' from Figma.",
+  "ProgressBar": {
+   "fix": "Remove --progressBar-track-borderColor from docs if it is not defined in the component",
    "side": "docs",
-   "confidence": 0.95
+   "confidence": 0.7
+  },
+  "StateLabel": {
+   "fix": "Add variant=small, variant=normal, size=medium to Figma StateLabel component; remove variant=issue, variant=pull request, size=normal from Figma; create Figma variables for --bgColor-draft-emphasis and --borderColor-draft-emphasis tokens",
+   "side": "figma",
+   "confidence": 0.8
   }
  }
 }
