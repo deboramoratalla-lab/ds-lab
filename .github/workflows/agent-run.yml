@@ -20,6 +20,10 @@ jobs:
         with: { node-version: 22 }
       - run: npm ci || npm install
       - run: bash fixtures/get-primer.sh
+      - name: Check the Token Factory key (stop instead of publishing a degraded run)
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" https://api.tokenfactory.nebius.com/v1/models -H "Authorization: Bearer $NEBIUS_API_KEY")
+          [ "$code" = "200" ] || { echo "::error::Token Factory said $code. Check the NEBIUS_API_KEY secret (paste the key only, no quotes or spaces)."; exit 1; }
       - name: Agent run (Nemotron on Token Factory)
         run: npx tsx src/console/export.ts
       - name: Check every component
