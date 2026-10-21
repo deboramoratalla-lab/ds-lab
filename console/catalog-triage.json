@@ -1,63 +1,63 @@
 {
- "at": "2026-10-20T11:48:36.640Z",
- "ms": 1928,
+ "at": "2026-10-21T12:00:42.662Z",
+ "ms": 1341,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 374,
-   "ms": 17662
+   "completion": 381,
+   "ms": 12417
   }
  },
  "items": {
+  "ProgressBar": {
+   "fix": "Add --progressBar-track-borderColor variable to Figma Primer Web library",
+   "side": "figma",
+   "confidence": 0.85
+  },
+  "SegmentedControl": {
+   "fix": "Add size=medium token to Primer React component",
+   "side": "code",
+   "confidence": 0.9
+  },
   "DataTable": {
-   "fix": "Set DataTable status to alpha in Figma",
+   "fix": "Update Figma status from Draft to alpha to match docs",
    "side": "figma",
    "confidence": 1
   },
+  "Pagehead": {
+   "fix": "Update the Figma component status to deprecated to match the docs.",
+   "side": "figma",
+   "confidence": 0.95
+  },
   "NavList": {
-   "fix": "Set the component status to alpha in Figma to match the docs",
+   "fix": "Update Figma status to alpha to match docs",
+   "side": "figma",
+   "confidence": 0.95
+  },
+  "TabNav": {
+   "fix": "Set TabNav status to deprecated in Figma to match docs",
    "side": "figma",
    "confidence": 0.95
   },
   "SelectPanel": {
-   "fix": "Add anchored variant to Figma SelectPanel component",
+   "fix": "Add variant=anchored to Figma SelectPanel",
    "side": "figma",
    "confidence": 0.9
-  },
-  "TabNav": {
-   "fix": "Update Figma status to deprecated to match docs",
-   "side": "figma",
-   "confidence": 1
   },
   "InlineMessage": {
-   "fix": "add variant unavailable to Primer React and Primer Web Figma",
-   "side": "code",
-   "confidence": 0.7
-  },
-  "Pagehead": {
-   "fix": "Update Figma Pagehead component status from Alpha to deprecated",
+   "fix": "Remove variant unavailable from Figma",
    "side": "figma",
-   "confidence": 0.9
+   "confidence": 0.85
   },
   "ActionList": {
-   "fix": "Add the 'full' variant to the ActionList component in the @primer/react codebase to match the documented options.",
+   "fix": "Add the full variant implementation to the ActionList component in the React codebase",
    "side": "code",
    "confidence": 0.9
   },
   "StateLabel": {
-   "fix": "Add variant options small, normal, issue, pull request and size options medium, normal to Figma StateLabel component.",
+   "fix": "Add StateLabel variants small, normal, issue, pull request and size medium to Figma; remove size normal from Figma; add color tokens --bgColor-draft-emphasis and --borderColor-draft-emphasis to Figma",
    "side": "figma",
-   "confidence": 0.95
-  },
-  "ProgressBar": {
-   "fix": "Create a Figma variable for --progressBar-track-borderColor to match the token defined in Primer Web.",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "SegmentedControl": {
-   "fix": "Add medium size token to code to match docs specification",
-   "side": "code",
    "confidence": 0.85
   }
  }
