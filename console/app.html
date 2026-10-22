@@ -467,6 +467,9 @@ body::before, body::after { display: none !important; }
 .log .lt { font: 500 10.5px/1.8 var(--mono); color: var(--label-3); }
 .log li.ok .lt { color: var(--green); } .log li.bad .lt { color: var(--red); } .log li.warn .lt { color: var(--amber); } .log li.run .lt { color: var(--accent); }
 .log li.dim .lx { color: var(--label-2); }
+.prog { display:inline-flex; align-items:center; gap:8px; margin-left:14px; font-size:12px; color:var(--label-2); }
+.prog-bar { width:120px; height:6px; border-radius:3px; background:var(--color-bg-subtle); overflow:hidden; }
+.prog-bar i { display:block; height:100%; border-radius:3px; background:var(--accent); transition:width .4s ease; }
 .pipe { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--hair); }
 .pipe li { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "i n" ". m"; gap: 0 8px; padding: 10px 14px; font-size: 12.5px; background: none; border-radius: 0; }
 .pipe li + li { border-left: 1px solid var(--hair); }
@@ -997,7 +1000,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="kpis" id="who-status"></div>
         <section class="canvas" aria-label="Agent">
           <div class="cv-head">
-            <span class="live" id="live"><span class="ld"></span><span id="cv-state">Agent</span></span>
+            <span class="live" id="live"><span class="ld"></span><span id="cv-state">Agent</span></span><span class="prog" id="prog" role="progressbar" aria-label="Agent progress" aria-valuemin="0" aria-valuemax="6"><span class="prog-bar"><i id="prog-fill"></i></span><span class="prog-t" id="prog-t"></span></span>
             <span class="mono cv-run" id="run-id"></span>
             <span class="cv-right" id="cv-right"></span>
           </div>
@@ -1198,6 +1201,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       [role === "lead" ? "Your review" : "Laura's review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
       ["Certify", state === "decided" && !bad ? "ok" : state === "certified" ? "ok" : "idle", state === "decided" && !bad ? "100%" : state === "certified" ? "100%" : "—"],
     ];
+    { const n = P.filter((x) => x[1] === "ok").length, cur = P.find((x) => x[1] !== "ok"), pg = $("#prog");
+      if (pg) { pg.setAttribute("aria-valuenow", n); $("#prog-fill").style.width = (n / P.length * 100) + "%";
+        $("#prog-t").textContent = cur ? `Step ${n + 1} of ${P.length} · ${cur[1] === "warn" ? "waiting for you" : cur[1] === "run" ? cur[0].toLowerCase() + "…" : cur[0].toLowerCase()}` : "Done"; } }
     if ($("#pipe")) $("#pipe").innerHTML = P.map(([n, st, m]) => `<li class="${st}"><span class="pi"></span><span class="pn">${n}</span><span class="pm mono">${m}</span></li>`).join("");
     if (DEMO) {
       $("#cv-right").innerHTML = `<span class="demo-tag mono">demo</span>` + STATES.map((x, k) => `<button class="dbtn${x === state ? " on" : ""}" data-demo="${x}">${["Before", "Changes", "Agent", "You"][k]}</button>`).join("");
