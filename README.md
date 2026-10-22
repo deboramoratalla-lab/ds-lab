@@ -74,6 +74,16 @@ npm test
 - `apply-decisions.yml` applies the lead's answers to the open PR. The console's "Send answers" triggers it through the server.
 - `deploy-nebius.yml` builds the image (GHCR) and creates the Nebius Serverless endpoint. Add secrets `NEBIUS_SA_ID`, `NEBIUS_SA_PUBLIC_KEY_ID`, `NEBIUS_SA_PRIVATE_KEY`, `NEBIUS_PROJECT_ID`, optional `GH_DISPATCH_TOKEN` (fine-grained, Actions: write), and variables `NEBIUS_PLATFORM`, `NEBIUS_PRESET` (a CPU platform and preset from your project).
 
+## Limitations (honest list)
+
+- **Deepest checks are on Button.** It gets 1,488 checks (properties by value, Storybook stories, WCAG contrast). The other 73 components get lighter checks: options, tokens, colour tokens vs Figma, status. 14 of 74 aren't checked yet because they aren't in the Primer Web Figma file.
+- **Storybook is read for Button only.** For the rest the console shows "Not read".
+- **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
+- **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
+- **Nebius Serverless is ready, not live.** The workflow and image exist, but our credits cover Token Factory only, so the demo runs on Vercel with the same server.
+- **One design system.** Everything is tuned on Primer; another system needs its own source adapters.
+- **Accessibility:** the agent blocks any fix that breaks WCAG AA text contrast, and the console's own text tokens meet AA in light and dark. It hasn't had a full screen-reader audit.
+
 ## Built during the hackathon
 
 The project started on 6 October 2026, inside the submission period. Everything here was built for this hackathon: the drift engine, the agent and its guardrails, the Primer certification, the sandbox benchmark, the PR and CI flow, the console, the 74-component check and the Nebius deployment.

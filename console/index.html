@@ -337,6 +337,11 @@ a:hover { text-decoration: underline; }
 @media (max-width: 760px) { .crumbs { display: none; } .sync { display: none; } .who-status { margin-left: 0; width: 100%; } }
 .queue { display: flex; flex-direction: column; gap: 12px; }
 .q { padding: 0; }
+.intro { display:flex; gap:24px; align-items:center; justify-content:space-between; padding:18px 22px; border-radius:var(--card-radius); background:var(--accent-soft); color:var(--label); }
+.intro b { font-size:15px; }
+.intro ol { margin:8px 0 0; padding-left:18px; color:var(--label-2); font-size:13px; display:grid; gap:2px; }
+.intro-act { display:flex; gap:8px; flex-shrink:0; }
+@media (max-width:760px){ .intro{flex-direction:column;align-items:flex-start} }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
 .q-head .t { font-weight: 600; font-size: 14px; }
 .q-head .s { color: var(--label-2); font-size: 12.5px; margin-top: 3px; }
@@ -1122,6 +1127,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           <span id="greet" hidden></span>
           <div class="pg-filters" id="scope"></div>
         </header>
+        <section class="intro" id="intro" aria-label="What Seamline does">
+          <div class="intro-txt">
+            <b>Seamline keeps Figma, code, Storybook and docs in sync for Primer.</b>
+            <ol><li>It checks all 74 components across the four sources.</li><li>Nemotron fixes what it's sure of (≥ 85%) and journals it.</li><li>It leaves the rest to you, and the PR stays red until you decide.</li></ol>
+          </div>
+          <div class="intro-act"><button class="btn primary" type="button" id="intro-go">Start with the first decision</button><button class="btn ghost" type="button" id="intro-x" aria-label="Hide intro">Got it</button></div>
+        </section>
         <div class="headline" hidden>
           <h2 id="hero-title" class="hero-h" hidden>All sources in sync</h2>
           <p class="lede" id="hero-sub" hidden></p>
@@ -2017,6 +2029,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     render();
   }
   const pages = ["component", "overview", "activity", "decisions", "lab", "metrics", "sources"];
+  (() => { const el = $("#intro"); let seen = false; try { seen = localStorage.getItem("seamline-intro") === "1"; } catch {}
+    if (seen) el.hidden = true;
+    const hide = () => { el.hidden = true; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
+    $("#intro-x").onclick = hide; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
