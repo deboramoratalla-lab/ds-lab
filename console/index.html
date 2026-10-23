@@ -342,6 +342,14 @@ a:hover { text-decoration: underline; }
 .intro ol { margin:8px 0 0; padding-left:18px; color:var(--label-2); font-size:13px; display:grid; gap:2px; }
 .intro-act { display:flex; gap:8px; flex-shrink:0; }
 @media (max-width:760px){ .intro{flex-direction:column;align-items:flex-start} }
+.tour-spot { position:fixed; z-index:90; border-radius:22px; box-shadow:0 0 0 9999px rgba(17,16,28,.55); outline:2px solid var(--accent); outline-offset:4px; transition:all .3s ease; pointer-events:none; }
+.tour-pop { position:fixed; z-index:91; width:340px; padding:18px 20px; border-radius:18px; background:var(--group); color:var(--label); box-shadow:0 12px 40px rgba(0,0,0,.25); display:grid; gap:8px; }
+.tour-pop .tn { font-size:12px; color:var(--label-2); }
+.tour-pop h3 { margin:0; font-size:16px; }
+.tour-pop p { margin:0; font-size:13.5px; color:var(--label-2); line-height:1.45; }
+.tour-pop .ta { display:flex; justify-content:space-between; align-items:center; margin-top:6px; }
+.tour-pop .ta div { display:flex; gap:8px; }
+@media (prefers-reduced-motion: reduce){ .tour-spot{transition:none} }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
 .q-head .t { font-weight: 600; font-size: 14px; }
 .q-head .s { color: var(--label-2); font-size: 12.5px; margin-top: 3px; }
@@ -1128,14 +1136,14 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <header class="pg-head">
           <h1 class="pg-title">Overview</h1>
           <span id="greet" hidden></span>
-          <div class="pg-filters" id="scope"></div>
+          <button class="btn ghost" type="button" id="tour-again" hidden>Take the tour</button><div class="pg-filters" id="scope"></div>
         </header>
         <section class="intro" id="intro" aria-label="What Seamline does">
           <div class="intro-txt">
             <b>Seamline keeps Figma, code, Storybook and docs in sync for Primer.</b>
             <ol><li>It checks all 74 components across the four sources.</li><li>Nemotron fixes what it's sure of (≥ 85%) and journals it.</li><li>It leaves the rest to you, and the PR stays red until you decide.</li></ol>
           </div>
-          <div class="intro-act"><button class="btn primary" type="button" id="intro-go">Start with the first decision</button><button class="btn ghost" type="button" id="intro-x" aria-label="Hide intro">Got it</button></div>
+          <div class="intro-act"><button class="btn primary" type="button" id="intro-tour">Take the 1-minute tour</button><button class="btn" type="button" id="intro-go">Go to decisions</button><button class="btn ghost" type="button" id="intro-x" aria-label="Hide intro">Got it</button></div>
         </section>
         <div class="headline" hidden>
           <h2 id="hero-title" class="hero-h" hidden>All sources in sync</h2>
@@ -2036,9 +2044,44 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   }
   const pages = ["component", "overview", "activity", "decisions", "lab", "metrics", "sources"];
   (() => { const el = $("#intro"); let seen = false; try { seen = localStorage.getItem("seamline-intro") === "1"; } catch {}
-    if (seen) el.hidden = true;
-    const hide = () => { el.hidden = true; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
-    $("#intro-x").onclick = hide; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
+    if (seen) { el.hidden = true; $("#tour-again").hidden = false; }
+    $("#tour-again").onclick = () => tour(0);
+    const hide = () => { el.hidden = true; $("#tour-again").hidden = false; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
+    $("#intro-x").onclick = hide; $("#intro-tour").onclick = () => { hide(); tour(0); }; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
+  const TOUR = [
+    ["overview", "#who-status", "What happened this run", "Changes landed in Figma and code. Most checks are already back in sync, and the agent fixed what it was sure of."],
+    ["overview", ".canvas", "The agent at work", "Each step goes to the right Nemotron model on Token Factory: Nano pairs renames, Ultra judges which side is right, Super researches new options with Tavily. The log shows why."],
+    ["overview", "#queue-sec .sec-h", "What needs you", "Only what a person should decide: a real conflict, a check it wasn't sure about, and a new option. The PR stays red until you answer."],
+    ["decisions", "#queue-full > :first-child", "Decide here", "Each card shows both sides, why each one changed and the agent's summary. You pick: it never picks for you when both sides changed."],
+    ["decisions", "#q-unblock", "Send it to the PR", "Your answers go to the real GitHub pull request. ds-sync turns green and every change can be undone."],
+  ];
+  let tourEls = null;
+  function tour(i) {
+    endTour(false);
+    if (i >= TOUR.length) return;
+    const [pg, sel, h, t] = TOUR[i]; go(pg);
+    requestAnimationFrame(() => setTimeout(() => {
+      const el = document.querySelector(sel); if (!el) return tour(i + 1);
+      el.scrollIntoView({ block: el.offsetHeight > innerHeight - 200 ? "start" : "center" }); scrollBy(0, el.offsetHeight > innerHeight - 200 ? -90 : 0);
+      setTimeout(() => {
+        const r = el.getBoundingClientRect(), spot = document.createElement("div"), pop = document.createElement("div");
+        spot.className = "tour-spot"; Object.assign(spot.style, { left: r.left - 6 + "px", top: Math.max(4, r.top - 6) + "px", width: r.width + 12 + "px", height: Math.min(r.height, innerHeight - 24) + 12 + "px" });
+        pop.className = "tour-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", h); pop.tabIndex = -1;
+        pop.innerHTML = `<span class="tn">Step ${i + 1} of ${TOUR.length}</span><h3>${h}</h3><p>${t}</p><div class="ta"><button class="btn ghost" type="button" data-t="x">Skip tour</button><div>${i ? `<button class="btn" type="button" data-t="b">Back</button>` : ""}<button class="btn primary" type="button" data-t="n">${i === TOUR.length - 1 ? "Done" : "Next"}</button></div></div>`;
+        document.body.append(spot, pop);
+        const below = r.bottom + 16 + 200 < innerHeight, left = Math.min(Math.max(16, r.left), innerWidth - 356);
+        Object.assign(pop.style, { left: left + "px", top: (below ? Math.min(r.bottom + 16, innerHeight - 220) : Math.max(16, r.top - pop.offsetHeight - 16)) + "px" });
+        if (r.height > innerHeight * 0.5) { const side = r.right + 372 < innerWidth ? r.right + 16 : r.left - 372 > 0 ? r.left - 356 : innerWidth - 372; Object.assign(pop.style, { top: Math.max(16, r.top) + "px", left: side + "px" }); }
+        pop.querySelector('[data-t="n"]').onclick = () => (i === TOUR.length - 1 ? endTour(true) : tour(i + 1));
+        pop.querySelector('[data-t="b"]')?.addEventListener("click", () => tour(i - 1));
+        pop.querySelector('[data-t="x"]').onclick = () => endTour(true);
+        tourEls = [spot, pop]; pop.querySelector('[data-t="n"]').focus();
+      }, 80);
+    }, 50));
+  }
+  function endTour(home) { tourEls?.forEach((e) => e.remove()); tourEls = null; if (home === true) go("decisions"); }
+  addEventListener("keydown", (e) => { if (!tourEls) return; if (e.key === "Escape") endTour(false); });
+  addEventListener("resize", () => { if (tourEls) endTour(false); });
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
