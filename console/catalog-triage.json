@@ -1,64 +1,64 @@
 {
- "at": "2026-10-22T12:04:49.346Z",
- "ms": 1147,
+ "at": "2026-10-23T11:48:19.166Z",
+ "ms": 1188,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 349,
-   "ms": 9086
+   "completion": 359,
+   "ms": 11084
   }
  },
  "items": {
-  "NavList": {
-   "fix": "Change NavList status from Beta to alpha in Figma to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "DataTable": {
-   "fix": "Change the status in Figma from Draft to alpha to match the docs",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "SegmentedControl": {
-   "fix": "Add the missing size=medium option to the code implementation",
-   "side": "code",
-   "confidence": 0.9
-  },
   "TabNav": {
-   "fix": "Update Figma status from Alpha to deprecated to match docs",
+   "fix": "Update Figma status to deprecated to match docs",
    "side": "figma",
    "confidence": 0.95
-  },
-  "ProgressBar": {
-   "fix": "Add --progressBar-track-borderColor to Figma variables to match docs and code",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "InlineMessage": {
-   "fix": "Add the unavailable variant token to the docs components.json to match Figma's implementation",
-   "side": "docs",
-   "confidence": 0.75
-  },
-  "ActionList": {
-   "fix": "Add the full variant implementation to the ActionList component in the @primer/react codebase",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "Pagehead": {
-   "fix": "Update Figma status from Alpha to deprecated for Pagehead to match docs",
-   "side": "figma",
-   "confidence": 0.9
   },
   "SelectPanel": {
-   "fix": "Add variant=anchored to Figma and add variant=popover to docs",
-   "side": "figma",
-   "confidence": 0.8
-  },
-  "StateLabel": {
-   "fix": "add small normal issue pull request variants and medium size to Figma StateLabel",
+   "fix": "Add the anchored variant to the Figma SelectPanel component.",
    "side": "figma",
    "confidence": 0.9
+  },
+  "NavList": {
+   "fix": "Change Figma status from Beta to alpha",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "DataTable": {
+   "fix": "change Figma status from Draft to alpha to match docs",
+   "side": "figma",
+   "confidence": 0.95
+  },
+  "Pagehead": {
+   "fix": "Update the Figma status badge from Alpha to Deprecated",
+   "side": "figma",
+   "confidence": 0.95
+  },
+  "StateLabel": {
+   "fix": "Add variant=small, variant=normal, size=medium to Figma StateLabel; add variant=issue, variant=pull request, size=normal to docs and code",
+   "side": "figma",
+   "confidence": 0.7
+  },
+  "InlineMessage": {
+   "fix": "Add the unavailable variant token to code and Figma to match docs",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "ProgressBar": {
+   "fix": "Add --progressBar-track-borderColor variable to Figma to match docs and code",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "ActionList": {
+   "fix": "Add the missing variant=full prop to the ActionList component in the Primer React codebase",
+   "side": "code",
+   "confidence": 0.95
+  },
+  "SegmentedControl": {
+   "fix": "Add the missing medium size token to the code implementation",
+   "side": "code",
+   "confidence": 0.85
   }
  }
 }
