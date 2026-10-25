@@ -29,6 +29,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
 - **Agent** (`src/demo/repair.ts`): certify → repair → escalate, with an undo journal and a trust ledger.
 - **Certification** (`src/certify-primer.ts`): shared tokens, links kept since last certification, Button properties by value, options in docs/code/Figma/Storybook, docs in Figma, WCAG AA text contrast.
 - **All 74 components** (`src/certify-catalog.ts`, `src/triage-catalog.ts`): options, tokens and status checked across docs, code and the real Figma file; Nemotron Ultra suggests one fix per drifting component.
+- **Meaning review** (`src/review-screens.ts`): Nemotron Super reads each screen (labels, icons, variants, nearby text) three times and keeps the issues most reads agree on.
 - **Screens** (`src/certify-screens.ts`): five GitHub screens (pull requests, PR, merge box, settings, danger zone) built from Primer Web instances in the Figma file. Seamline counts where each component is used and finds what breaks there: detached instances, colours set by hand, options code doesn't ship, text below AA contrast, tokens code doesn't have, components resized by hand.
 - **Pull request + CI** (`ds-lab pr`, `.github/workflows/ds-sync.yml`): pushes the agent's workspace, opens the PR, and the check fails until the lead answers.
 - **Benchmark** (`lab/run_sandboxes.py`): the same five changes synced four ways, each strategy in its own Token Factory Sandbox forked from one checkpoint.
@@ -82,7 +83,7 @@ npm test
 - **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
 - **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
 - **Nebius Serverless is ready, not live.** The workflow and image exist, but our credits cover Token Factory only, so the demo runs on Vercel with the same server.
-- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Contrast is checked in light and dark only (not the high-contrast or colour-blind modes), and checks are rules, not a model, so a break with no rule (e.g. wrong copy, a swapped icon) still slips through. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
+- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Contrast is checked in all 9 Primer colour modes. Meaning (labels, icons, variants) is read by Nemotron Super with a 3-read majority vote, so it can still miss or invent things; it's 13 of 13 on our planted set, which is small. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
 - **One design system.** Everything is tuned on Primer; another system needs its own source adapters.
 - **Accessibility:** the agent blocks any fix that breaks WCAG AA text contrast, and the console's own text tokens meet AA in light and dark. It hasn't had a full screen-reader audit.
 
@@ -97,10 +98,15 @@ We planted breaks in the GitHub screens on purpose (`fixtures/primer-web-notes/s
 | 3 | same 7 | 7 of 7 | New rules: unbound text colour (and which token has that value), instance height vs its size option |
 | 4 | +4 harder ones: a comment box set to white by hand (fine in light, white on white in dark), 13px padding, an instance whose main component was deleted, a deprecated Pagehead | 7 of 11 | Light mode only, no spacing rule, no idea what "deprecated" or "deleted" looks like |
 | 5 | same 11 | 11 of 11 | Contrast in dark mode too (resolving Primer's mode variables), spacing vs Primer's scale, components missing from the library, deprecated status from the docs |
+| 6 | +2 that need meaning, not rules: the Delete button shows the "opens elsewhere" icon, and the Archive row's danger button says "Save changes" | 11 of 13 | No rule can know what a label or icon means |
+| 7 | same 13, Nemotron Super reading each screen (no thinking) | 12 of 13 | Caught the icon, missed the label |
+| 8 | same 13, Super with thinking on | 13 of 13, but 3 false alarms in one read, 1 miss in another | The model doesn't answer the same way twice |
+| 9 | same 13, Super with thinking, 3 reads per screen, keep what most reads agree on; contrast in all 9 Primer colour modes | 13 of 13, no false alarms | Majority vote; the dropped one-off flags are kept in `console/screens-review.json` |
 
 It also found problems we didn't plant:
 - From the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs; SegmentedControl's `size=medium` is missing in code.
 - In our own screens: we built the PR page with TabNav, which Primer's docs mark deprecated (use UnderlineNav).
+- In Primer itself, in the dark dimmed mode: `fgColor/accent` and `fgColor/link` on `bgColor/default` are 4.33:1 and `fgColor/danger` is 4.02:1, just under AA.
 - Knock-on effects in dark mode: the hand-set "Danger zone" heading (1.20:1) and the row filled with a token code lacks (1.15:1).
 
 ## Built during the hackathon

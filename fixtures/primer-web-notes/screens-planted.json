@@ -52,7 +52,7 @@
     },
     {
       "id": "B8",
-      "kind": "contrast-dark",
+      "kind": "contrast-modes",
       "screen": "2 \u00b7 Pull request",
       "node": "8908:672",
       "what": "Comment box background set to #ffffff by hand: fine in light, white text on white in dark mode"
@@ -77,6 +77,20 @@
       "screen": "2 \u00b7 Pull request",
       "node": "8911:540",
       "what": "Pagehead instance, deprecated in docs"
+    },
+    {
+      "id": "B12",
+      "kind": "meaning",
+      "screen": "5 \u00b7 Settings \u00b7 Danger zone",
+      "node": "8908:1460",
+      "what": "'Delete this repository' Button shows the link-external icon, which means 'opens elsewhere'"
+    },
+    {
+      "id": "B13",
+      "kind": "meaning",
+      "screen": "5 \u00b7 Settings \u00b7 Danger zone",
+      "node": "8908:1450",
+      "what": "Danger Button in the 'Archive this repository' row says 'Save changes'"
     }
   ]
 }

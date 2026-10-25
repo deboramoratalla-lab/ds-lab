@@ -8,7 +8,6 @@
 "id": "8908:340",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "primary",
@@ -18,13 +17,15 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "New pull request",
+"icons": [],
+"ctx": "Pull requests | 12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Open | Fix "
 },
 {
 "id": "8908:351",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -33,13 +34,17 @@
 },
 "h": 28,
 "mh": 28,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Open",
+"icons": [
+"git-pull-request"
+],
+"ctx": "12 Open | 48 Closed | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Open | Fix invisible button text c"
 },
 {
 "id": "8908:359",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -47,13 +52,15 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "enhancement",
+"icons": [],
+"ctx": "Add size xsmall to Button | #4821 opened 2 hours ago by dani-ortega"
 },
 {
 "id": "8908:363",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -62,13 +69,17 @@
 },
 "h": 28,
 "mh": 28,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Open",
+"icons": [
+"git-pull-request"
+],
+"ctx": "12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Fix invisible button text c"
 },
 {
 "id": "8908:370",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -76,13 +87,15 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "bug",
+"icons": [],
+"ctx": "Fix invisible button text color | #4819 opened yesterday by marta-ruiz"
 },
 {
 "id": "8908:374",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -91,13 +104,17 @@
 },
 "h": 28,
 "mh": 28,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Draft",
+"icons": [
+"git-pull-request-draft"
+],
+"ctx": "12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Open | Fix invisible button"
 },
 {
 "id": "8908:382",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -105,13 +122,15 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "tokens",
+"icons": [],
+"ctx": "Rename control-medium-gap token | #4815 opened 3 days ago by dani-ortega"
 },
 {
 "id": "8908:386",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -120,13 +139,17 @@
 },
 "h": 28,
 "mh": 28,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Merged",
+"icons": [
+"git-merge"
+],
+"ctx": "12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Open | Fix invisible button"
 },
 {
 "id": "8908:394",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -134,13 +157,15 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "accessibility",
+"icons": [],
+"ctx": "SelectPanel: bind color tokens | #4810 merged last week by laura-g"
 },
 {
 "id": "8908:398",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -149,13 +174,17 @@
 },
 "h": 28,
 "mh": 28,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Closed",
+"icons": [
+"git-pull-request-closed"
+],
+"ctx": "12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-ortega | Open | Fix invisible button"
 },
 {
 "id": "8908:406",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -163,20 +192,28 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "docs",
+"icons": [],
+"ctx": "Pagehead: deprecate in favor of PageHeader | #4802 closed last week by marta-ruiz"
 },
 {
 "id": "8908:410",
 "set": "Pagination",
 "setId": "34607:94621",
-"missing": false,
 "page": "Pagination",
 "props": {
 "showPages": "true"
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Previous 1 2 3 4 5 6 7 8 9 10 Next",
+"icons": [
+"chevron-left",
+"chevron-right"
+],
+"ctx": "Pull requests | New pull request | 12 Open | 48 Closed | Open | Add size xsmall to Button | enhancement | #4821 opened 2 hours ago by dani-o"
 }
 ],
 "frames": [
@@ -614,419 +651,503 @@
 "id": "8908:62828",
 "text": "GitHub",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
-"bgDark": "#3d444d",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8908:62827",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:336",
 "text": "primer / react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:335",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:339",
 "text": "Pull requests",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 24,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:340;30258:5712",
 "text": "New pull request",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/rest",
 "bg": "#1f883d",
-"bgDark": "#238636",
+"bgVar": "button/primary/bgColor/rest",
+"bgNode": "8908:340",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:348",
 "text": "12 Open",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:347",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:349",
 "text": "48 Closed",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:347",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:351;36351:387",
 "text": "Open",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
-"bgDark": "#238636",
+"bgVar": "bgColor/open-emphasis",
+"bgNode": "8908:351",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:358",
 "text": "Add size xsmall to Button",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:359;18959:64924",
 "text": "enhancement",
 "fg": "#0969da",
-"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark dimmed",
+4.33,
+"#478be6",
+"#212830"
+]
+]
 },
 {
 "id": "8908:361",
 "text": "#4821 opened 2 hours ago by dani-ortega",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:363;36351:387",
 "text": "Open",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
-"bgDark": "#238636",
+"bgVar": "bgColor/open-emphasis",
+"bgNode": "8908:363",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:369",
 "text": "Fix invisible button text color",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:370;18959:64924",
 "text": "bug",
 "fg": "#0969da",
-"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark dimmed",
+4.33,
+"#478be6",
+"#212830"
+]
+]
 },
 {
 "id": "8908:372",
 "text": "#4819 opened yesterday by marta-ruiz",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:374;36351:384",
 "text": "Draft",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#59636e",
-"bgDark": "#656c76",
+"bgVar": "bgColor/neutral-emphasis",
+"bgNode": "8908:374",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:381",
 "text": "Rename control-medium-gap token",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:382;18958:63090",
 "text": "tokens",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:384",
 "text": "#4815 opened 3 days ago by dani-ortega",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:386;36351:390",
 "text": "Merged",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#8a5cf5",
-"bgDark": "#8a5cf5",
+"bgVar": null,
+"bgNode": "8908:386",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:393",
 "text": "SelectPanel: bind color tokens",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:394;18958:63090",
 "text": "accessibility",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:396",
 "text": "#4810 merged last week by laura-g",
 "fg": "#b8bec6",
-"fgDark": "#b8bec6",
 "fgVar": null,
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": [
+[
+"light",
+1.87,
+"#b8bec6",
+"#ffffff"
+],
+[
+"light high contrast",
+1.87,
+"#b8bec6",
+"#ffffff"
+],
+[
+"light protanopia deuteranopia",
+1.87,
+"#b8bec6",
+"#ffffff"
+],
+[
+"light tritanopia",
+1.87,
+"#b8bec6",
+"#ffffff"
+]
+]
 },
 {
 "id": "I8908:398;36351:396",
 "text": "Closed",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#cf222e",
-"bgDark": "#da3633",
+"bgVar": "bgColor/closed-emphasis",
+"bgNode": "8908:398",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:405",
 "text": "Pagehead: deprecate in favor of PageHeader",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:406;18958:63090",
 "text": "docs",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:408",
 "text": "#4802 closed last week by marta-ruiz",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:346",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;1597:0;1:8023",
 "text": "Previous",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94883;1:8015",
 "text": "1",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94884;1:8015",
 "text": "2",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94885;1:8015",
 "text": "3",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94886;1:8015",
 "text": "4",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94887;1:8015",
 "text": "5",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94888;1:8015",
 "text": "6",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94889;1:8015",
 "text": "7",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94890;1:8015",
 "text": "8",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94891;1:8013",
 "text": "9",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#0969da",
-"bgDark": "#1f6feb",
+"bgVar": "bgColor/accent-emphasis",
+"bgNode": "I8908:410;34607:97178;34607:94891",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;34607:97178;34607:94892;1:8015",
 "text": "10",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:410;1597:12;1:8028",
 "text": "Next",
 "fg": "#0969da",
-"fgDark": "#4493f8",
 "fgVar": "fgColor/link",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:36",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": [
+[
+"dark dimmed",
+4.33,
+"#478be6",
+"#212830"
+]
+]
 }
 ],
 "overrides": [
@@ -1047,7 +1168,6 @@
 "id": "8911:540",
 "set": "\ud83d\uded1 Pagehead [DEPRECATED]",
 "setId": "4065:363",
-"missing": false,
 "page": "Pagehead",
 "props": {
 "hasAvatar?": "false",
@@ -1055,13 +1175,15 @@
 },
 "h": 104,
 "mh": 104,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "Title",
+"icons": [],
+"ctx": "GitHub | primer / react | Add size xsmall to Button #4821 | Open | dani-ortega wants to merge 3 commits into main from button-xsmall | Conve"
 },
 {
 "id": "8908:608",
 "set": "StateLabel",
 "setId": "18959:64962",
-"missing": false,
 "page": "StateLabel",
 "props": {
 "variant": "pull request",
@@ -1070,26 +1192,32 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Open",
+"icons": [
+"git-pull-request"
+],
+"ctx": "Title | Add size xsmall to Button #4821 | dani-ortega wants to merge 3 commits into main from button-xsmall | Conversation | Commits | Check"
 },
 {
 "id": "8908:614",
 "set": "TabNav",
 "setId": "24375:94677",
-"missing": false,
 "page": "TabNav",
 "props": {
 "# of tabs": "4"
 },
 "h": 40,
 "mh": 40,
-"hug": "FILL"
+"hug": "FILL",
+"label": "Conversation Commits Checks Files changed Button",
+"icons": [],
+"ctx": "GitHub | primer / react | Title | Add size xsmall to Button #4821 | Open | dani-ortega wants to merge 3 commits into main from button-xsmall"
 },
 {
 "id": "8909:160",
 "set": "Inline message",
 "setId": "32109:348",
-"missing": false,
 "page": "InlineMessage",
 "props": {
 "variant": "unavailable",
@@ -1097,13 +1225,17 @@
 },
 "h": 20,
 "mh": 20,
-"hug": "FILL"
+"hug": "FILL",
+"label": "Storybook preview is unavailable for this branch",
+"icons": [
+"alert"
+],
+"ctx": "GitHub | primer / react | Title | Add size xsmall to Button #4821 | Open | dani-ortega wants to merge 3 commits into main from button-xsmall"
 },
 {
 "id": "8908:661",
 "set": "Avatar",
 "setId": "3805:11",
-"missing": false,
 "page": "Avatars",
 "props": {
 "size": "40px",
@@ -1111,13 +1243,15 @@
 },
 "h": 40,
 "mh": 40,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "",
+"icons": [],
+"ctx": "dani-ortega | Adds an xsmall size (24px) to Button. Code and docs already ship it; Figma and Storybook still need it. | marta-ruiz | Looks g"
 },
 {
 "id": "8908:669",
 "set": "Avatar",
 "setId": "3805:11",
-"missing": false,
 "page": "Avatars",
 "props": {
 "size": "40px",
@@ -1125,13 +1259,15 @@
 },
 "h": 40,
 "mh": 40,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "",
+"icons": [],
+"ctx": "dani-ortega | Adds an xsmall size (24px) to Button. Code and docs already ship it; Figma and Storybook still need it. | marta-ruiz | Looks g"
 },
 {
 "id": "8908:679",
 "set": "Label",
 "setId": "18959:65008",
-"missing": false,
 "page": "Labels",
 "props": {
 "size": "small",
@@ -1139,7 +1275,10 @@
 },
 "h": 22,
 "mh": 22,
-"hug": "HUG"
+"hug": "HUG",
+"label": "enhancement",
+"icons": [],
+"ctx": "dani-ortega | Adds an xsmall size (24px) to Button. Code and docs already ship it; Figma and Storybook still need it. | marta-ruiz | Looks g"
 }
 ],
 "frames": [
@@ -1378,221 +1517,310 @@
 "id": "8908:62830",
 "text": "GitHub",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
-"bgDark": "#3d444d",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8908:62829",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:604",
 "text": "primer / react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:603",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8911:540;1378:0",
 "text": "Title",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:606",
 "text": "Add size xsmall to Button #4821",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 28,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:608;18959:64860",
 "text": "Open",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
-"bgDark": "#238636",
+"bgVar": "bgColor/open-emphasis",
+"bgNode": "8908:608",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:613",
 "text": "dani-ortega wants to merge 3 commits into main f",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:614;24375:94873;18247:69218",
 "text": "Conversation",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "I8908:614;24375:94873",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:614;24375:94874;18247:69220",
 "text": "Commits",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:614;24375:94875;18247:69220",
 "text": "Checks",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:614;24375:94876;18247:69220",
 "text": "Files changed",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:614;24375:94879;30258:5593",
 "text": "Button",
 "fg": "#25292e",
-"fgDark": "#f0f6fc",
 "fgVar": "button/default/fgColor/rest",
 "bg": "#f6f8fa",
-"bgDark": "#212830",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "I8908:614;24375:94879",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8909:160;32109:363",
 "text": "Storybook preview is unavailable for this branch",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/neutral",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:666",
 "text": "dani-ortega",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:665",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:667",
 "text": "Adds an xsmall size (24px) to Button. Code and d",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:665",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:673",
 "text": "marta-ruiz",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#ffffff",
+"bgVar": null,
+"bgNode": "8908:672",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark",
+1.09,
+"#f0f6fc",
+"#ffffff"
+],
+[
+"dark dimmed",
+1.45,
+"#d1d7e0",
+"#ffffff"
+],
+[
+"dark high contrast",
+1,
+"#ffffff",
+"#ffffff"
+],
+[
+"dark protanopia deuteranopia",
+1.09,
+"#f0f6fc",
+"#ffffff"
+],
+[
+"dark tritanopia",
+1.09,
+"#f0f6fc",
+"#ffffff"
+]
+]
 },
 {
 "id": "8908:674",
 "text": "Looks good. Can we check the 24px target size ag",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#ffffff",
+"bgVar": null,
+"bgNode": "8908:672",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": [
+[
+"dark",
+1.09,
+"#f0f6fc",
+"#ffffff"
+],
+[
+"dark dimmed",
+1.45,
+"#d1d7e0",
+"#ffffff"
+],
+[
+"dark high contrast",
+1,
+"#ffffff",
+"#ffffff"
+],
+[
+"dark protanopia deuteranopia",
+1.09,
+"#f0f6fc",
+"#ffffff"
+],
+[
+"dark tritanopia",
+1.09,
+"#f0f6fc",
+"#ffffff"
+]
+]
 },
 {
 "id": "8908:676",
 "text": "Reviewers",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:677",
 "text": "marta-ruiz",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:678",
 "text": "Labels",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:679;18959:64924",
 "text": "enhancement",
 "fg": "#0969da",
-"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:478",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark dimmed",
+4.33,
+"#478be6",
+"#212830"
+]
+]
 }
 ],
 "overrides": []
@@ -1605,18 +1833,19 @@
 "id": "8911:538",
 "set": "MergeBanner (old)",
 "setId": "8911:536",
-"missing": false,
 "page": null,
 "props": {},
 "h": 36,
 "mh": 36,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "This branch is out of date with the base branch",
+"icons": [],
+"ctx": "Add size xsmall to Button #4821 | Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing | This branch has conflicts that "
 },
 {
 "id": "8908:813",
 "set": "ProgressBar",
 "setId": "34727:143491",
-"missing": false,
 "page": "ProgressBar",
 "props": {
 "size": "default",
@@ -1624,13 +1853,15 @@
 },
 "h": 8,
 "mh": 8,
-"hug": "FILL"
+"hug": "FILL",
+"label": "",
+"icons": [],
+"ctx": "Add size xsmall to Button #4821 | Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing | This branch is out of date with"
 },
 {
 "id": "8908:823",
 "set": "Inline message",
 "setId": "32109:348",
-"missing": false,
 "page": "InlineMessage",
 "props": {
 "variant": "critical",
@@ -1638,13 +1869,17 @@
 },
 "h": 20,
 "mh": 20,
-"hug": "FILL"
+"hug": "FILL",
+"label": "This branch has conflicts that must be resolved",
+"icons": [
+"alert"
+],
+"ctx": "Add size xsmall to Button #4821 | Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing | This branch is out of date with"
 },
 {
 "id": "8908:829",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "primary",
@@ -1654,55 +1889,66 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Merge pull request",
+"icons": [],
+"ctx": "Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing | This branch is out of date with the base branch | This branch has"
 },
 {
 "id": "8909:59",
 "set": "search",
 "setId": "31742:155958",
-"missing": false,
 "page": null,
 "props": {},
 "h": 16,
 "mh": 16,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "",
+"icons": [],
+"ctx": "Merge pull request | Resolve conflicts"
 },
 {
 "id": "8909:61",
 "set": "CounterLabel",
 "setId": "18959:64970",
-"missing": false,
 "page": "CounterLabel",
 "props": {
 "variant": "secondary"
 },
 "h": 18,
 "mh": 18,
-"hug": "HUG"
+"hug": "HUG",
+"label": "",
+"icons": [],
+"ctx": "Merge pull request | Resolve conflicts"
 },
 {
 "id": "8909:62",
 "set": "link-external",
 "setId": "31742:155954",
-"missing": false,
 "page": null,
 "props": {},
 "h": 16,
 "mh": 16,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "",
+"icons": [],
+"ctx": "Merge pull request | Resolve conflicts"
 },
 {
 "id": "8909:63",
 "set": "_text/caret",
 "setId": "4326:6977",
-"missing": false,
 "page": "\ud83e\uddf0 Maintainers only (base components)",
 "props": {
 "type": "default"
 },
 "h": 16,
 "mh": 16,
-"hug": "FIXED"
+"hug": "FIXED",
+"label": "",
+"icons": [],
+"ctx": "Merge pull request | Resolve conflicts"
 }
 ],
 "frames": [
@@ -1860,100 +2106,153 @@
 "id": "8908:62832",
 "text": "GitHub",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
-"bgDark": "#3d444d",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8908:62831",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:807",
 "text": "primer / react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:806",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:809",
 "text": "Add size xsmall to Button #4821",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:681",
 "size": 28,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:811",
 "text": "Some checks were not successful",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:810",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:812",
 "text": "2 of 3 checks passed \u00b7 ds-sync failing",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:810",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8911:538;8911:537",
 "text": "This branch is out of date with the base branch",
 "fg": "#000000",
-"fgDark": "#000000",
 "fgVar": null,
 "bg": "#fff7d9",
-"bgDark": "#fff7d9",
+"bgVar": null,
+"bgNode": "8911:538",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:823;32109:357",
 "text": "This branch has conflicts that must be resolved",
 "fg": "#d1242f",
-"fgDark": "#f85149",
 "fgVar": "fgColor/danger",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:810",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": [
+[
+"dark dimmed",
+4.02,
+"#e5534b",
+"#212830"
+]
+]
 },
 {
 "id": "I8908:829;30258:5733",
 "text": "Merge pull request",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/disabled",
 "bg": "#95d8a6",
-"bgDark": "#105823",
+"bgVar": "button/primary/bgColor/disabled",
+"bgNode": "8908:829",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": [
+[
+"light",
+1.66,
+"#ffffff",
+"#95d8a6"
+],
+[
+"dark dimmed",
+2.21,
+"#cdd9e5",
+"#50a254"
+],
+[
+"light high contrast",
+1.91,
+"#ffffff",
+"#85cb97"
+],
+[
+"light protanopia deuteranopia",
+1.73,
+"#ffffff",
+"#92caff"
+],
+[
+"light tritanopia",
+1.73,
+"#ffffff",
+"#92caff"
+],
+[
+"dark tritanopia",
+2.4,
+"#ffffff",
+"#5fabfe"
+]
+]
 },
 {
 "id": "8909:60",
 "text": "Resolve conflicts",
 "fg": "#25292e",
-"fgDark": "#f0f6fc",
 "fgVar": "button/default/fgColor/rest",
 "bg": "#f6f8fa",
-"bgDark": "#212830",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "8909:58",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 }
 ],
 "overrides": []
@@ -1966,18 +2265,21 @@
 "id": "8908:969",
 "set": "NavList",
 "setId": "16716:62541",
-"missing": false,
 "page": "NavList",
 "props": {},
 "h": 404,
 "mh": 404,
-"hug": "HUG"
+"hug": "HUG",
+"label": "General Access Collaborators Moderation Branches Tags Rules ",
+"icons": [
+"chevron-up"
+],
+"ctx": "GitHub | primer / react | General | Repository name | react | Default merge method | Merge commit | Squash | Rebase | Allow auto-merge | On "
 },
 {
 "id": "8908:1236",
 "set": "SegmentedControl",
 "setId": "16122:79604",
-"missing": false,
 "page": "SegmentedControl",
 "props": {
 "# of items": "3",
@@ -1986,13 +2288,19 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Merge commit Squash Rebase",
+"icons": [
+"file-code",
+"file-diff",
+"file-binary"
+],
+"ctx": "General | Access | Collaborators | Moderation | Branches | Tags | Rules | Actions | Webhooks | Environments | Pages | Danger zone | General "
 },
 {
 "id": "8908:1281",
 "set": "ToggleSwitch",
 "setId": "13518:50189",
-"missing": false,
 "page": "ToggleSwitch",
 "props": {
 "size": "medium",
@@ -2002,13 +2310,15 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "On",
+"icons": [],
+"ctx": "General | Repository name | react | Default merge method | Merge commit | Squash | Rebase | Allow auto-merge | Automatically delete head bra"
 },
 {
 "id": "8908:1293",
 "set": "ToggleSwitch",
 "setId": "13518:50189",
-"missing": false,
 "page": "ToggleSwitch",
 "props": {
 "size": "medium",
@@ -2018,13 +2328,15 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "On",
+"icons": [],
+"ctx": "General | Repository name | react | Default merge method | Merge commit | Squash | Rebase | Allow auto-merge | On | Automatically delete hea"
 },
 {
 "id": "8908:1300",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "primary",
@@ -2034,7 +2346,10 @@
 },
 "h": 24,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Save changes",
+"icons": [],
+"ctx": "General | Access | Collaborators | Moderation | Branches | Tags | Rules | Actions | Webhooks | Environments | Pages | Danger zone | General "
 }
 ],
 "frames": [
@@ -2205,287 +2520,313 @@
 "id": "8908:62834",
 "text": "GitHub",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
-"bgDark": "#3d444d",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8908:62833",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:967",
 "text": "primer / react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:966",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62499;40065:84233;6:38842",
 "text": "General",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:969;40009:6323;16716:62548;15096:51951;15039:46266",
 "text": "Access",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62564;16716:62548;15096:51951;15039:46266",
 "text": "Collaborators",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62526;16713:63005;16716:62548;15096:51951;15039:46266",
 "text": "Moderation",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62526;16713:63026;15175:71564",
 "text": "Branches",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62526;16716:62627;15175:71564",
 "text": "Tags",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62526;16716:62653;15175:71564",
 "text": "Rules",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;16716:62526;40065:82298;15175:71578",
 "text": "Actions",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:969;40065:84008;40065:84233;6:38842",
 "text": "Webhooks",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 12,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:969;40065:82926;16716:62548;15096:51951;15039:46266",
 "text": "Environments",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;40065:83077;16716:62548;15096:51951;15039:46266",
 "text": "Pages",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:969;40065:83150;16716:62548;15096:51951;15039:46266",
 "text": "Danger zone",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:969",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:1220",
 "text": "General",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 24,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1221",
 "text": "Repository name",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:62838",
 "text": "react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:62837",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:1235",
 "text": "Default merge method",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:1236;16122:79645;16121:61277",
 "text": "Merge commit",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#010409",
+"bgVar": "controlKnob/bgColor/rest",
+"bgNode": "I8908:1236;16122:79645",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:1236;16122:79659;16121:61227",
 "text": "Squash",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#e6eaef",
-"bgDark": "#262c36",
+"bgVar": "controlTrack/bgColor/rest",
+"bgNode": "8908:1236",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1236;16122:79646;16121:61227",
 "text": "Rebase",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#e6eaef",
-"bgDark": "#262c36",
+"bgVar": "controlTrack/bgColor/rest",
+"bgNode": "8908:1236",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:1280",
 "text": "Allow auto-merge",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1281;13518:50198",
 "text": "On",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "8908:1292",
 "text": "Automatically delete head branches",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1293;13518:50198",
 "text": "On",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:841",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1300;30258:5712",
 "text": "Save changes",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/rest",
 "bg": "#1f883d",
-"bgDark": "#238636",
+"bgVar": "button/primary/bgColor/rest",
+"bgNode": "8908:1300",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 }
 ],
 "overrides": []
@@ -2498,7 +2839,6 @@
 "id": "8908:1440",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "danger",
@@ -2508,13 +2848,15 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Change visibility",
+"icons": [],
+"ctx": "Change visibility | This repository is currently public. | Archive this repository | Mark this repository archived and read-only. | Save cha"
 },
 {
 "id": "8908:1450",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "danger",
@@ -2524,13 +2866,15 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Save changes",
+"icons": [],
+"ctx": "Change visibility | This repository is currently public. | Change visibility | Archive this repository | Mark this repository archived and r"
 },
 {
 "id": "8908:1460",
 "set": "Button",
 "setId": "30258:5582",
-"missing": false,
 "page": "Button",
 "props": {
 "variant": "danger",
@@ -2540,13 +2884,17 @@
 },
 "h": 32,
 "mh": 32,
-"hug": "HUG"
+"hug": "HUG",
+"label": "Delete this repository",
+"icons": [
+"link-external"
+],
+"ctx": "Change visibility | This repository is currently public. | Change visibility | Archive this repository | Mark this repository archived and r"
 },
 {
 "id": "8908:1466",
 "set": "Inline message",
 "setId": "32109:348",
-"missing": false,
 "page": "InlineMessage",
 "props": {
 "variant": "warning",
@@ -2554,7 +2902,12 @@
 },
 "h": 20,
 "mh": 20,
-"hug": "FILL"
+"hug": "FILL",
+"label": "Deleting primer/react removes 4,821 pull requests and all th",
+"icons": [
+"alert"
+],
+"ctx": "GitHub | primer / react | Danger zone | Change visibility | This repository is currently public. | Change visibility | Archive this reposito"
 }
 ],
 "frames": [
@@ -2784,144 +3137,232 @@
 "id": "8908:62836",
 "text": "GitHub",
 "fg": "#ffffff",
-"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
-"bgDark": "#3d444d",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8908:62835",
 "size": 16,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1432",
 "text": "primer / react",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
-"bgDark": "#151b23",
+"bgVar": "bgColor/muted",
+"bgNode": "8908:1431",
 "size": 20,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1434",
 "text": "Danger zone",
 "fg": "#1f2328",
-"fgDark": "#1f2328",
 "fgVar": null,
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1306",
 "size": 24,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark",
+1.2,
+"#1f2328",
+"#0d1117"
+],
+[
+"dark dimmed",
+1.06,
+"#1f2328",
+"#212830"
+],
+[
+"dark high contrast",
+1.3,
+"#1f2328",
+"#010409"
+],
+[
+"dark protanopia deuteranopia",
+1.2,
+"#1f2328",
+"#0d1117"
+],
+[
+"dark tritanopia",
+1.2,
+"#1f2328",
+"#0d1117"
+]
+]
 },
 {
 "id": "8908:1438",
 "text": "Change visibility",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1435",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1439",
 "text": "This repository is currently public.",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1435",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1440;30258:5838",
 "text": "Change visibility",
 "fg": "#d1242f",
-"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
-"bgDark": "#212830",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "8908:1440",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1448",
 "text": "Archive this repository",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1435",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1449",
 "text": "Mark this repository archived and read-only.",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1435",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 },
 {
 "id": "I8908:1450;30258:5838",
-"text": "Archive this repository",
+"text": "Save changes",
 "fg": "#d1242f",
-"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
-"bgDark": "#212830",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "8908:1450",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "8908:1458",
 "text": "Delete this repository",
 "fg": "#1f2328",
-"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffebe9",
-"bgDark": "#f85149",
+"bgVar": "diffBlob/deletion/bgColor/line",
+"bgNode": "8908:1456",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": [
+[
+"dark dimmed",
+2.56,
+"#d1d7e0",
+"#e5534b"
+],
+[
+"dark high contrast",
+2.43,
+"#ffffff",
+"#ff8080"
+]
+]
 },
 {
 "id": "8908:1459",
 "text": "Once you delete a repository, there is no going ",
 "fg": "#59636e",
-"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffebe9",
-"bgDark": "#f85149",
+"bgVar": "diffBlob/deletion/bgColor/line",
+"bgNode": "8908:1456",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": [
+[
+"dark",
+1.15,
+"#9198a1",
+"#f85149"
+],
+[
+"dark dimmed",
+1.27,
+"#9198a1",
+"#e5534b"
+],
+[
+"dark high contrast",
+1.29,
+"#b7bdc8",
+"#ff8080"
+],
+[
+"dark protanopia deuteranopia",
+1.16,
+"#9198a1",
+"#db6d28"
+],
+[
+"dark tritanopia",
+1.15,
+"#9198a1",
+"#f85149"
+]
+]
 },
 {
 "id": "I8908:1460;30258:5838",
 "text": "Delete this repository",
 "fg": "#d1242f",
-"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
-"bgDark": "#212830",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "8908:1460",
 "size": 14,
-"bold": true
+"bold": true,
+"fails": []
 },
 {
 "id": "I8908:1466;32109:354",
 "text": "Deleting primer/react removes 4,821 pull request",
 "fg": "#9a6700",
-"fgDark": "#d29922",
 "fgVar": "fgColor/attention",
 "bg": "#ffffff",
-"bgDark": "#0d1117",
+"bgVar": "bgColor/default",
+"bgNode": "8908:1306",
 "size": 14,
-"bold": false
+"bold": false,
+"fails": []
 }
 ],
 "overrides": []
@@ -2930,5 +3371,16 @@
 "source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
 "page": "Seamline \u00b7 Test flows",
 "pageId": "8908:35",
-"readAt": "2026-10-25"
+"readAt": "2026-10-25",
+"modes": [
+"light",
+"dark",
+"dark dimmed",
+"light high contrast",
+"dark high contrast",
+"light protanopia deuteranopia",
+"dark protanopia deuteranopia",
+"light tritanopia",
+"dark tritanopia"
+]
 }

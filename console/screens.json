@@ -137,11 +137,36 @@
    "fix": "Reset the override so it uses bgColor/done-emphasis again"
   },
   {
+   "kind": "contrast-modes",
+   "inherited": true,
+   "count": 3,
+   "screens": [
+    "1 · Pull requests",
+    "2 · Pull request"
+   ],
+   "screen": "1 · Pull requests",
+   "node": "I8908:359;18959:64924",
+   "msg": "fgColor/accent on bgColor/default is 4.33:1 in dark dimmed",
+   "fix": "A Primer token pair, not a screen mistake: raise fgColor/accent in dark dimmed"
+  },
+  {
    "kind": "contrast",
    "screen": "1 · Pull requests",
    "node": "8908:396",
    "msg": "“#4810 merged last week by laura-g” is 1.87:1 on #ffffff, needs 4.5:1",
    "fix": "Use fgColor/muted (or darker) instead of #b8bec6"
+  },
+  {
+   "kind": "contrast-modes",
+   "inherited": true,
+   "count": 1,
+   "screens": [
+    "1 · Pull requests"
+   ],
+   "screen": "1 · Pull requests",
+   "node": "I8908:410;1597:12;1:8028",
+   "msg": "fgColor/link on bgColor/default is 4.33:1 in dark dimmed",
+   "fix": "A Primer token pair, not a screen mistake: raise fgColor/link in dark dimmed"
   },
   {
    "kind": "variant",
@@ -170,24 +195,24 @@
    "inherited": true
   },
   {
-   "kind": "contrast-dark",
+   "kind": "contrast-modes",
    "screen": "2 · Pull request",
    "node": "8908:673",
-   "msg": "“marta-ruiz” is fine in light but 1.09:1 in dark mode (#f0f6fc on #ffffff)",
-   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
    "parents": [
     "8908:672"
-   ]
+   ],
+   "msg": "“marta-ruiz” passes in light but fails in 5 of 8 other modes (worst: 1:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
   },
   {
-   "kind": "contrast-dark",
+   "kind": "contrast-modes",
    "screen": "2 · Pull request",
    "node": "8908:674",
-   "msg": "“Looks good. Can we check the 24px target size ag” is fine in light but 1.09:1 in dark mode (#f0f6fc on #ffffff)",
-   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
    "parents": [
     "8908:672"
-   ]
+   ],
+   "msg": "“Looks good. Can we check the 24px target size ag” passes in light but fails in 5 of 8 other modes (worst: 1:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
   },
   {
    "kind": "hardcoded",
@@ -221,6 +246,18 @@
    "fix": "Swap it back to a Button instance so library updates reach it"
   },
   {
+   "kind": "contrast-modes",
+   "inherited": true,
+   "count": 1,
+   "screens": [
+    "3 · Merge box"
+   ],
+   "screen": "3 · Merge box",
+   "node": "I8908:823;32109:357",
+   "msg": "fgColor/danger on bgColor/default is 4.02:1 in dark dimmed",
+   "fix": "A Primer token pair, not a screen mistake: raise fgColor/danger in dark dimmed"
+  },
+  {
    "kind": "missing",
    "screen": "3 · Merge box",
    "node": "8911:538",
@@ -250,20 +287,36 @@
    "fix": "Use a size option (e.g. size=small) instead of resizing it"
   },
   {
-   "kind": "contrast-dark",
+   "kind": "contrast-modes",
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1434",
-   "msg": "“Danger zone” is fine in light but 1.20:1 in dark mode (#1f2328 on #0d1117)",
-   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
-   "parents": []
+   "parents": [],
+   "msg": "“Danger zone” passes in light but fails in 5 of 8 other modes (worst: 1.06:1 in dark dimmed)",
+   "fix": "The text is set by hand and doesn't switch with the theme; bind it to a token"
   },
   {
-   "kind": "contrast-dark",
+   "kind": "contrast-modes",
+   "inherited": true,
+   "count": 1,
+   "screens": [
+    "5 · Settings · Danger zone"
+   ],
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1458",
+   "msg": "fgColor/default on diffBlob/deletion/bgColor/line is 2.43:1 in dark high contrast (+1 modes)",
+   "fix": "A Primer token pair, not a screen mistake: raise fgColor/default in dark dimmed, dark high contrast"
+  },
+  {
+   "kind": "contrast-modes",
+   "inherited": true,
+   "count": 1,
+   "screens": [
+    "5 · Settings · Danger zone"
+   ],
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1459",
-   "msg": "“Once you delete a repository, there is no going ” is fine in light but 1.15:1 in dark mode (#9198a1 on #f85149)",
-   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
-   "parents": []
+   "msg": "fgColor/muted on diffBlob/deletion/bgColor/line is 1.15:1 in dark (+4 modes)",
+   "fix": "A Primer token pair, not a screen mistake: raise fgColor/muted in dark, dark dimmed, dark high contrast, dark protanopia deuteranopia, dark tritanopia"
   },
   {
    "kind": "hardcoded",
@@ -285,6 +338,24 @@
    "node": "8908:1456",
    "msg": "diffBlob/deletion/bgColor/line isn't in @primer/primitives",
    "fix": "Use a token code ships, or add diffBlob/deletion/bgColor/line to primitives"
+  },
+  {
+   "kind": "meaning",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1450",
+   "component": "Button",
+   "msg": "Danger variant used for a non‑destructive \"Save changes\" action.",
+   "fix": "Use a neutral variant (e.g., default or primary) for the save button.",
+   "by": "Nemotron Super"
+  },
+  {
+   "kind": "meaning",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1460",
+   "component": "Button",
+   "msg": "Link‑external icon contradicts the delete action; delete should use the trash icon.",
+   "fix": "Replace link‑external icon with trash icon (Octicon trash).",
+   "by": "Nemotron Super"
   }
  ],
  "source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
@@ -349,7 +420,7 @@
    },
    {
     "id": "B8",
-    "kind": "contrast-dark",
+    "kind": "contrast-modes",
     "screen": "2 · Pull request",
     "node": "8908:672",
     "what": "Comment box background set to #ffffff by hand: fine in light, white text on white in dark mode",
@@ -378,6 +449,22 @@
     "node": "8911:540",
     "what": "Pagehead instance, deprecated in docs",
     "found": true
+   },
+   {
+    "id": "B12",
+    "kind": "meaning",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1460",
+    "what": "'Delete this repository' Button shows the link-external icon, which means 'opens elsewhere'",
+    "found": true
+   },
+   {
+    "id": "B13",
+    "kind": "meaning",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1450",
+    "what": "Danger Button in the 'Archive this repository' row says 'Save changes'",
+    "found": true
    }
   ],
   "extra": [
@@ -394,6 +481,31 @@
     "msg": "StateLabel uses variant=pull request, in Figma, not in docs",
     "fix": "Use a variant that ships in code, or add pull request to code and docs first",
     "inherited": true
+   },
+   {
+    "kind": "contrast-modes",
+    "inherited": true,
+    "count": 3,
+    "screens": [
+     "1 · Pull requests",
+     "2 · Pull request"
+    ],
+    "screen": "1 · Pull requests",
+    "node": "I8908:359;18959:64924",
+    "msg": "fgColor/accent on bgColor/default is 4.33:1 in dark dimmed",
+    "fix": "A Primer token pair, not a screen mistake: raise fgColor/accent in dark dimmed"
+   },
+   {
+    "kind": "contrast-modes",
+    "inherited": true,
+    "count": 1,
+    "screens": [
+     "1 · Pull requests"
+    ],
+    "screen": "1 · Pull requests",
+    "node": "I8908:410;1597:12;1:8028",
+    "msg": "fgColor/link on bgColor/default is 4.33:1 in dark dimmed",
+    "fix": "A Primer token pair, not a screen mistake: raise fgColor/link in dark dimmed"
    },
    {
     "kind": "variant",
@@ -424,6 +536,18 @@
     "fix": "Use UnderlineNav"
    },
    {
+    "kind": "contrast-modes",
+    "inherited": true,
+    "count": 1,
+    "screens": [
+     "3 · Merge box"
+    ],
+    "screen": "3 · Merge box",
+    "node": "I8908:823;32109:357",
+    "msg": "fgColor/danger on bgColor/default is 4.02:1 in dark dimmed",
+    "fix": "A Primer token pair, not a screen mistake: raise fgColor/danger in dark dimmed"
+   },
+   {
     "kind": "variant",
     "screen": "4 · Settings · General",
     "screens": [
@@ -437,20 +561,36 @@
     "inherited": true
    },
    {
-    "kind": "contrast-dark",
+    "kind": "contrast-modes",
     "screen": "5 · Settings · Danger zone",
     "node": "8908:1434",
-    "msg": "“Danger zone” is fine in light but 1.20:1 in dark mode (#1f2328 on #0d1117)",
-    "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
-    "parents": []
+    "parents": [],
+    "msg": "“Danger zone” passes in light but fails in 5 of 8 other modes (worst: 1.06:1 in dark dimmed)",
+    "fix": "The text is set by hand and doesn't switch with the theme; bind it to a token"
    },
    {
-    "kind": "contrast-dark",
+    "kind": "contrast-modes",
+    "inherited": true,
+    "count": 1,
+    "screens": [
+     "5 · Settings · Danger zone"
+    ],
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1458",
+    "msg": "fgColor/default on diffBlob/deletion/bgColor/line is 2.43:1 in dark high contrast (+1 modes)",
+    "fix": "A Primer token pair, not a screen mistake: raise fgColor/default in dark dimmed, dark high contrast"
+   },
+   {
+    "kind": "contrast-modes",
+    "inherited": true,
+    "count": 1,
+    "screens": [
+     "5 · Settings · Danger zone"
+    ],
     "screen": "5 · Settings · Danger zone",
     "node": "8908:1459",
-    "msg": "“Once you delete a repository, there is no going ” is fine in light but 1.15:1 in dark mode (#9198a1 on #f85149)",
-    "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
-    "parents": []
+    "msg": "fgColor/muted on diffBlob/deletion/bgColor/line is 1.15:1 in dark (+4 modes)",
+    "fix": "A Primer token pair, not a screen mistake: raise fgColor/muted in dark, dark dimmed, dark high contrast, dark protanopia deuteranopia, dark tritanopia"
    }
   ]
  }

@@ -1,0 +1,65 @@
+{
+ "at": "2026-10-25T19:52:36.567Z",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "ms": 61076,
+ "calls": 15,
+ "runs": 3,
+ "issues": [
+  {
+   "id": "8908:1450",
+   "component": "Button",
+   "problem": "Danger variant used for a non‑destructive \"Save changes\" action.",
+   "fix": "Use a neutral variant (e.g., default or primary) for the save button.",
+   "confidence": 0.7,
+   "screen": "5 · Settings · Danger zone",
+   "votes": 3
+  },
+  {
+   "id": "8908:1460",
+   "component": "Button",
+   "problem": "Link‑external icon contradicts the delete action; delete should use the trash icon.",
+   "fix": "Replace link‑external icon with trash icon (Octicon trash).",
+   "confidence": 0.9,
+   "screen": "5 · Settings · Danger zone",
+   "votes": 3
+  }
+ ],
+ "dropped": [
+  {
+   "id": "8908:614",
+   "component": "TabNav",
+   "problem": "Label includes 'Button' which is not a tab name, contradicting the expected tab set.",
+   "fix": "Remove 'Button' from the label or correct the tab list to exclude the button.",
+   "confidence": 0.9,
+   "screen": "2 · Pull request",
+   "votes": 1
+  },
+  {
+   "id": "8908:1281",
+   "component": "ToggleSwitch",
+   "problem": "The toggle switch label is just \"On\" and does not describe what is being toggled.",
+   "fix": "Replace the label with the setting name, e.g., \"Allow auto-merge\".",
+   "confidence": 0.95,
+   "screen": "4 · Settings · General",
+   "votes": 1
+  },
+  {
+   "id": "8908:1293",
+   "component": "ToggleSwitch",
+   "problem": "The toggle switch label is just \"On\" and does not describe what is being toggled.",
+   "fix": "Replace the label with the setting name, e.g., \"Automatically delete head branch\".",
+   "confidence": 0.95,
+   "screen": "4 · Settings · General",
+   "votes": 1
+  },
+  {
+   "id": "8908:1236",
+   "component": "SegmentedControl",
+   "problem": "The icons (file-code, file-diff, file-binary) do not clearly represent the merge‑method options (Merge commit, Squash, Rebase).",
+   "fix": "Use icons that match each option, such as git-merge for Merge commit, git-branch for Squash, and git-revert or similar for Rebase.",
+   "confidence": 0.85,
+   "screen": "4 · Settings · General",
+   "votes": 1
+  }
+ ]
+}

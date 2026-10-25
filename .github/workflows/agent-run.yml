@@ -31,12 +31,12 @@ jobs:
       - name: Agent run (Nemotron on Token Factory)
         run: npx tsx src/console/export.ts
       - name: Check every component
-        run: npx tsx src/certify-catalog.ts && npx tsx src/certify-screens.ts && npx tsx src/triage-catalog.ts
+        run: npx tsx src/certify-catalog.ts && (npx tsx src/review-screens.ts || echo "meaning review skipped") && npx tsx src/certify-screens.ts && npx tsx src/triage-catalog.ts
       - run: node console/build.mjs
       - name: Save the run
         run: |
           git config user.name "seamline-agent"; git config user.email "seamline-agent@users.noreply.github.com"
-          git add console/data.json console/catalog.json console/catalog-triage.json console/screens.json console/index.html
+          git add console/data.json console/catalog.json console/catalog-triage.json console/screens.json console/screens-review.json console/index.html
           git commit -m "agent-run: $(date -u +%F) certification and repair" || echo "nothing new"
           git pull --rebase -X theirs origin main && git push origin HEAD:main
       - name: Open the ds-sync pull request

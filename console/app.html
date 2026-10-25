@@ -362,6 +362,14 @@ a:hover { text-decoration: underline; }
 .tour-pop .skip:hover { color:var(--label); }
 .tour-pop .btn { border-radius:999px; padding:8px 16px; }
 @media (prefers-reduced-motion: reduce){ .tour-spot{transition:none} .tour-pop{animation:none} }
+.scr-g > summary { list-style:none; cursor:pointer; display:flex; align-items:baseline; gap:10px; padding:14px 18px; border-bottom:1px solid var(--hair); }
+.scr-g > summary::-webkit-details-marker { display:none; }
+.scr-g > summary::before { content:"›"; color:var(--label-3); transition:transform .2s; display:inline-block; }
+.scr-g[open] > summary::before { transform:rotate(90deg); }
+.scr-g > summary .t { font-weight:600; }
+.scr-g > summary .s { color:var(--label-2); font-size:12.5px; }
+.scr-g:last-child > summary { border-bottom:0; }
+.scr-g[open]:last-child > summary { border-bottom:1px solid var(--hair); }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
 .q-head .t { font-weight: 600; font-size: 14px; }
 .q-head .s { color: var(--label-2); font-size: 12.5px; margin-top: 3px; }
@@ -1526,10 +1534,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const OT = (D.components || []).filter((c) => c.triage);
     $("#q-other").innerHTML = OT.length ? OT.map((c) => `<button class="rep-row q-ot" data-comp="${esc(c.name)}"><div><div class="t">${esc(c.name)} <span class="s">${c.cat.total - c.cat.passed} off</span></div><div class="s">${esc(c.triage.fix)}</div></div><div class="v num">${Math.round(c.triage.confidence * 100)}%</div></button>`).join("") : `<div class="empty">Every other component is in sync.</div>`;
-    if (D.screens) { const SC = D.screens, KL = { detached: "Detached", hardcoded: "Set by hand", variant: "Option not in code", contrast: "Contrast", token: "Token not in code", resized: "Resized by hand", "contrast-dark": "Dark mode", spacing: "Spacing", missing: "Not in library", deprecated: "Deprecated" }, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
-      const t = SC.test, made = SC.findings.filter((f) => !f.inherited), inh = SC.findings.filter((f) => f.inherited);
-      $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}`;
-      $("#q-screens").innerHTML = [...made, ...inh].map((f) => `<div class="rep-row"><div><div class="t"><span class="tag${f.inherited ? "" : " accent"}">${KL[f.kind] || f.kind}</span> ${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`).join(""); }
+    if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
+      const G = [["meaning", "Meaning", "Read by Nemotron Super, kept only when most of 3 reads agree"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
+      const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}`;
+      const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
+      $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${["meaning", "contrast"].includes(k) ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); }
     document.querySelectorAll("#q-other [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
     renderQueueSide(show); $("#queue-pr").innerHTML = show ? prTag() : "";
     const open = show ? openItems().length : 0;
