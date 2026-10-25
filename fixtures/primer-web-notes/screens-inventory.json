@@ -8,15 +8,15 @@
 "id": "8908:340",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "primary",
 "size": "medium",
 "state": "rest",
 "alignContent": "center"
 },
-"w": 138,
 "h": 32,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 },
@@ -24,14 +24,14 @@
 "id": "8908:351",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "open",
 "size": "small"
 },
-"w": 73,
 "h": 28,
-"mw": 73,
 "mh": 28,
 "hug": "HUG"
 },
@@ -39,13 +39,13 @@
 "id": "8908:359",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "accent"
 },
-"w": 94,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 },
@@ -53,14 +53,14 @@
 "id": "8908:363",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "open",
 "size": "small"
 },
-"w": 73,
 "h": 28,
-"mw": 73,
 "mh": 28,
 "hug": "HUG"
 },
@@ -68,13 +68,13 @@
 "id": "8908:370",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "accent"
 },
-"w": 37,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 },
@@ -82,14 +82,14 @@
 "id": "8908:374",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "draft",
 "size": "small"
 },
-"w": 71,
 "h": 28,
-"mw": 72,
 "mh": 28,
 "hug": "HUG"
 },
@@ -97,13 +97,13 @@
 "id": "8908:382",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "default"
 },
-"w": 54,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 },
@@ -111,14 +111,14 @@
 "id": "8908:386",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "merged",
 "size": "small"
 },
-"w": 89,
 "h": 28,
-"mw": 89,
 "mh": 28,
 "hug": "HUG"
 },
@@ -126,13 +126,13 @@
 "id": "8908:394",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "default"
 },
-"w": 87,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 },
@@ -140,14 +140,14 @@
 "id": "8908:398",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "closed",
 "size": "small"
 },
-"w": 84,
 "h": 28,
-"mw": 84,
 "mh": 28,
 "hug": "HUG"
 },
@@ -155,13 +155,13 @@
 "id": "8908:406",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "default"
 },
-"w": 43,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 },
@@ -169,12 +169,12 @@
 "id": "8908:410",
 "set": "Pagination",
 "setId": "34607:94621",
+"missing": false,
+"page": "Pagination",
 "props": {
 "showPages": "true"
 },
-"w": 577,
 "h": 32,
-"mw": 576,
 "mh": 32,
 "hug": "HUG"
 }
@@ -183,112 +183,288 @@
 {
 "id": "8908:62827",
 "name": "Global header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:335",
 "name": "Repo header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:337",
 "name": "Content",
-"children": 3
+"children": 3,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:338",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:346",
 "name": "Frame",
-"children": 6
+"children": 6,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:347",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:350",
 "name": "Row",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:356",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:357",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:362",
 "name": "Row",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:367",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:368",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:373",
 "name": "Row",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:379",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:380",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:385",
 "name": "Row",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:391",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:392",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:397",
 "name": "Row",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:403",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:404",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:409",
 "name": "Frame",
-"children": 1
+"children": 1,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 }
 ],
 "bound": [
@@ -321,10 +497,6 @@
 "var": "button/primary/borderColor/rest"
 },
 {
-"node": "I8908:340;30258:5712",
-"var": "button/primary/fgColor/rest"
-},
-{
 "node": "8908:346",
 "var": "bgColor/default"
 },
@@ -353,24 +525,12 @@
 "var": "bgColor/open-emphasis"
 },
 {
-"node": "I8908:351;36351:386;13:201",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:351;36351:387",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:358",
 "var": "fgColor/default"
 },
 {
 "node": "8908:359",
 "var": "borderColor/accent-emphasis"
-},
-{
-"node": "I8908:359;18959:64924",
-"var": "fgColor/accent"
 },
 {
 "node": "8908:361",
@@ -385,24 +545,12 @@
 "var": "bgColor/open-emphasis"
 },
 {
-"node": "I8908:363;36351:386;13:201",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:363;36351:387",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:369",
 "var": "fgColor/default"
 },
 {
 "node": "8908:370",
 "var": "borderColor/accent-emphasis"
-},
-{
-"node": "I8908:370;18959:64924",
-"var": "fgColor/accent"
 },
 {
 "node": "8908:372",
@@ -417,24 +565,12 @@
 "var": "bgColor/neutral-emphasis"
 },
 {
-"node": "I8908:374;36351:383;2059:81",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:374;36351:384",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:381",
 "var": "fgColor/default"
 },
 {
 "node": "8908:382",
 "var": "borderColor/default"
-},
-{
-"node": "I8908:382;18958:63090",
-"var": "fgColor/default"
 },
 {
 "node": "8908:384",
@@ -445,24 +581,12 @@
 "var": "borderColor/muted"
 },
 {
-"node": "I8908:386;36351:389;13:203",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:386;36351:390",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:393",
 "var": "fgColor/default"
 },
 {
 "node": "8908:394",
 "var": "borderColor/default"
-},
-{
-"node": "I8908:394;18958:63090",
-"var": "fgColor/default"
 },
 {
 "node": "8908:397",
@@ -473,14 +597,6 @@
 "var": "bgColor/closed-emphasis"
 },
 {
-"node": "I8908:398;36351:395;2059:83",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:398;36351:396",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:405",
 "var": "fgColor/default"
 },
@@ -489,72 +605,8 @@
 "var": "borderColor/default"
 },
 {
-"node": "I8908:406;18958:63090",
-"var": "fgColor/default"
-},
-{
 "node": "8908:408",
 "var": "fgColor/muted"
-},
-{
-"node": "I8908:410;1597:0;13068:123232;13:293",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:410;1597:0;1:8023",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:410;34607:97178;34607:94883;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94884;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94885;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94886;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94887;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94888;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94889;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94890;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;34607:97178;34607:94891",
-"var": "bgColor/accent-emphasis"
-},
-{
-"node": "I8908:410;34607:97178;34607:94891;1:8013",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:410;34607:97178;34607:94892;1:8015",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:410;1597:12;1:8028",
-"var": "fgColor/link"
-},
-{
-"node": "I8908:410;1597:12;13068:123259;13:291",
-"var": "fgColor/link"
 }
 ],
 "texts": [
@@ -562,8 +614,10 @@
 "id": "8908:62828",
 "text": "GitHub",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
+"bgDark": "#3d444d",
 "size": 16,
 "bold": true
 },
@@ -571,8 +625,10 @@
 "id": "8908:336",
 "text": "primer / react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 20,
 "bold": true
 },
@@ -580,8 +636,10 @@
 "id": "8908:339",
 "text": "Pull requests",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 24,
 "bold": true
 },
@@ -589,8 +647,10 @@
 "id": "I8908:340;30258:5712",
 "text": "New pull request",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/rest",
 "bg": "#1f883d",
+"bgDark": "#238636",
 "size": 14,
 "bold": true
 },
@@ -598,8 +658,10 @@
 "id": "8908:348",
 "text": "12 Open",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 14,
 "bold": true
 },
@@ -607,8 +669,10 @@
 "id": "8908:349",
 "text": "48 Closed",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 14,
 "bold": false
 },
@@ -616,8 +680,10 @@
 "id": "I8908:351;36351:387",
 "text": "Open",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
+"bgDark": "#238636",
 "size": 14,
 "bold": true
 },
@@ -625,8 +691,10 @@
 "id": "8908:358",
 "text": "Add size xsmall to Button",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -634,8 +702,10 @@
 "id": "I8908:359;18959:64924",
 "text": "enhancement",
 "fg": "#0969da",
+"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -643,8 +713,10 @@
 "id": "8908:361",
 "text": "#4821 opened 2 hours ago by dani-ortega",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -652,8 +724,10 @@
 "id": "I8908:363;36351:387",
 "text": "Open",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
+"bgDark": "#238636",
 "size": 14,
 "bold": true
 },
@@ -661,8 +735,10 @@
 "id": "8908:369",
 "text": "Fix invisible button text color",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -670,8 +746,10 @@
 "id": "I8908:370;18959:64924",
 "text": "bug",
 "fg": "#0969da",
+"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -679,8 +757,10 @@
 "id": "8908:372",
 "text": "#4819 opened yesterday by marta-ruiz",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -688,8 +768,10 @@
 "id": "I8908:374;36351:384",
 "text": "Draft",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#59636e",
+"bgDark": "#656c76",
 "size": 14,
 "bold": true
 },
@@ -697,8 +779,10 @@
 "id": "8908:381",
 "text": "Rename control-medium-gap token",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -706,8 +790,10 @@
 "id": "I8908:382;18958:63090",
 "text": "tokens",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -715,8 +801,10 @@
 "id": "8908:384",
 "text": "#4815 opened 3 days ago by dani-ortega",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -724,8 +812,10 @@
 "id": "I8908:386;36351:390",
 "text": "Merged",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#8a5cf5",
+"bgDark": "#8a5cf5",
 "size": 14,
 "bold": true
 },
@@ -733,8 +823,10 @@
 "id": "8908:393",
 "text": "SelectPanel: bind color tokens",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -742,8 +834,10 @@
 "id": "I8908:394;18958:63090",
 "text": "accessibility",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -751,8 +845,10 @@
 "id": "8908:396",
 "text": "#4810 merged last week by laura-g",
 "fg": "#b8bec6",
+"fgDark": "#b8bec6",
 "fgVar": null,
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -760,8 +856,10 @@
 "id": "I8908:398;36351:396",
 "text": "Closed",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#cf222e",
+"bgDark": "#da3633",
 "size": 14,
 "bold": true
 },
@@ -769,8 +867,10 @@
 "id": "8908:405",
 "text": "Pagehead: deprecate in favor of PageHeader",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -778,8 +878,10 @@
 "id": "I8908:406;18958:63090",
 "text": "docs",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -787,8 +889,10 @@
 "id": "8908:408",
 "text": "#4802 closed last week by marta-ruiz",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -796,8 +900,10 @@
 "id": "I8908:410;1597:0;1:8023",
 "text": "Previous",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -805,8 +911,10 @@
 "id": "I8908:410;34607:97178;34607:94883;1:8015",
 "text": "1",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -814,8 +922,10 @@
 "id": "I8908:410;34607:97178;34607:94884;1:8015",
 "text": "2",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -823,8 +933,10 @@
 "id": "I8908:410;34607:97178;34607:94885;1:8015",
 "text": "3",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -832,8 +944,10 @@
 "id": "I8908:410;34607:97178;34607:94886;1:8015",
 "text": "4",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -841,8 +955,10 @@
 "id": "I8908:410;34607:97178;34607:94887;1:8015",
 "text": "5",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -850,8 +966,10 @@
 "id": "I8908:410;34607:97178;34607:94888;1:8015",
 "text": "6",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -859,8 +977,10 @@
 "id": "I8908:410;34607:97178;34607:94889;1:8015",
 "text": "7",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -868,8 +988,10 @@
 "id": "I8908:410;34607:97178;34607:94890;1:8015",
 "text": "8",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -877,8 +999,10 @@
 "id": "I8908:410;34607:97178;34607:94891;1:8013",
 "text": "9",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#0969da",
+"bgDark": "#1f6feb",
 "size": 14,
 "bold": false
 },
@@ -886,8 +1010,10 @@
 "id": "I8908:410;34607:97178;34607:94892;1:8015",
 "text": "10",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -895,8 +1021,10 @@
 "id": "I8908:410;1597:12;1:8028",
 "text": "Next",
 "fg": "#0969da",
+"fgDark": "#4493f8",
 "fgVar": "fgColor/link",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 }
@@ -906,7 +1034,6 @@
 "instance": "8908:386",
 "set": "StateLabel",
 "node": "8908:386",
-"name": "StateLabel",
 "was": "bgColor/done-emphasis",
 "now": "#8a5cf5"
 }
@@ -917,17 +1044,31 @@
 "name": "2 \u00b7 Pull request",
 "instances": [
 {
+"id": "8911:540",
+"set": "\ud83d\uded1 Pagehead [DEPRECATED]",
+"setId": "4065:363",
+"missing": false,
+"page": "Pagehead",
+"props": {
+"hasAvatar?": "false",
+"actions?": "false"
+},
+"h": 104,
+"mh": 104,
+"hug": "FIXED"
+},
+{
 "id": "8908:608",
 "set": "StateLabel",
 "setId": "18959:64962",
+"missing": false,
+"page": "StateLabel",
 "props": {
 "variant": "pull request",
 "status": "open",
 "size": "normal"
 },
-"w": 81,
 "h": 32,
-"mw": 81,
 "mh": 32,
 "hug": "HUG"
 },
@@ -935,12 +1076,12 @@
 "id": "8908:614",
 "set": "TabNav",
 "setId": "24375:94677",
+"missing": false,
+"page": "TabNav",
 "props": {
 "# of tabs": "4"
 },
-"w": 1216,
 "h": 40,
-"mw": 472,
 "mh": 40,
 "hug": "FILL"
 },
@@ -948,13 +1089,13 @@
 "id": "8909:160",
 "set": "Inline message",
 "setId": "32109:348",
+"missing": false,
+"page": "InlineMessage",
 "props": {
 "variant": "unavailable",
 "size": "medium"
 },
-"w": 1216,
 "h": 20,
-"mw": 140,
 "mh": 20,
 "hug": "FILL"
 },
@@ -962,13 +1103,13 @@
 "id": "8908:661",
 "set": "Avatar",
 "setId": "3805:11",
+"missing": false,
+"page": "Avatars",
 "props": {
 "size": "40px",
 "square": "false"
 },
-"w": 40,
 "h": 40,
-"mw": 40,
 "mh": 40,
 "hug": "FIXED"
 },
@@ -976,13 +1117,13 @@
 "id": "8908:669",
 "set": "Avatar",
 "setId": "3805:11",
+"missing": false,
+"page": "Avatars",
 "props": {
 "size": "40px",
 "square": "false"
 },
-"w": 40,
 "h": 40,
-"mw": 40,
 "mh": 40,
 "hug": "FIXED"
 },
@@ -990,13 +1131,13 @@
 "id": "8908:679",
 "set": "Label",
 "setId": "18959:65008",
+"missing": false,
+"page": "Labels",
 "props": {
 "size": "small",
 "variant": "accent"
 },
-"w": 94,
 "h": 22,
-"mw": 47,
 "mh": 22,
 "hug": "HUG"
 }
@@ -1005,67 +1146,145 @@
 {
 "id": "8908:62829",
 "name": "Global header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:603",
 "name": "Repo header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:605",
 "name": "Content",
-"children": 5
+"children": 6,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:607",
 "name": "Frame",
-"children": 2
-},
-{
-"id": "I8908:614;24375:94871",
-"name": "Tabs",
-"children": 4
-},
-{
-"id": "I8908:614;24375:94878",
-"name": "Trailing",
-"children": 1
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:658",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 24,
+"fill": null
 },
 {
 "id": "8908:659",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:660",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:665",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8908:668",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:672",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+12,
+16,
+12,
+16
+],
+"gap": 8,
+"fill": "#ffffff"
 },
 {
 "id": "8908:675",
 "name": "Sidebar",
-"children": 4
+"children": 4,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 12,
+"fill": null
 }
 ],
 "bound": [
@@ -1094,64 +1313,12 @@
 "var": "bgColor/open-emphasis"
 },
 {
-"node": "I8908:608;18959:64859;13:201",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:608;18959:64860",
-"var": "fgColor/onEmphasis"
-},
-{
 "node": "8908:613",
 "var": "fgColor/muted"
 },
 {
 "node": "8908:614",
 "var": "borderColor/default"
-},
-{
-"node": "I8908:614;24375:94873",
-"var": "bgColor/default"
-},
-{
-"node": "I8908:614;24375:94873",
-"var": "borderColor/default"
-},
-{
-"node": "I8908:614;24375:94873;18247:69218",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:614;24375:94874;18247:69220",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:614;24375:94875;18247:69220",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:614;24375:94876;18247:69220",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:614;24375:94879",
-"var": "button/default/bgColor/rest"
-},
-{
-"node": "I8908:614;24375:94879",
-"var": "button/default/borderColor/rest"
-},
-{
-"node": "I8908:614;24375:94879;30258:5593",
-"var": "button/default/fgColor/rest"
-},
-{
-"node": "I8909:160;32109:362;13:334",
-"var": "fgColor/neutral"
-},
-{
-"node": "I8909:160;32109:363",
-"var": "fgColor/neutral"
 },
 {
 "node": "8908:661",
@@ -1176,10 +1343,6 @@
 {
 "node": "8908:669",
 "var": "avatar/borderColor"
-},
-{
-"node": "8908:672",
-"var": "bgColor/default"
 },
 {
 "node": "8908:672",
@@ -1208,10 +1371,6 @@
 {
 "node": "8908:679",
 "var": "borderColor/accent-emphasis"
-},
-{
-"node": "I8908:679;18959:64924",
-"var": "fgColor/accent"
 }
 ],
 "texts": [
@@ -1219,8 +1378,10 @@
 "id": "8908:62830",
 "text": "GitHub",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
+"bgDark": "#3d444d",
 "size": 16,
 "bold": true
 },
@@ -1228,8 +1389,21 @@
 "id": "8908:604",
 "text": "primer / react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
+"size": 20,
+"bold": true
+},
+{
+"id": "I8911:540;1378:0",
+"text": "Title",
+"fg": "#1f2328",
+"fgDark": "#f0f6fc",
+"fgVar": "fgColor/default",
+"bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 20,
 "bold": true
 },
@@ -1237,8 +1411,10 @@
 "id": "8908:606",
 "text": "Add size xsmall to Button #4821",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 28,
 "bold": false
 },
@@ -1246,17 +1422,21 @@
 "id": "I8908:608;18959:64860",
 "text": "Open",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#1f883d",
+"bgDark": "#238636",
 "size": 14,
 "bold": true
 },
 {
 "id": "8908:613",
-"text": "dani-ortega wants to merge 3 commits into main from button-x",
+"text": "dani-ortega wants to merge 3 commits into main f",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1264,8 +1444,10 @@
 "id": "I8908:614;24375:94873;18247:69218",
 "text": "Conversation",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1273,8 +1455,10 @@
 "id": "I8908:614;24375:94874;18247:69220",
 "text": "Commits",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1282,8 +1466,10 @@
 "id": "I8908:614;24375:94875;18247:69220",
 "text": "Checks",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1291,8 +1477,10 @@
 "id": "I8908:614;24375:94876;18247:69220",
 "text": "Files changed",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1300,8 +1488,10 @@
 "id": "I8908:614;24375:94879;30258:5593",
 "text": "Button",
 "fg": "#25292e",
+"fgDark": "#f0f6fc",
 "fgVar": "button/default/fgColor/rest",
 "bg": "#f6f8fa",
+"bgDark": "#212830",
 "size": 12,
 "bold": true
 },
@@ -1309,8 +1499,10 @@
 "id": "I8909:160;32109:363",
 "text": "Storybook preview is unavailable for this branch",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/neutral",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1318,17 +1510,21 @@
 "id": "8908:666",
 "text": "dani-ortega",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": true
 },
 {
 "id": "8908:667",
-"text": "Adds an xsmall size (24px) to Button. Code and docs already ",
+"text": "Adds an xsmall size (24px) to Button. Code and d",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1336,17 +1532,21 @@
 "id": "8908:673",
 "text": "marta-ruiz",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#ffffff",
 "size": 14,
 "bold": true
 },
 {
 "id": "8908:674",
-"text": "Looks good. Can we check the 24px target size against WCAG 2",
+"text": "Looks good. Can we check the 24px target size ag",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#ffffff",
 "size": 14,
 "bold": false
 },
@@ -1354,8 +1554,10 @@
 "id": "8908:676",
 "text": "Reviewers",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -1363,8 +1565,10 @@
 "id": "8908:677",
 "text": "marta-ruiz",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1372,8 +1576,10 @@
 "id": "8908:678",
 "text": "Labels",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -1381,8 +1587,10 @@
 "id": "I8908:679;18959:64924",
 "text": "enhancement",
 "fg": "#0969da",
+"fgDark": "#4493f8",
 "fgVar": "fgColor/accent",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 }
@@ -1394,16 +1602,27 @@
 "name": "3 \u00b7 Merge box",
 "instances": [
 {
+"id": "8911:538",
+"set": "MergeBanner (old)",
+"setId": "8911:536",
+"missing": false,
+"page": null,
+"props": {},
+"h": 36,
+"mh": 36,
+"hug": "FIXED"
+},
+{
 "id": "8908:813",
 "set": "ProgressBar",
 "setId": "34727:143491",
+"missing": false,
+"page": "ProgressBar",
 "props": {
 "size": "default",
 "items": "3"
 },
-"w": 1182,
 "h": 8,
-"mw": 262,
 "mh": 8,
 "hug": "FILL"
 },
@@ -1411,13 +1630,13 @@
 "id": "8908:823",
 "set": "Inline message",
 "setId": "32109:348",
+"missing": false,
+"page": "InlineMessage",
 "props": {
 "variant": "critical",
 "size": "medium"
 },
-"w": 1182,
 "h": 20,
-"mw": 140,
 "mh": 20,
 "hug": "FILL"
 },
@@ -1425,15 +1644,15 @@
 "id": "8908:829",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "primary",
 "size": "medium",
 "state": "disabled",
 "alignContent": "center"
 },
-"w": 151,
 "h": 32,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 },
@@ -1441,10 +1660,10 @@
 "id": "8909:59",
 "set": "search",
 "setId": "31742:155958",
+"missing": false,
+"page": null,
 "props": {},
-"w": 16,
 "h": 16,
-"mw": 16,
 "mh": 16,
 "hug": "FIXED"
 },
@@ -1452,12 +1671,12 @@
 "id": "8909:61",
 "set": "CounterLabel",
 "setId": "18959:64970",
+"missing": false,
+"page": "CounterLabel",
 "props": {
 "variant": "secondary"
 },
-"w": 28,
 "h": 18,
-"mw": 28,
 "mh": 18,
 "hug": "HUG"
 },
@@ -1465,10 +1684,10 @@
 "id": "8909:62",
 "set": "link-external",
 "setId": "31742:155954",
+"missing": false,
+"page": null,
 "props": {},
-"w": 16,
 "h": 16,
-"mw": 16,
 "mh": 16,
 "hug": "FIXED"
 },
@@ -1476,12 +1695,12 @@
 "id": "8909:63",
 "set": "_text/caret",
 "setId": "4326:6977",
+"missing": false,
+"page": "\ud83e\uddf0 Maintainers only (base components)",
 "props": {
 "type": "default"
 },
-"w": 16,
 "h": 16,
-"mw": 16,
 "mh": 16,
 "hug": "FIXED"
 }
@@ -1490,32 +1709,80 @@
 {
 "id": "8908:62831",
 "name": "Global header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:806",
 "name": "Repo header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:808",
 "name": "Content",
-"children": 2
+"children": 2,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:810",
 "name": "Merge box",
-"children": 5
+"children": 6,
+"pad": [
+16,
+16,
+16,
+16
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:828",
 "name": "Actions",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
 },
 {
 "id": "8909:58",
 "name": "Button",
-"children": 5
+"children": 5,
+"pad": [
+6,
+12,
+6,
+12
+],
+"gap": 8,
+"fill": null
 }
 ],
 "bound": [
@@ -1560,24 +1827,12 @@
 "var": "controlTrack/bgColor/rest"
 },
 {
-"node": "I8908:823;32109:356;13:334",
-"var": "fgColor/danger"
-},
-{
-"node": "I8908:823;32109:357",
-"var": "fgColor/danger"
-},
-{
 "node": "8908:829",
 "var": "button/primary/bgColor/disabled"
 },
 {
 "node": "8908:829",
 "var": "button/primary/borderColor/disabled"
-},
-{
-"node": "I8908:829;30258:5733",
-"var": "button/primary/fgColor/disabled"
 },
 {
 "node": "8909:58",
@@ -1605,8 +1860,10 @@
 "id": "8908:62832",
 "text": "GitHub",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
+"bgDark": "#3d444d",
 "size": 16,
 "bold": true
 },
@@ -1614,8 +1871,10 @@
 "id": "8908:807",
 "text": "primer / react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 20,
 "bold": true
 },
@@ -1623,8 +1882,10 @@
 "id": "8908:809",
 "text": "Add size xsmall to Button #4821",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 28,
 "bold": false
 },
@@ -1632,8 +1893,10 @@
 "id": "8908:811",
 "text": "Some checks were not successful",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 16,
 "bold": true
 },
@@ -1641,8 +1904,21 @@
 "id": "8908:812",
 "text": "2 of 3 checks passed \u00b7 ds-sync failing",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
+"size": 14,
+"bold": false
+},
+{
+"id": "I8911:538;8911:537",
+"text": "This branch is out of date with the base branch",
+"fg": "#000000",
+"fgDark": "#000000",
+"fgVar": null,
+"bg": "#fff7d9",
+"bgDark": "#fff7d9",
 "size": 14,
 "bold": false
 },
@@ -1650,8 +1926,10 @@
 "id": "I8908:823;32109:357",
 "text": "This branch has conflicts that must be resolved",
 "fg": "#d1242f",
+"fgDark": "#f85149",
 "fgVar": "fgColor/danger",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -1659,8 +1937,10 @@
 "id": "I8908:829;30258:5733",
 "text": "Merge pull request",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/disabled",
 "bg": "#95d8a6",
+"bgDark": "#105823",
 "size": 14,
 "bold": true
 },
@@ -1668,8 +1948,10 @@
 "id": "8909:60",
 "text": "Resolve conflicts",
 "fg": "#25292e",
+"fgDark": "#f0f6fc",
 "fgVar": "button/default/fgColor/rest",
 "bg": "#f6f8fa",
+"bgDark": "#212830",
 "size": 14,
 "bold": true
 }
@@ -1684,10 +1966,10 @@
 "id": "8908:969",
 "set": "NavList",
 "setId": "16716:62541",
+"missing": false,
+"page": "NavList",
 "props": {},
-"w": 320,
 "h": 404,
-"mw": 320,
 "mh": 404,
 "hug": "HUG"
 },
@@ -1695,14 +1977,14 @@
 "id": "8908:1236",
 "set": "SegmentedControl",
 "setId": "16122:79604",
+"missing": false,
+"page": "SegmentedControl",
 "props": {
 "# of items": "3",
 "iconOnly?": "false",
 "size": "medium"
 },
-"w": 342,
 "h": 32,
-"mw": 238,
 "mh": 32,
 "hug": "HUG"
 },
@@ -1710,15 +1992,15 @@
 "id": "8908:1281",
 "set": "ToggleSwitch",
 "setId": "13518:50189",
+"missing": false,
+"page": "ToggleSwitch",
 "props": {
 "size": "medium",
 "state": "rest",
 "checked": "true",
 "label position": "start"
 },
-"w": 91,
 "h": 32,
-"mw": 91,
 "mh": 32,
 "hug": "HUG"
 },
@@ -1726,15 +2008,15 @@
 "id": "8908:1293",
 "set": "ToggleSwitch",
 "setId": "13518:50189",
+"missing": false,
+"page": "ToggleSwitch",
 "props": {
 "size": "medium",
 "state": "rest",
 "checked": "true",
 "label position": "start"
 },
-"w": 91,
 "h": 32,
-"mw": 91,
 "mh": 32,
 "hug": "HUG"
 },
@@ -1742,15 +2024,15 @@
 "id": "8908:1300",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "primary",
 "size": "medium",
 "state": "rest",
 "alignContent": "center"
 },
-"w": 119,
 "h": 24,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 }
@@ -1759,132 +2041,93 @@
 {
 "id": "8908:62833",
 "name": "Global header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:966",
 "name": "Repo header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:968",
 "name": "Content",
-"children": 2
-},
-{
-"id": "I8908:969;16716:62499;40065:84233;9685:46822",
-"name": "Wrapper",
-"children": 1
-},
-{
-"id": "I8908:969;40009:6323;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 1
-},
-{
-"id": "I8908:969;16716:62564;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 1
-},
-{
-"id": "I8908:969;16716:62526;16713:63005;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 2
-},
-{
-"id": "I8908:969;16716:62526;16713:63026;15175:71563",
-"name": "Content",
-"children": 1
-},
-{
-"id": "I8908:969;16716:62526;16716:62627;15175:71563",
-"name": "Content",
-"children": 1
-},
-{
-"id": "I8908:969;16716:62526;16716:62653;15175:71563",
-"name": "Content",
-"children": 1
-},
-{
-"id": "I8908:969;16716:62526;40065:82298;15175:71577",
-"name": "Content",
-"children": 1
-},
-{
-"id": "I8908:969;40065:84008;40065:84233;9685:46822",
-"name": "Wrapper",
-"children": 1
-},
-{
-"id": "I8908:969;40065:82926;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 1
-},
-{
-"id": "I8908:969;40065:83077;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 1
-},
-{
-"id": "I8908:969;40065:83150;16716:62548;15096:51950",
-"name": "Text and trailing icon",
-"children": 1
+"children": 2,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 32,
+"fill": null
 },
 {
 "id": "8908:1219",
 "name": "Settings form",
-"children": 8
+"children": 8,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 20,
+"fill": null
 },
 {
 "id": "8908:62837",
 "name": "Repo name input",
-"children": 1
-},
-{
-"id": "I8908:1236;16122:79645;16121:61275",
-"name": "Icon + Label",
-"children": 2
-},
-{
-"id": "I8908:1236;16122:79659;16121:61225",
-"name": "Icon + Label",
-"children": 2
-},
-{
-"id": "I8908:1236;16122:79646;16121:61225",
-"name": "Icon + Label",
-"children": 2
+"children": 1,
+"pad": [
+6,
+12,
+6,
+12
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1279",
 "name": "Toggle row",
-"children": 2
-},
-{
-"id": "I8908:1281;22029:88087;21937:87964",
-"name": "State indicator",
-"children": 1
-},
-{
-"id": "I8908:1281;22029:88087;21937:87966",
-"name": "Handle",
-"children": 0
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1291",
 "name": "Toggle row",
-"children": 2
-},
-{
-"id": "I8908:1293;22029:88087;21937:87964",
-"name": "State indicator",
-"children": 1
-},
-{
-"id": "I8908:1293;22029:88087;21937:87966",
-"name": "Handle",
-"children": 0
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 }
 ],
 "bound": [
@@ -1907,70 +2150,6 @@
 {
 "node": "8908:969",
 "var": "bgColor/default"
-},
-{
-"node": "I8908:969;16716:62499;40065:84233;6:38842",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:969;40009:6323;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62564;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;16713:63005;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;16713:63005;16716:62548;15096:51952;15096:46626;19008:64819;13:289",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:969;16716:62526;16713:63026;15175:71564",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;16716:62627;15175:71564",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;16716:62653;15175:71564",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;40065:82298",
-"var": "control/transparent/bgColor/selected"
-},
-{
-"node": "I8908:969;16716:62526;40065:82298;15175:71578",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;16716:62526;40065:82298;15175:71576",
-"var": "bgColor/accent-emphasis"
-},
-{
-"node": "I8908:969;40065:83945;40065:84094;27727:21274",
-"var": "borderColor/muted"
-},
-{
-"node": "I8908:969;40065:84008;40065:84233;6:38842",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:969;40065:82926;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;40065:83077;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:969;40065:83150;16716:62548;15096:51951;15039:46266",
-"var": "fgColor/default"
 },
 {
 "node": "8908:1220",
@@ -2005,80 +2184,12 @@
 "var": "borderColor/default"
 },
 {
-"node": "I8908:1236;16122:79645",
-"var": "controlKnob/bgColor/rest"
-},
-{
-"node": "I8908:1236;16122:79645",
-"var": "control/borderColor/emphasis"
-},
-{
-"node": "I8908:1236;16122:79645;16121:61276;72:2050",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:1236;16122:79645;16121:61277",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:1236;16122:79659;16121:61226;13:233",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:1236;16122:79659;16121:61227",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:1236;16122:79659;27518:101024;27504:4261",
-"var": "borderColor/default"
-},
-{
-"node": "I8908:1236;16122:79646;16121:61226;72:2048",
-"var": "fgColor/muted"
-},
-{
-"node": "I8908:1236;16122:79646;16121:61227",
-"var": "fgColor/default"
-},
-{
 "node": "8908:1280",
 "var": "fgColor/default"
 },
 {
-"node": "I8908:1281;13518:50198",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:1281;22029:88087",
-"var": "control/checked/bgColor/rest"
-},
-{
-"node": "I8908:1281;22029:88087;27387:835",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:1281;22029:88087;21937:87966",
-"var": "controlKnob/bgColor/rest"
-},
-{
 "node": "8908:1292",
 "var": "fgColor/default"
-},
-{
-"node": "I8908:1293;13518:50198",
-"var": "fgColor/default"
-},
-{
-"node": "I8908:1293;22029:88087",
-"var": "control/checked/bgColor/rest"
-},
-{
-"node": "I8908:1293;22029:88087;27387:835",
-"var": "fgColor/onEmphasis"
-},
-{
-"node": "I8908:1293;22029:88087;21937:87966",
-"var": "controlKnob/bgColor/rest"
 },
 {
 "node": "8908:1300",
@@ -2087,10 +2198,6 @@
 {
 "node": "8908:1300",
 "var": "button/primary/borderColor/rest"
-},
-{
-"node": "I8908:1300;30258:5712",
-"var": "button/primary/fgColor/rest"
 }
 ],
 "texts": [
@@ -2098,8 +2205,10 @@
 "id": "8908:62834",
 "text": "GitHub",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
+"bgDark": "#3d444d",
 "size": 16,
 "bold": true
 },
@@ -2107,8 +2216,10 @@
 "id": "8908:967",
 "text": "primer / react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 20,
 "bold": true
 },
@@ -2116,8 +2227,10 @@
 "id": "I8908:969;16716:62499;40065:84233;6:38842",
 "text": "General",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -2125,8 +2238,10 @@
 "id": "I8908:969;40009:6323;16716:62548;15096:51951;15039:46266",
 "text": "Access",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2134,8 +2249,10 @@
 "id": "I8908:969;16716:62564;16716:62548;15096:51951;15039:46266",
 "text": "Collaborators",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2143,8 +2260,10 @@
 "id": "I8908:969;16716:62526;16713:63005;16716:62548;15096:51951;15039:46266",
 "text": "Moderation",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2152,8 +2271,10 @@
 "id": "I8908:969;16716:62526;16713:63026;15175:71564",
 "text": "Branches",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -2161,8 +2282,10 @@
 "id": "I8908:969;16716:62526;16716:62627;15175:71564",
 "text": "Tags",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -2170,8 +2293,10 @@
 "id": "I8908:969;16716:62526;16716:62653;15175:71564",
 "text": "Rules",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": false
 },
@@ -2179,8 +2304,10 @@
 "id": "I8908:969;16716:62526;40065:82298;15175:71578",
 "text": "Actions",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -2188,8 +2315,10 @@
 "id": "I8908:969;40065:84008;40065:84233;6:38842",
 "text": "Webhooks",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 12,
 "bold": true
 },
@@ -2197,8 +2326,10 @@
 "id": "I8908:969;40065:82926;16716:62548;15096:51951;15039:46266",
 "text": "Environments",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2206,8 +2337,10 @@
 "id": "I8908:969;40065:83077;16716:62548;15096:51951;15039:46266",
 "text": "Pages",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2215,8 +2348,10 @@
 "id": "I8908:969;40065:83150;16716:62548;15096:51951;15039:46266",
 "text": "Danger zone",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2224,8 +2359,10 @@
 "id": "8908:1220",
 "text": "General",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 24,
 "bold": true
 },
@@ -2233,8 +2370,10 @@
 "id": "8908:1221",
 "text": "Repository name",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": true
 },
@@ -2242,8 +2381,10 @@
 "id": "8908:62838",
 "text": "react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2251,8 +2392,10 @@
 "id": "8908:1235",
 "text": "Default merge method",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": true
 },
@@ -2260,8 +2403,10 @@
 "id": "I8908:1236;16122:79645;16121:61277",
 "text": "Merge commit",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#010409",
 "size": 14,
 "bold": true
 },
@@ -2269,8 +2414,10 @@
 "id": "I8908:1236;16122:79659;16121:61227",
 "text": "Squash",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#e6eaef",
+"bgDark": "#262c36",
 "size": 14,
 "bold": false
 },
@@ -2278,8 +2425,10 @@
 "id": "I8908:1236;16122:79646;16121:61227",
 "text": "Rebase",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#e6eaef",
+"bgDark": "#262c36",
 "size": 14,
 "bold": false
 },
@@ -2287,8 +2436,10 @@
 "id": "8908:1280",
 "text": "Allow auto-merge",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2296,8 +2447,10 @@
 "id": "I8908:1281;13518:50198",
 "text": "On",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2305,8 +2458,10 @@
 "id": "8908:1292",
 "text": "Automatically delete head branches",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2314,8 +2469,10 @@
 "id": "I8908:1293;13518:50198",
 "text": "On",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2323,8 +2480,10 @@
 "id": "I8908:1300;30258:5712",
 "text": "Save changes",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "button/primary/fgColor/rest",
 "bg": "#1f883d",
+"bgDark": "#238636",
 "size": 14,
 "bold": true
 }
@@ -2339,15 +2498,15 @@
 "id": "8908:1440",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "danger",
 "size": "medium",
 "state": "rest",
 "alignContent": "center"
 },
-"w": 137,
 "h": 32,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 },
@@ -2355,15 +2514,15 @@
 "id": "8908:1450",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "danger",
 "size": "medium",
 "state": "rest",
 "alignContent": "center"
 },
-"w": 178,
 "h": 32,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 },
@@ -2371,15 +2530,15 @@
 "id": "8908:1460",
 "set": "Button",
 "setId": "30258:5582",
+"missing": false,
+"page": "Button",
 "props": {
 "variant": "danger",
 "size": "medium",
 "state": "rest",
 "alignContent": "center"
 },
-"w": 171,
 "h": 32,
-"mw": 71,
 "mh": 32,
 "hug": "HUG"
 },
@@ -2387,13 +2546,13 @@
 "id": "8908:1466",
 "set": "Inline message",
 "setId": "32109:348",
+"missing": false,
+"page": "InlineMessage",
 "props": {
 "variant": "warning",
 "size": "medium"
 },
-"w": 1216,
 "h": 20,
-"mw": 140,
 "mh": 20,
 "hug": "FILL"
 }
@@ -2402,52 +2561,132 @@
 {
 "id": "8908:62835",
 "name": "Global header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1431",
 "name": "Repo header",
-"children": 1
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 12,
+"fill": null
 },
 {
 "id": "8908:1433",
 "name": "Content",
-"children": 3
+"children": 3,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 16,
+"fill": null
 },
 {
 "id": "8908:1435",
 "name": "Danger box",
-"children": 3
+"children": 3,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1436",
 "name": "Danger row",
-"children": 2
+"children": 2,
+"pad": [
+16,
+16,
+16,
+16
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1437",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:1446",
 "name": "Danger row",
-"children": 2
+"children": 2,
+"pad": [
+16,
+13,
+16,
+13
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1447",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 },
 {
 "id": "8908:1456",
 "name": "Danger row",
-"children": 2
+"children": 2,
+"pad": [
+16,
+16,
+16,
+16
+],
+"gap": 0,
+"fill": null
 },
 {
 "id": "8908:1457",
 "name": "Frame",
-"children": 2
+"children": 2,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 4,
+"fill": null
 }
 ],
 "bound": [
@@ -2496,10 +2735,6 @@
 "var": "button/danger/borderColor/rest"
 },
 {
-"node": "I8908:1440;30258:5838",
-"var": "button/danger/fgColor/rest"
-},
-{
 "node": "8908:1446",
 "var": "borderColor/muted"
 },
@@ -2518,10 +2753,6 @@
 {
 "node": "8908:1450",
 "var": "button/danger/borderColor/rest"
-},
-{
-"node": "I8908:1450;30258:5838",
-"var": "button/danger/fgColor/rest"
 },
 {
 "node": "8908:1456",
@@ -2546,18 +2777,6 @@
 {
 "node": "8908:1460",
 "var": "button/danger/borderColor/rest"
-},
-{
-"node": "I8908:1460;30258:5838",
-"var": "button/danger/fgColor/rest"
-},
-{
-"node": "I8908:1466;32109:353;13:334",
-"var": "fgColor/attention"
-},
-{
-"node": "I8908:1466;32109:354",
-"var": "fgColor/attention"
 }
 ],
 "texts": [
@@ -2565,8 +2784,10 @@
 "id": "8908:62836",
 "text": "GitHub",
 "fg": "#ffffff",
+"fgDark": "#ffffff",
 "fgVar": "fgColor/onEmphasis",
 "bg": "#25292e",
+"bgDark": "#3d444d",
 "size": 16,
 "bold": true
 },
@@ -2574,8 +2795,10 @@
 "id": "8908:1432",
 "text": "primer / react",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#f6f8fa",
+"bgDark": "#151b23",
 "size": 20,
 "bold": true
 },
@@ -2583,8 +2806,10 @@
 "id": "8908:1434",
 "text": "Danger zone",
 "fg": "#1f2328",
+"fgDark": "#1f2328",
 "fgVar": null,
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 24,
 "bold": true
 },
@@ -2592,8 +2817,10 @@
 "id": "8908:1438",
 "text": "Change visibility",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": true
 },
@@ -2601,8 +2828,10 @@
 "id": "8908:1439",
 "text": "This repository is currently public.",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2610,8 +2839,10 @@
 "id": "I8908:1440;30258:5838",
 "text": "Change visibility",
 "fg": "#d1242f",
+"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
+"bgDark": "#212830",
 "size": 14,
 "bold": true
 },
@@ -2619,8 +2850,10 @@
 "id": "8908:1448",
 "text": "Archive this repository",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": true
 },
@@ -2628,8 +2861,10 @@
 "id": "8908:1449",
 "text": "Mark this repository archived and read-only.",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 },
@@ -2637,8 +2872,10 @@
 "id": "I8908:1450;30258:5838",
 "text": "Archive this repository",
 "fg": "#d1242f",
+"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
+"bgDark": "#212830",
 "size": 14,
 "bold": true
 },
@@ -2646,17 +2883,21 @@
 "id": "8908:1458",
 "text": "Delete this repository",
 "fg": "#1f2328",
+"fgDark": "#f0f6fc",
 "fgVar": "fgColor/default",
 "bg": "#ffebe9",
+"bgDark": "#f85149",
 "size": 14,
 "bold": true
 },
 {
 "id": "8908:1459",
-"text": "Once you delete a repository, there is no going back.",
+"text": "Once you delete a repository, there is no going ",
 "fg": "#59636e",
+"fgDark": "#9198a1",
 "fgVar": "fgColor/muted",
 "bg": "#ffebe9",
+"bgDark": "#f85149",
 "size": 14,
 "bold": false
 },
@@ -2664,17 +2905,21 @@
 "id": "I8908:1460;30258:5838",
 "text": "Delete this repository",
 "fg": "#d1242f",
+"fgDark": "#fa5e55",
 "fgVar": "button/danger/fgColor/rest",
 "bg": "#f6f8fa",
+"bgDark": "#212830",
 "size": 14,
 "bold": true
 },
 {
 "id": "I8908:1466;32109:354",
-"text": "Deleting primer/react removes 4,821 pull requests and all th",
+"text": "Deleting primer/react removes 4,821 pull request",
 "fg": "#9a6700",
+"fgDark": "#d29922",
 "fgVar": "fgColor/attention",
 "bg": "#ffffff",
+"bgDark": "#0d1117",
 "size": 14,
 "bold": false
 }

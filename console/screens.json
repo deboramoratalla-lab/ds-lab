@@ -8,12 +8,12 @@
   {
    "id": "8908:478",
    "name": "2 · Pull request",
-   "instances": 6
+   "instances": 7
   },
   {
    "id": "8908:681",
    "name": "3 · Merge box",
-   "instances": 7
+   "instances": 8
   },
   {
    "id": "8908:841",
@@ -56,6 +56,12 @@
     "1 · Pull requests"
    ]
   },
+  "🛑 Pagehead [DEPRECATED]": {
+   "count": 1,
+   "screens": [
+    "2 · Pull request"
+   ]
+  },
   "TabNav": {
    "count": 1,
    "screens": [
@@ -74,6 +80,12 @@
    "count": 2,
    "screens": [
     "2 · Pull request"
+   ]
+  },
+  "MergeBanner (old)": {
+   "count": 1,
+   "screens": [
+    "3 · Merge box"
    ]
   },
   "ProgressBar": {
@@ -158,12 +170,63 @@
    "inherited": true
   },
   {
+   "kind": "contrast-dark",
+   "screen": "2 · Pull request",
+   "node": "8908:673",
+   "msg": "“marta-ruiz” is fine in light but 1.09:1 in dark mode (#f0f6fc on #ffffff)",
+   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+   "parents": [
+    "8908:672"
+   ]
+  },
+  {
+   "kind": "contrast-dark",
+   "screen": "2 · Pull request",
+   "node": "8908:674",
+   "msg": "“Looks good. Can we check the 24px target size ag” is fine in light but 1.09:1 in dark mode (#f0f6fc on #ffffff)",
+   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+   "parents": [
+    "8908:672"
+   ]
+  },
+  {
+   "kind": "hardcoded",
+   "screen": "2 · Pull request",
+   "node": "8908:672",
+   "msg": "“Frame” background is #ffffff by hand",
+   "fix": "Bind it to bgColor/default (or the right bg token) so it switches in dark mode"
+  },
+  {
+   "kind": "deprecated",
+   "screen": "2 · Pull request",
+   "node": "8911:540",
+   "component": "Pagehead",
+   "msg": "Pagehead is deprecated in Primer's docs",
+   "fix": "Use PageHeader"
+  },
+  {
+   "kind": "deprecated",
+   "screen": "2 · Pull request",
+   "node": "8908:614",
+   "component": "TabNav",
+   "msg": "TabNav is deprecated in Primer's docs",
+   "fix": "Use UnderlineNav"
+  },
+  {
    "kind": "detached",
    "screen": "3 · Merge box",
    "node": "8909:58",
    "component": "Button",
    "msg": "Button is detached from the library",
    "fix": "Swap it back to a Button instance so library updates reach it"
+  },
+  {
+   "kind": "missing",
+   "screen": "3 · Merge box",
+   "node": "8911:538",
+   "component": "MergeBanner (old)",
+   "msg": "MergeBanner (old) isn't in the library: its main component was deleted or never published",
+   "fix": "Replace it with a library component (InlineMessage or Banner)"
   },
   {
    "kind": "variant",
@@ -187,11 +250,34 @@
    "fix": "Use a size option (e.g. size=small) instead of resizing it"
   },
   {
+   "kind": "contrast-dark",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1434",
+   "msg": "“Danger zone” is fine in light but 1.20:1 in dark mode (#1f2328 on #0d1117)",
+   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+   "parents": []
+  },
+  {
+   "kind": "contrast-dark",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1459",
+   "msg": "“Once you delete a repository, there is no going ” is fine in light but 1.15:1 in dark mode (#9198a1 on #f85149)",
+   "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+   "parents": []
+  },
+  {
    "kind": "hardcoded",
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1434",
    "msg": "“Danger zone” uses #1f2328 by hand, the same value as fgColor/default",
    "fix": "Bind it to fgColor/default so theme and dark mode reach it"
+  },
+  {
+   "kind": "spacing",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1446",
+   "msg": "“Danger row” padding is 13px, off Primer's spacing scale",
+   "fix": "Use 12px (a base/size token)"
   },
   {
    "kind": "token",
@@ -260,6 +346,38 @@
     "node": "8908:1300",
     "what": "'Save changes' Button squeezed to 24px tall by hand instead of using size=small",
     "found": true
+   },
+   {
+    "id": "B8",
+    "kind": "contrast-dark",
+    "screen": "2 · Pull request",
+    "node": "8908:672",
+    "what": "Comment box background set to #ffffff by hand: fine in light, white text on white in dark mode",
+    "found": true
+   },
+   {
+    "id": "B9",
+    "kind": "spacing",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1446",
+    "what": "Danger row side padding set to 13px, off Primer's spacing scale",
+    "found": true
+   },
+   {
+    "id": "B10",
+    "kind": "missing",
+    "screen": "3 · Merge box",
+    "node": "8911:538",
+    "what": "'MergeBanner (old)' instance whose main component was deleted",
+    "found": true
+   },
+   {
+    "id": "B11",
+    "kind": "deprecated",
+    "screen": "2 · Pull request",
+    "node": "8911:540",
+    "what": "Pagehead instance, deprecated in docs",
+    "found": true
    }
   ],
   "extra": [
@@ -291,6 +409,21 @@
     "inherited": true
    },
    {
+    "kind": "hardcoded",
+    "screen": "2 · Pull request",
+    "node": "8908:672",
+    "msg": "“Frame” background is #ffffff by hand",
+    "fix": "Bind it to bgColor/default (or the right bg token) so it switches in dark mode"
+   },
+   {
+    "kind": "deprecated",
+    "screen": "2 · Pull request",
+    "node": "8908:614",
+    "component": "TabNav",
+    "msg": "TabNav is deprecated in Primer's docs",
+    "fix": "Use UnderlineNav"
+   },
+   {
     "kind": "variant",
     "screen": "4 · Settings · General",
     "screens": [
@@ -302,6 +435,22 @@
     "msg": "SegmentedControl uses size=medium, missing in code",
     "fix": "Use a size that ships in code, or add medium to code and docs first",
     "inherited": true
+   },
+   {
+    "kind": "contrast-dark",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1434",
+    "msg": "“Danger zone” is fine in light but 1.20:1 in dark mode (#1f2328 on #0d1117)",
+    "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+    "parents": []
+   },
+   {
+    "kind": "contrast-dark",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1459",
+    "msg": "“Once you delete a repository, there is no going ” is fine in light but 1.15:1 in dark mode (#9198a1 on #f85149)",
+    "fix": "Something under it is set by hand and doesn't switch with the theme; bind it to a token",
+    "parents": []
    }
   ]
  }

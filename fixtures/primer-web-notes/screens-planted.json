@@ -49,6 +49,34 @@
       "screen": "4 \u00b7 Settings \u00b7 General",
       "node": "8908:1300",
       "what": "'Save changes' Button squeezed to 24px tall by hand instead of using size=small"
+    },
+    {
+      "id": "B8",
+      "kind": "contrast-dark",
+      "screen": "2 \u00b7 Pull request",
+      "node": "8908:672",
+      "what": "Comment box background set to #ffffff by hand: fine in light, white text on white in dark mode"
+    },
+    {
+      "id": "B9",
+      "kind": "spacing",
+      "screen": "5 \u00b7 Settings \u00b7 Danger zone",
+      "node": "8908:1446",
+      "what": "Danger row side padding set to 13px, off Primer's spacing scale"
+    },
+    {
+      "id": "B10",
+      "kind": "missing",
+      "screen": "3 \u00b7 Merge box",
+      "node": "8911:538",
+      "what": "'MergeBanner (old)' instance whose main component was deleted"
+    },
+    {
+      "id": "B11",
+      "kind": "deprecated",
+      "screen": "2 \u00b7 Pull request",
+      "node": "8911:540",
+      "what": "Pagehead instance, deprecated in docs"
     }
   ]
 }

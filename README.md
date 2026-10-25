@@ -82,7 +82,7 @@ npm test
 - **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
 - **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
 - **Nebius Serverless is ready, not live.** The workflow and image exist, but our credits cover Token Factory only, so the demo runs on Vercel with the same server.
-- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Only light mode is checked for contrast, and spacing overrides aren't checked yet. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
+- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Contrast is checked in light and dark only (not the high-contrast or colour-blind modes), and checks are rules, not a model, so a break with no rule (e.g. wrong copy, a swapped icon) still slips through. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
 - **One design system.** Everything is tuned on Primer; another system needs its own source adapters.
 - **Accessibility:** the agent blocks any fix that breaks WCAG AA text contrast, and the console's own text tokens meet AA in light and dark. It hasn't had a full screen-reader audit.
 
@@ -95,8 +95,13 @@ We planted breaks in the GitHub screens on purpose (`fixtures/primer-web-notes/s
 | 1 | 5 obvious breaks (detached Button, hand-set StateLabel colour, InlineMessage option code lacks, low-contrast text, token code lacks) | 5 of 5 | — |
 | 2 | +2 subtle ones: a heading set to the exact hex of `fgColor/default` but unbound, and a Button squeezed to 24px instead of `size=small` | 5 of 7 | Missed both: the colour looked right and no rule compared sizes |
 | 3 | same 7 | 7 of 7 | New rules: unbound text colour (and which token has that value), instance height vs its size option |
+| 4 | +4 harder ones: a comment box set to white by hand (fine in light, white on white in dark), 13px padding, an instance whose main component was deleted, a deprecated Pagehead | 7 of 11 | Light mode only, no spacing rule, no idea what "deprecated" or "deleted" looks like |
+| 5 | same 11 | 11 of 11 | Contrast in dark mode too (resolving Primer's mode variables), spacing vs Primer's scale, components missing from the library, deprecated status from the docs |
 
-The run also found 3 problems we didn't plant, all inherited from the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs, and SegmentedControl's `size=medium` is missing in code.
+It also found problems we didn't plant:
+- From the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs; SegmentedControl's `size=medium` is missing in code.
+- In our own screens: we built the PR page with TabNav, which Primer's docs mark deprecated (use UnderlineNav).
+- Knock-on effects in dark mode: the hand-set "Danger zone" heading (1.20:1) and the row filled with a token code lacks (1.15:1).
 
 ## Built during the hackathon
 
