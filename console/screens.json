@@ -1,0 +1,308 @@
+{
+ "screens": [
+  {
+   "id": "8908:36",
+   "name": "1 · Pull requests",
+   "instances": 12
+  },
+  {
+   "id": "8908:478",
+   "name": "2 · Pull request",
+   "instances": 6
+  },
+  {
+   "id": "8908:681",
+   "name": "3 · Merge box",
+   "instances": 7
+  },
+  {
+   "id": "8908:841",
+   "name": "4 · Settings · General",
+   "instances": 5
+  },
+  {
+   "id": "8908:1306",
+   "name": "5 · Settings · Danger zone",
+   "instances": 4
+  }
+ ],
+ "usage": {
+  "Button": {
+   "count": 6,
+   "screens": [
+    "1 · Pull requests",
+    "3 · Merge box",
+    "4 · Settings · General",
+    "5 · Settings · Danger zone"
+   ]
+  },
+  "StateLabel": {
+   "count": 6,
+   "screens": [
+    "1 · Pull requests",
+    "2 · Pull request"
+   ]
+  },
+  "Label": {
+   "count": 6,
+   "screens": [
+    "1 · Pull requests",
+    "2 · Pull request"
+   ]
+  },
+  "Pagination": {
+   "count": 1,
+   "screens": [
+    "1 · Pull requests"
+   ]
+  },
+  "TabNav": {
+   "count": 1,
+   "screens": [
+    "2 · Pull request"
+   ]
+  },
+  "InlineMessage": {
+   "count": 3,
+   "screens": [
+    "2 · Pull request",
+    "3 · Merge box",
+    "5 · Settings · Danger zone"
+   ]
+  },
+  "Avatar": {
+   "count": 2,
+   "screens": [
+    "2 · Pull request"
+   ]
+  },
+  "ProgressBar": {
+   "count": 1,
+   "screens": [
+    "3 · Merge box"
+   ]
+  },
+  "NavList": {
+   "count": 1,
+   "screens": [
+    "4 · Settings · General"
+   ]
+  },
+  "SegmentedControl": {
+   "count": 1,
+   "screens": [
+    "4 · Settings · General"
+   ]
+  },
+  "ToggleSwitch": {
+   "count": 2,
+   "screens": [
+    "4 · Settings · General"
+   ]
+  }
+ },
+ "findings": [
+  {
+   "kind": "variant",
+   "screen": "1 · Pull requests",
+   "screens": [
+    "1 · Pull requests",
+    "2 · Pull request"
+   ],
+   "count": 6,
+   "node": "8908:351",
+   "component": "StateLabel",
+   "msg": "StateLabel uses variant=pull request, in Figma, not in docs",
+   "fix": "Use a variant that ships in code, or add pull request to code and docs first",
+   "inherited": true
+  },
+  {
+   "kind": "hardcoded",
+   "screen": "1 · Pull requests",
+   "node": "8908:386",
+   "component": "StateLabel",
+   "msg": "StateLabel colour set to #8a5cf5 by hand instead of bgColor/done-emphasis",
+   "fix": "Reset the override so it uses bgColor/done-emphasis again"
+  },
+  {
+   "kind": "contrast",
+   "screen": "1 · Pull requests",
+   "node": "8908:396",
+   "msg": "“#4810 merged last week by laura-g” is 1.87:1 on #ffffff, needs 4.5:1",
+   "fix": "Use fgColor/muted (or darker) instead of #b8bec6"
+  },
+  {
+   "kind": "variant",
+   "screen": "2 · Pull request",
+   "screens": [
+    "2 · Pull request"
+   ],
+   "count": 1,
+   "node": "8908:608",
+   "component": "StateLabel",
+   "msg": "StateLabel uses size=normal, in Figma, not in docs",
+   "fix": "Use a size that ships in code, or add normal to code and docs first",
+   "inherited": true
+  },
+  {
+   "kind": "variant",
+   "screen": "2 · Pull request",
+   "screens": [
+    "2 · Pull request"
+   ],
+   "count": 1,
+   "node": "8909:160",
+   "component": "InlineMessage",
+   "msg": "InlineMessage uses variant=unavailable, in Figma, not in docs",
+   "fix": "Use a variant that ships in code, or add unavailable to code and docs first",
+   "inherited": true
+  },
+  {
+   "kind": "detached",
+   "screen": "3 · Merge box",
+   "node": "8909:58",
+   "component": "Button",
+   "msg": "Button is detached from the library",
+   "fix": "Swap it back to a Button instance so library updates reach it"
+  },
+  {
+   "kind": "variant",
+   "screen": "4 · Settings · General",
+   "screens": [
+    "4 · Settings · General"
+   ],
+   "count": 1,
+   "node": "8908:1236",
+   "component": "SegmentedControl",
+   "msg": "SegmentedControl uses size=medium, missing in code",
+   "fix": "Use a size that ships in code, or add medium to code and docs first",
+   "inherited": true
+  },
+  {
+   "kind": "resized",
+   "screen": "4 · Settings · General",
+   "node": "8908:1300",
+   "component": "Button",
+   "msg": "Button is 24px tall; its medium size is 32px",
+   "fix": "Use a size option (e.g. size=small) instead of resizing it"
+  },
+  {
+   "kind": "hardcoded",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1434",
+   "msg": "“Danger zone” uses #1f2328 by hand, the same value as fgColor/default",
+   "fix": "Bind it to fgColor/default so theme and dark mode reach it"
+  },
+  {
+   "kind": "token",
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1456",
+   "msg": "diffBlob/deletion/bgColor/line isn't in @primer/primitives",
+   "fix": "Use a token code ships, or add diffBlob/deletion/bgColor/line to primitives"
+  }
+ ],
+ "source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
+ "pageId": "8908:35",
+ "test": {
+  "planted": [
+   {
+    "id": "B1",
+    "kind": "detached",
+    "screen": "3 · Merge box",
+    "node": "8909:58",
+    "what": "'Resolve conflicts' Button detached from the library",
+    "found": true
+   },
+   {
+    "id": "B2",
+    "kind": "hardcoded",
+    "screen": "1 · Pull requests",
+    "node": "8908:386",
+    "what": "Merged StateLabel background set to #8a5cf5 by hand instead of its token",
+    "found": true
+   },
+   {
+    "id": "B3",
+    "kind": "variant",
+    "screen": "2 · Pull request",
+    "node": "8909:160",
+    "what": "InlineMessage variant 'unavailable', which docs and code don't have",
+    "found": true
+   },
+   {
+    "id": "B4",
+    "kind": "contrast",
+    "screen": "1 · Pull requests",
+    "node": "8908:396",
+    "what": "Row meta text set to #b8bec6 on white (below AA)",
+    "found": true
+   },
+   {
+    "id": "B5",
+    "kind": "token",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1456",
+    "what": "Danger row filled with diffBlob/deletion/bgColor/line, a Figma variable code doesn't ship",
+    "found": true
+   },
+   {
+    "id": "B6",
+    "kind": "hardcoded",
+    "screen": "5 · Settings · Danger zone",
+    "node": "8908:1434",
+    "what": "'Danger zone' heading set to #1f2328 by hand: looks identical to fgColor/default, but it's unbound",
+    "found": true
+   },
+   {
+    "id": "B7",
+    "kind": "resized",
+    "screen": "4 · Settings · General",
+    "node": "8908:1300",
+    "what": "'Save changes' Button squeezed to 24px tall by hand instead of using size=small",
+    "found": true
+   }
+  ],
+  "extra": [
+   {
+    "kind": "variant",
+    "screen": "1 · Pull requests",
+    "screens": [
+     "1 · Pull requests",
+     "2 · Pull request"
+    ],
+    "count": 6,
+    "node": "8908:351",
+    "component": "StateLabel",
+    "msg": "StateLabel uses variant=pull request, in Figma, not in docs",
+    "fix": "Use a variant that ships in code, or add pull request to code and docs first",
+    "inherited": true
+   },
+   {
+    "kind": "variant",
+    "screen": "2 · Pull request",
+    "screens": [
+     "2 · Pull request"
+    ],
+    "count": 1,
+    "node": "8908:608",
+    "component": "StateLabel",
+    "msg": "StateLabel uses size=normal, in Figma, not in docs",
+    "fix": "Use a size that ships in code, or add normal to code and docs first",
+    "inherited": true
+   },
+   {
+    "kind": "variant",
+    "screen": "4 · Settings · General",
+    "screens": [
+     "4 · Settings · General"
+    ],
+    "count": 1,
+    "node": "8908:1236",
+    "component": "SegmentedControl",
+    "msg": "SegmentedControl uses size=medium, missing in code",
+    "fix": "Use a size that ships in code, or add medium to code and docs first",
+    "inherited": true
+   }
+  ]
+ }
+}

@@ -1086,7 +1086,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="run-line" id="q-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">To decide<small>Conflicts first: they block certification</small></div><div class="queue" id="queue-full"></div>
-            <div class="sec-h" style="margin-top:28px">Other components<small>Suggestions from Nemotron Ultra · they don't block anything</small></div><div class="group" id="q-other"></div></section>
+            <div class="sec-h" style="margin-top:28px">Other components<small>Suggestions from Nemotron Ultra · they don't block anything</small></div><div class="group" id="q-other"></div>
+            <div class="sec-h" style="margin-top:28px">In screens<small id="q-scr-note"></small></div><div class="group" id="q-screens"></div></section>
           <aside class="act-side" aria-label="Details">
             <section class="side-panel"><div class="side-h">Your progress</div><div id="q-prog"></div></section>
             <section class="side-panel"><div class="side-h">What it unblocks</div><div id="q-unblock"></div></section>
@@ -1525,6 +1526,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
     const OT = (D.components || []).filter((c) => c.triage);
     $("#q-other").innerHTML = OT.length ? OT.map((c) => `<button class="rep-row q-ot" data-comp="${esc(c.name)}"><div><div class="t">${esc(c.name)} <span class="s">${c.cat.total - c.cat.passed} off</span></div><div class="s">${esc(c.triage.fix)}</div></div><div class="v num">${Math.round(c.triage.confidence * 100)}%</div></button>`).join("") : `<div class="empty">Every other component is in sync.</div>`;
+    if (D.screens) { const SC = D.screens, KL = { detached: "Detached", hardcoded: "Set by hand", variant: "Option not in code", contrast: "Contrast", token: "Token not in code", resized: "Resized by hand" }, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
+      const t = SC.test, made = SC.findings.filter((f) => !f.inherited), inh = SC.findings.filter((f) => f.inherited);
+      $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}`;
+      $("#q-screens").innerHTML = [...made, ...inh].map((f) => `<div class="rep-row"><div><div class="t"><span class="tag${f.inherited ? "" : " accent"}">${KL[f.kind] || f.kind}</span> ${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`).join(""); }
     document.querySelectorAll("#q-other [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
     renderQueueSide(show); $("#queue-pr").innerHTML = show ? prTag() : "";
     const open = show ? openItems().length : 0;
@@ -1834,11 +1839,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#comp-title").textContent = D.system.component; $("#comp-lede").textContent = `${r.passed.toLocaleString()} of ${r.total.toLocaleString()} checks in sync across Figma, code, Storybook and docs · ${D.system.theme} mode. Below: what fails and what the agent changed.`; }
   function affLink(k) {
     const f = { Code: "ButtonBase.css", Storybook: "Button.stories.tsx", "Code and docs": "components.json" }[k];
-    return k === "Figma" ? xlink(figmaURL(), "Figma") : f ? xlink(ghFile(f), "GitHub") : "";
+    return k === "Screens" && D.screens ? xlink(`${D.screens.source}?node-id=${D.screens.pageId.replace(":", "-")}`, "Figma") : k === "Figma" ? xlink(figmaURL(), "Figma") : f ? xlink(ghFile(f), "GitHub") : "";
   }
   function impactHTML(list) {
     const rows = list.filter((x) => !x.startsWith("Notified:")), note = list.find((x) => x.startsWith("Notified:"));
-    const IC = { Figma: "pen", Code: "code", Storybook: "list", "Code and docs": "book" };
+    const IC = { Figma: "pen", Code: "code", Storybook: "list", "Code and docs": "book", Screens: "grid" };
+    const U = D.screens?.usage?.Button; if (U && !rows.some((x) => x.startsWith("Screens:"))) rows.push(`Screens: Button is used ${U.count} times in ${U.screens.length} GitHub screens (${U.screens.map((x) => x.replace(/^\d+ · /, "")).join(", ")})`);
     return `<div class="aff"><div class="aff-h">Affects</div>${rows.map((x) => { const [k, ...v] = x.split(": "); return `<div class="aff-r"><svg><use href="#i-${IC[k] || "grid"}"/></svg><b>${esc(k)}</b><span>${esc(v.join(": "))}</span>${affLink(k)}</div>`; }).join("")}${note ? `<div class="aff-n"><svg viewBox="0 0 16 16"><path d="M8 2.5a3.5 3.5 0 0 0-3.5 3.5v2.3L3.2 10.6h9.6L11.5 8.3V6A3.5 3.5 0 0 0 8 2.5zM6.5 12.5a1.5 1.5 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>${esc(note.replace("Notified: ", "Who should know: "))}</div>` : ""}</div>`;
   }
   function applyRole() {

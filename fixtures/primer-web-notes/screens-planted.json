@@ -1,0 +1,54 @@
+{
+  "note": "Breaks planted on purpose in the 'Seamline \u00b7 Test flows' page of the Primer Web Figma file, 2026-10-25. Ground truth for the screen checks.",
+  "breaks": [
+    {
+      "id": "B1",
+      "kind": "detached",
+      "screen": "3 \u00b7 Merge box",
+      "node": "8909:58",
+      "what": "'Resolve conflicts' Button detached from the library"
+    },
+    {
+      "id": "B2",
+      "kind": "hardcoded",
+      "screen": "1 \u00b7 Pull requests",
+      "node": "8908:386",
+      "what": "Merged StateLabel background set to #8a5cf5 by hand instead of its token"
+    },
+    {
+      "id": "B3",
+      "kind": "variant",
+      "screen": "2 \u00b7 Pull request",
+      "node": "8909:160",
+      "what": "InlineMessage variant 'unavailable', which docs and code don't have"
+    },
+    {
+      "id": "B4",
+      "kind": "contrast",
+      "screen": "1 \u00b7 Pull requests",
+      "node": "8908:396",
+      "what": "Row meta text set to #b8bec6 on white (below AA)"
+    },
+    {
+      "id": "B5",
+      "kind": "token",
+      "screen": "5 \u00b7 Settings \u00b7 Danger zone",
+      "node": "8908:1456",
+      "what": "Danger row filled with diffBlob/deletion/bgColor/line, a Figma variable code doesn't ship"
+    },
+    {
+      "id": "B6",
+      "kind": "hardcoded",
+      "screen": "5 \u00b7 Settings \u00b7 Danger zone",
+      "node": "8908:1434",
+      "what": "'Danger zone' heading set to #1f2328 by hand: looks identical to fgColor/default, but it's unbound"
+    },
+    {
+      "id": "B7",
+      "kind": "resized",
+      "screen": "4 \u00b7 Settings \u00b7 General",
+      "node": "8908:1300",
+      "what": "'Save changes' Button squeezed to 24px tall by hand instead of using size=small"
+    }
+  ]
+}

@@ -29,6 +29,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
 - **Agent** (`src/demo/repair.ts`): certify → repair → escalate, with an undo journal and a trust ledger.
 - **Certification** (`src/certify-primer.ts`): shared tokens, links kept since last certification, Button properties by value, options in docs/code/Figma/Storybook, docs in Figma, WCAG AA text contrast.
 - **All 74 components** (`src/certify-catalog.ts`, `src/triage-catalog.ts`): options, tokens and status checked across docs, code and the real Figma file; Nemotron Ultra suggests one fix per drifting component.
+- **Screens** (`src/certify-screens.ts`): five GitHub screens (pull requests, PR, merge box, settings, danger zone) built from Primer Web instances in the Figma file. Seamline counts where each component is used and finds what breaks there: detached instances, colours set by hand, options code doesn't ship, text below AA contrast, tokens code doesn't have, components resized by hand.
 - **Pull request + CI** (`ds-lab pr`, `.github/workflows/ds-sync.yml`): pushes the agent's workspace, opens the PR, and the check fails until the lead answers.
 - **Benchmark** (`lab/run_sandboxes.py`): the same five changes synced four ways, each strategy in its own Token Factory Sandbox forked from one checkpoint.
 - **Console** (`console/`): one HTML page for the lead (Overview, Activity, Decisions, Report, Sources, How it works), role views for designers and engineers.
@@ -81,8 +82,21 @@ npm test
 - **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
 - **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
 - **Nebius Serverless is ready, not live.** The workflow and image exist, but our credits cover Token Factory only, so the demo runs on Vercel with the same server.
+- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Only light mode is checked for contrast, and spacing overrides aren't checked yet. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
 - **One design system.** Everything is tuned on Primer; another system needs its own source adapters.
 - **Accessibility:** the agent blocks any fix that breaks WCAG AA text contrast, and the console's own text tokens meet AA in light and dark. It hasn't had a full screen-reader audit.
+
+## Break tests on screens
+
+We planted breaks in the GitHub screens on purpose (`fixtures/primer-web-notes/screens-planted.json`) and ran the checks against them (`test/screens.test.ts`).
+
+| Round | Planted | Found | What changed |
+|---|---|---|---|
+| 1 | 5 obvious breaks (detached Button, hand-set StateLabel colour, InlineMessage option code lacks, low-contrast text, token code lacks) | 5 of 5 | — |
+| 2 | +2 subtle ones: a heading set to the exact hex of `fgColor/default` but unbound, and a Button squeezed to 24px instead of `size=small` | 5 of 7 | Missed both: the colour looked right and no rule compared sizes |
+| 3 | same 7 | 7 of 7 | New rules: unbound text colour (and which token has that value), instance height vs its size option |
+
+The run also found 3 problems we didn't plant, all inherited from the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs, and SegmentedControl's `size=medium` is missing in code.
 
 ## Built during the hackathon
 
