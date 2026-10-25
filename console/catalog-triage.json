@@ -1,64 +1,64 @@
 {
- "at": "2026-10-24T11:13:16.045Z",
- "ms": 1639,
+ "at": "2026-10-25T11:42:39.866Z",
+ "ms": 1457,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 396,
-   "ms": 13589
+   "completion": 349,
+   "ms": 13931
   }
  },
  "items": {
+  "Pagehead": {
+   "fix": "Update Figma status from Alpha to deprecated to match docs",
+   "side": "figma",
+   "confidence": 0.9
+  },
   "DataTable": {
-   "fix": "Update Figma status label from Draft to alpha",
+   "fix": "Update Figma status from Draft to alpha to match docs",
    "side": "figma",
    "confidence": 0.95
   },
   "ActionList": {
-   "fix": "Add the full variant to the ActionList component in @primer/react to match the docs specification",
+   "fix": "Add variant=full to the component implementation",
    "side": "code",
-   "confidence": 0.9
-  },
-  "SelectPanel": {
-   "fix": "Add variant=anchored to Figma SelectPanel component",
-   "side": "figma",
-   "confidence": 0.85
-  },
-  "InlineMessage": {
-   "fix": "Remove variant=unvailable from docs options and add variant=unavailable to docs options",
-   "side": "docs",
-   "confidence": 0.9
-  },
-  "SegmentedControl": {
-   "fix": "Add medium size variant to SegmentedControl in code to match docs specification",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "TabNav": {
-   "fix": "Update Figma TabNav status to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "NavList": {
-   "fix": "Set NavList status to alpha in Figma to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "Pagehead": {
-   "fix": "Set Pagehead status to deprecated in Figma.",
-   "side": "figma",
    "confidence": 0.9
   },
   "ProgressBar": {
-   "fix": "Remove --progressBar-track-borderColor from docs or add the matching variable in Figma.",
-   "side": "docs",
-   "confidence": 0.5
+   "fix": "Remove --progressBar-track-borderColor or add matching Figma variable",
+   "side": "code",
+   "confidence": 0.7
+  },
+  "SelectPanel": {
+   "fix": "Add variant=anchored to Figma SelectPanel component set.",
+   "side": "figma",
+   "confidence": 0.95
   },
   "StateLabel": {
-   "fix": "Add variant=small, variant=normal, size=medium to Figma StateLabel; add variant=issue, variant=pull request, size=normal to docs; add Figma variables for --bgColor-draft-emphasis and --borderColor-draft-emphasis",
+   "fix": "Add small and normal variants to Figma StateLabel component to match docs and code",
    "side": "figma",
-   "confidence": 0.85
+   "confidence": 0.9
+  },
+  "SegmentedControl": {
+   "fix": "Add size=medium token to the SegmentedControl component in code",
+   "side": "code",
+   "confidence": 1
+  },
+  "InlineMessage": {
+   "fix": "Add variant=unavailable to the docs options list.",
+   "side": "docs",
+   "confidence": 0.75
+  },
+  "TabNav": {
+   "fix": "Update Figma component status from Alpha to deprecated",
+   "side": "figma",
+   "confidence": 1
+  },
+  "NavList": {
+   "fix": "Update the NavList component status from Beta to alpha in Figma",
+   "side": "figma",
+   "confidence": 0.95
   }
  }
 }
