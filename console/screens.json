@@ -341,11 +341,29 @@
   },
   {
    "kind": "meaning",
-   "screen": "5 · Settings · Danger zone",
-   "node": "8908:1450",
-   "component": "Button",
-   "msg": "Danger variant used for a non‑destructive \"Save changes\" action.",
-   "fix": "Use a neutral variant (e.g., default or primary) for the save button.",
+   "screen": "2 · Pull request",
+   "node": "8908:614",
+   "component": "TabNav",
+   "msg": "Label includes the word \"Button\" which does not correspond to any tab in the navigation.",
+   "fix": "Remove \"Button\" from the label so it lists only the actual tab names (Conversation, Commits, Checks, Files changed).",
+   "by": "Nemotron Super"
+  },
+  {
+   "kind": "meaning",
+   "screen": "4 · Settings · General",
+   "node": "8908:1281",
+   "component": "ToggleSwitch",
+   "msg": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
+   "fix": "Change the label to the specific setting name, e.g., \"Allow auto-merge\".",
+   "by": "Nemotron Super"
+  },
+  {
+   "kind": "meaning",
+   "screen": "4 · Settings · General",
+   "node": "8908:1293",
+   "component": "ToggleSwitch",
+   "msg": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
+   "fix": "Change the label to the specific setting name, e.g., \"Automatically delete head branches\".",
    "by": "Nemotron Super"
   },
   {
@@ -353,8 +371,8 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1460",
    "component": "Button",
-   "msg": "Link‑external icon contradicts the delete action; delete should use the trash icon.",
-   "fix": "Replace link‑external icon with trash icon (Octicon trash).",
+   "msg": "The link-external icon suggests opening another page, which contradicts the destructive delete action.",
+   "fix": "Replace link-external with the trash icon (or remove the icon).",
    "by": "Nemotron Super"
   }
  ],
@@ -464,7 +482,7 @@
     "screen": "5 · Settings · Danger zone",
     "node": "8908:1450",
     "what": "Danger Button in the 'Archive this repository' row says 'Save changes'",
-    "found": true
+    "found": false
    }
   ],
   "extra": [
@@ -591,6 +609,33 @@
     "node": "8908:1459",
     "msg": "fgColor/muted on diffBlob/deletion/bgColor/line is 1.15:1 in dark (+4 modes)",
     "fix": "A Primer token pair, not a screen mistake: raise fgColor/muted in dark, dark dimmed, dark high contrast, dark protanopia deuteranopia, dark tritanopia"
+   },
+   {
+    "kind": "meaning",
+    "screen": "2 · Pull request",
+    "node": "8908:614",
+    "component": "TabNav",
+    "msg": "Label includes the word \"Button\" which does not correspond to any tab in the navigation.",
+    "fix": "Remove \"Button\" from the label so it lists only the actual tab names (Conversation, Commits, Checks, Files changed).",
+    "by": "Nemotron Super"
+   },
+   {
+    "kind": "meaning",
+    "screen": "4 · Settings · General",
+    "node": "8908:1281",
+    "component": "ToggleSwitch",
+    "msg": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
+    "fix": "Change the label to the specific setting name, e.g., \"Allow auto-merge\".",
+    "by": "Nemotron Super"
+   },
+   {
+    "kind": "meaning",
+    "screen": "4 · Settings · General",
+    "node": "8908:1293",
+    "component": "ToggleSwitch",
+    "msg": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
+    "fix": "Change the label to the specific setting name, e.g., \"Automatically delete head branches\".",
+    "by": "Nemotron Super"
    }
   ]
  }
