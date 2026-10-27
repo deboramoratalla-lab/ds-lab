@@ -508,7 +508,8 @@
     "diff": "~ bindings · variant=danger, size=small · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=medium · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=danger, size=large · bg: \"button/default/bgColor/rest\" → \"button/danger/bgColor/rest\"\n~ bindings · variant=invisible, size=small · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=medium · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\"\n~ bindings · variant=invisible, size=large · fg: \"button/invisible/fgColor/rest\" → \"button/default/fgColor/rest\""
    }
   ],
-  "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/11"
+  "url": "https://github.com/deboramoratalla-lab/ds-lab/pull/12",
+  "branch": "ds-sync/2026-10-27-12-23"
  },
  "links": {
   "repo": "https://github.com/deboramoratalla-lab/ds-lab",
