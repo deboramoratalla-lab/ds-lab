@@ -1,64 +1,64 @@
 {
- "at": "2026-10-26T13:16:24.409Z",
- "ms": 1381,
+ "at": "2026-10-27T12:24:07.345Z",
+ "ms": 1525,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 403,
-   "ms": 11754
+   "completion": 377,
+   "ms": 12589
   }
  },
  "items": {
+  "NavList": {
+   "fix": "Update NavList status to alpha in Figma to match docs.",
+   "side": "figma",
+   "confidence": 0.95
+  },
+  "SegmentedControl": {
+   "fix": "Add size=medium to SegmentedControl in code to match docs and Figma",
+   "side": "code",
+   "confidence": 0.9
+  },
   "SelectPanel": {
    "fix": "Add variant=anchored to Figma SelectPanel component",
    "side": "figma",
    "confidence": 0.9
   },
+  "Pagehead": {
+   "fix": "Set Figma component status to deprecated to match docs",
+   "side": "figma",
+   "confidence": 0.9
+  },
   "DataTable": {
-   "fix": "Update Figma component status from Draft to alpha to match docs",
+   "fix": "Update Figma status from Draft to alpha for DataTable",
    "side": "figma",
    "confidence": 0.95
   },
-  "NavList": {
-   "fix": "Change Figma status from Beta to alpha to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "TabNav": {
-   "fix": "Change Figma status to deprecated to match docs.",
+  "ProgressBar": {
+   "fix": "Remove --progressBar-track-borderColor from Primer Web Figma library as it does not exist in the documented component tokens.",
    "side": "figma",
    "confidence": 0.9
   },
   "ActionList": {
-   "fix": "Add the 'full' variant to the code implementation for ActionList.",
+   "fix": "Add the full variant to the code implementation",
    "side": "code",
    "confidence": 0.9
   },
-  "SegmentedControl": {
-   "fix": "Add the missing size=medium option to the code implementation.",
-   "side": "code",
-   "confidence": 0.95
-  },
-  "Pagehead": {
-   "fix": "Update Figma status from Alpha to deprecated to match docs.",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "StateLabel": {
-   "fix": "Add variant=small, variant=normal, size=medium to Figma StateLabel component; remove variant=issue, variant=pull request, size=normal from Figma StateLabel component",
+  "TabNav": {
+   "fix": "Update TabNav status to deprecated in Figma.",
    "side": "figma",
    "confidence": 0.95
   },
   "InlineMessage": {
-   "fix": "Add 'unavailable' variant to docs and Figma; remove 'unvailable' misspelling from Figma",
-   "side": "docs",
-   "confidence": 0.85
-  },
-  "ProgressBar": {
-   "fix": "Remove --progressBar-track-borderColor from docs and code unless a Figma variable is added to match it",
-   "side": "docs",
+   "fix": "add variant=unavailable to code; fix typo variant=unvailable to unavailable in docs",
+   "side": "code",
    "confidence": 0.7
+  },
+  "StateLabel": {
+   "fix": "Add small and normal variants, medium size, and draft-emphasis colour variables to Figma StateLabel",
+   "side": "figma",
+   "confidence": 0.9
   }
  }
 }

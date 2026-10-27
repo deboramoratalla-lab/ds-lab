@@ -1,63 +1,63 @@
 {
- "at": "2026-10-26T13:16:22.018Z",
+ "at": "2026-10-27T12:24:04.879Z",
  "model": "nvidia/nemotron-3-super-120b-a12b",
- "ms": 69030,
+ "ms": 49158,
  "calls": 15,
  "runs": 3,
  "issues": [
   {
-   "id": "8908:614",
-   "component": "TabNav",
-   "problem": "Label includes the word \"Button\" which does not correspond to any tab in the navigation.",
-   "fix": "Remove \"Button\" from the label so it lists only the actual tab names (Conversation, Commits, Checks, Files changed).",
-   "confidence": 0.88,
-   "screen": "2 · Pull request",
-   "votes": 2
-  },
-  {
    "id": "8908:1281",
    "component": "ToggleSwitch",
-   "problem": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
-   "fix": "Change the label to the specific setting name, e.g., \"Allow auto-merge\".",
+   "problem": "Label 'On' does not describe the setting being toggled.",
+   "fix": "Replace with a descriptive label such as 'Allow auto-merge'.",
    "confidence": 0.9,
    "screen": "4 · Settings · General",
-   "votes": 3
+   "votes": 2
   },
   {
    "id": "8908:1293",
    "component": "ToggleSwitch",
-   "problem": "Label \"On\" does not convey what setting is being controlled, making the switch’s purpose unclear.",
-   "fix": "Change the label to the specific setting name, e.g., \"Automatically delete head branches\".",
+   "problem": "Label 'On' does not describe the setting being toggled.",
+   "fix": "Replace with a descriptive label such as 'Automatically delete head branch'.",
    "confidence": 0.9,
    "screen": "4 · Settings · General",
+   "votes": 2
+  },
+  {
+   "id": "8908:1450",
+   "component": "Button",
+   "problem": "Uses danger variant for a \"Save changes\" action which is not destructive.",
+   "fix": "Use primary or default variant instead of danger.",
+   "confidence": 0.9,
+   "screen": "5 · Settings · Danger zone",
    "votes": 3
   },
   {
    "id": "8908:1460",
    "component": "Button",
-   "problem": "The link-external icon suggests opening another page, which contradicts the destructive delete action.",
-   "fix": "Replace link-external with the trash icon (or remove the icon).",
-   "confidence": 0.95,
+   "problem": "Icon link‑external contradicts the delete action; delete should use trash icon.",
+   "fix": "Replace link‑external icon with trash (octicon trash) or remove the icon.",
+   "confidence": 0.9,
    "screen": "5 · Settings · Danger zone",
    "votes": 3
   }
  ],
  "dropped": [
   {
-   "id": "8909:61",
-   "component": "CounterLabel",
-   "problem": "CounterLabel has an empty label, providing no context for the numeric count.",
-   "fix": "Add a descriptive label such as \"approvals\" or \"checks\" to clarify what the count represents.",
-   "confidence": 0.8,
-   "screen": "3 · Merge box",
+   "id": "8908:614",
+   "component": "TabNav",
+   "problem": "label includes unexpected term \"Button\" not matching any tab",
+   "fix": "remove \"Button\" from label so tabs are Conversation, Commits, Checks, Files changed",
+   "confidence": 0.9,
+   "screen": "2 · Pull request",
    "votes": 1
   },
   {
-   "id": "8908:1450",
+   "id": "8908:1440",
    "component": "Button",
-   "problem": "Using danger variant for a non‑destructive \"Save changes\" action contradicts the variant’s meaning.",
-   "fix": "Change the variant to default or primary.",
-   "confidence": 0.95,
+   "problem": "Uses danger variant for a non‑destructive \"Change visibility\" action.",
+   "fix": "Change variant to default or secondary.",
+   "confidence": 0.9,
    "screen": "5 · Settings · Danger zone",
    "votes": 1
   }
