@@ -118,6 +118,20 @@ It also found problems we didn't plant:
 - In Primer itself, in the dark dimmed mode: `fgColor/accent` and `fgColor/link` on `bgColor/default` are 4.33:1 and `fgColor/danger` is 4.02:1, just under AA.
 - Knock-on effects in dark mode: the hand-set "Danger zone" heading (1.20:1) and the row filled with a token code lacks (1.15:1).
 
+## End-to-end test (28 Oct 2026)
+
+The whole loop on the real repo, no hand edits in between: agent run → pull request → ds-sync red → the lead's answers → ds-sync green.
+
+| Time (UTC) | What happened | Proof |
+|---|---|---|
+| 20:16 | `agent-run` started by hand (same job as the daily one): certify, Nemotron repairs, open the PR | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40761756541) |
+| 20:19 | PR #15 opened by the agent with 2 items waiting on a person | [PR #15](https://github.com/deboramoratalla-lab/ds-lab/pull/15) |
+| 20:19 | ds-sync **fails**, as it should while decisions are open | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40762192440) |
+| 20:20 | `apply-decisions` with the lead's answers (invisible button text: keep code; approve the rest), the same call "Send answers" makes | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40762351719) |
+| 20:20 | Commit "apply the design system lead's decisions" lands on the PR; ds-sync **passes** | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40762412932) |
+
+**What the test found.** The first try (PR #14) showed that since the agent started opening PRs on its own, GitHub had been holding every ds-sync run on them as "action required" (runs opened by `GITHUB_TOKEN` need approval), so the check never actually ran on PRs #4–#13. Fixed: after opening the PR or applying answers, the workflow approves the held run and starts ds-sync on the branch itself. PR #15 above ran with the fix and needed no manual step.
+
 ## Mutation test (`src/mutation-screens.ts`)
 
 Planted breaks are few and we chose them. So the rules are also tested with random ones: the script takes the real inventory of the six GitHub screens, applies **one** random break to a fresh copy (a text colour unbound, a colour set by hand on a component, text made too light, an off-scale gap, a component resized, detached, swapped for a deprecated one or for one that isn't in the library, a token code doesn't ship), re-runs the checks and asks two questions: did a finding of the right kind appear on the node we broke, and did anything appear anywhere else?
