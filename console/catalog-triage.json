@@ -1,64 +1,64 @@
 {
- "at": "2026-10-27T12:24:07.345Z",
- "ms": 1525,
+ "at": "2026-10-28T13:09:33.217Z",
+ "ms": 1295,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 10,
    "prompt": 3351,
-   "completion": 377,
-   "ms": 12589
+   "completion": 369,
+   "ms": 10771
   }
  },
  "items": {
-  "NavList": {
-   "fix": "Update NavList status to alpha in Figma to match docs.",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "SegmentedControl": {
-   "fix": "Add size=medium to SegmentedControl in code to match docs and Figma",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "SelectPanel": {
-   "fix": "Add variant=anchored to Figma SelectPanel component",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "Pagehead": {
-   "fix": "Set Figma component status to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.9
-  },
   "DataTable": {
-   "fix": "Update Figma status from Draft to alpha for DataTable",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "ProgressBar": {
-   "fix": "Remove --progressBar-track-borderColor from Primer Web Figma library as it does not exist in the documented component tokens.",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "ActionList": {
-   "fix": "Add the full variant to the code implementation",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "TabNav": {
-   "fix": "Update TabNav status to deprecated in Figma.",
+   "fix": "Update Figma status from Draft to alpha to match docs.",
    "side": "figma",
    "confidence": 0.95
   },
   "InlineMessage": {
-   "fix": "add variant=unavailable to code; fix typo variant=unvailable to unavailable in docs",
+   "fix": "add variant=unavailable to code",
    "side": "code",
    "confidence": 0.7
   },
-  "StateLabel": {
-   "fix": "Add small and normal variants, medium size, and draft-emphasis colour variables to Figma StateLabel",
+  "NavList": {
+   "fix": "Update the NavList component status from Beta to alpha in Figma to match docs",
    "side": "figma",
    "confidence": 0.9
+  },
+  "ProgressBar": {
+   "fix": "Remove --progressBar-track-borderColor token from Primer React code",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "SegmentedControl": {
+   "fix": "add size=medium tokens to the code implementation",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "ActionList": {
+   "fix": "add the full variant to the ActionList component in code",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "TabNav": {
+   "fix": "Update Figma status to deprecated",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "SelectPanel": {
+   "fix": "Add variant=anchored to Figma to match docs and code; add variant=popover to docs to match code and Figma",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "Pagehead": {
+   "fix": "Update Figma status badge to Deprecated to match docs.",
+   "side": "figma",
+   "confidence": 0.9
+  },
+  "StateLabel": {
+   "fix": "Add missing variant and size options to Figma; add missing variant and size options to docs; add --bgColor-draft-emphasis and --borderColor-draft-emphasis variables to Figma",
+   "side": "figma",
+   "confidence": 0.85
   }
  }
 }
