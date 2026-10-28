@@ -1,11 +1,11 @@
 {
- "at": "2026-10-28T20:11:56.399Z",
+ "at": "2026-10-28T20:18:57.026Z",
  "models": {
   "propose": "nvidia/nemotron-3-super-120b-a12b",
   "verify": "nvidia/Nemotron-3-Ultra-550b-a55b"
  },
  "runs": 3,
- "ms": 92614,
+ "ms": 124278,
  "calls": {
   "super": 18,
   "ultra": 5
@@ -14,31 +14,31 @@
   {
    "id": "8908:1450",
    "component": "Button",
-   "problem": "Label \"Save changes\" does not match the row action \"Archive this repository\".",
-   "fix": "Change label to \"Archive this repository\" or equivalent.",
+   "problem": "Label \"Save changes\" contradicts the row describing archiving the repository.",
+   "fix": "Change the label to \"Archive repository\" (or similar).",
    "screen": "5 · Settings · Danger zone",
    "votes": 3,
-   "verdict": "The button label 'Save changes' describes a generic form action while the row describes the destructive action 'Archive this repository', so the label does not name the action the row performs.",
+   "verdict": "The button label 'Save changes' does not match the destructive archive action described in the row text.",
    "ultra": true
   },
   {
    "id": "8908:1460",
    "component": "Button",
-   "problem": "Icon link-external suggests opening another page, conflicting with delete action.",
-   "fix": "Replace link-external icon with trash icon.",
+   "problem": "Icon link-external suggests opening another page, not deleting the repository.",
+   "fix": "Replace link-external icon with the trash octicon.",
    "screen": "5 · Settings · Danger zone",
    "votes": 3,
-   "verdict": "The link-external octicon signals navigation to another page, but the button performs a destructive delete action; a trash icon would match the action semantics.",
+   "verdict": "The link-external octicon signals navigation to another page, while the button's destructive action is deleting the repository; a trash icon would match the danger variant and the delete action.",
    "ultra": true
   },
   {
    "id": "8914:582",
    "component": "Button",
-   "problem": "Primary button used for Cancel action, which should not be primary.",
-   "fix": "Change variant to default (or secondary) for Cancel.",
+   "problem": "Primary button labelled 'Cancel' contradicts the row's main action of submitting a new issue.",
+   "fix": "Make 'Submit new issue' the primary button and change 'Cancel' to default or secondary.",
    "screen": "6 · New issue",
    "votes": 3,
-   "verdict": "The primary button is labeled \"Cancel\" while the form's main action \"Submit new issue\" appears as a sibling, violating the rule that the primary button must be the main form action, never Cancel.",
+   "verdict": "The primary button is labelled 'Cancel' while the row's main action is 'Submit new issue', violating the rule that the primary button names the form's main action.",
    "ultra": true
   }
  ],
@@ -46,21 +46,21 @@
   {
    "id": "8911:540",
    "component": "🛑 Pagehead [DEPRECATED]",
-   "problem": "Label \"Title\" contradicts the row which shows the actual pull request title.",
-   "fix": "Display the pull request title instead of the static word \"Title\".",
+   "problem": "The label \"Title\" is static and does not match the actual pull‑request title shown in the row.",
+   "fix": "Replace the static label with the dynamic PR title (or remove the label if the component shows the title elsewhere).",
    "screen": "2 · Pull request",
    "votes": 1,
-   "verdict": "The Pagehead label 'Title' is a placeholder that does not match the actual PR title 'Add size xsmall to Button #4821' shown in the row.",
+   "verdict": "The Pagehead label prop is hard-coded to \"Title\" while the row displays the real PR title \"Add size xsmall to Button #4821\", so the component shows the wrong heading.",
    "ultra": true
   },
   {
-   "id": "8908:829",
+   "id": "8914:576",
    "component": "Button",
-   "problem": "Primary button labeled 'Merge pull request' conflicts with the row indicating unresolved conflicts; the main action to advance is 'Resolve conflicts'.",
-   "fix": "Change the button variant to secondary (or make 'Resolve conflicts' the primary button).",
-   "screen": "3 · Merge box",
+   "problem": "Default variant used for the main action Submit new issue, which should be primary.",
+   "fix": "Change variant to primary.",
+   "screen": "6 · New issue",
    "votes": 1,
-   "verdict": "The row text 'Some checks were not successful | 2 of 3 checks passed · ds-sync failing' signals the merge cannot proceed, so the primary action should be 'Resolve conflicts' rather than a disabled 'Merge pull request'.",
+   "verdict": "The primary button is the main action of a form, and 'Submit new issue' is the main action here but uses the default variant instead of primary.",
    "ultra": true
   }
  ]

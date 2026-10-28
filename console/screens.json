@@ -477,8 +477,8 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1450",
    "component": "Button",
-   "msg": "Label \"Save changes\" does not match the row action \"Archive this repository\".",
-   "fix": "Change label to \"Archive this repository\" or equivalent.",
+   "msg": "Label \"Save changes\" contradicts the row describing archiving the repository.",
+   "fix": "Change the label to \"Archive repository\" (or similar).",
    "by": "Nemotron Super + Ultra"
   },
   {
@@ -486,8 +486,8 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1460",
    "component": "Button",
-   "msg": "Icon link-external suggests opening another page, conflicting with delete action.",
-   "fix": "Replace link-external icon with trash icon.",
+   "msg": "Icon link-external suggests opening another page, not deleting the repository.",
+   "fix": "Replace link-external icon with the trash octicon.",
    "by": "Nemotron Super + Ultra"
   },
   {
@@ -495,8 +495,8 @@
    "screen": "6 · New issue",
    "node": "8914:582",
    "component": "Button",
-   "msg": "Primary button used for Cancel action, which should not be primary.",
-   "fix": "Change variant to default (or secondary) for Cancel.",
+   "msg": "Primary button labelled 'Cancel' contradicts the row's main action of submitting a new issue.",
+   "fix": "Make 'Submit new issue' the primary button and change 'Cancel' to default or secondary.",
    "by": "Nemotron Super + Ultra"
   }
  ],
@@ -863,8 +863,8 @@
     "screen": "6 · New issue",
     "node": "8914:582",
     "component": "Button",
-    "msg": "Primary button used for Cancel action, which should not be primary.",
-    "fix": "Change variant to default (or secondary) for Cancel.",
+    "msg": "Primary button labelled 'Cancel' contradicts the row's main action of submitting a new issue.",
+    "fix": "Make 'Submit new issue' the primary button and change 'Cancel' to default or secondary.",
     "by": "Nemotron Super + Ultra"
    }
   ]
