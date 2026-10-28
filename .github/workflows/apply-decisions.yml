@@ -6,7 +6,7 @@ on:
     inputs:
       decide: { description: "token=figma|code, comma-separated", required: false, default: "" }
       approve: { description: "all, or item ids, comma-separated", required: false, default: "" }
-permissions: { contents: write, pull-requests: write }
+permissions: { contents: write, pull-requests: write, actions: write }
 jobs:
   apply:
     runs-on: ubuntu-latest
@@ -22,3 +22,6 @@ jobs:
           git config user.name "seamline-agent"; git config user.email "seamline-agent@users.noreply.github.com"
           ARGS=""; [ -n "${{ inputs.decide }}" ] && ARGS="$ARGS --decide ${{ inputs.decide }}"; [ -n "${{ inputs.approve }}" ] && ARGS="$ARGS --approve ${{ inputs.approve }}"
           npx tsx src/cli.ts pr $ARGS
+          # pushes made with GITHUB_TOKEN don't re-run ds-sync on their own: start it on the PR branch
+          BR=$(git ls-remote --heads origin 'ds-sync/*' | awk '{print $2}' | sed 's#refs/heads/##' | sort | tail -1)
+          [ -n "$BR" ] && gh workflow run ds-sync.yml --ref "$BR" || true

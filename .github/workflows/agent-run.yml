@@ -4,7 +4,7 @@ name: agent-run
 on:
   schedule: [{ cron: "17 6 * * *" }]
   workflow_dispatch:
-permissions: { contents: write, pull-requests: write }
+permissions: { contents: write, pull-requests: write, actions: write }
 concurrency: { group: agent-run, cancel-in-progress: false }
 jobs:
   run:
@@ -42,4 +42,8 @@ jobs:
       - name: Open the ds-sync pull request
         run: |
           npx tsx src/cli.ts pr --open
+          # PRs opened with GITHUB_TOKEN don't trigger pull_request workflows (GitHub holds them as "action required"),
+          # so the agent starts the ds-sync check on the PR branch itself.
+          BR=$(git ls-remote --heads origin 'ds-sync/*' | awk '{print $2}' | sed 's#refs/heads/##' | sort | tail -1)
+          [ -n "$BR" ] && gh workflow run ds-sync.yml --ref "$BR" || true
           git add console && (git commit -m "agent-run - link PR" && git pull --rebase -X theirs origin main && git push origin HEAD:main || true)
