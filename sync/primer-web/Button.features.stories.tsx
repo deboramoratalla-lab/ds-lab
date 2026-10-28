@@ -368,3 +368,5 @@ export const KeybindingHintWithLoading = () => {
     </Button>
   )
 }
+
+export const SizeXsmall = () => <Button size="xsmall">Button</Button>
