@@ -15,5 +15,5 @@ test("finds every break planted in the GitHub test screens", () => {
   for (const p of planted.filter((x) => x.kind !== "meaning")) assert.ok(r.findings.some((f) => f.kind === p.kind && (f.node === p.node || f.node.startsWith(`I${p.node};`) || (f.parents ?? []).includes(p.node))), `${p.id} not found: ${p.what}`);
   // meaning comes from a model vote and can vary between runs: require at least one of the two
   assert.ok(planted.filter((x) => x.kind === "meaning").some((p) => r.findings.some((f) => f.kind === "meaning" && f.node === p.node)));
-  assert.equal(r.usage.Button.count, 6);
+  assert.equal(r.usage.Button.count, 8);
 });
