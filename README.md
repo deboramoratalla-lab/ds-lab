@@ -103,6 +103,11 @@ We planted breaks in the GitHub screens on purpose (`fixtures/primer-web-notes/s
 | 8 | same 13, Super with thinking on | 13 of 13, but 3 false alarms in one read, 1 miss in another | The model doesn't answer the same way twice |
 | 9 | same 13, Super with thinking, 3 reads per screen, keep what most reads agree on; contrast in all 9 Primer colour modes | 13 of 13, no false alarms | Majority vote; the dropped one-off flags are kept in `console/screens-review.json` |
 
+**Blind test** (`fixtures/primer-web-notes/screens-blind.json`). After round 9 we froze the rules and the prompt and built a new screen, "New issue", with 6 new breaks (a Label border set by hand, a 2.85:1 caption, a primary button that says "Cancel", a 10px gap, a detached Label, a form background set by hand that only breaks in dark mode) and 6 decoys that look suspicious but are correct (an invisible small Button at its real 28px, a success InlineMessage, an attention Label...).
+
+- New screen: **6 of 6 found, 0 false alarms** on the decoys.
+- Same run, old screens: the model vote dropped B13 ("Save changes" on the Archive row, 1 of 3 reads) and kept 2 false alarms (two ToggleSwitches whose "On" it read as a vague label, 2 of 3 reads). Rules found everything they found before. So: rules are stable, the meaning review is useful but not reliable on its own, which is why its findings are shown to a person and never auto-applied.
+
 It also found problems we didn't plant:
 - From the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs; SegmentedControl's `size=medium` is missing in code.
 - In our own screens: we built the PR page with TabNav, which Primer's docs mark deprecated (use UnderlineNav).

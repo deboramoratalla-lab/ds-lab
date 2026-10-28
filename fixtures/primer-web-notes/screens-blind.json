@@ -1,0 +1,50 @@
+{
+  "note": "Blind test, 2026-10-28: a new screen with new breaks and correct decoys, run with the rules and prompt frozen (no changes after seeing results).",
+  "screen": "6 \u00b7 New issue",
+  "breaks": [
+    {
+      "id": "N1",
+      "kind": "hardcoded",
+      "node": "8914:562",
+      "what": "'enhancement' Label border set to #54aeff by hand"
+    },
+    {
+      "id": "N2",
+      "kind": "contrast",
+      "node": "8914:560",
+      "what": "'Markdown is supported' caption at #8c959f (2.85:1)"
+    },
+    {
+      "id": "N3",
+      "kind": "meaning",
+      "node": "8914:582",
+      "what": "Primary button says 'Cancel' while 'Submit new issue' is the default one"
+    },
+    {
+      "id": "N4",
+      "kind": "spacing",
+      "node": "8914:561",
+      "what": "Labels row gap 10px"
+    },
+    {
+      "id": "N5",
+      "kind": "detached",
+      "node": "8914:568",
+      "what": "'button' Label detached"
+    },
+    {
+      "id": "N6",
+      "kind": "contrast-modes",
+      "node": "8914:555",
+      "what": "Issue form background set to #f6f8fa by hand: same as bgColor/muted in light, wrong in dark"
+    }
+  ],
+  "decoys": [
+    "StateLabel issue/open",
+    "helper text bound to fgColor/muted",
+    "Label variant=attention",
+    "InlineMessage success",
+    "invisible Button size=small (28px is its real size)",
+    "default 'Submit' + 'Preview' buttons"
+  ]
+}

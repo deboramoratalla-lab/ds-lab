@@ -109,7 +109,21 @@ if (process.argv[1]?.endsWith("certify-screens.ts")) {
   const near = (f: any, p: any) => f.kind === p.kind && (f.node === p.node || f.node.startsWith(`I${p.node};`) || (f.parents ?? []).includes(p.node));
   const hit = planted.map((p) => ({ ...p, found: r.findings.some((f) => near(f, p)) }));
   const extra = r.findings.filter((f) => !planted.some((p) => near(f, p)));
-  writeFileSync("console/screens.json", JSON.stringify({ ...r, test: { planted: hit, extra } }, null, 1));
+  // blind test: a screen built after the rules were written; rules and prompt frozen
+  let blind: any = null;
+  try {
+    const B = JSON.parse(readFileSync("fixtures/primer-web-notes/screens-blind.json", "utf8"));
+    const onScreen = r.findings.filter((f) => (f.screens ?? [f.screen]).includes(B.screen));
+    const bhit = B.breaks.map((p: any) => ({ ...p, found: onScreen.some((f) => near(f, p)) }));
+    const ids = new Set(B.breaks.map((p: any) => p.node));
+    const tied = (f: any) => ids.has(f.node) || (f.parents ?? []).some((x: string) => ids.has(x)) || [...ids].some((n) => f.node.startsWith(`I${n};`));
+    const falseAlarms = onScreen.filter((f) => !f.inherited && !tied(f));
+    blind = { screen: B.screen, breaks: bhit, decoys: B.decoys, falseAlarms };
+    console.log(`blind: ${bhit.filter((h: any) => h.found).length}/${bhit.length} found · ${falseAlarms.length} false alarms`);
+    for (const h of bhit) console.log(h.found ? "✓" : "✗", h.id, h.what);
+    for (const f of falseAlarms) console.log("! false alarm", f.kind, f.msg);
+  } catch {}
+  writeFileSync("console/screens.json", JSON.stringify({ ...r, test: { planted: hit, extra }, blind }, null, 1));
   console.log(`found ${hit.filter((h) => h.found).length}/${planted.length} planted · ${extra.length} other findings`);
   for (const h of hit) console.log(h.found ? "✓" : "✗", h.id, h.what);
   for (const e of extra) console.log("+", e.kind, e.screen, "·", e.msg, e.count ? `(${e.count} instances)` : "");

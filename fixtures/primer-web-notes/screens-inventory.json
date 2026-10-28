@@ -3366,6 +3366,756 @@
 }
 ],
 "overrides": []
+},
+{
+"id": "8914:543",
+"name": "6 \u00b7 New issue",
+"instances": [
+{
+"id": "8914:550",
+"set": "StateLabel",
+"setId": "18959:64962",
+"page": "StateLabel",
+"props": {
+"variant": "issue",
+"status": "open",
+"size": "small"
+},
+"h": 28,
+"mh": 28,
+"hug": "HUG",
+"label": "Open",
+"icons": [
+"issue-opened"
+],
+"ctx": "GitHub | primer / react | New issue | Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | "
+},
+{
+"id": "8914:562",
+"set": "Label",
+"setId": "18959:65008",
+"page": "Labels",
+"props": {
+"size": "small",
+"variant": "accent"
+},
+"h": 22,
+"mh": 22,
+"hug": "HUG",
+"label": "enhancement",
+"icons": [],
+"ctx": "Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | needs triage | button | Similar issues"
+},
+{
+"id": "8914:564",
+"set": "Label",
+"setId": "18959:65008",
+"page": "Labels",
+"props": {
+"size": "small",
+"variant": "attention"
+},
+"h": 22,
+"mh": 22,
+"hug": "HUG",
+"label": "needs triage",
+"icons": [],
+"ctx": "Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | enhancement | button | Similar issues:"
+},
+{
+"id": "8914:570",
+"set": "Inline message",
+"setId": "32109:348",
+"page": "InlineMessage",
+"props": {
+"variant": "success",
+"size": "small"
+},
+"h": 20,
+"mh": 20,
+"hug": "FILL",
+"label": "Similar issues: none found",
+"icons": [
+"circle-check-fill-12"
+],
+"ctx": "New issue | Open | Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | enhancement | needs"
+},
+{
+"id": "8914:576",
+"set": "Button",
+"setId": "30258:5582",
+"page": "Button",
+"props": {
+"variant": "default",
+"size": "medium",
+"state": "rest",
+"alignContent": "center"
+},
+"h": 32,
+"mh": 32,
+"hug": "HUG",
+"label": "Submit new issue",
+"icons": [],
+"ctx": "New issue | Open | Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | enhancement | needs"
+},
+{
+"id": "8914:582",
+"set": "Button",
+"setId": "30258:5582",
+"page": "Button",
+"props": {
+"variant": "primary",
+"size": "medium",
+"state": "rest",
+"alignContent": "center"
+},
+"h": 32,
+"mh": 32,
+"hug": "HUG",
+"label": "Cancel",
+"icons": [],
+"ctx": "New issue | Open | Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | enhancement | needs"
+},
+{
+"id": "8914:588",
+"set": "Button",
+"setId": "30258:5582",
+"page": "Button",
+"props": {
+"variant": "invisible",
+"size": "small",
+"state": "rest",
+"alignContent": "center"
+},
+"h": 28,
+"mh": 28,
+"hug": "HUG",
+"label": "Preview",
+"icons": [],
+"ctx": "New issue | Open | Title | Button: add xsmall size | Use a short title that says what's wrong. | Markdown is supported | enhancement | needs"
+}
+],
+"frames": [
+{
+"id": "8914:544",
+"name": "Global header",
+"children": 1,
+"pad": [
+16,
+0,
+16,
+32
+],
+"gap": 0,
+"fill": null
+},
+{
+"id": "8914:546",
+"name": "Repo header",
+"children": 1,
+"pad": [
+16,
+32,
+16,
+32
+],
+"gap": 0,
+"fill": null
+},
+{
+"id": "8914:548",
+"name": "Content",
+"children": 4,
+"pad": [
+24,
+32,
+40,
+32
+],
+"gap": 16,
+"fill": null
+},
+{
+"id": "8914:555",
+"name": "Issue form",
+"children": 6,
+"pad": [
+16,
+16,
+16,
+16
+],
+"gap": 12,
+"fill": "#f6f8fa"
+},
+{
+"id": "8914:557",
+"name": "Title input",
+"children": 1,
+"pad": [
+6,
+12,
+6,
+12
+],
+"gap": 0,
+"fill": null
+},
+{
+"id": "8914:561",
+"name": "Labels",
+"children": 3,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 10,
+"fill": null
+},
+{
+"id": "8914:568",
+"name": "Label",
+"children": 1,
+"pad": [
+1,
+7,
+1,
+7
+],
+"gap": 10,
+"fill": null
+},
+{
+"id": "8914:575",
+"name": "Actions",
+"children": 3,
+"pad": [
+0,
+0,
+0,
+0
+],
+"gap": 8,
+"fill": null
+}
+],
+"bound": [
+{
+"node": "8914:544",
+"var": "bgColor/emphasis"
+},
+{
+"node": "8914:545",
+"var": "fgColor/onEmphasis"
+},
+{
+"node": "8914:546",
+"var": "bgColor/muted"
+},
+{
+"node": "8914:547",
+"var": "fgColor/default"
+},
+{
+"node": "8914:549",
+"var": "fgColor/default"
+},
+{
+"node": "8914:550",
+"var": "bgColor/open-emphasis"
+},
+{
+"node": "8914:555",
+"var": "borderColor/default"
+},
+{
+"node": "8914:556",
+"var": "fgColor/default"
+},
+{
+"node": "8914:557",
+"var": "bgColor/default"
+},
+{
+"node": "8914:557",
+"var": "borderColor/default"
+},
+{
+"node": "8914:558",
+"var": "fgColor/default"
+},
+{
+"node": "8914:559",
+"var": "fgColor/muted"
+},
+{
+"node": "8914:564",
+"var": "borderColor/attention-emphasis"
+},
+{
+"node": "8914:568",
+"var": "borderColor/default"
+},
+{
+"node": "8914:569",
+"var": "fgColor/default"
+},
+{
+"node": "8914:576",
+"var": "button/default/bgColor/rest"
+},
+{
+"node": "8914:576",
+"var": "button/default/borderColor/rest"
+},
+{
+"node": "8914:582",
+"var": "button/primary/bgColor/rest"
+},
+{
+"node": "8914:582",
+"var": "button/primary/borderColor/rest"
+},
+{
+"node": "8914:588",
+"var": "button/invisible/bgColor/rest"
+}
+],
+"texts": [
+{
+"id": "8914:545",
+"text": "GitHub",
+"fg": "#ffffff",
+"fgVar": "fgColor/onEmphasis",
+"bg": "#25292e",
+"bgVar": "bgColor/emphasis",
+"bgNode": "8914:544",
+"size": 16,
+"bold": true,
+"fails": []
+},
+{
+"id": "8914:547",
+"text": "primer / react",
+"fg": "#1f2328",
+"fgVar": "fgColor/default",
+"bg": "#f6f8fa",
+"bgVar": "bgColor/muted",
+"bgNode": "8914:546",
+"size": 20,
+"bold": true,
+"fails": []
+},
+{
+"id": "8914:549",
+"text": "New issue",
+"fg": "#1f2328",
+"fgVar": "fgColor/default",
+"bg": "#ffffff",
+"bgVar": "bgColor/default",
+"bgNode": "8914:543",
+"size": 24,
+"bold": true,
+"fails": []
+},
+{
+"id": "I8914:550;36351:375",
+"text": "Open",
+"fg": "#ffffff",
+"fgVar": "fgColor/onEmphasis",
+"bg": "#1f883d",
+"bgVar": "bgColor/open-emphasis",
+"bgNode": "8914:550",
+"size": 14,
+"bold": true,
+"fails": []
+},
+{
+"id": "8914:556",
+"text": "Title",
+"fg": "#1f2328",
+"fgVar": "fgColor/default",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 14,
+"bold": true,
+"fails": [
+[
+"dark",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+1.36,
+"#d1d7e0",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.06,
+"#ffffff",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "8914:558",
+"text": "Button: add xsmall size",
+"fg": "#1f2328",
+"fgVar": "fgColor/default",
+"bg": "#ffffff",
+"bgVar": "bgColor/default",
+"bgNode": "8914:557",
+"size": 14,
+"bold": false,
+"fails": []
+},
+{
+"id": "8914:559",
+"text": "Use a short title that says what's wrong.",
+"fg": "#59636e",
+"fgVar": "fgColor/muted",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": false,
+"fails": [
+[
+"dark",
+2.74,
+"#9198a1",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+2.74,
+"#9198a1",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.77,
+"#b7bdc8",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+2.74,
+"#9198a1",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+2.74,
+"#9198a1",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "8914:560",
+"text": "Markdown is supported",
+"fg": "#8c959f",
+"fgVar": null,
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": false,
+"fails": [
+[
+"light",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"dark",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"light high contrast",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"light protanopia deuteranopia",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"light tritanopia",
+2.85,
+"#8c959f",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+2.85,
+"#8c959f",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "I8914:562;18959:64924",
+"text": "enhancement",
+"fg": "#0969da",
+"fgVar": "fgColor/accent",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": true,
+"fails": [
+[
+"dark",
+2.91,
+"#4493f8",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+3.23,
+"#478be6",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.95,
+"#74b9ff",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+2.91,
+"#4493f8",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+2.91,
+"#4493f8",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "I8914:564;18959:64932",
+"text": "needs triage",
+"fg": "#9a6700",
+"fgVar": "fgColor/attention",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": true,
+"fails": [
+[
+"dark",
+2.37,
+"#d29922",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+2.66,
+"#c69026",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.71,
+"#f0b72f",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+2.37,
+"#d29922",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+2.37,
+"#d29922",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "8914:569",
+"text": "button",
+"fg": "#1f2328",
+"fgVar": "fgColor/default",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": true,
+"fails": [
+[
+"dark",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+1.36,
+"#d1d7e0",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.06,
+"#ffffff",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+1.02,
+"#f0f6fc",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "I8914:570;34249:51",
+"text": "Similar issues: none found",
+"fg": "#1a7f37",
+"fgVar": "fgColor/success",
+"bg": "#f6f8fa",
+"bgVar": null,
+"bgNode": "8914:555",
+"size": 12,
+"bold": false,
+"fails": [
+[
+"dark",
+2.39,
+"#3fb950",
+"#f6f8fa"
+],
+[
+"dark dimmed",
+2.67,
+"#57ab5a",
+"#f6f8fa"
+],
+[
+"dark high contrast",
+1.79,
+"#2bd853",
+"#f6f8fa"
+],
+[
+"dark protanopia deuteranopia",
+2.37,
+"#58a6ff",
+"#f6f8fa"
+],
+[
+"dark tritanopia",
+2.37,
+"#58a6ff",
+"#f6f8fa"
+]
+]
+},
+{
+"id": "I8914:576;30258:5586",
+"text": "Submit new issue",
+"fg": "#25292e",
+"fgVar": "button/default/fgColor/rest",
+"bg": "#f6f8fa",
+"bgVar": "button/default/bgColor/rest",
+"bgNode": "8914:576",
+"size": 14,
+"bold": true,
+"fails": []
+},
+{
+"id": "I8914:582;30258:5712",
+"text": "Cancel",
+"fg": "#ffffff",
+"fgVar": "button/primary/fgColor/rest",
+"bg": "#1f883d",
+"bgVar": "button/primary/bgColor/rest",
+"bgNode": "8914:582",
+"size": 14,
+"bold": true,
+"fails": []
+},
+{
+"id": "I8914:588;30258:6006",
+"text": "Preview",
+"fg": "#25292e",
+"fgVar": "button/invisible/fgColor/rest",
+"bg": "#ffffff",
+"bgVar": "bgColor/default",
+"bgNode": "8914:543",
+"size": 12,
+"bold": true,
+"fails": []
+}
+],
+"overrides": [
+{
+"instance": "8914:562",
+"set": "Label",
+"node": "8914:562",
+"prop": "strokes",
+"was": "borderColor/accent-emphasis",
+"now": "#54aeff"
+}
+]
 }
 ],
 "source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",

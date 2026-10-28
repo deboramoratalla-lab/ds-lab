@@ -1,55 +1,74 @@
 {
- "at": "2026-10-28T13:09:31.285Z",
+ "at": "2026-10-28T19:20:43.227Z",
  "model": "nvidia/nemotron-3-super-120b-a12b",
- "ms": 69117,
- "calls": 15,
+ "ms": 78311,
+ "calls": 18,
  "runs": 3,
  "issues": [
   {
-   "id": "8908:614",
-   "component": "TabNav",
-   "problem": "Label includes unexpected word 'Button' not matching any tab item",
-   "fix": "Remove 'Button' from label so it lists only tab names",
-   "confidence": 0.8,
-   "screen": "2 · Pull request",
-   "votes": 3
-  },
-  {
    "id": "8908:1281",
    "component": "ToggleSwitch",
-   "problem": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-   "fix": "Use a label that names the setting, e.g., \"Allow auto-merge\".",
-   "confidence": 0.9,
+   "problem": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+   "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
+   "confidence": 0.95,
    "screen": "4 · Settings · General",
    "votes": 2
   },
   {
    "id": "8908:1293",
    "component": "ToggleSwitch",
-   "problem": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-   "fix": "Use a label that names the setting, e.g., \"Automatically delete head branch\".",
-   "confidence": 0.9,
+   "problem": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+   "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
+   "confidence": 0.95,
    "screen": "4 · Settings · General",
    "votes": 2
   },
   {
-   "id": "8908:1450",
+   "id": "8908:1460",
    "component": "Button",
-   "problem": "Save changes button uses danger variant but the action is not destructive.",
-   "fix": "Change variant to primary (or default) to reflect a non‑destructive save action.",
+   "problem": "Icon link-external implies opening another page, which contradicts the delete action.",
+   "fix": "Replace link-external icon with trash icon (or remove the icon).",
    "confidence": 0.9,
    "screen": "5 · Settings · Danger zone",
    "votes": 3
   },
   {
-   "id": "8908:1460",
+   "id": "8914:582",
    "component": "Button",
-   "problem": "Delete this repository button shows link‑external icon, which suggests navigation, not deletion.",
-   "fix": "Replace link‑external icon with the trash icon (or remove the icon) to match the delete action.",
-   "confidence": 0.9,
-   "screen": "5 · Settings · Danger zone",
+   "problem": "Primary variant used for Cancel, which is not the primary action.",
+   "fix": "Use default or secondary variant for Cancel.",
+   "confidence": 0.95,
+   "screen": "6 · New issue",
    "votes": 3
   }
  ],
- "dropped": []
+ "dropped": [
+  {
+   "id": "8908:614",
+   "component": "TabNav",
+   "problem": "TabNav label includes 'Button' which is not a tab name, suggesting an incorrect tab entry.",
+   "fix": "Ensure TabNav only lists actual tab titles (Conversation, Commits, Checks, Files changed) and remove stray 'Button'.",
+   "confidence": 0.85,
+   "screen": "2 · Pull request",
+   "votes": 1
+  },
+  {
+   "id": "8908:823",
+   "component": "Inline message",
+   "problem": "Critical variant paired with alert icon (warning) creates a mismatch in severity.",
+   "fix": "Change variant to warning to match the alert icon, or replace icon with a more severe symbol if keeping critical.",
+   "confidence": 0.6,
+   "screen": "3 · Merge box",
+   "votes": 1
+  },
+  {
+   "id": "8908:1450",
+   "component": "Button",
+   "problem": "Label 'Save changes' implies a non-destructive action but uses danger variant.",
+   "fix": "Use default or primary variant for Save changes.",
+   "confidence": 0.95,
+   "screen": "5 · Settings · Danger zone",
+   "votes": 1
+  }
+ ]
 }

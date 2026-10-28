@@ -24,30 +24,38 @@
    "id": "8908:1306",
    "name": "5 · Settings · Danger zone",
    "instances": 4
+  },
+  {
+   "id": "8914:543",
+   "name": "6 · New issue",
+   "instances": 7
   }
  ],
  "usage": {
   "Button": {
-   "count": 6,
+   "count": 8,
    "screens": [
     "1 · Pull requests",
     "3 · Merge box",
     "4 · Settings · General",
-    "5 · Settings · Danger zone"
+    "5 · Settings · Danger zone",
+    "6 · New issue"
    ]
   },
   "StateLabel": {
-   "count": 6,
+   "count": 7,
    "screens": [
     "1 · Pull requests",
-    "2 · Pull request"
+    "2 · Pull request",
+    "6 · New issue"
    ]
   },
   "Label": {
-   "count": 6,
+   "count": 8,
    "screens": [
     "1 · Pull requests",
-    "2 · Pull request"
+    "2 · Pull request",
+    "6 · New issue"
    ]
   },
   "Pagination": {
@@ -340,21 +348,136 @@
    "fix": "Use a token code ships, or add diffBlob/deletion/bgColor/line to primitives"
   },
   {
-   "kind": "meaning",
-   "screen": "2 · Pull request",
-   "node": "8908:614",
-   "component": "TabNav",
-   "msg": "Label includes unexpected word 'Button' not matching any tab item",
-   "fix": "Remove 'Button' from label so it lists only tab names",
-   "by": "Nemotron Super"
+   "kind": "detached",
+   "screen": "6 · New issue",
+   "node": "8914:568",
+   "component": "Label",
+   "msg": "Label is detached from the library",
+   "fix": "Swap it back to a Label instance so library updates reach it"
+  },
+  {
+   "kind": "variant",
+   "screen": "6 · New issue",
+   "screens": [
+    "6 · New issue"
+   ],
+   "count": 1,
+   "node": "8914:550",
+   "component": "StateLabel",
+   "msg": "StateLabel uses variant=issue, in Figma, not in docs",
+   "fix": "Use a variant that ships in code, or add issue to code and docs first",
+   "inherited": true
+  },
+  {
+   "kind": "hardcoded",
+   "screen": "6 · New issue",
+   "node": "8914:562",
+   "component": "Label",
+   "msg": "Label colour set to #54aeff by hand instead of borderColor/accent-emphasis",
+   "fix": "Reset the override so it uses borderColor/accent-emphasis again"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "8914:556",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“Title” passes in light but fails in 5 of 8 other modes (worst: 1.02:1 in dark)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "8914:559",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“Use a short title that says what's wrong.” passes in light but fails in 5 of 8 other modes (worst: 1.77:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "contrast",
+   "screen": "6 · New issue",
+   "node": "8914:560",
+   "msg": "“Markdown is supported” is 2.85:1 on #f6f8fa, needs 4.5:1",
+   "fix": "Use fgColor/muted (or darker) instead of #8c959f"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "I8914:562;18959:64924",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“enhancement” passes in light but fails in 5 of 8 other modes (worst: 1.95:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "I8914:564;18959:64932",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“needs triage” passes in light but fails in 5 of 8 other modes (worst: 1.71:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "8914:569",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“button” passes in light but fails in 5 of 8 other modes (worst: 1.02:1 in dark)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "contrast-modes",
+   "screen": "6 · New issue",
+   "node": "I8914:570;34249:51",
+   "parents": [
+    "8914:555"
+   ],
+   "msg": "“Similar issues: none found” passes in light but fails in 5 of 8 other modes (worst: 1.79:1 in dark high contrast)",
+   "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+  },
+  {
+   "kind": "hardcoded",
+   "screen": "6 · New issue",
+   "node": "8914:555",
+   "msg": "“Issue form” background is #f6f8fa by hand",
+   "fix": "Bind it to bgColor/default (or the right bg token) so it switches in dark mode"
+  },
+  {
+   "kind": "spacing",
+   "screen": "6 · New issue",
+   "node": "8914:561",
+   "msg": "“Labels” gap is 10px, off Primer's spacing scale",
+   "fix": "Use 8px (a base/size token)"
+  },
+  {
+   "kind": "spacing",
+   "screen": "6 · New issue",
+   "node": "8914:568",
+   "msg": "“Label” padding is 1, 7px, off Primer's spacing scale",
+   "fix": "Use 0, 6px (a base/size token)"
+  },
+  {
+   "kind": "spacing",
+   "screen": "6 · New issue",
+   "node": "8914:568",
+   "msg": "“Label” gap is 10px, off Primer's spacing scale",
+   "fix": "Use 8px (a base/size token)"
   },
   {
    "kind": "meaning",
    "screen": "4 · Settings · General",
    "node": "8908:1281",
    "component": "ToggleSwitch",
-   "msg": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-   "fix": "Use a label that names the setting, e.g., \"Allow auto-merge\".",
+   "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+   "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
    "by": "Nemotron Super"
   },
   {
@@ -362,17 +485,8 @@
    "screen": "4 · Settings · General",
    "node": "8908:1293",
    "component": "ToggleSwitch",
-   "msg": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-   "fix": "Use a label that names the setting, e.g., \"Automatically delete head branch\".",
-   "by": "Nemotron Super"
-  },
-  {
-   "kind": "meaning",
-   "screen": "5 · Settings · Danger zone",
-   "node": "8908:1450",
-   "component": "Button",
-   "msg": "Save changes button uses danger variant but the action is not destructive.",
-   "fix": "Change variant to primary (or default) to reflect a non‑destructive save action.",
+   "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+   "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
    "by": "Nemotron Super"
   },
   {
@@ -380,8 +494,17 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1460",
    "component": "Button",
-   "msg": "Delete this repository button shows link‑external icon, which suggests navigation, not deletion.",
-   "fix": "Replace link‑external icon with the trash icon (or remove the icon) to match the delete action.",
+   "msg": "Icon link-external implies opening another page, which contradicts the delete action.",
+   "fix": "Replace link-external icon with trash icon (or remove the icon).",
+   "by": "Nemotron Super"
+  },
+  {
+   "kind": "meaning",
+   "screen": "6 · New issue",
+   "node": "8914:582",
+   "component": "Button",
+   "msg": "Primary variant used for Cancel, which is not the primary action.",
+   "fix": "Use default or secondary variant for Cancel.",
    "by": "Nemotron Super"
   }
  ],
@@ -491,7 +614,7 @@
     "screen": "5 · Settings · Danger zone",
     "node": "8908:1450",
     "what": "Danger Button in the 'Archive this repository' row says 'Save changes'",
-    "found": true
+    "found": false
    }
   ],
   "extra": [
@@ -620,21 +743,136 @@
     "fix": "A Primer token pair, not a screen mistake: raise fgColor/muted in dark, dark dimmed, dark high contrast, dark protanopia deuteranopia, dark tritanopia"
    },
    {
-    "kind": "meaning",
-    "screen": "2 · Pull request",
-    "node": "8908:614",
-    "component": "TabNav",
-    "msg": "Label includes unexpected word 'Button' not matching any tab item",
-    "fix": "Remove 'Button' from label so it lists only tab names",
-    "by": "Nemotron Super"
+    "kind": "detached",
+    "screen": "6 · New issue",
+    "node": "8914:568",
+    "component": "Label",
+    "msg": "Label is detached from the library",
+    "fix": "Swap it back to a Label instance so library updates reach it"
+   },
+   {
+    "kind": "variant",
+    "screen": "6 · New issue",
+    "screens": [
+     "6 · New issue"
+    ],
+    "count": 1,
+    "node": "8914:550",
+    "component": "StateLabel",
+    "msg": "StateLabel uses variant=issue, in Figma, not in docs",
+    "fix": "Use a variant that ships in code, or add issue to code and docs first",
+    "inherited": true
+   },
+   {
+    "kind": "hardcoded",
+    "screen": "6 · New issue",
+    "node": "8914:562",
+    "component": "Label",
+    "msg": "Label colour set to #54aeff by hand instead of borderColor/accent-emphasis",
+    "fix": "Reset the override so it uses borderColor/accent-emphasis again"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "8914:556",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“Title” passes in light but fails in 5 of 8 other modes (worst: 1.02:1 in dark)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "8914:559",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“Use a short title that says what's wrong.” passes in light but fails in 5 of 8 other modes (worst: 1.77:1 in dark high contrast)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "contrast",
+    "screen": "6 · New issue",
+    "node": "8914:560",
+    "msg": "“Markdown is supported” is 2.85:1 on #f6f8fa, needs 4.5:1",
+    "fix": "Use fgColor/muted (or darker) instead of #8c959f"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "I8914:562;18959:64924",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“enhancement” passes in light but fails in 5 of 8 other modes (worst: 1.95:1 in dark high contrast)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "I8914:564;18959:64932",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“needs triage” passes in light but fails in 5 of 8 other modes (worst: 1.71:1 in dark high contrast)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "8914:569",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“button” passes in light but fails in 5 of 8 other modes (worst: 1.02:1 in dark)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "contrast-modes",
+    "screen": "6 · New issue",
+    "node": "I8914:570;34249:51",
+    "parents": [
+     "8914:555"
+    ],
+    "msg": "“Similar issues: none found” passes in light but fails in 5 of 8 other modes (worst: 1.79:1 in dark high contrast)",
+    "fix": "The background is set by hand and doesn't switch with the theme; bind it to a token"
+   },
+   {
+    "kind": "hardcoded",
+    "screen": "6 · New issue",
+    "node": "8914:555",
+    "msg": "“Issue form” background is #f6f8fa by hand",
+    "fix": "Bind it to bgColor/default (or the right bg token) so it switches in dark mode"
+   },
+   {
+    "kind": "spacing",
+    "screen": "6 · New issue",
+    "node": "8914:561",
+    "msg": "“Labels” gap is 10px, off Primer's spacing scale",
+    "fix": "Use 8px (a base/size token)"
+   },
+   {
+    "kind": "spacing",
+    "screen": "6 · New issue",
+    "node": "8914:568",
+    "msg": "“Label” padding is 1, 7px, off Primer's spacing scale",
+    "fix": "Use 0, 6px (a base/size token)"
+   },
+   {
+    "kind": "spacing",
+    "screen": "6 · New issue",
+    "node": "8914:568",
+    "msg": "“Label” gap is 10px, off Primer's spacing scale",
+    "fix": "Use 8px (a base/size token)"
    },
    {
     "kind": "meaning",
     "screen": "4 · Settings · General",
     "node": "8908:1281",
     "component": "ToggleSwitch",
-    "msg": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-    "fix": "Use a label that names the setting, e.g., \"Allow auto-merge\".",
+    "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+    "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
     "by": "Nemotron Super"
    },
    {
@@ -642,10 +880,75 @@
     "screen": "4 · Settings · General",
     "node": "8908:1293",
     "component": "ToggleSwitch",
-    "msg": "Label shows only the state \"On\" instead of describing what the toggle controls.",
-    "fix": "Use a label that names the setting, e.g., \"Automatically delete head branch\".",
+    "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
+    "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
+    "by": "Nemotron Super"
+   },
+   {
+    "kind": "meaning",
+    "screen": "6 · New issue",
+    "node": "8914:582",
+    "component": "Button",
+    "msg": "Primary variant used for Cancel, which is not the primary action.",
+    "fix": "Use default or secondary variant for Cancel.",
     "by": "Nemotron Super"
    }
   ]
+ },
+ "blind": {
+  "screen": "6 · New issue",
+  "breaks": [
+   {
+    "id": "N1",
+    "kind": "hardcoded",
+    "node": "8914:562",
+    "what": "'enhancement' Label border set to #54aeff by hand",
+    "found": true
+   },
+   {
+    "id": "N2",
+    "kind": "contrast",
+    "node": "8914:560",
+    "what": "'Markdown is supported' caption at #8c959f (2.85:1)",
+    "found": true
+   },
+   {
+    "id": "N3",
+    "kind": "meaning",
+    "node": "8914:582",
+    "what": "Primary button says 'Cancel' while 'Submit new issue' is the default one",
+    "found": true
+   },
+   {
+    "id": "N4",
+    "kind": "spacing",
+    "node": "8914:561",
+    "what": "Labels row gap 10px",
+    "found": true
+   },
+   {
+    "id": "N5",
+    "kind": "detached",
+    "node": "8914:568",
+    "what": "'button' Label detached",
+    "found": true
+   },
+   {
+    "id": "N6",
+    "kind": "contrast-modes",
+    "node": "8914:555",
+    "what": "Issue form background set to #f6f8fa by hand: same as bgColor/muted in light, wrong in dark",
+    "found": true
+   }
+  ],
+  "decoys": [
+   "StateLabel issue/open",
+   "helper text bound to fgColor/muted",
+   "Label variant=attention",
+   "InlineMessage success",
+   "invisible Button size=small (28px is its real size)",
+   "default 'Submit' + 'Preview' buttons"
+  ],
+  "falseAlarms": []
  }
 }
