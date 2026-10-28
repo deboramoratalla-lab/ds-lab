@@ -19,7 +19,7 @@ if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
   const tri = new URL("./catalog-triage.json", import.meta.url);
   if (existsSync(tri)) { const T = JSON.parse(readFileSync(tri, "utf8")); d.triage = { at: T.at, ms: T.ms }; for (const c of d.components) if (T.items[c.name]?.fix) c.triage = T.items[c.name]; }
 }
-{ const sc = new URL("./screens.json", import.meta.url); if (existsSync(sc)) d.screens = JSON.parse(readFileSync(sc, "utf8")); }
+{ const sc = new URL("./screens.json", import.meta.url); if (existsSync(sc)) d.screens = JSON.parse(readFileSync(sc, "utf8")); const mu = new URL("./mutation.json", import.meta.url); if (existsSync(mu) && d.screens) d.screens.mutation = JSON.parse(readFileSync(mu, "utf8")); }
 const data = JSON.stringify(d).replace(/</g, "\\u003c");
 let html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);
 // the 3-tier tokens exported from the Figma library load last, so every console colour resolves through them

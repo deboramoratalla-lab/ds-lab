@@ -14,8 +14,8 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 const lum = (hex: string) => { const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
 export const contrast = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 
-export function certifyScreens(catalog: CatalogEntry[]) {
-  const inv = JSON.parse(readFileSync("fixtures/primer-web-notes/screens-inventory.json", "utf8"));
+export function certifyScreens(catalog: CatalogEntry[], inventory?: any, opts: { meaning?: boolean } = {}) {
+  const inv = inventory ?? JSON.parse(readFileSync("fixtures/primer-web-notes/screens-inventory.json", "utf8"));
   const sets = (JSON.parse(readFileSync("fixtures/primer-web-notes/figma-catalog.json", "utf8")).sets as [string, string][]).map((s) => s[1]);
   const code = loadTokens(primerInput().codeTokens);
   const findings: ScreenFinding[] = [];
@@ -28,7 +28,8 @@ export function certifyScreens(catalog: CatalogEntry[]) {
       detachedIds.add(f.id);
       findings.push({ kind: "detached", screen: s.name, node: f.id, component: f.name, msg: `${f.name} is detached from the library`, fix: `Swap it back to a ${f.name} instance so library updates reach it` });
     }
-    const insideDetached = (id: string) => s.frames.some((f: any) => detachedIds.has(f.id)) && s.instances.find((i: any) => i.id === id) && Number(id.split(":")[1]) > Math.min(...[...detachedIds].map((d) => Number(d.split(":")[1]))) && Number(id.split(":")[1]) < Math.min(...[...detachedIds].map((d) => Number(d.split(":")[1]))) + 10;
+    // icons and counters left inside a detached frame belong to that break, not to the screen
+    const insideDetached = (id: string) => !!s.instances.find((i: any) => i.id === id)?.inDetached;
     for (const i of s.instances) {
       if (insideDetached(i.id)) continue; // icons and counters left over inside a detached frame
       const name = byName(i.set)?.name ?? i.set;
@@ -98,7 +99,7 @@ export function certifyScreens(catalog: CatalogEntry[]) {
     }
   }
   // 9. meaning: Nemotron Super reads each screen (labels, icons, variants, context) and flags what doesn't fit
-  try { const R = JSON.parse(readFileSync("console/screens-review.json", "utf8")); for (const x of R.issues ?? []) findings.push({ kind: "meaning", screen: x.screen, node: x.id, component: x.component, msg: x.problem, fix: x.fix, by: "Nemotron Super + Ultra" } as any); } catch {}
+  if (opts.meaning !== false) try { const R = JSON.parse(readFileSync("console/screens-review.json", "utf8")); for (const x of R.issues ?? []) findings.push({ kind: "meaning", screen: x.screen, node: x.id, component: x.component, msg: x.problem, fix: x.fix, by: "Nemotron Super + Ultra" } as any); } catch {}
   return { screens: inv.screens.map((s: any) => ({ id: s.id, name: s.name, instances: s.instances.length })), usage, findings, source: inv.source, pageId: inv.pageId };
 }
 

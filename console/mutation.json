@@ -1,0 +1,52 @@
+{
+ "at": "2026-10-28T19:51:42.848Z",
+ "seed": 7,
+ "tried": 343,
+ "caught": 343,
+ "noise": 0,
+ "kinds": {
+  "hardcoded": {
+   "tried": 80,
+   "caught": 80
+  },
+  "contrast": {
+   "tried": 31,
+   "caught": 31
+  },
+  "spacing": {
+   "tried": 40,
+   "caught": 40
+  },
+  "resized": {
+   "tried": 40,
+   "caught": 40
+  },
+  "detached": {
+   "tried": 32,
+   "caught": 32
+  },
+  "token": {
+   "tried": 40,
+   "caught": 40
+  },
+  "deprecated": {
+   "tried": 40,
+   "caught": 40
+  },
+  "missing": {
+   "tried": 40,
+   "caught": 40
+  }
+ },
+ "misses": {
+  "hardcoded": [],
+  "contrast": [],
+  "spacing": [],
+  "resized": [],
+  "detached": [],
+  "token": [],
+  "deprecated": [],
+  "missing": []
+ },
+ "noisy": []
+}

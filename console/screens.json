@@ -33,7 +33,7 @@
  ],
  "usage": {
   "Button": {
-   "count": 8,
+   "count": 9,
    "screens": [
     "1 · Pull requests",
     "3 · Merge box",
@@ -77,11 +77,12 @@
    ]
   },
   "InlineMessage": {
-   "count": 3,
+   "count": 4,
    "screens": [
     "2 · Pull request",
     "3 · Merge box",
-    "5 · Settings · Danger zone"
+    "5 · Settings · Danger zone",
+    "6 · New issue"
    ]
   },
   "Avatar": {

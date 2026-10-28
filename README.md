@@ -118,6 +118,16 @@ It also found problems we didn't plant:
 - In Primer itself, in the dark dimmed mode: `fgColor/accent` and `fgColor/link` on `bgColor/default` are 4.33:1 and `fgColor/danger` is 4.02:1, just under AA.
 - Knock-on effects in dark mode: the hand-set "Danger zone" heading (1.20:1) and the row filled with a token code lacks (1.15:1).
 
+## Mutation test (`src/mutation-screens.ts`)
+
+Planted breaks are few and we chose them. So the rules are also tested with random ones: the script takes the real inventory of the six GitHub screens, applies **one** random break to a fresh copy (a text colour unbound, a colour set by hand on a component, text made too light, an off-scale gap, a component resized, detached, swapped for a deprecated one or for one that isn't in the library, a token code doesn't ship), re-runs the checks and asks two questions: did a finding of the right kind appear on the node we broke, and did anything appear anywhere else?
+
+- Seed 7, 40 per kind: **343 of 343 caught, 0 knock-on false alarms.** Seed 42, 60 per kind: 521 of 521, 0.
+- The first run was 333 of 343. The 10 misses were a real bug: to ignore the icons left inside a detached Button we skipped any component whose Figma id was within 10 of the detached frame's, which also hid three real Buttons on the "New issue" screen. We now read which components actually sit inside a detached frame from Figma. The Button usage count went from 8 to 9 as a result.
+- What it doesn't cover: meaning (labels, icons) is model-based and tested with the planted and blind sets above; and two breaks at once on the same node aren't generated.
+
+`npm test` runs a small version (seed 11, 6 per kind) on every push.
+
 ## Built during the hackathon
 
 The project started on 6 October 2026, inside the submission period. Everything here was built for this hackathon: the drift engine, the agent and its guardrails, the Primer certification, the sandbox benchmark, the PR and CI flow, the console, the 74-component check and the Nebius deployment.

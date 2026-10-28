@@ -15,5 +15,13 @@ test("finds every break planted in the GitHub test screens", () => {
   for (const p of planted.filter((x) => x.kind !== "meaning")) assert.ok(r.findings.some((f) => f.kind === p.kind && (f.node === p.node || f.node.startsWith(`I${p.node};`) || (f.parents ?? []).includes(p.node))), `${p.id} not found: ${p.what}`);
   // meaning comes from a model vote and can vary between runs: require at least one of the two
   assert.ok(planted.filter((x) => x.kind === "meaning").some((p) => r.findings.some((f) => f.kind === "meaning" && f.node === p.node)));
-  assert.equal(r.usage.Button.count, 8);
+  assert.equal(r.usage.Button.count, 9);
+});
+
+test("mutation test: random single breaks are caught with no knock-on false alarms", async () => {
+  process.env.N = "6"; process.env.SEED = "11";
+  await import("../src/mutation-screens.js");
+  const m = JSON.parse(readFileSync("console/mutation.json", "utf8"));
+  assert.equal(m.caught, m.tried, JSON.stringify(m.misses));
+  assert.equal(m.noise, 0, JSON.stringify(m.noisy));
 });

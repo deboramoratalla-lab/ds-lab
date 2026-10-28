@@ -1953,7 +1953,8 @@
 "icons": [],
 "ctx": "Merge pull request | Resolve conflicts",
 "row": "Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing",
-"siblings": ""
+"siblings": "",
+"inDetached": "8909:58"
 },
 {
 "id": "8909:61",
@@ -1970,7 +1971,8 @@
 "icons": [],
 "ctx": "Merge pull request | Resolve conflicts",
 "row": "Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing",
-"siblings": ""
+"siblings": "",
+"inDetached": "8909:58"
 },
 {
 "id": "8909:62",
@@ -1985,7 +1987,8 @@
 "icons": [],
 "ctx": "Merge pull request | Resolve conflicts",
 "row": "Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing",
-"siblings": ""
+"siblings": "",
+"inDetached": "8909:58"
 },
 {
 "id": "8909:63",
@@ -2002,7 +2005,8 @@
 "icons": [],
 "ctx": "Merge pull request | Resolve conflicts",
 "row": "Some checks were not successful | 2 of 3 checks passed \u00b7 ds-sync failing",
-"siblings": ""
+"siblings": "",
+"inDetached": "8909:58"
 }
 ],
 "frames": [
