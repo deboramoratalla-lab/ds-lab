@@ -98,7 +98,7 @@ export function certifyScreens(catalog: CatalogEntry[]) {
     }
   }
   // 9. meaning: Nemotron Super reads each screen (labels, icons, variants, context) and flags what doesn't fit
-  try { const R = JSON.parse(readFileSync("console/screens-review.json", "utf8")); for (const x of R.issues ?? []) findings.push({ kind: "meaning", screen: x.screen, node: x.id, component: x.component, msg: x.problem, fix: x.fix, by: "Nemotron Super" } as any); } catch {}
+  try { const R = JSON.parse(readFileSync("console/screens-review.json", "utf8")); for (const x of R.issues ?? []) findings.push({ kind: "meaning", screen: x.screen, node: x.id, component: x.component, msg: x.problem, fix: x.fix, by: "Nemotron Super + Ultra" } as any); } catch {}
   return { screens: inv.screens.map((s: any) => ({ id: s.id, name: s.name, instances: s.instances.length })), usage, findings, source: inv.source, pageId: inv.pageId };
 }
 

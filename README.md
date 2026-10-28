@@ -29,7 +29,7 @@ Guardrails: auto-apply only at ≥ 85% confidence, every change is journaled and
 - **Agent** (`src/demo/repair.ts`): certify → repair → escalate, with an undo journal and a trust ledger.
 - **Certification** (`src/certify-primer.ts`): shared tokens, links kept since last certification, Button properties by value, options in docs/code/Figma/Storybook, docs in Figma, WCAG AA text contrast.
 - **All 74 components** (`src/certify-catalog.ts`, `src/triage-catalog.ts`): options, tokens and status checked across docs, code and the real Figma file; Nemotron Ultra suggests one fix per drifting component.
-- **Meaning review** (`src/review-screens.ts`): Nemotron Super reads each screen (labels, icons, variants, nearby text) three times and keeps the issues most reads agree on.
+- **Meaning review** (`src/review-screens.ts`): Nemotron Super reads each screen three times (labels, icons, variants, row text) and proposes issues; Nemotron Ultra confirms or rejects each one. Only issues proposed in most reads and confirmed by Ultra are reported.
 - **Screens** (`src/certify-screens.ts`): five GitHub screens (pull requests, PR, merge box, settings, danger zone) built from Primer Web instances in the Figma file. Seamline counts where each component is used and finds what breaks there: detached instances, colours set by hand, options code doesn't ship, text below AA contrast, tokens code doesn't have, components resized by hand.
 - **Pull request + CI** (`ds-lab pr`, `.github/workflows/ds-sync.yml`): pushes the agent's workspace, opens the PR, and the check fails until the lead answers.
 - **Benchmark** (`lab/run_sandboxes.py`): the same five changes synced four ways, each strategy in its own Token Factory Sandbox forked from one checkpoint.
@@ -83,7 +83,7 @@ npm test
 - **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
 - **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
 - **Nebius Serverless is ready, not live.** The workflow and image exist, but our credits cover Token Factory only, so the demo runs on Vercel with the same server.
-- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Contrast is checked in all 9 Primer colour modes. Meaning (labels, icons, variants) is read by Nemotron Super with a 3-read majority vote, so it can still miss or invent things; it's 13 of 13 on our planted set, which is small. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
+- **Screens are read from an export.** The screen inventory is exported from Figma with the plugin API and checked in the repo; there's no live Figma connection in CI. Contrast is checked in all 9 Primer colour modes. Meaning (labels, icons, variants) is proposed by Nemotron Super and confirmed by Nemotron Ultra; it was stable across two runs on our 3 planted meaning breaks, which is a small set. The test screens use Inter for edited labels because the plugin sandbox can't load SF Pro.
 - **One design system.** Everything is tuned on Primer; another system needs its own source adapters.
 - **Accessibility:** the agent blocks any fix that breaks WCAG AA text contrast, and the console's own text tokens meet AA in light and dark. It hasn't had a full screen-reader audit.
 
@@ -106,7 +106,11 @@ We planted breaks in the GitHub screens on purpose (`fixtures/primer-web-notes/s
 **Blind test** (`fixtures/primer-web-notes/screens-blind.json`). After round 9 we froze the rules and the prompt and built a new screen, "New issue", with 6 new breaks (a Label border set by hand, a 2.85:1 caption, a primary button that says "Cancel", a 10px gap, a detached Label, a form background set by hand that only breaks in dark mode) and 6 decoys that look suspicious but are correct (an invisible small Button at its real 28px, a success InlineMessage, an attention Label...).
 
 - New screen: **6 of 6 found, 0 false alarms** on the decoys.
-- Same run, old screens: the model vote dropped B13 ("Save changes" on the Archive row, 1 of 3 reads) and kept 2 false alarms (two ToggleSwitches whose "On" it read as a vague label, 2 of 3 reads). Rules found everything they found before. So: rules are stable, the meaning review is useful but not reliable on its own, which is why its findings are shown to a person and never auto-applied.
+- Same run, old screens: the model vote dropped B13 ("Save changes" on the Archive row, 1 of 3 reads) and kept 2 false alarms (two ToggleSwitches whose "On" it read as a vague label). Rules found everything they found before.
+
+**Fixing the meaning review** (round 10). Three changes: temperature 0 so reads repeat; each element now gets the text of its own row and its sibling components instead of the whole screen (the Archive button used to see every row of the Danger zone); and a second model checks each candidate: Nemotron Super proposes, Nemotron Ultra confirms or rejects, and an issue is reported only if Super proposed it in most of 3 reads **and** Ultra confirms it.
+- Two full runs back to back, all 6 screens: the same 3 issues both times (B12, B13 and the blind N3), each proposed in 3 of 3 reads and confirmed by Ultra; 0 false alarms. Ultra rejected the candidates that weren't real (e.g. "Merge pull request doesn't match the checks text").
+- Still not a guarantee: 3 planted meaning breaks is a small set, which is why these findings go to a person and are never auto-applied.
 
 It also found problems we didn't plant:
 - From the library: StateLabel's `variant=pull request` and `size=normal` exist in Figma but not in docs; SegmentedControl's `size=medium` is missing in code.

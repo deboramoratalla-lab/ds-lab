@@ -473,39 +473,30 @@
   },
   {
    "kind": "meaning",
-   "screen": "4 · Settings · General",
-   "node": "8908:1281",
-   "component": "ToggleSwitch",
-   "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-   "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
-   "by": "Nemotron Super"
-  },
-  {
-   "kind": "meaning",
-   "screen": "4 · Settings · General",
-   "node": "8908:1293",
-   "component": "ToggleSwitch",
-   "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-   "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
-   "by": "Nemotron Super"
+   "screen": "5 · Settings · Danger zone",
+   "node": "8908:1450",
+   "component": "Button",
+   "msg": "Label \"Save changes\" does not match the row describing archiving the repository.",
+   "fix": "Change label to \"Archive this repository\".",
+   "by": "Nemotron Super + Ultra"
   },
   {
    "kind": "meaning",
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1460",
    "component": "Button",
-   "msg": "Icon link-external implies opening another page, which contradicts the delete action.",
-   "fix": "Replace link-external icon with trash icon (or remove the icon).",
-   "by": "Nemotron Super"
+   "msg": "Icon link-external suggests opening another page, not deletion.",
+   "fix": "Replace link-external icon with the trash octicon.",
+   "by": "Nemotron Super + Ultra"
   },
   {
    "kind": "meaning",
    "screen": "6 · New issue",
    "node": "8914:582",
    "component": "Button",
-   "msg": "Primary variant used for Cancel, which is not the primary action.",
-   "fix": "Use default or secondary variant for Cancel.",
-   "by": "Nemotron Super"
+   "msg": "Cancel button uses primary variant, but primary should be reserved for the main form action.",
+   "fix": "Set Cancel to default or secondary variant and make Submit new issue the primary button.",
+   "by": "Nemotron Super + Ultra"
   }
  ],
  "source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
@@ -614,7 +605,7 @@
     "screen": "5 · Settings · Danger zone",
     "node": "8908:1450",
     "what": "Danger Button in the 'Archive this repository' row says 'Save changes'",
-    "found": false
+    "found": true
    }
   ],
   "extra": [
@@ -868,30 +859,12 @@
    },
    {
     "kind": "meaning",
-    "screen": "4 · Settings · General",
-    "node": "8908:1281",
-    "component": "ToggleSwitch",
-    "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-    "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
-    "by": "Nemotron Super"
-   },
-   {
-    "kind": "meaning",
-    "screen": "4 · Settings · General",
-    "node": "8908:1293",
-    "component": "ToggleSwitch",
-    "msg": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-    "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
-    "by": "Nemotron Super"
-   },
-   {
-    "kind": "meaning",
     "screen": "6 · New issue",
     "node": "8914:582",
     "component": "Button",
-    "msg": "Primary variant used for Cancel, which is not the primary action.",
-    "fix": "Use default or secondary variant for Cancel.",
-    "by": "Nemotron Super"
+    "msg": "Cancel button uses primary variant, but primary should be reserved for the main form action.",
+    "fix": "Set Cancel to default or secondary variant and make Submit new issue the primary button.",
+    "by": "Nemotron Super + Ultra"
    }
   ]
  },

@@ -1,74 +1,67 @@
 {
- "at": "2026-10-28T19:20:43.227Z",
- "model": "nvidia/nemotron-3-super-120b-a12b",
- "ms": 78311,
- "calls": 18,
+ "at": "2026-10-28T19:33:09.857Z",
+ "models": {
+  "propose": "nvidia/nemotron-3-super-120b-a12b",
+  "verify": "nvidia/Nemotron-3-Ultra-550b-a55b"
+ },
  "runs": 3,
+ "ms": 113894,
+ "calls": {
+  "super": 18,
+  "ultra": 5
+ },
  "issues": [
   {
-   "id": "8908:1281",
-   "component": "ToggleSwitch",
-   "problem": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-   "fix": "Use a descriptive label like \"Allow auto-merge\" matching the nearby setting.",
-   "confidence": 0.95,
-   "screen": "4 · Settings · General",
-   "votes": 2
-  },
-  {
-   "id": "8908:1293",
-   "component": "ToggleSwitch",
-   "problem": "Label \"On\" does not describe what the toggle controls; it only repeats the state.",
-   "fix": "Use a descriptive label like \"Automatically delete head branch\" matching the nearby setting.",
-   "confidence": 0.95,
-   "screen": "4 · Settings · General",
-   "votes": 2
+   "id": "8908:1450",
+   "component": "Button",
+   "problem": "Label \"Save changes\" does not match the row describing archiving the repository.",
+   "fix": "Change label to \"Archive this repository\".",
+   "screen": "5 · Settings · Danger zone",
+   "votes": 3,
+   "verdict": "The button label 'Save changes' describes a generic save action while the row text 'Archive this repository' describes a destructive archive action, so the label does not match the row's described action.",
+   "ultra": true
   },
   {
    "id": "8908:1460",
    "component": "Button",
-   "problem": "Icon link-external implies opening another page, which contradicts the delete action.",
-   "fix": "Replace link-external icon with trash icon (or remove the icon).",
-   "confidence": 0.9,
+   "problem": "Icon link-external suggests opening another page, not deletion.",
+   "fix": "Replace link-external icon with the trash octicon.",
    "screen": "5 · Settings · Danger zone",
-   "votes": 3
+   "votes": 3,
+   "verdict": "The link-external octicon means 'opens another page' per the design system, but the button's action is deletion, so the icon misrepresents the behavior.",
+   "ultra": true
   },
   {
    "id": "8914:582",
    "component": "Button",
-   "problem": "Primary variant used for Cancel, which is not the primary action.",
-   "fix": "Use default or secondary variant for Cancel.",
-   "confidence": 0.95,
+   "problem": "Cancel button uses primary variant, but primary should be reserved for the main form action.",
+   "fix": "Set Cancel to default or secondary variant and make Submit new issue the primary button.",
    "screen": "6 · New issue",
-   "votes": 3
+   "votes": 3,
+   "verdict": "The primary variant is used on the Cancel button while the main form action is Submit new issue, which should be primary instead.",
+   "ultra": true
   }
  ],
- "dropped": [
+ "rejected": [
   {
-   "id": "8908:614",
-   "component": "TabNav",
-   "problem": "TabNav label includes 'Button' which is not a tab name, suggesting an incorrect tab entry.",
-   "fix": "Ensure TabNav only lists actual tab titles (Conversation, Commits, Checks, Files changed) and remove stray 'Button'.",
-   "confidence": 0.85,
+   "id": "8908:608",
+   "component": "StateLabel",
+   "problem": "Variant 'pull request' is not a valid visual variant for StateLabel; it misuses the prop.",
+   "fix": "Use a proper variant like 'default' or 'success' to reflect the open state.",
    "screen": "2 · Pull request",
-   "votes": 1
+   "votes": 1,
+   "verdict": "Primer StateLabel only accepts semantic variants like success, danger, warning, default, not arbitrary strings such as 'pull request'.",
+   "ultra": true
   },
   {
-   "id": "8908:823",
-   "component": "Inline message",
-   "problem": "Critical variant paired with alert icon (warning) creates a mismatch in severity.",
-   "fix": "Change variant to warning to match the alert icon, or replace icon with a more severe symbol if keeping critical.",
-   "confidence": 0.6,
-   "screen": "3 · Merge box",
-   "votes": 1
-  },
-  {
-   "id": "8908:1450",
+   "id": "8908:829",
    "component": "Button",
-   "problem": "Label 'Save changes' implies a non-destructive action but uses danger variant.",
-   "fix": "Use default or primary variant for Save changes.",
-   "confidence": 0.95,
-   "screen": "5 · Settings · Danger zone",
-   "votes": 1
+   "problem": "The button label \"Merge pull request\" does not describe the action indicated by the row status about checks.",
+   "fix": "Change the label to reflect the row’s action (e.g., \"Retry checks\") or reposition the button so its label matches the row’s described action.",
+   "screen": "3 · Merge box",
+   "votes": 1,
+   "verdict": "The button label correctly names the primary action of the merge box; the row text shows prerequisite check status, not an alternative action.",
+   "ultra": false
   }
  ]
 }

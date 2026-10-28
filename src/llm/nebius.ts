@@ -23,6 +23,8 @@ export interface ChatOptions {
   think?: boolean;
   json?: boolean;
   maxTokens?: number;
+  /** 0 makes repeated reads give the same answer. */
+  temperature?: number;
 }
 
 export async function chat(o: ChatOptions): Promise<string> {
@@ -37,15 +39,22 @@ export async function chat(o: ChatOptions): Promise<string> {
 ${VOICE}` }] : []), { role: "user", content: o.user }],
     chat_template_kwargs: { enable_thinking: o.think ?? false },
   };
+  if (o.temperature != null) body.temperature = o.temperature;
   if (o.json) body.response_format = { type: "json_object" };
 
   const started = Date.now();
   for (let attempt = 1; ; attempt++) {
-    const res = await fetch(`${BASE_URL}/chat/completions`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    let res: Response;
+    try {
+      res = await fetch(`${BASE_URL}/chat/completions`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (e) { // dropped connection: retry like a 5xx
+      if (attempt < 4) { await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt)); continue; }
+      throw e;
+    }
     if (res.status === 429 || res.status >= 500) {
       if (attempt < 4) { await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt)); continue; }
     }
