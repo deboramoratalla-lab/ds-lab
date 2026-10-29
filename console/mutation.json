@@ -1,41 +1,41 @@
 {
- "at": "2026-10-29T08:48:02.804Z",
- "seed": 11,
- "tried": 51,
- "caught": 51,
+ "at": "2026-10-29T11:17:01.622Z",
+ "seed": 7,
+ "tried": 343,
+ "caught": 343,
  "noise": 0,
  "kinds": {
   "hardcoded": {
-   "tried": 12,
-   "caught": 12
+   "tried": 80,
+   "caught": 80
   },
   "contrast": {
-   "tried": 4,
-   "caught": 4
+   "tried": 31,
+   "caught": 31
   },
   "spacing": {
-   "tried": 6,
-   "caught": 6
+   "tried": 40,
+   "caught": 40
   },
   "resized": {
-   "tried": 6,
-   "caught": 6
+   "tried": 40,
+   "caught": 40
   },
   "detached": {
-   "tried": 5,
-   "caught": 5
+   "tried": 32,
+   "caught": 32
   },
   "token": {
-   "tried": 6,
-   "caught": 6
+   "tried": 40,
+   "caught": 40
   },
   "deprecated": {
-   "tried": 6,
-   "caught": 6
+   "tried": 40,
+   "caught": 40
   },
   "missing": {
-   "tried": 6,
-   "caught": 6
+   "tried": 40,
+   "caught": 40
   }
  },
  "misses": {

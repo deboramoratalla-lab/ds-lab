@@ -43,7 +43,7 @@ for (const m of M) for (let k = 0; k < N; k++) {
   if (other.length) { noise++; noisy.push({ mutation: m.kind, at, other: other.map((f: any) => `${f.kind}: ${f.msg}`) }); }
 }
 const tried = Object.values(kinds).reduce((a, k) => a + k.tried, 0), caught = Object.values(kinds).reduce((a, k) => a + k.caught, 0);
-writeFileSync("console/mutation.json", JSON.stringify({ at: new Date().toISOString(), seed: Number(process.env.SEED ?? 7), tried, caught, noise, kinds: Object.fromEntries(Object.entries(kinds).map(([k, v]) => [k, { tried: v.tried, caught: v.caught }])), misses: Object.fromEntries(Object.entries(kinds).map(([k, v]) => [k, v.misses.slice(0, 5)])), noisy: noisy.slice(0, 10) }, null, 1));
+writeFileSync(process.env.MUTATION_OUT ?? "console/mutation.json", JSON.stringify({ at: new Date().toISOString(), seed: Number(process.env.SEED ?? 7), tried, caught, noise, kinds: Object.fromEntries(Object.entries(kinds).map(([k, v]) => [k, { tried: v.tried, caught: v.caught }])), misses: Object.fromEntries(Object.entries(kinds).map(([k, v]) => [k, v.misses.slice(0, 5)])), noisy: noisy.slice(0, 10) }, null, 1));
 console.log(`${caught}/${tried} mutations caught · ${noise} caused a finding somewhere else`);
 for (const [k, v] of Object.entries(kinds)) console.log(`  ${k.padEnd(11)} ${v.caught}/${v.tried}`);
 for (const n of noisy.slice(0, 5)) console.log("  noise:", n.mutation, n.at.node, "→", n.other.join("; "));

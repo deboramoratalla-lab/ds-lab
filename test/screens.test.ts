@@ -19,9 +19,9 @@ test("finds every break planted in the GitHub test screens", () => {
 });
 
 test("mutation test: random single breaks are caught with no knock-on false alarms", async () => {
-  process.env.N = "6"; process.env.SEED = "11";
+  process.env.N = "6"; process.env.SEED = "11"; process.env.MUTATION_OUT = "/tmp/seamline-mutation-test.json";
   await import("../src/mutation-screens.js");
-  const m = JSON.parse(readFileSync("console/mutation.json", "utf8"));
+  const m = JSON.parse(readFileSync("/tmp/seamline-mutation-test.json", "utf8"));
   assert.equal(m.caught, m.tried, JSON.stringify(m.misses));
   assert.equal(m.noise, 0, JSON.stringify(m.noisy));
 });
