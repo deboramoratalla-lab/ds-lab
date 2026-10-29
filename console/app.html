@@ -808,13 +808,13 @@ code, kbd { background: none; padding: 0; }
 .sec-sub{margin-left:10px;font-size:13px;color:var(--label-3);font-weight:400}
 .comp-bar{display:flex;margin:0 0 12px}.comp-search{display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:var(--group);box-shadow:var(--tag-shadow);color:var(--label-3);min-width:260px}
 .comp-search svg{width:14px;height:14px}.comp-search input{border:0;outline:0;background:none;font:inherit;font-size:13px;color:var(--label);flex:1}
-.comp-tbl{padding:4px 0}.crow{display:grid;grid-template-columns:1.6fr 1fr 1fr .8fr 1.2fr 20px;align-items:center;gap:12px;width:100%;padding:12px 20px;border:0;border-top:1px solid var(--hair);background:none;font:inherit;font-size:13px;color:var(--label-2);text-align:left;cursor:pointer}
+.comp-tbl{padding:4px 0}.crow{display:grid;grid-template-columns:1.5fr 1fr .9fr .9fr .7fr 1.1fr 20px;align-items:center;gap:12px;width:100%;padding:12px 20px;border:0;border-top:1px solid var(--hair);background:none;font:inherit;font-size:13px;color:var(--label-2);text-align:left;cursor:pointer}
 .crow:first-child{border-top:0}.crow.chead{cursor:default;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--label-3);padding-block:10px}
 button.crow:not([disabled]):hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}.crow[disabled]{cursor:default}.crow.dim{color:var(--label-3)}.crow.dim .go{visibility:hidden}
 .cn{font-weight:500;color:var(--label)}.crow.dim .cn{color:var(--label-2);font-weight:400}.go{transform:rotate(-90deg);width:14px;height:14px;color:var(--label-3)}
 .cst{justify-self:start;font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px}.cst.ok{background:rgba(30,158,139,.12);color:#1e9e8b}.cst.warn{background:rgba(208,138,60,.14);color:#c07a2c}.cst.bad{background:rgba(217,83,79,.12);color:#d9534f}.cst.none{background:var(--fill);color:var(--label-3);font-weight:400}
 .crow.cmore{display:block;text-align:center;color:var(--accent);font-weight:500}div.crow.cmore{color:var(--label-3);font-weight:400;cursor:default}
-@media (max-width:760px){.crow{grid-template-columns:1fr auto 20px}.crow>span:nth-child(2),.crow>span:nth-child(3),.crow>span:nth-child(4){display:none}}
+@media (max-width:760px){.crow{grid-template-columns:1fr auto 20px}.crow>span:nth-child(2),.crow>span:nth-child(3),.crow>span:nth-child(4),.crow>span:nth-child(5){display:none}}
 .back{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:0;margin-bottom:10px}.back .cv{transform:rotate(90deg)}
 .kpi[data-go]{cursor:pointer;border-radius:16px;transition:background .2s}.kpi[data-go]:hover{background:color-mix(in srgb,var(--accent) 5%,transparent)}
 .aff{margin:0 16px 14px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 4%,var(--group));border:1px solid var(--hair);display:flex;flex-direction:column;gap:6px;font-size:12.5px}
@@ -1832,8 +1832,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const list = compAll || compQ ? shown : shown.slice(0, 3);
     $("#comp-sub").textContent = `${rows.filter((r) => r.cert).length} of ${rows.length} checked · ${rows.filter((r) => r.cert && !r.off && !r.wait).length} in sync`;
     const st = (r) => !r.cert ? `<span class="comp-nc">${r.cat && !r.cat.css && !r.cat.figma ? "Behaviour only" : "Nothing to compare"}</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
-    $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Figma</span><span>Storybook</span><span>Checks</span><span>Status</span><span></span></div>` +
-      list.map((r) => `<button class="crow" data-comp="${esc(r.name)}"><span class="cn">${esc(r.name)}${r.deep ? ' <em class="deep">Agent</em>' : ""}</span><span>${figCell(r)}</span><span>${r.story ? "Stories" : `<span class="s" title="Primer has no stories for it">No stories</span>`}</span><span>${r.deep ? `${cur.total.toLocaleString()}` : r.cat?.total || "—"}</span><span>${st(r)}</span><span class="chev"><svg><use href="#i-chev"/></svg></span></button>`).join("") +
+    $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Docs</span><span>Figma</span><span>Storybook</span><span>Checks</span><span>Status</span><span></span></div>` +
+      list.map((r) => `<button class="crow" data-comp="${esc(r.name)}"><span class="cn">${esc(r.name)}${r.deep ? ' <em class="deep">Agent</em>' : ""}</span><span>${docCell(r)}</span><span>${figCell(r)}</span><span>${r.story ? "Stories" : `<span class="s" title="Primer has no stories for it">No stories</span>`}</span><span>${r.deep ? `${cur.total.toLocaleString()}` : r.cat?.total || "—"}</span><span>${st(r)}</span><span class="chev"><svg><use href="#i-chev"/></svg></span></button>`).join("") +
       (!compQ && shown.length > 3 ? `<button class="crow cmore" id="comp-more">${compAll ? "Show fewer" : `Show all ${shown.length}`}</button>` : "") +
       (!shown.length ? `<div class="crow cmore">No component matches “${esc(compQ)}”</div>` : "");
     $("#comp-more")?.addEventListener("click", () => { compAll = !compAll; renderComponents(); });
@@ -1994,6 +1994,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const NO_VISUAL = new Set(["AnchoredOverlay", "CheckboxGroup", "Details", "FeatureFlags", "FormControl", "Hidden", "LabelGroup", "PageLayout", "Portal", "RadioGroup", "RelativeTime", "ScrollableRegion", "SplitPageLayout", "Stack", "Text", "Truncate", "VisuallyHidden"]);
   const PARTIAL = { Skeleton: "Split in Figma: SkeletonAvatar and SkeletonText", ConfirmationDialog: "Built on Dialog: use Dialog in Figma" };
   const missingInFigma = () => (D.components || []).filter((c) => !c.cat?.figma && !/deprecated/i.test(c.cat?.status || "") && !NO_VISUAL.has(c.name) && !PARTIAL[c.name]);
+  function docCell(r) {
+    const st = r.cat?.status; if (!st) return `<span class="s" title="Not in primer.style">No docs</span>`;
+    return `<span title="Status on primer.style">${esc(st[0].toUpperCase() + st.slice(1))}</span>`;
+  }
   function figCell(r) {
     if (r.inFigma) return "Component set";
     if (/deprecated/i.test(r.cat?.status || "")) return `<span class="s" title="Deprecated in Primer's docs, so no Figma set is expected">Deprecated</span>`;
