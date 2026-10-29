@@ -10,6 +10,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 9,
     "total": 9,
@@ -22,8 +28,8 @@
     "issues": []
    }
   ],
-  "passed": 13,
-  "total": 13,
+  "passed": 15,
+  "total": 15,
   "figma": null,
   "css": true,
   "tokens": 9
@@ -37,6 +43,14 @@
     "passed": 3,
     "total": 3,
     "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 2,
+    "issues": [
+     "variant=horizontal-inset: no story shows it"
+    ]
    },
    {
     "area": "Tokens exist in code",
@@ -57,8 +71,8 @@
     "issues": []
    }
   ],
-  "passed": 78,
-  "total": 78,
+  "passed": 79,
+  "total": 80,
   "figma": {
    "id": "15614:56202",
    "name": "ActionList"
@@ -70,6 +84,12 @@
   "name": "ActionMenu",
   "status": "beta",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 1,
@@ -83,8 +103,8 @@
     "issues": []
    }
   ],
-  "passed": 2,
-  "total": 2,
+  "passed": 3,
+  "total": 3,
   "figma": {
    "id": "26998:2424",
    "name": "ActionMenu"
@@ -103,14 +123,20 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 2,
     "total": 2,
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 8,
+  "total": 8,
   "figma": null,
   "css": true,
   "tokens": 2
@@ -119,6 +145,12 @@
   "name": "Autocomplete",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 1,
@@ -132,8 +164,8 @@
     "issues": []
    }
   ],
-  "passed": 2,
-  "total": 2,
+  "passed": 3,
+  "total": 3,
   "figma": {
    "id": "35998:101114",
    "name": "Autocomplete"
@@ -145,6 +177,12 @@
   "name": "Avatar",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 1,
@@ -164,8 +202,8 @@
     "issues": []
    }
   ],
-  "passed": 3,
-  "total": 3,
+  "passed": 4,
+  "total": 4,
   "figma": {
    "id": "3805:11",
    "name": "Avatar"
@@ -184,6 +222,14 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 0,
+    "total": 1,
+    "issues": [
+     "variant=stack: no story shows it"
+    ]
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 1,
     "total": 1,
@@ -197,7 +243,7 @@
    }
   ],
   "passed": 4,
-  "total": 4,
+  "total": 5,
   "figma": {
    "id": "3805:24",
    "name": "AvatarStack"
@@ -216,6 +262,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 28,
     "total": 28,
@@ -228,8 +280,8 @@
     "issues": []
    }
   ],
-  "passed": 48,
-  "total": 48,
+  "passed": 53,
+  "total": 53,
   "figma": {
    "id": "34303:2712",
    "name": "Banner"
@@ -245,6 +297,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 3,
     "total": 3,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 2,
     "issues": []
    },
    {
@@ -266,8 +324,8 @@
     "issues": []
    }
   ],
-  "passed": 26,
-  "total": 26,
+  "passed": 28,
+  "total": 28,
   "figma": {
    "id": "4398:2383",
    "name": "Blankslate"
@@ -279,6 +337,12 @@
   "name": "BranchName",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 8,
@@ -298,8 +362,8 @@
     "issues": []
    }
   ],
-  "passed": 12,
-  "total": 12,
+  "passed": 13,
+  "total": 13,
   "figma": {
    "id": "3655:7208",
    "name": "BranchName"
@@ -311,6 +375,12 @@
   "name": "Breadcrumbs",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 18,
@@ -330,8 +400,8 @@
     "issues": []
    }
   ],
-  "passed": 25,
-  "total": 25,
+  "passed": 26,
+  "total": 26,
   "figma": {
    "id": "20135:70690",
    "name": "Breadcrumbs"
@@ -347,6 +417,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 8,
     "total": 8,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 6,
+    "total": 6,
     "issues": []
    },
    {
@@ -368,8 +444,8 @@
     "issues": []
    }
   ],
-  "passed": 224,
-  "total": 224,
+  "passed": 230,
+  "total": 230,
   "figma": {
    "id": "30258:5582",
    "name": "Button"
@@ -381,6 +457,12 @@
   "name": "ButtonGroup",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 1,
@@ -394,8 +476,8 @@
     "issues": []
    }
   ],
-  "passed": 2,
-  "total": 2,
+  "passed": 3,
+  "total": 3,
   "figma": {
    "id": "36325:3634",
    "name": "ButtonGroup"
@@ -407,6 +489,12 @@
   "name": "Card",
   "status": "draft",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 21,
@@ -420,8 +508,8 @@
     "issues": []
    }
   ],
-  "passed": 26,
-  "total": 26,
+  "passed": 27,
+  "total": 27,
   "figma": null,
   "css": true,
   "tokens": 21
@@ -430,6 +518,12 @@
   "name": "Checkbox",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 14,
@@ -449,8 +543,8 @@
     "issues": []
    }
   ],
-  "passed": 25,
-  "total": 25,
+  "passed": 26,
+  "total": 26,
   "figma": {
    "id": "15341:46321",
    "name": "Checkbox"
@@ -461,9 +555,16 @@
  {
   "name": "CheckboxGroup",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -479,6 +580,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 2,
     "total": 2,
@@ -491,8 +598,8 @@
     "issues": []
    }
   ],
-  "passed": 6,
-  "total": 6,
+  "passed": 8,
+  "total": 8,
   "figma": null,
   "css": true,
   "tokens": 2
@@ -500,9 +607,16 @@
  {
   "name": "ConfirmationDialog",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -513,6 +627,12 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
     "passed": 2,
     "total": 2,
     "issues": []
@@ -536,8 +656,8 @@
     "issues": []
    }
   ],
-  "passed": 18,
-  "total": 18,
+  "passed": 20,
+  "total": 20,
   "figma": {
    "id": "18959:64970",
    "name": "CounterLabel"
@@ -549,6 +669,12 @@
   "name": "DataTable",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 20,
@@ -568,8 +694,8 @@
     "issues": []
    }
   ],
-  "passed": 30,
-  "total": 30,
+  "passed": 31,
+  "total": 31,
   "figma": {
    "id": "28509:38091",
    "name": "DataTable"
@@ -580,9 +706,16 @@
  {
   "name": "Details",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": true,
   "tokens": 0
@@ -591,6 +724,12 @@
   "name": "Dialog",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 17,
@@ -610,8 +749,8 @@
     "issues": []
    }
   ],
-  "passed": 22,
-  "total": 22,
+  "passed": 23,
+  "total": 23,
   "figma": {
    "id": "16593:65798",
    "name": "Dialog"
@@ -634,6 +773,12 @@
   "status": "",
   "checks": [
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 12,
     "total": 12,
@@ -646,8 +791,8 @@
     "issues": []
    }
   ],
-  "passed": 17,
-  "total": 17,
+  "passed": 18,
+  "total": 18,
   "figma": null,
   "css": true,
   "tokens": 12
@@ -663,6 +808,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 17,
     "total": 17,
@@ -675,8 +826,8 @@
     "issues": []
    }
   ],
-  "passed": 34,
-  "total": 34,
+  "passed": 37,
+  "total": 37,
   "figma": null,
   "css": true,
   "tokens": 17
@@ -685,6 +836,12 @@
   "name": "FormControl",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 10,
@@ -698,8 +855,8 @@
     "issues": []
    }
   ],
-  "passed": 13,
-  "total": 13,
+  "passed": 14,
+  "total": 14,
   "figma": null,
   "css": true,
   "tokens": 10
@@ -708,6 +865,12 @@
   "name": "Header",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 7,
@@ -727,8 +890,8 @@
     "issues": []
    }
   ],
-  "passed": 11,
-  "total": 11,
+  "passed": 12,
+  "total": 12,
   "figma": {
    "id": "26738:6196",
    "name": "Header"
@@ -747,6 +910,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 5,
     "total": 5,
@@ -759,8 +928,8 @@
     "issues": []
    }
   ],
-  "passed": 9,
-  "total": 9,
+  "passed": 12,
+  "total": 12,
   "figma": {
    "id": "21069:78785",
    "name": "Heading"
@@ -771,9 +940,16 @@
  {
   "name": "Hidden",
   "status": "draft",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": true,
   "tokens": 0
@@ -789,6 +965,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 5,
+    "total": 5,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 9,
     "total": 9,
@@ -801,8 +983,8 @@
     "issues": []
    }
   ],
-  "passed": 20,
-  "total": 20,
+  "passed": 25,
+  "total": 25,
   "figma": {
    "id": "32109:348",
    "name": "InlineMessage"
@@ -819,10 +1001,16 @@
     "passed": 4,
     "total": 4,
     "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 2,
+    "issues": []
    }
   ],
-  "passed": 4,
-  "total": 4,
+  "passed": 6,
+  "total": 6,
   "figma": null,
   "css": true,
   "tokens": 0
@@ -835,6 +1023,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 12,
     "total": 12,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 10,
+    "total": 10,
     "issues": []
    },
    {
@@ -856,8 +1050,8 @@
     "issues": []
    }
   ],
-  "passed": 57,
-  "total": 57,
+  "passed": 67,
+  "total": 67,
   "figma": {
    "id": "18959:65008",
    "name": "Label"
@@ -870,14 +1064,20 @@
   "status": "alpha",
   "checks": [
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 1,
     "total": 1,
     "issues": []
    }
   ],
-  "passed": 1,
-  "total": 1,
+  "passed": 2,
+  "total": 2,
   "figma": null,
   "css": true,
   "tokens": 1
@@ -886,6 +1086,12 @@
   "name": "Link",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 2,
@@ -905,8 +1111,8 @@
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 6,
+  "total": 6,
   "figma": {
    "id": "20953:78768",
    "name": "Link"
@@ -919,6 +1125,12 @@
   "status": "alpha",
   "checks": [
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 3,
     "total": 3,
@@ -937,8 +1149,8 @@
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 6,
+  "total": 6,
   "figma": {
    "id": "15175:71561",
    "name": "NavList"
@@ -949,9 +1161,16 @@
  {
   "name": "Octicon",
   "status": "deprecated",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -960,6 +1179,12 @@
   "name": "Overlay",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 3,
@@ -979,8 +1204,8 @@
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 6,
+  "total": 6,
   "figma": {
    "id": "9685:44751",
    "name": "Overlay"
@@ -992,6 +1217,12 @@
   "name": "PageHeader",
   "status": "beta",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 7,
@@ -1005,8 +1236,8 @@
     "issues": []
    }
   ],
-  "passed": 8,
-  "total": 8,
+  "passed": 9,
+  "total": 9,
   "figma": {
    "id": "40002:2161",
    "name": "PageHeader"
@@ -1018,6 +1249,12 @@
   "name": "PageLayout",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 4,
@@ -1031,8 +1268,8 @@
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 6,
+  "total": 6,
   "figma": null,
   "css": true,
   "tokens": 4
@@ -1041,6 +1278,12 @@
   "name": "Pagehead",
   "status": "deprecated",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 2,
@@ -1060,8 +1303,8 @@
     "issues": []
    }
   ],
-  "passed": 4,
-  "total": 4,
+  "passed": 5,
+  "total": 5,
   "figma": {
    "id": "4065:363",
    "name": "Pagehead"
@@ -1073,6 +1316,12 @@
   "name": "Pagination",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 12,
@@ -1086,8 +1335,8 @@
     "issues": []
    }
   ],
-  "passed": 19,
-  "total": 19,
+  "passed": 20,
+  "total": 20,
   "figma": {
    "id": "34607:94621",
    "name": "Pagination"
@@ -1099,6 +1348,12 @@
   "name": "Popover",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 16,
@@ -1118,8 +1373,8 @@
     "issues": []
    }
   ],
-  "passed": 19,
-  "total": 19,
+  "passed": 20,
+  "total": 20,
   "figma": {
    "id": "19015:63778",
    "name": "Popover"
@@ -1130,9 +1385,16 @@
  {
   "name": "Portal",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -1141,6 +1403,12 @@
   "name": "ProgressBar",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 2,
@@ -1154,8 +1422,8 @@
     "issues": []
    }
   ],
-  "passed": 3,
-  "total": 3,
+  "passed": 4,
+  "total": 4,
   "figma": {
    "id": "34727:143491",
    "name": "ProgressBar"
@@ -1167,6 +1435,12 @@
   "name": "Radio",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 7,
@@ -1186,8 +1460,8 @@
     "issues": []
    }
   ],
-  "passed": 13,
-  "total": 13,
+  "passed": 14,
+  "total": 14,
   "figma": {
    "id": "15341:46367",
    "name": "Radio"
@@ -1198,9 +1472,16 @@
  {
   "name": "RadioGroup",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -1208,9 +1489,16 @@
  {
   "name": "RelativeTime",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -1218,9 +1506,16 @@
  {
   "name": "ScrollableRegion",
   "status": "",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": true,
   "tokens": 0
@@ -1233,6 +1528,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 16,
     "total": 16,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 12,
+    "total": 12,
     "issues": []
    },
    {
@@ -1254,8 +1555,8 @@
     "issues": []
    }
   ],
-  "passed": 52,
-  "total": 52,
+  "passed": 64,
+  "total": 64,
   "figma": {
    "id": "16122:79604",
    "name": "SegmentedControl"
@@ -1274,6 +1575,14 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 3,
+    "issues": [
+     "size=medium: no story shows it"
+    ]
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 1,
     "total": 1,
@@ -1286,8 +1595,8 @@
     "issues": []
    }
   ],
-  "passed": 5,
-  "total": 5,
+  "passed": 7,
+  "total": 8,
   "figma": {
    "id": "15341:46907",
    "name": "Select"
@@ -1303,6 +1612,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 2,
     "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
     "issues": []
    },
    {
@@ -1324,8 +1639,8 @@
     "issues": []
    }
   ],
-  "passed": 35,
-  "total": 35,
+  "passed": 36,
+  "total": 36,
   "figma": {
    "id": "40704:73019",
    "name": "SelectPanel"
@@ -1337,6 +1652,12 @@
   "name": "Skeleton",
   "status": "",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 3,
@@ -1350,8 +1671,8 @@
     "issues": []
    }
   ],
-  "passed": 4,
-  "total": 4,
+  "passed": 5,
+  "total": 5,
   "figma": null,
   "css": true,
   "tokens": 3
@@ -1359,9 +1680,16 @@
  {
   "name": "SkeletonAvatar",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": {
    "id": "29994:6840",
    "name": "SkeletonAvatar"
@@ -1380,14 +1708,20 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 7,
+    "total": 7,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 18,
     "total": 18,
     "issues": []
    }
   ],
-  "passed": 26,
-  "total": 26,
+  "passed": 33,
+  "total": 33,
   "figma": {
    "id": "30013:6946",
    "name": "SkeletonText"
@@ -1406,6 +1740,12 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 2,
     "total": 2,
@@ -1418,8 +1758,8 @@
     "issues": []
    }
   ],
-  "passed": 6,
-  "total": 6,
+  "passed": 9,
+  "total": 9,
   "figma": {
    "id": "11025:38126",
    "name": "Spinner"
@@ -1430,9 +1770,16 @@
  {
   "name": "SplitPageLayout",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": false,
   "tokens": 0
@@ -1442,14 +1789,20 @@
   "status": "alpha",
   "checks": [
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 8,
     "total": 8,
     "issues": []
    }
   ],
-  "passed": 8,
-  "total": 8,
+  "passed": 9,
+  "total": 9,
   "figma": null,
   "css": true,
   "tokens": 8
@@ -1472,6 +1825,12 @@
     ]
    },
    {
+    "area": "Storybook",
+    "passed": 2,
+    "total": 2,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 21,
     "total": 21,
@@ -1490,8 +1849,8 @@
     "issues": []
    }
   ],
-  "passed": 36,
-  "total": 42,
+  "passed": 38,
+  "total": 44,
   "figma": {
    "id": "18959:64962",
    "name": "StateLabel"
@@ -1503,6 +1862,12 @@
   "name": "SubNav",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 11,
@@ -1522,8 +1887,8 @@
     "issues": []
    }
   ],
-  "passed": 17,
-  "total": 17,
+  "passed": 18,
+  "total": 18,
   "figma": {
    "id": "19008:62778",
    "name": "SubNav"
@@ -1535,6 +1900,12 @@
   "name": "TabNav",
   "status": "deprecated",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 9,
@@ -1554,8 +1925,8 @@
     "issues": []
    }
   ],
-  "passed": 14,
-  "total": 14,
+  "passed": 15,
+  "total": 15,
   "figma": {
    "id": "24375:94677",
    "name": "TabNav"
@@ -1574,14 +1945,20 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 3,
+    "total": 3,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 10,
     "total": 10,
     "issues": []
    }
   ],
-  "passed": 13,
-  "total": 13,
+  "passed": 16,
+  "total": 16,
   "figma": null,
   "css": true,
   "tokens": 10
@@ -1595,6 +1972,15 @@
     "passed": 6,
     "total": 6,
     "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 4,
+    "total": 6,
+    "issues": [
+     "variant=medium: no story shows it",
+     "size=medium: no story shows it"
+    ]
    },
    {
     "area": "Tokens exist in code",
@@ -1615,8 +2001,8 @@
     "issues": []
    }
   ],
-  "passed": 12,
-  "total": 12,
+  "passed": 16,
+  "total": 18,
   "figma": {
    "id": "15341:46504",
    "name": "TextInput"
@@ -1635,6 +2021,15 @@
     "issues": []
    },
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 3,
+    "issues": [
+     "size=medium: no story shows it",
+     "size=large: no story shows it"
+    ]
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 7,
     "total": 7,
@@ -1647,8 +2042,8 @@
     "issues": []
    }
   ],
-  "passed": 12,
-  "total": 12,
+  "passed": 13,
+  "total": 15,
   "figma": null,
   "css": true,
   "tokens": 7
@@ -1657,6 +2052,12 @@
   "name": "Textarea",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 3,
@@ -1676,8 +2077,8 @@
     "issues": []
    }
   ],
-  "passed": 6,
-  "total": 6,
+  "passed": 7,
+  "total": 7,
   "figma": {
    "id": "30948:151237",
    "name": "Textarea"
@@ -1689,6 +2090,12 @@
   "name": "Timeline",
   "status": "alpha",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 25,
@@ -1702,8 +2109,8 @@
     "issues": []
    }
   ],
-  "passed": 40,
-  "total": 40,
+  "passed": 41,
+  "total": 41,
   "figma": null,
   "css": true,
   "tokens": 25
@@ -1716,6 +2123,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 2,
     "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
     "issues": []
    },
    {
@@ -1737,8 +2150,8 @@
     "issues": []
    }
   ],
-  "passed": 48,
-  "total": 48,
+  "passed": 49,
+  "total": 49,
   "figma": {
    "id": "13518:50189",
    "name": "ToggleSwitch"
@@ -1752,6 +2165,12 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
+    "passed": 4,
+    "total": 4,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
     "passed": 4,
     "total": 4,
     "issues": []
@@ -1775,8 +2194,8 @@
     "issues": []
    }
   ],
-  "passed": 35,
-  "total": 35,
+  "passed": 39,
+  "total": 39,
   "figma": {
    "id": "10351:34099",
    "name": "Token"
@@ -1788,6 +2207,12 @@
   "name": "Tooltip",
   "status": "deprecated",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 7,
@@ -1801,8 +2226,8 @@
     "issues": []
    }
   ],
-  "passed": 9,
-  "total": 9,
+  "passed": 10,
+  "total": 10,
   "figma": null,
   "css": true,
   "tokens": 7
@@ -1835,6 +2260,12 @@
   "status": "draft",
   "checks": [
    {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
+   {
     "area": "Tokens exist in code",
     "passed": 13,
     "total": 13,
@@ -1847,8 +2278,8 @@
     "issues": []
    }
   ],
-  "passed": 18,
-  "total": 18,
+  "passed": 19,
+  "total": 19,
   "figma": null,
   "css": true,
   "tokens": 13
@@ -1857,6 +2288,12 @@
   "name": "TreeView",
   "status": "beta",
   "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   },
    {
     "area": "Tokens exist in code",
     "passed": 14,
@@ -1870,8 +2307,8 @@
     "issues": []
    }
   ],
-  "passed": 21,
-  "total": 21,
+  "passed": 22,
+  "total": 22,
   "figma": {
    "id": "35020:46073",
    "name": "TreeView"
@@ -1882,9 +2319,16 @@
  {
   "name": "Truncate",
   "status": "alpha",
-  "checks": [],
-  "passed": 0,
-  "total": 0,
+  "checks": [
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
+    "issues": []
+   }
+  ],
+  "passed": 1,
+  "total": 1,
   "figma": null,
   "css": true,
   "tokens": 0
@@ -1897,6 +2341,12 @@
     "area": "Options (docs · code · Figma)",
     "passed": 2,
     "total": 2,
+    "issues": []
+   },
+   {
+    "area": "Storybook",
+    "passed": 1,
+    "total": 1,
     "issues": []
    },
    {
@@ -1918,8 +2368,8 @@
     "issues": []
    }
   ],
-  "passed": 15,
-  "total": 15,
+  "passed": 16,
+  "total": 16,
   "figma": {
    "id": "26717:1390",
    "name": "UnderlineNav"

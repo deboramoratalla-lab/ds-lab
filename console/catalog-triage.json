@@ -1,19 +1,44 @@
 {
- "at": "2026-10-29T08:48:12.019Z",
- "ms": 1275,
+ "at": "2026-10-29T11:20:07.796Z",
+ "ms": 2749,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
-   "calls": 1,
-   "prompt": 417,
-   "completion": 59,
-   "ms": 1274
+   "calls": 6,
+   "prompt": 1999,
+   "completion": 224,
+   "ms": 9379
   }
  },
  "items": {
-  "StateLabel": {
-   "fix": "Add variant=small, variant=normal, size=medium to Figma; remove variant=issue, variant=pull request, size=normal from Figma",
-   "side": "figma",
+  "AvatarStack": {
+   "fix": "Add a Storybook story for AvatarStack variant=stack.",
+   "side": "code",
    "confidence": 0.9
+  },
+  "ActionList": {
+   "fix": "Add a horizontal-inset variant story to Storybook",
+   "side": "code",
+   "confidence": 0.7
+  },
+  "Select": {
+   "fix": "Add a Select size=medium story to Storybook",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "TextInputWithTokens": {
+   "fix": "Remove medium and large size stories from docs since the component is deprecated and they don't exist in Storybook",
+   "side": "docs",
+   "confidence": 0.9
+  },
+  "TextInput": {
+   "fix": "Add a medium size story for TextInput in Storybook.",
+   "side": "code",
+   "confidence": 0.9
+  },
+  "StateLabel": {
+   "fix": "Add missing 'small', 'normal', 'pull request' variants and 'medium' size to Figma; add 'issue', 'pull request' variants and 'normal' size to docs",
+   "side": "figma",
+   "confidence": 0.8
   }
  }
 }

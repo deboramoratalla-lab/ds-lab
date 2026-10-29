@@ -4,7 +4,7 @@
 //   2. Tokens in code: every CSS custom property the component's CSS uses exists in @primer/primitives
 //   3. Tokens in Figma: those same tokens exist as Figma variables (shared, by normalized name)
 //   4. Status: the docs status matches the "Status:" line in the Figma component description
-// Storybook is only read for Button (the stories we fetched), so it's reported as not checked elsewhere.
+// 5. Storybook: Primer's own stories (same version) must show every non-default option the docs list.
 import { readFileSync, readdirSync, existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadTokens, normalizeName } from "./tokens/load.js";
@@ -56,6 +56,14 @@ export function certifyCatalog(): CatalogEntry[] {
       for (const v of o.fromFigma) if (o.hasFigmaAxis && !o.fromDocs.includes(v)) { ot++; oi.push(`${axis}=${v}: in Figma, not in docs`); }
     }
     if (ot) checks.push({ area: "Options (docs · code · Figma)", passed: op, total: ot, issues: [...new Set(oi)] });
+    // Storybook: every option the docs list should be shown in at least one story (Primer's own stories, same version)
+    const SB = "fixtures/primer-storybook";
+    const stories = existsSync(SB) ? readdirSync(SB).filter((f) => f.startsWith(name + ".") && f.endsWith(".stories.tsx")).map((f) => readFileSync(join(SB, f), "utf8")).join("\n") : "";
+    if (stories) {
+      let sp = 0, stt = 0; const si: string[] = [];
+      for (const axis of Object.keys(AXES)) { const o = opts(axis); const def = String(doc?.props?.find((p: any) => p.name === axis)?.defaultValue ?? "").replace(/['"]/g, ""); for (const v of o.fromDocs) { if (v === def) continue; /* the default is what every story shows */ stt++; if (new RegExp(`['"\`]${v}['"\`]`).test(stories)) sp++; else si.push(`${axis}=${v}: no story shows it`); } }
+      checks.push({ area: "Storybook", passed: stt ? sp : 1, total: stt || 1, issues: si });
+    }
     // 2-3. tokens
     const js = readdirSync(join(DIST, name)).filter((f) => f.endsWith(".js")).map((f) => readFileSync(join(DIST, name, f), "utf8")).join("\n");
     const local = new Set([...css.matchAll(/(?:^|[;{\s])--([\w-]+)\s*:/g)].map((m) => m[1]));

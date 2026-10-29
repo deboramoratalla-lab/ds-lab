@@ -1,0 +1,22 @@
+import type {StoryFn, Meta, StoryObj} from '@storybook/react-vite'
+import CounterLabel from './CounterLabel'
+
+export default {
+  title: 'Components/CounterLabel',
+  component: CounterLabel,
+} as Meta<typeof CounterLabel>
+
+export const Default: StoryFn<typeof CounterLabel> = () => <CounterLabel>12</CounterLabel>
+
+export const Playground: StoryObj<typeof CounterLabel> = {
+  render: args => <CounterLabel {...args}>12</CounterLabel>,
+  args: {
+    variant: 'primary',
+  },
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
+  },
+}
