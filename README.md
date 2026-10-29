@@ -10,6 +10,18 @@ It runs on GitHub's real [Primer](https://primer.style) system: `@primer/primiti
 
 > Formerly DS Lab. The repo, the CLI (`ds-lab`) and the `ds-sync` check keep their names.
 
+## Numbers from the last run
+
+<!-- numbers:start -->
+Run of 2026-10-29 13:14 UTC · [PR #19](https://github.com/deboramoratalla-lab/ds-lab/pull/19)
+- Button: 1,556 of 1,564 values in sync; 16 went out of sync this run, the agent fixed 8, 8 wait on 3 decisions.
+- Components: 74, 71 with Storybook stories, 31 with no Figma set.
+- Screens: 38 problems in 6 GitHub screens · planted breaks 12/12 · blind test 6/6, 0 false alarms · mutations 343/343, 0 noise.
+- Side-bias test: Ultra picked a side 0/5 times, 0/5 with the sides swapped.
+- Unit tests: 18/18 pass.
+- Nemotron calls: 6 · auto-apply at ≥ 85%.
+<!-- numbers:end -->
+
 ## The problem
 
 Design systems drift in five ways, whatever the component: one side changes a value, a token is renamed, someone ships a hotfix, a new option appears on one side, or both sides change the same thing. Today's sync tools pick a winner ("Figma first" or "code first") and silently overwrite the other side's work. Seamline treats each kind of change differently.
