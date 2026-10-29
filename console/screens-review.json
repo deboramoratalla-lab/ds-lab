@@ -1,11 +1,11 @@
 {
- "at": "2026-10-29T08:28:53.238Z",
+ "at": "2026-10-29T13:16:17.567Z",
  "models": {
   "propose": "nvidia/nemotron-3-super-120b-a12b",
   "verify": "nvidia/Nemotron-3-Ultra-550b-a55b"
  },
  "runs": 3,
- "ms": 110205,
+ "ms": 78172,
  "calls": {
   "super": 18,
   "ultra": 6
@@ -14,63 +14,63 @@
   {
    "id": "8908:1450",
    "component": "Button",
-   "problem": "Label \"Save changes\" does not describe the row action \"Archive this repository\".",
-   "fix": "Change label to \"Archive this repository\".",
+   "problem": "Label \"Save changes\" does not match the row action \"Archive this repository\".",
+   "fix": "Change the label to \"Archive repository\" (or similar).",
    "screen": "5 · Settings · Danger zone",
    "votes": 3,
-   "verdict": "The button label 'Save changes' is generic and does not match the destructive row action 'Archive this repository', which should use a label like 'Archive repository' to describe the specific action.",
+   "verdict": "The button label 'Save changes' describes a generic form action while the row text 'Archive this repository' describes a destructive, irreversible action; a danger-variant button in a danger-zone row must name the specific destructive action it triggers.",
    "ultra": true
   },
   {
    "id": "8908:1460",
    "component": "Button",
-   "problem": "Icon link-external suggests opening another page, contradicting the delete action.",
-   "fix": "Replace link-external icon with trash icon (or remove the icon).",
+   "problem": "Icon link-external implies navigation, not deletion.",
+   "fix": "Replace link-external icon with the trash octicon.",
    "screen": "5 · Settings · Danger zone",
    "votes": 3,
-   "verdict": "The link-external octicon means 'opens another page', but the button's action is destructive deletion, so the icon misrepresents the behavior.",
+   "verdict": "The link-external octicon signals navigation to another page, but the button's label and danger variant indicate a destructive delete action, so the icon misrepresents the behavior.",
    "ultra": true
   },
   {
    "id": "8914:582",
    "component": "Button",
-   "problem": "Primary button used for Cancel instead of the main action",
-   "fix": "Change Cancel to default/variant secondary and make 'Submit new issue' the primary button",
+   "problem": "The Cancel button uses the primary variant, which should be reserved for the main form action.",
+   "fix": "Change the Cancel button variant to default (or secondary).",
    "screen": "6 · New issue",
    "votes": 3,
-   "verdict": "The primary button is labeled \"Cancel\" while the main form action \"Submit new issue\" appears as a sibling, violating the rule that the primary button must be the main action, never Cancel.",
-   "ultra": true
-  },
-  {
-   "id": "8914:576",
-   "component": "Button",
-   "problem": "Button labeled \"Submit new issue\" uses default variant but should be primary as it is the main form action.",
-   "fix": "Change variant to primary.",
-   "screen": "6 · New issue",
-   "votes": 2,
-   "verdict": "The primary button should represent the main form action, and 'Submit new issue' is the primary action for creating an issue.",
+   "verdict": "The primary variant is reserved for the main form action (Submit new issue), not for Cancel.",
    "ultra": true
   }
  ],
  "rejected": [
   {
-   "id": "8908:823",
-   "component": "Inline message",
-   "problem": "Variant 'critical' implies a danger/error state but the alert icon signifies only a warning.",
-   "fix": "Either change the variant to 'warning' to match the alert icon or replace the icon with one that conveys a critical/danger state.",
-   "screen": "3 · Merge box",
+   "id": "8911:540",
+   "component": "🛑 Pagehead [DEPRECATED]",
+   "problem": "label \"Title\" does not match the pull‑request title shown in the row",
+   "fix": "use the actual PR title as the label or remove the generic label",
+   "screen": "2 · Pull request",
    "votes": 1,
-   "verdict": "The critical variant signals an error state while the alert octicon represents a warning, creating a semantic mismatch between severity levels.",
+   "verdict": "The Pagehead label token reads \"Title\" while the row text shows the actual PR title \"Add size xsmall to Button #4821\", so the label does not reflect the content.",
+   "ultra": true
+  },
+  {
+   "id": "8914:576",
+   "component": "Button",
+   "problem": "The main action button uses the default variant instead of primary.",
+   "fix": "Change the button variant to primary.",
+   "screen": "6 · New issue",
+   "votes": 1,
+   "verdict": "The 'Submit new issue' button is the primary form action and should use the primary variant per Primer guidelines.",
    "ultra": true
   },
   {
    "id": "8914:570",
    "component": "Inline message",
-   "problem": "Variant \"success\" implies a successful action, but the message only states that no similar issues were found (neutral).",
-   "fix": "Change the variant to \"info\" (or default) to match the informational nature of the message.",
+   "problem": "Success variant implies a completed action, but the message only states that no similar issues were found.",
+   "fix": "Change variant to \"info\" (or default) to reflect neutral information.",
    "screen": "6 · New issue",
    "votes": 1,
-   "verdict": "The success variant signals a completed positive action, yet the text only reports a neutral search result with no action taken.",
+   "verdict": "The success variant signals a positive completion, yet the text only reports a neutral search result with no action taken.",
    "ultra": true
   }
  ]

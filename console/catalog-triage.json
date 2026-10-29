@@ -1,44 +1,44 @@
 {
- "at": "2026-10-29T11:20:07.796Z",
- "ms": 2749,
+ "at": "2026-10-29T13:16:19.917Z",
+ "ms": 1388,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
    "calls": 6,
    "prompt": 1999,
-   "completion": 224,
-   "ms": 9379
+   "completion": 239,
+   "ms": 6886
   }
  },
  "items": {
+  "TextInput": {
+   "fix": "add medium variant and size stories to TextInput.stories.tsx",
+   "side": "code",
+   "confidence": 0.9
+  },
   "AvatarStack": {
-   "fix": "Add a Storybook story for AvatarStack variant=stack.",
+   "fix": "Add a stack variant story to the Storybook file.",
    "side": "code",
    "confidence": 0.9
   },
   "ActionList": {
-   "fix": "Add a horizontal-inset variant story to Storybook",
+   "fix": "Add a horizontal-inset variant story to ActionList.stories.tsx in the Primer React codebase",
    "side": "code",
-   "confidence": 0.7
+   "confidence": 0.9
   },
   "Select": {
-   "fix": "Add a Select size=medium story to Storybook",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "TextInputWithTokens": {
-   "fix": "Remove medium and large size stories from docs since the component is deprecated and they don't exist in Storybook",
-   "side": "docs",
-   "confidence": 0.9
-  },
-  "TextInput": {
-   "fix": "Add a medium size story for TextInput in Storybook.",
+   "fix": "Add a medium-size Select story to Storybook",
    "side": "code",
    "confidence": 0.9
   },
   "StateLabel": {
-   "fix": "Add missing 'small', 'normal', 'pull request' variants and 'medium' size to Figma; add 'issue', 'pull request' variants and 'normal' size to docs",
+   "fix": "Add variant=small and variant=normal to Figma StateLabel component to match docs and code",
    "side": "figma",
-   "confidence": 0.8
+   "confidence": 0.9
+  },
+  "TextInputWithTokens": {
+   "fix": "Remove the medium and large size tokens or add Storybook stories demonstrating them; since the component is deprecated in docs, removing the undocumented sizes is the least churn.",
+   "side": "code",
+   "confidence": 0.75
   }
  }
 }
