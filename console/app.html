@@ -348,6 +348,10 @@ a:hover { text-decoration: underline; }
 html { overflow-x:clip; }
 .bias-n{display:block;margin-top:6px;font-size:12.5px;color:var(--label-2)}.ov-l{font-size:12.5px;margin-left:auto}.ov-f{flex-basis:100%;display:grid;gap:6px;font-size:12.5px;color:var(--label-2)}.ov-f>div{display:flex;gap:8px;flex-wrap:wrap}.ov-f input{flex:1;min-width:200px;font:inherit;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label)}
 .ship{display:grid;gap:10px;padding:18px 20px}.ship h3{margin:0;font-size:16px;font-weight:600}.ship ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}.ship li{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--label-2)}.ship li i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;background:var(--fill);color:var(--label-3);flex:none}.ship li.ok i{background:var(--green);color:#fff}.ship li.ok{color:var(--label)}
+.tour-shield { position:fixed; inset:0; z-index:89; cursor:default; }
+@keyframes tourNudge { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-6px); } 75% { transform:translateX(6px); } }
+.tour-pop.nudge { animation:tourNudge .3s ease; }
+@media (prefers-reduced-motion:reduce) { .tour-pop.nudge { animation:none; outline:2px solid var(--accent); } }
 .tour-pop { position:fixed; z-index:91; width:360px; padding:22px 22px 18px; border-radius:22px; background:var(--group); color:var(--label); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 18px 48px rgba(17,16,28,.28); display:grid; gap:10px; animation:tourIn .25s ease both; }
 @keyframes tourIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
 .tour-pop .tk { display:flex; align-items:center; justify-content:space-between; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
@@ -2086,7 +2090,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         pop.className = "tour-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true"); pop.setAttribute("aria-live", "polite"); pop.setAttribute("aria-label", h); pop.tabIndex = -1;
         const [, , kick, , , how] = TOUR[i];
         pop.innerHTML = `<div class="tk"><span>${kick}</span><span class="td" aria-label="Step ${i + 1} of ${TOUR.length}">${TOUR.map((_, k) => `<i class="${k === i ? "on" : k < i ? "done" : ""}"></i>`).join("")}</span></div><h3>${h}</h3><p>${t}</p>${how?.length ? `<div class="how"><span class="how-h">How Seamline does it</span>${how.map(([c, d]) => `<div class="how-r"><span class="tchip">${c}</span><span>${d}</span></div>`).join("")}</div>` : ""}<div class="ta"><button class="skip" type="button" data-t="x">Skip tour</button><div>${i ? `<button class="btn" type="button" data-t="b">Back</button>` : ""}<button class="btn primary" type="button" data-t="n">${i === TOUR.length - 1 ? "Start deciding" : "Next"}</button></div></div>`;
-        document.body.append(spot, pop);
+        // Clicks on the page don't leave the tour: a transparent shield catches them and nudges the card instead.
+        const shield = document.createElement("div"); shield.className = "tour-shield"; shield.setAttribute("aria-hidden", "true");
+        shield.addEventListener("click", () => { pop.classList.remove("nudge"); void pop.offsetWidth; pop.classList.add("nudge"); pop.querySelector('[data-t="n"]').focus(); });
+        shield.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
+        document.body.append(shield, spot, pop);
         const ph = pop.offsetHeight, pw = 360, cx = (x) => Math.min(Math.max(16, x), innerWidth - pw - 16), cy = (y) => Math.min(Math.max(16, y), innerHeight - ph - 16);
         let pos = r.bottom + 16 + ph < innerHeight ? [cx(r.left), r.bottom + 16]
           : r.top - 16 - ph > 0 ? [cx(r.left), r.top - 16 - ph]
@@ -2097,7 +2105,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         pop.querySelector('[data-t="n"]').onclick = () => (i === TOUR.length - 1 ? endTour(true) : tour(i + 1));
         pop.querySelector('[data-t="b"]')?.addEventListener("click", () => tour(i - 1));
         pop.querySelector('[data-t="x"]').onclick = () => endTour(true);
-        tourEls = [spot, pop]; pop.querySelector('[data-t="n"]').focus();
+        tourEls = [shield, spot, pop]; pop.querySelector('[data-t="n"]').focus();
         pop.addEventListener("keydown", (e) => { if (e.key !== "Tab") return; const f = [...pop.querySelectorAll("button")], a = f.indexOf(document.activeElement);
           e.preventDefault(); f[(a + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus(); });
       }, 80);
