@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const TOKEN = process.env.GH_DISPATCH_TOKEN, REPO = process.env.GITHUB_REPO || "deboramoratalla-lab/ds-lab";
   if (!TOKEN) return res.status(503).json({ error: "Creating tasks is not configured on this server." });
   const b = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
-  const component = String(b.component || ""), where = String(b.where || ""), action = String(b.action || ""), owner = String(b.owner || ""), kind = b.kind === "fix" ? "fix" : "gap", note = String(b.note || "").replace(/[^\w\s.,;:='"()+\/-]/g, "").slice(0, 300);
+  const component = String(b.component || ""), where = String(b.where || ""), action = String(b.action || ""), owner = String(b.owner || ""), kind = ["fix", "screen"].includes(b.kind) ? b.kind : "gap", note = String(b.note || "").replace(/[^\w\s.,;:='"()+\/-]/g, "").slice(0, 600);
   if (!okName(component) || !WHERE.includes(where) || !["create", "skip"].includes(action) || (owner && !/^[a-z]{1,20}$/.test(owner))) return res.status(400).json({ error: "invalid task" });
   const r = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/gap-task.yml/dispatches`, {
     method: "POST", headers: { authorization: `Bearer ${TOKEN}`, accept: "application/vnd.github+json", "user-agent": "seamline" },

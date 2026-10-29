@@ -82,7 +82,7 @@ function impactOf(input: PrimerCertifyInput, token: string): string[] {
   const inCode = [...css.matchAll(/where\(\[data-variant=(\w+)\]\)[^{]*\{[^}]*/g)].filter((m) => normalizeName(m[0]).includes(token)).map((m) => m[1]);
   return [
     inFigma.length ? `Figma: Button ${variants.join(", ")} (${inFigma.length} variants)` : "Figma: not used by Button",
-    inCode.length ? `Code: Button ${[...new Set(inCode)].join(", ")}` : "Code: not used by Button. Changing it here won't show on screen",
+    inCode.length ? `Code: Button ${[...new Set(inCode)].join(", ")}` : "Code: Button doesn't read this token in code, so only Figma changes on screen",
   ];
 }
 
@@ -170,7 +170,7 @@ export async function repair(w: Workspace, input: PrimerCertifyInput, baseline: 
           what: `rename ${from} → ${to} adopted in code, old name kept as deprecated alias (confidence ${m.confidence})` });
       } else {
         items.push({ id: nextId("review"), kind: "review", who: "nano", confidence: Number(m.confidence), token: from, change,
-          impact: [...impactOf(input, normalizeName(to)).map((x) => x.replace("Changing it here won't show on screen", "only the name changes")), "Notified: engineers (code adopts the new name, old one kept as alias)"],
+          impact: [...impactOf(input, normalizeName(to)).map((x) => x.replace("so only Figma changes on screen", "only the name changes")), "Notified: engineers (code adopts the new name, old one kept as alias)"],
           title: `Was ${from} renamed to ${to}?`, why: paused(tk) ? `You rejected ${STREAK_LIMIT} ${LABEL[tk]} in a row. These now come to you first.` : `Nemotron Nano paired them with confidence ${m.confidence}, below ${AUTO_APPLY}.` });
       }
     }

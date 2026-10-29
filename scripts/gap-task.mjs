@@ -8,15 +8,16 @@ const owner = team.find((p) => p.id === O) ?? team.find((p) => p.areas.includes(
 const gh = (...a) => execFileSync("gh", a, { encoding: "utf8" }).trim();
 const label = (n, color, d) => { try { gh("label", "create", n, "--color", color, "--description", d, "-R", REPO); } catch {} };
 label("seamline-gap", "6d48c8", "A component missing in Figma, Storybook or docs"); label(`area:${W.toLowerCase()}`, "e39b3c", `Missing in ${W}`); label("not-needed", "8e98b0", "Marked not needed by the design system lead");
-const title = K === "fix" ? `${A === "skip" ? "Not needed" : "Fix"}: ${C} in ${W}` : `${A === "skip" ? "Not needed" : "Create"}: ${C} in ${W}`;
-const existing = gh("issue", "list", "-R", REPO, "--label", "seamline-gap", "--state", "all", "--search", `"${C} in ${W}" in:title`, "--json", "number,title", "-q", ".[].title");
+const title = K === "screen" ? `${A === "skip" ? "Not needed" : "Fix"} in Figma screens: ${C}` : K === "fix" ? `${A === "skip" ? "Not needed" : "Fix"}: ${C} in ${W}` : `${A === "skip" ? "Not needed" : "Create"}: ${C} in ${W}`;
+const existing = gh("issue", "list", "-R", REPO, "--label", "seamline-gap", "--state", "all", "--search", K === "screen" ? `"screens: ${C}" in:title` : `"${C} in ${W}" in:title`, "--json", "number,title", "-q", ".[].title");
 if (existing.split("\n").some((t) => t === title || (A === "skip" && t.endsWith(`: ${C} in ${W}`) && K === "gap"))) { console.log("already recorded"); process.exit(0); }
 let docs = {}; try { docs = JSON.parse(readFileSync("fixtures/primer-react/package/generated/components.json", "utf8")).components ?? {}; } catch {}
 const doc = Object.values(docs).find((d) => d.name === C);
 const opts = (doc?.props ?? []).filter((p) => /^(variant|size)$/.test(p.name)).map((p) => `- \`${p.name}\`: ${p.type}${p.defaultValue ? ` (default ${p.defaultValue})` : ""}`).join("\n");
-const what = K === "fix" ? `**Suggested fix (Nemotron Ultra):** ${N}` : { Figma: `Create a **${C}** component set in the Primer Web Figma file so designers can place it.`, Storybook: `Add stories for **${C}** so engineers can see and test it.`, Docs: `Write the **${C}** page on primer.style so people can find how to use it.` }[W];
+const what = K === "screen" ? `**Found in the GitHub screens (Seamline · Test flows page):** ${N}` : K === "fix" ? `**Suggested fix (Nemotron Ultra):** ${N}` : { Figma: `Create a **${C}** component set in the Primer Web Figma file so designers can place it.`, Storybook: `Add stories for **${C}** so engineers can see and test it.`, Docs: `Write the **${C}** page on primer.style so people can find how to use it.` }[W];
 const body = A === "skip"
   ? `The design system lead marked **${C}** as not needed in ${W}. Seamline won't ask again.`
+  : K === "screen" ? `${what}\n\n**Owner:** ${owner ? `${owner.name} (${owner.role})` : "unassigned"}\n\nFigma: https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web?node-id=8908-35\n\nOpened by Seamline from the console's "In screens" list. The next screen check re-reads these frames.`
   : `${what}\n\n**Owner:** ${owner ? `${owner.name} (${owner.role})` : "unassigned"}\n\n**Options in code**\n${opts || "- (no variant or size props)"}\n\n**Where it lives**\n- Code: https://github.com/primer/react/tree/main/packages/react/src/${C}\n${doc ? `- Docs status: ${doc.status}\n` : ""}\nOpened by Seamline from the console's "Missing somewhere" list. Seamline closes it when ${C} shows up in ${W}.`;
 const args = ["issue", "create", "-R", REPO, "--title", title, "--body", body, "--label", "seamline-gap", "--label", `area:${W.toLowerCase()}`];
 if (A === "skip") args.push("--label", "not-needed");

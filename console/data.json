@@ -263,7 +263,7 @@
     "confidence": 0.85,
     "impact": [
      "Figma: Button invisible (3 variants)",
-     "Code: not used by Button. Changing it here won't show on screen",
+     "Code: Button doesn't read this token in code, so only Figma changes on screen",
      "Notified: the designer and the engineer who changed it"
     ],
     "people": {

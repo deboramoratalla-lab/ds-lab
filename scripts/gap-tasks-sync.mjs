@@ -7,7 +7,9 @@ let list = [];
 try { list = JSON.parse(execFileSync("gh", ["api", `repos/${REPO}/issues?labels=seamline-gap&state=all&per_page=100`], { encoding: "utf8" })); } catch (e) { console.error("could not read issues:", String(e).slice(0, 120)); }
 const team = JSON.parse(readFileSync("console/team.json", "utf8")).people;
 const cat = existsSync("console/catalog.json") ? JSON.parse(readFileSync("console/catalog.json", "utf8")) : [];
-const tasks = list.map((i) => { const m = i.title.match(/^(Create|Fix|Not needed): (\S+) in (Figma|Storybook|Docs)$/); if (!m) return null;
+const tasks = list.map((i) => { const sm = i.title.match(/^(Fix|Not needed) in Figma screens: (\S+)$/);
+  if (sm) { const o = team.find((p) => i.body?.includes(`**Owner:** ${p.name}`)); return { component: sm[2], where: "Figma", kind: "screen", action: sm[1] === "Not needed" ? "skip" : "create", number: i.number, url: i.html_url, state: i.state, owner: o?.id ?? null }; }
+  const m = i.title.match(/^(Create|Fix|Not needed): (\S+) in (Figma|Storybook|Docs)$/); if (!m) return null;
   const owner = team.find((p) => i.body?.includes(`**Owner:** ${p.name}`));
   return { component: m[2], where: m[3], kind: m[1] === "Fix" || /Suggested fix/.test(i.body || "") ? "fix" : "gap", action: m[1] === "Not needed" ? "skip" : "create", number: i.number, url: i.html_url, state: i.state, owner: owner?.id ?? null }; }).filter(Boolean);
 // close a Create task once the component shows up where it was missing (Figma for now: the catalog knows)
