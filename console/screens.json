@@ -191,19 +191,6 @@
    "inherited": true
   },
   {
-   "kind": "variant",
-   "screen": "2 · Pull request",
-   "screens": [
-    "2 · Pull request"
-   ],
-   "count": 1,
-   "node": "8909:160",
-   "component": "InlineMessage",
-   "msg": "InlineMessage uses variant=unavailable, in Figma, not in docs",
-   "fix": "Use a variant that ships in code, or add unavailable to code and docs first",
-   "inherited": true
-  },
-  {
    "kind": "contrast-modes",
    "screen": "2 · Pull request",
    "node": "8908:673",
@@ -273,19 +260,6 @@
    "component": "MergeBanner (old)",
    "msg": "MergeBanner (old) isn't in the library: its main component was deleted or never published",
    "fix": "Replace it with a library component (InlineMessage or Banner)"
-  },
-  {
-   "kind": "variant",
-   "screen": "4 · Settings · General",
-   "screens": [
-    "4 · Settings · General"
-   ],
-   "count": 1,
-   "node": "8908:1236",
-   "component": "SegmentedControl",
-   "msg": "SegmentedControl uses size=medium, missing in code",
-   "fix": "Use a size that ships in code, or add medium to code and docs first",
-   "inherited": true
   },
   {
    "kind": "resized",
@@ -530,14 +504,6 @@
     "found": true
    },
    {
-    "id": "B3",
-    "kind": "variant",
-    "screen": "2 · Pull request",
-    "node": "8909:160",
-    "what": "InlineMessage variant 'unavailable', which docs and code don't have",
-    "found": true
-   },
-   {
     "id": "B4",
     "kind": "contrast",
     "screen": "1 · Pull requests",
@@ -697,19 +663,6 @@
     "node": "I8908:823;32109:357",
     "msg": "fgColor/danger on bgColor/default is 4.02:1 in dark dimmed",
     "fix": "A Primer token pair, not a screen mistake: raise fgColor/danger in dark dimmed"
-   },
-   {
-    "kind": "variant",
-    "screen": "4 · Settings · General",
-    "screens": [
-     "4 · Settings · General"
-    ],
-    "count": 1,
-    "node": "8908:1236",
-    "component": "SegmentedControl",
-    "msg": "SegmentedControl uses size=medium, missing in code",
-    "fix": "Use a size that ships in code, or add medium to code and docs first",
-    "inherited": true
    },
    {
     "kind": "contrast-modes",
@@ -908,7 +861,10 @@
     "id": "N3",
     "kind": "meaning",
     "node": "8914:582",
-    "what": "Primary button says 'Cancel' while 'Submit new issue' is the default one",
+    "what": "Primary and default are swapped: 'Cancel' is primary, 'Submit new issue' is default",
+    "also": [
+     "8914:576"
+    ],
     "found": true
    },
    {
@@ -941,16 +897,6 @@
    "invisible Button size=small (28px is its real size)",
    "default 'Submit' + 'Preview' buttons"
   ],
-  "falseAlarms": [
-   {
-    "kind": "meaning",
-    "screen": "6 · New issue",
-    "node": "8914:576",
-    "component": "Button",
-    "msg": "Button labeled \"Submit new issue\" uses default variant but should be primary as it is the main form action.",
-    "fix": "Change variant to primary.",
-    "by": "Nemotron Super + Ultra"
-   }
-  ]
+  "falseAlarms": []
  }
 }

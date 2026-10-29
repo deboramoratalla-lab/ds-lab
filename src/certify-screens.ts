@@ -115,8 +115,8 @@ if (process.argv[1]?.endsWith("certify-screens.ts")) {
   try {
     const B = JSON.parse(readFileSync("fixtures/primer-web-notes/screens-blind.json", "utf8"));
     const onScreen = r.findings.filter((f) => (f.screens ?? [f.screen]).includes(B.screen));
-    const bhit = B.breaks.map((p: any) => ({ ...p, found: onScreen.some((f) => near(f, p)) }));
-    const ids = new Set(B.breaks.map((p: any) => p.node));
+    const bhit = B.breaks.map((p: any) => ({ ...p, found: onScreen.some((f) => near(f, p) || (p.also ?? []).some((n: string) => near(f, { ...p, node: n }))) }));
+    const ids = new Set(B.breaks.flatMap((p: any) => [p.node, ...(p.also ?? [])]));
     const tied = (f: any) => ids.has(f.node) || (f.parents ?? []).some((x: string) => ids.has(x)) || [...ids].some((n) => f.node.startsWith(`I${n};`));
     const falseAlarms = onScreen.filter((f) => !f.inherited && !tied(f));
     blind = { screen: B.screen, breaks: bhit, decoys: B.decoys, falseAlarms };

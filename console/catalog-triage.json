@@ -1,64 +1,19 @@
 {
- "at": "2026-10-29T08:28:55.137Z",
- "ms": 1244,
+ "at": "2026-10-29T08:48:12.019Z",
+ "ms": 1275,
  "usage": {
   "nvidia/Nemotron-3-Ultra-550b-a55b": {
-   "calls": 10,
-   "prompt": 3351,
-   "completion": 387,
-   "ms": 10989
+   "calls": 1,
+   "prompt": 417,
+   "completion": 59,
+   "ms": 1274
   }
  },
  "items": {
-  "ActionList": {
-   "fix": "Add the 'full' variant to the code implementation",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "InlineMessage": {
-   "fix": "Add variant=unvailable to docs and code to match Figma",
-   "side": "docs",
-   "confidence": 0.5
-  },
-  "SelectPanel": {
-   "fix": "Add variant=anchored to Figma SelectPanel component",
-   "side": "figma",
-   "confidence": 0.9
-  },
-  "SegmentedControl": {
-   "fix": "Add size=medium token to SegmentedControl tokens in code",
-   "side": "code",
-   "confidence": 0.9
-  },
-  "TabNav": {
-   "fix": "Update Figma status from Alpha to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "DataTable": {
-   "fix": "Change Figma status from Draft to alpha to match docs",
-   "side": "figma",
-   "confidence": 0.95
-  },
-  "ProgressBar": {
-   "fix": "Remove --progressBar-track-borderColor from Primer Web Figma variables since it does not exist in Figma",
-   "side": "figma",
-   "confidence": 0.7
-  },
-  "Pagehead": {
-   "fix": "Update Figma Pagehead component status to deprecated to match docs",
-   "side": "figma",
-   "confidence": 0.9
-  },
   "StateLabel": {
-   "fix": "Add missing variants (small, normal) and size (medium) to Figma StateLabel; add issue and pull request variants plus normal size to docs; add --bgColor-draft-emphasis and --borderColor-draft-emphasis Figma variables",
+   "fix": "Add variant=small, variant=normal, size=medium to Figma; remove variant=issue, variant=pull request, size=normal from Figma",
    "side": "figma",
-   "confidence": 0.75
-  },
-  "NavList": {
-   "fix": "Update the NavList status from Beta to alpha in Figma to match the docs status.",
-   "side": "figma",
-   "confidence": 0.95
+   "confidence": 0.9
   }
  }
 }

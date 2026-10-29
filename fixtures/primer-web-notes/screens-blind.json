@@ -18,7 +18,10 @@
       "id": "N3",
       "kind": "meaning",
       "node": "8914:582",
-      "what": "Primary button says 'Cancel' while 'Submit new issue' is the default one"
+      "what": "Primary and default are swapped: 'Cancel' is primary, 'Submit new issue' is default",
+      "also": [
+        "8914:576"
+      ]
     },
     {
       "id": "N4",

@@ -34,11 +34,9 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
-    "passed": 2,
+    "passed": 3,
     "total": 3,
-    "issues": [
-     "variant=full: missing in code"
-    ]
+    "issues": []
    },
    {
     "area": "Tokens exist in code",
@@ -59,7 +57,7 @@
     "issues": []
    }
   ],
-  "passed": 77,
+  "passed": 78,
   "total": 78,
   "figma": {
    "id": "15614:56202",
@@ -359,16 +357,9 @@
    },
    {
     "area": "Colour tokens match Figma",
-    "passed": 57,
+    "passed": 92,
     "total": 92,
-    "issues": [
-     "--buttonKeybindingHint-default-bgColor-disabled has no Figma variable",
-     "--buttonKeybindingHint-default-borderColor-disabled has no Figma variable",
-     "--buttonKeybindingHint-default-fgColor-disabled has no Figma variable",
-     "--buttonKeybindingHint-default-bgColor-rest has no Figma variable",
-     "--buttonKeybindingHint-default-borderColor-rest has no Figma variable",
-     "--buttonKeybindingHint-default-fgColor-rest has no Figma variable"
-    ]
+    "issues": []
    },
    {
     "area": "Status (docs ↔ Figma)",
@@ -377,7 +368,7 @@
     "issues": []
    }
   ],
-  "passed": 189,
+  "passed": 224,
   "total": 224,
   "figma": {
    "id": "30258:5582",
@@ -572,14 +563,12 @@
    },
    {
     "area": "Status (docs ↔ Figma)",
-    "passed": 0,
+    "passed": 1,
     "total": 1,
-    "issues": [
-     "docs say alpha, Figma says Draft"
-    ]
+    "issues": []
    }
   ],
-  "passed": 29,
+  "passed": 30,
   "total": 30,
   "figma": {
    "id": "28509:38091",
@@ -795,12 +784,9 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
-    "passed": 5,
-    "total": 7,
-    "issues": [
-     "variant=unvailable: missing in code and Figma",
-     "variant=unavailable: in Figma, not in docs"
-    ]
+    "passed": 6,
+    "total": 6,
+    "issues": []
    },
    {
     "area": "Tokens exist in code",
@@ -815,8 +801,8 @@
     "issues": []
    }
   ],
-  "passed": 19,
-  "total": 21,
+  "passed": 20,
+  "total": 20,
   "figma": {
    "id": "32109:348",
    "name": "InlineMessage"
@@ -946,14 +932,12 @@
    },
    {
     "area": "Status (docs ↔ Figma)",
-    "passed": 0,
+    "passed": 1,
     "total": 1,
-    "issues": [
-     "docs say alpha, Figma says Beta"
-    ]
+    "issues": []
    }
   ],
-  "passed": 4,
+  "passed": 5,
   "total": 5,
   "figma": {
    "id": "15175:71561",
@@ -1071,14 +1055,12 @@
    },
    {
     "area": "Status (docs ↔ Figma)",
-    "passed": 0,
+    "passed": 1,
     "total": 1,
-    "issues": [
-     "docs say deprecated, Figma says Alpha"
-    ]
+    "issues": []
    }
   ],
-  "passed": 3,
+  "passed": 4,
   "total": 4,
   "figma": {
    "id": "4065:363",
@@ -1167,14 +1149,12 @@
    },
    {
     "area": "Colour tokens match Figma",
-    "passed": 0,
+    "passed": 1,
     "total": 1,
-    "issues": [
-     "--progressBar-track-borderColor has no Figma variable"
-    ]
+    "issues": []
    }
   ],
-  "passed": 2,
+  "passed": 3,
   "total": 3,
   "figma": {
    "id": "34727:143491",
@@ -1251,11 +1231,9 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
-    "passed": 15,
+    "passed": 16,
     "total": 16,
-    "issues": [
-     "size=medium: missing in code"
-    ]
+    "issues": []
    },
    {
     "area": "Tokens exist in code",
@@ -1276,7 +1254,7 @@
     "issues": []
    }
   ],
-  "passed": 51,
+  "passed": 52,
   "total": 52,
   "figma": {
    "id": "16122:79604",
@@ -1323,12 +1301,9 @@
   "checks": [
    {
     "area": "Options (docs · code · Figma)",
-    "passed": 1,
-    "total": 3,
-    "issues": [
-     "variant=anchored: missing in Figma",
-     "variant=popover: in Figma, not in docs"
-    ]
+    "passed": 2,
+    "total": 2,
+    "issues": []
    },
    {
     "area": "Tokens exist in code",
@@ -1349,8 +1324,8 @@
     "issues": []
    }
   ],
-  "passed": 34,
-  "total": 36,
+  "passed": 35,
+  "total": 35,
   "figma": {
    "id": "40704:73019",
    "name": "SelectPanel"
@@ -1504,12 +1479,9 @@
    },
    {
     "area": "Colour tokens match Figma",
-    "passed": 11,
+    "passed": 13,
     "total": 13,
-    "issues": [
-     "--bgColor-draft-emphasis has no Figma variable",
-     "--borderColor-draft-emphasis has no Figma variable"
-    ]
+    "issues": []
    },
    {
     "area": "Status (docs ↔ Figma)",
@@ -1518,7 +1490,7 @@
     "issues": []
    }
   ],
-  "passed": 34,
+  "passed": 36,
   "total": 42,
   "figma": {
    "id": "18959:64962",
@@ -1577,14 +1549,12 @@
    },
    {
     "area": "Status (docs ↔ Figma)",
-    "passed": 0,
+    "passed": 1,
     "total": 1,
-    "issues": [
-     "docs say deprecated, Figma says Alpha"
-    ]
+    "issues": []
    }
   ],
-  "passed": 13,
+  "passed": 14,
   "total": 14,
   "figma": {
    "id": "24375:94677",

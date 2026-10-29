@@ -15,7 +15,7 @@ const norm = (s: string) => s.toLowerCase().replace(/\s*\(.*?\)\s*/g, "").replac
 const AXES: Record<string, string[]> = { variant: ["variant"], size: ["size"] };
 
 export interface CatalogEntry { name: string; status: string; checks: { area: string; passed: number; total: number; issues: string[] }[]; passed: number; total: number;
-  figma: { id: string; name: string } | null; css: boolean; tokens: number }
+  figma: { id: string; name: string } | null; css: boolean; tokens: number; missingFigmaVars?: string[] }
 
 export function certifyCatalog(): CatalogEntry[] {
   const input = primerInput();
@@ -37,12 +37,16 @@ export function certifyCatalog(): CatalogEntry[] {
       const d = doc?.props?.find((p: any) => p.name === axis);
       const fromDocs = d ? [...String(d.type).matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
       const def = String(d?.defaultValue ?? "").replace(/'/g, "");
-      const fromCode = [...new Set([...(def ? [def] : []), ...[...css.matchAll(new RegExp(`data-${axis}=["']?([\\w-]+)`, "g"))].map((m) => m[1])])];
+      // code = values styled in CSS, plus values the component's TypeScript API declares (defaults like
+      // ActionList "full" or SegmentedControl "medium" need no CSS rule, so CSS alone under-reports them)
+      const dts = readdirSync(join(DIST, name)).filter((f) => f.endsWith(".d.ts")).map((f) => readFileSync(join(DIST, name, f), "utf8")).join("\n");
+      const fromTypes = [...dts.matchAll(new RegExp(`\\b${axis}\\?:\\s*([^;\\n]+)`, "g"))].flatMap((m) => [...m[1].matchAll(/['"]([\w-]+)['"]/g)].map((x) => x[1]));
+      const fromCode = [...new Set([...(def ? [def] : []), ...[...css.matchAll(new RegExp(`data-${axis}=["']?([\\w-]+)`, "g"))].map((m) => m[1]), ...fromTypes])];
       const fk = f ? Object.keys(f[2]).find((k) => norm(k) === axis) : undefined;
       const fromFigma = f && fk ? f[2][fk].split("|").map((x) => x.replace(/\s*\(.*\)/, "").trim()) : [];
       return { fromDocs, fromCode, fromFigma, hasFigmaAxis: !!fk };
     };
-    let op = 0, ot = 0; const oi: string[] = [];
+    let op = 0, ot = 0; const oi: string[] = []; const missingVars: string[] = [];
     for (const axis of Object.keys(AXES)) {
       const o = opts(axis); if (!o.fromDocs.length) continue;
       for (const v of o.fromDocs) {
@@ -64,6 +68,7 @@ export function certifyCatalog(): CatalogEntry[] {
       if (colorTokens.length) {
         const ok = colorTokens.filter((t) => figma.has(normalizeName(t)));
         const off = colorTokens.filter((t) => figma.has(normalizeName(t)) && !sameColor(figma.get(normalizeName(t)), code.get(normalizeName(t))));
+        missingVars.push(...colorTokens.filter((t) => !figma.has(normalizeName(t))));
         checks.push({ area: "Colour tokens match Figma", passed: ok.length - off.length, total: colorTokens.length,
           issues: [...colorTokens.filter((t) => !figma.has(normalizeName(t))).map((t) => `--${t} has no Figma variable`), ...off.map((t) => `--${t}: Figma ${figma.get(normalizeName(t))} · code ${code.get(normalizeName(t))}`)].slice(0, 6) });
       }
@@ -72,7 +77,7 @@ export function certifyCatalog(): CatalogEntry[] {
     // 4. status
     if (doc && f && f[3]) checks.push({ area: "Status (docs ↔ Figma)", passed: norm(doc.status) === norm(f[3]) ? 1 : 0, total: 1, issues: norm(doc.status) === norm(f[3]) ? [] : [`docs say ${doc.status}, Figma says ${f[3]}`] });
     const passed = checks.reduce((a, c) => a + c.passed, 0), total = checks.reduce((a, c) => a + c.total, 0);
-    return { name, status: doc?.status ?? "", checks, passed, total, figma: f ? { id: f[0], name: f[1] } : null, css: cssFiles.length > 0, tokens: used.length };
+    return { name, status: doc?.status ?? "", checks, passed, total, figma: f ? { id: f[0], name: f[1] } : null, css: cssFiles.length > 0, tokens: used.length, ...(missingVars.length ? { missingFigmaVars: missingVars } : {}) };
   });
 }
 

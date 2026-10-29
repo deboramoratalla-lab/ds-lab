@@ -16,13 +16,6 @@
       "what": "Merged StateLabel background set to #8a5cf5 by hand instead of its token"
     },
     {
-      "id": "B3",
-      "kind": "variant",
-      "screen": "2 \u00b7 Pull request",
-      "node": "8909:160",
-      "what": "InlineMessage variant 'unavailable', which docs and code don't have"
-    },
-    {
       "id": "B4",
       "kind": "contrast",
       "screen": "1 \u00b7 Pull requests",
@@ -91,6 +84,16 @@
       "screen": "5 \u00b7 Settings \u00b7 Danger zone",
       "node": "8908:1450",
       "what": "Danger Button in the 'Archive this repository' row says 'Save changes'"
+    }
+  ],
+  "retired": [
+    {
+      "id": "B3",
+      "kind": "variant",
+      "screen": "2 \u00b7 Pull request",
+      "node": "8909:160",
+      "what": "InlineMessage variant 'unavailable', which docs and code don't have",
+      "why": "29 Oct: Seamline fixed the InlineMessage docs typo (unvailable \u2192 unavailable), so 'unavailable' is now a valid option and this is no longer a break."
     }
   ]
 }

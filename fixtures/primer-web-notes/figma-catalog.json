@@ -1,47 +1,423 @@
-{"source":"https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web","readAt":"2026-10-18","sets":[
-["26998:2424","ActionMenu",{"trigger":"icon-button|button|button-single-selection|button-multi-selection|button-dropdown","open":"false|true","align":"right|left|center"},"Beta"],
-["15614:56202","ActionList",{"size":"small|medium|large","state":"rest|hover|pressed|focus|disabled","selected?":"false|true"},"Beta"],
-["35998:101114","Autocomplete",{"menu?":"true|false","menuState":"empty|populated|add-new|loading"},"Alpha"],
-["3805:24","AvatarStack",{"alignment":"left|right","Avatars":"5|4|3|2"},"Alpha"],
-["3805:11","Avatar",{"size":"16px|20px|24px|28px|32px|40px|48px|64px","square":"false|true"},"Alpha"],
-["34303:2712","Banner",{"Variant":"warning|critical|success|info|upsell","Title?":"false|true","Dismissible?":"true|false","Small":"false|true"},""],
-["3655:7208","BranchName",{"type":"link|text"},"Alpha"],
-["4398:2383","Blankslate",{"size":"small|medium|large","spacious":"false|true"},"Draft"],
-["30258:5582","Button",{"variant":"primary|danger|invisible|default|link","size":"small|medium|large","state":"rest|focus|hover|pressed|disabled|inactive","alignContent":"center|start"},"Alpha"],
-["30468:5843","IconButton",{"variant":"primary|secondary|danger|invisible","size":"small|medium|large","state":"rest|focus|hover|pressed|disabled|loading|inactive"},"Alpha"],
-["36325:3634","ButtonGroup",{"Size":"medium|small","variant":"secondary|primary|danger"},"Alpha"],
-["20135:70690","Breadcrumbs",{"items":"2|3|4|5|6|7|8|9|10"},"Alpha"],
-["15341:46321","Checkbox",{"state":"rest|disabled|focus","checked?":"false|true","indeterminate?":"false|true"},"Alpha"],
-["18959:64970","CounterLabel",{"variant":"primary|secondary"},"Alpha"],
-["28509:38091","DataTable",{"title":"true|false","subtitle":"false|true","actions":"false|true","filter":"false|true"},"Draft"],
-["16593:65798","Dialog",{"size":"small|medium|large|full|xlarge|small-portrait|medium-portrait","position":"center|full|bottom|left|right"},"Alpha"],
-["26738:6196","Header",{"Logged-in":"True|False","Type":"Desktop|Mobile"},"Alpha"],
-["21069:78785","Heading",{"variant":"large|medium|small"},"Alpha"],
-["32109:348","InlineMessage",{"variant":"critical|warning|success|unavailable","size":"medium|small"},""],
-["18959:65008","Label",{"size":"small|large","variant":"default|primary|secondary|accent|success|attention|severe|danger|done|sponsors"},"Alpha"],
-["20953:78768","Link",{"muted":"false|true","bold":"false|true","size":"normal|small"},"Alpha"],
-["15175:71561","NavList",{"State":"active|disabled|hover|rest","Current selection":"off|on"},"Beta"],
-["9685:44751","Overlay",{"header":"off|on","footer":"off|on","overflow":"false|true"},"Alpha"],
-["4065:363","Pagehead",{"hasAvatar?":"false|true","actions?":"false|true"},"Alpha"],
-["40002:2161","PageHeader",{"hasDescription":"false|true","hasNavigation":"false|true"},""],
-["34607:94621","Pagination",{"showPages":"true|false"},""],
-["19015:63778","Popover",{"caret":"top|top-left|top-right|bottom|bottom-left|bottom-right|left|left-top|left-bottom|right|right-top|right-bottom"},"Alpha"],
-["34727:143491","ProgressBar",{"size":"large|default|small","items":"1|2|3|4|5|6|7|8|9|empty"},""],
-["15341:46367","Radio",{"state":"rest|disabled|focus","checked?":"false|true"},"Alpha"],
-["16122:79604","SegmentedControl",{"iconOnly?":"false|true","size":"medium|small"},"Alpha"],
-["15341:46907","Select",{"size":"medium|small|large","state":"rest|focus|disabled","validation":"none|invalid|success","fullWidth?":"false|true"},"Alpha"],
-["40704:73019","SelectPanel",{"type":"single|multi","variant":"popover|modal (not implemented)"},"Alpha"],
-["29994:6840","SkeletonAvatar",{"size":"16px|20px|24px|28px|32px|40px|48px|64px","shape":"circle|square"},""],
-["30013:6946","SkeletonText",{"size":"display|titleLarge|titleMedium|titleSmall|subtitle|bodyLarge|bodyMedium|bodySmall"},""],
-["11025:38126","Spinner",{"size":"small|medium|large"},"Alpha"],
-["19008:62778","SubNav",{"position":"start (left)|middle|end (right)","state":"rest (default)|hover|selected (current)"},"Alpha"],
-["18959:64962","StateLabel",{"variant":"issue|pull request","status":"draft|open|closed|merged|queued|unavailable","size":"small|normal"},"Alpha"],
-["24375:94677","TabNav",{},"Alpha"],
-["30948:151237","Textarea",{"state":"default|focus|disabled","validation":"none|error|success","text type":"Value|Placeholder"},"Alpha"],
-["15341:46504","TextInput",{"size":"small|medium|large","state":"rest|focus|disabled|read-only","validation":"none|invalid|success","inset?":"true|false","fullWidth?":"false|true"},"Alpha"],
-["13518:50189","ToggleSwitch",{"size":"medium|small","state":"rest|active|hover|loading","checked":"false|true","label position":"start|end"},"Alpha"],
-["10351:34099","Token",{"state":"default|hover","size":"large|medium|small|xlarge","leadingVisual":"false|true","selected?":"false|true"},"Alpha"],
-["35020:46073","TreeView",{"Type":"Parent|Item"},""],
-["26717:1390","UnderlineNav",{"overflow?":"false|true","Type":"other|team|user|organization|repository"},"Beta"],
-["39456:2213","UnderlinePanels",{"state":"rest|hover|focus","selected":"false|true"},"Beta"]
-]}
+{
+"source": "https://www.figma.com/design/MdZuSD4Wgy03m4OFppbDlE/Primer-Web",
+"readAt": "2026-10-18",
+"sets": [
+[
+"26998:2424",
+"ActionMenu",
+{
+"trigger": "icon-button|button|button-single-selection|button-multi-selection|button-dropdown",
+"open": "false|true",
+"align": "right|left|center"
+},
+"Beta"
+],
+[
+"15614:56202",
+"ActionList",
+{
+"size": "small|medium|large",
+"state": "rest|hover|pressed|focus|disabled",
+"selected?": "false|true"
+},
+"Beta"
+],
+[
+"35998:101114",
+"Autocomplete",
+{
+"menu?": "true|false",
+"menuState": "empty|populated|add-new|loading"
+},
+"Alpha"
+],
+[
+"3805:24",
+"AvatarStack",
+{
+"alignment": "left|right",
+"Avatars": "5|4|3|2"
+},
+"Alpha"
+],
+[
+"3805:11",
+"Avatar",
+{
+"size": "16px|20px|24px|28px|32px|40px|48px|64px",
+"square": "false|true"
+},
+"Alpha"
+],
+[
+"34303:2712",
+"Banner",
+{
+"Variant": "warning|critical|success|info|upsell",
+"Title?": "false|true",
+"Dismissible?": "true|false",
+"Small": "false|true"
+},
+""
+],
+[
+"3655:7208",
+"BranchName",
+{
+"type": "link|text"
+},
+"Alpha"
+],
+[
+"4398:2383",
+"Blankslate",
+{
+"size": "small|medium|large",
+"spacious": "false|true"
+},
+"Draft"
+],
+[
+"30258:5582",
+"Button",
+{
+"variant": "primary|danger|invisible|default|link",
+"size": "small|medium|large",
+"state": "rest|focus|hover|pressed|disabled|inactive",
+"alignContent": "center|start"
+},
+"Alpha"
+],
+[
+"30468:5843",
+"IconButton",
+{
+"variant": "primary|secondary|danger|invisible",
+"size": "small|medium|large",
+"state": "rest|focus|hover|pressed|disabled|loading|inactive"
+},
+"Alpha"
+],
+[
+"36325:3634",
+"ButtonGroup",
+{
+"Size": "medium|small",
+"variant": "secondary|primary|danger"
+},
+"Alpha"
+],
+[
+"20135:70690",
+"Breadcrumbs",
+{
+"items": "2|3|4|5|6|7|8|9|10"
+},
+"Alpha"
+],
+[
+"15341:46321",
+"Checkbox",
+{
+"state": "rest|disabled|focus",
+"checked?": "false|true",
+"indeterminate?": "false|true"
+},
+"Alpha"
+],
+[
+"18959:64970",
+"CounterLabel",
+{
+"variant": "primary|secondary"
+},
+"Alpha"
+],
+[
+"28509:38091",
+"DataTable",
+{
+"title": "true|false",
+"subtitle": "false|true",
+"actions": "false|true",
+"filter": "false|true"
+},
+"Alpha"
+],
+[
+"16593:65798",
+"Dialog",
+{
+"size": "small|medium|large|full|xlarge|small-portrait|medium-portrait",
+"position": "center|full|bottom|left|right"
+},
+"Alpha"
+],
+[
+"26738:6196",
+"Header",
+{
+"Logged-in": "True|False",
+"Type": "Desktop|Mobile"
+},
+"Alpha"
+],
+[
+"21069:78785",
+"Heading",
+{
+"variant": "large|medium|small"
+},
+"Alpha"
+],
+[
+"32109:348",
+"InlineMessage",
+{
+"variant": "critical|warning|success|unavailable",
+"size": "medium|small"
+},
+""
+],
+[
+"18959:65008",
+"Label",
+{
+"size": "small|large",
+"variant": "default|primary|secondary|accent|success|attention|severe|danger|done|sponsors"
+},
+"Alpha"
+],
+[
+"20953:78768",
+"Link",
+{
+"muted": "false|true",
+"bold": "false|true",
+"size": "normal|small"
+},
+"Alpha"
+],
+[
+"15175:71561",
+"NavList",
+{
+"State": "active|disabled|hover|rest",
+"Current selection": "off|on"
+},
+"Alpha"
+],
+[
+"9685:44751",
+"Overlay",
+{
+"header": "off|on",
+"footer": "off|on",
+"overflow": "false|true"
+},
+"Alpha"
+],
+[
+"4065:363",
+"Pagehead",
+{
+"hasAvatar?": "false|true",
+"actions?": "false|true"
+},
+"Deprecated"
+],
+[
+"40002:2161",
+"PageHeader",
+{
+"hasDescription": "false|true",
+"hasNavigation": "false|true"
+},
+""
+],
+[
+"34607:94621",
+"Pagination",
+{
+"showPages": "true|false"
+},
+""
+],
+[
+"19015:63778",
+"Popover",
+{
+"caret": "top|top-left|top-right|bottom|bottom-left|bottom-right|left|left-top|left-bottom|right|right-top|right-bottom"
+},
+"Alpha"
+],
+[
+"34727:143491",
+"ProgressBar",
+{
+"size": "large|default|small",
+"items": "1|2|3|4|5|6|7|8|9|empty"
+},
+""
+],
+[
+"15341:46367",
+"Radio",
+{
+"state": "rest|disabled|focus",
+"checked?": "false|true"
+},
+"Alpha"
+],
+[
+"16122:79604",
+"SegmentedControl",
+{
+"iconOnly?": "false|true",
+"size": "medium|small"
+},
+"Alpha"
+],
+[
+"15341:46907",
+"Select",
+{
+"size": "medium|small|large",
+"state": "rest|focus|disabled",
+"validation": "none|invalid|success",
+"fullWidth?": "false|true"
+},
+"Alpha"
+],
+[
+"40704:73019",
+"SelectPanel",
+{
+"type": "single|multi",
+"variant": "anchored|modal (not implemented)"
+},
+"Alpha"
+],
+[
+"29994:6840",
+"SkeletonAvatar",
+{
+"size": "16px|20px|24px|28px|32px|40px|48px|64px",
+"shape": "circle|square"
+},
+""
+],
+[
+"30013:6946",
+"SkeletonText",
+{
+"size": "display|titleLarge|titleMedium|titleSmall|subtitle|bodyLarge|bodyMedium|bodySmall"
+},
+""
+],
+[
+"11025:38126",
+"Spinner",
+{
+"size": "small|medium|large"
+},
+"Alpha"
+],
+[
+"19008:62778",
+"SubNav",
+{
+"position": "start (left)|middle|end (right)",
+"state": "rest (default)|hover|selected (current)"
+},
+"Alpha"
+],
+[
+"18959:64962",
+"StateLabel",
+{
+"variant": "issue|pull request",
+"status": "draft|open|closed|merged|queued|unavailable",
+"size": "small|normal"
+},
+"Alpha"
+],
+[
+"24375:94677",
+"TabNav",
+{},
+"Deprecated"
+],
+[
+"30948:151237",
+"Textarea",
+{
+"state": "default|focus|disabled",
+"validation": "none|error|success",
+"text type": "Value|Placeholder"
+},
+"Alpha"
+],
+[
+"15341:46504",
+"TextInput",
+{
+"size": "small|medium|large",
+"state": "rest|focus|disabled|read-only",
+"validation": "none|invalid|success",
+"inset?": "true|false",
+"fullWidth?": "false|true"
+},
+"Alpha"
+],
+[
+"13518:50189",
+"ToggleSwitch",
+{
+"size": "medium|small",
+"state": "rest|active|hover|loading",
+"checked": "false|true",
+"label position": "start|end"
+},
+"Alpha"
+],
+[
+"10351:34099",
+"Token",
+{
+"state": "default|hover",
+"size": "large|medium|small|xlarge",
+"leadingVisual": "false|true",
+"selected?": "false|true"
+},
+"Alpha"
+],
+[
+"35020:46073",
+"TreeView",
+{
+"Type": "Parent|Item"
+},
+""
+],
+[
+"26717:1390",
+"UnderlineNav",
+{
+"overflow?": "false|true",
+"Type": "other|team|user|organization|repository"
+},
+"Beta"
+],
+[
+"39456:2213",
+"UnderlinePanels",
+{
+"state": "rest|hover|focus",
+"selected": "false|true"
+},
+"Beta"
+]
+],
+"updatedAt": "2026-10-29"
+}
