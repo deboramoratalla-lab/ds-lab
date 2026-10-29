@@ -1996,7 +1996,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     if (seen) { el.hidden = true; $("#tour-again").hidden = false; }
     $("#tour-again").onclick = () => tour(0); $("#hiw-tour").onclick = () => tour(0);
     const hide = () => { el.hidden = true; $("#tour-again").hidden = false; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
-    $("#intro-x").onclick = hide; $("#intro-tour").onclick = () => { hide(); tour(0); }; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
+    $("#intro-x").onclick = hide; $("#intro-tour").onclick = () => { hide(); tour(0); }; $("#intro-go").onclick = () => { hide(); go("decisions"); };
+    if (!seen && !/[?&]notour/.test(location.search)) setTimeout(() => { hide(); tour(0); }, 600); })();
   const tab = (k) => () => document.querySelector(`[data-dtab="${k}"]`)?.click();
   const TOUR = [
     ["overview", "#who-status", "The result", "Here's where Primer stands after the last run",
