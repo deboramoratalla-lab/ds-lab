@@ -1,12 +1,12 @@
 // Inlines console/data.json into console/app.html → console/index.html (one self-contained page).
 import { readFileSync, writeFileSync } from "node:fs";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 const d = JSON.parse(readFileSync(new URL("./data.json", import.meta.url), "utf8"));
 const sb = new URL("./lab-sandbox.json", import.meta.url);
 if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
 // Component inventory from the real Primer fixtures: code (React dist), Figma variables, Storybook stories.
 {
-  const { readdirSync, statSync } = await import("node:fs");
+  const { statSync } = await import("node:fs");
   const fx = (x) => new URL("../fixtures/" + x, import.meta.url);
   const seg = {};
   for (const f of ["part1", "part2", "part3"]) for (const k of Object.keys(JSON.parse(readFileSync(fx(`primer-web-figma/${f}.json`), "utf8")))) { const s = k.split("/")[0].toLowerCase(); seg[s] = (seg[s] || 0) + 1; }
@@ -20,7 +20,8 @@ if (existsSync(sb)) d.sandboxLab = JSON.parse(readFileSync(sb, "utf8"));
   if (existsSync(tri)) { const T = JSON.parse(readFileSync(tri, "utf8")); d.triage = { at: T.at, ms: T.ms }; for (const c of d.components) if (T.items[c.name]?.fix) c.triage = T.items[c.name]; }
 }
 { const sc = new URL("./screens.json", import.meta.url); if (existsSync(sc)) d.screens = JSON.parse(readFileSync(sc, "utf8")); const mu = new URL("./mutation.json", import.meta.url); if (existsSync(mu) && d.screens) d.screens.mutation = JSON.parse(readFileSync(mu, "utf8")); }
-for (const [k, f] of [["team", "./team.json"], ["gapTasks", "./gap-tasks.json"]]) { const u = new URL(f, import.meta.url); if (existsSync(u)) d[k] = JSON.parse(readFileSync(u, "utf8")); }
+{ const sbd = new URL("../fixtures/primer-storybook/", import.meta.url); if (existsSync(sbd)) { const n = readdirSync(sbd).filter((f) => f.endsWith(".stories.tsx")).length; const sb = d.sources.find((x) => x.id === "storybook"); if (sb && n) Object.assign(sb, { count: n, unit: "story files", detail: "@primer/react 38.40.1 stories, every component" }); } }
+for (const [k, f] of [["team", "./team.json"], ["gapTasks", "./gap-tasks.json"], ["sideBias", "./side-bias.json"]]) { const u = new URL(f, import.meta.url); if (existsSync(u)) d[k] = JSON.parse(readFileSync(u, "utf8")); }
 const data = JSON.stringify(d).replace(/</g, "\\u003c");
 let html = readFileSync(new URL("./app.html", import.meta.url), "utf8").replace("__DATA__", () => data);
 // the 3-tier tokens exported from the Figma library load last, so every console colour resolves through them

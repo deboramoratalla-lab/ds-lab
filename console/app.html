@@ -346,7 +346,7 @@ a:hover { text-decoration: underline; }
 .sugg{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.q-cons{flex-basis:100%;font-size:12.5px;color:var(--label-2)}
 .btn.ghost { min-height:24px; }
 html { overflow-x:clip; }
-.ov-l{font-size:12.5px;margin-left:auto}.ov-f{flex-basis:100%;display:grid;gap:6px;font-size:12.5px;color:var(--label-2)}.ov-f>div{display:flex;gap:8px;flex-wrap:wrap}.ov-f input{flex:1;min-width:200px;font:inherit;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label)}
+.bias-n{display:block;margin-top:6px;font-size:12.5px;color:var(--label-2)}.ov-l{font-size:12.5px;margin-left:auto}.ov-f{flex-basis:100%;display:grid;gap:6px;font-size:12.5px;color:var(--label-2)}.ov-f>div{display:flex;gap:8px;flex-wrap:wrap}.ov-f input{flex:1;min-width:200px;font:inherit;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label)}
 .ship{display:grid;gap:10px;padding:18px 20px}.ship h3{margin:0;font-size:16px;font-weight:600}.ship ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}.ship li{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--label-2)}.ship li i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;background:var(--fill);color:var(--label-3);flex:none}.ship li.ok i{background:var(--green);color:#fff}.ship li.ok{color:var(--label)}
 .tour-pop { position:fixed; z-index:91; width:360px; padding:22px 22px 18px; border-radius:22px; background:var(--group); color:var(--label); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 18px 48px rgba(17,16,28,.28); display:grid; gap:10px; animation:tourIn .25s ease both; }
 @keyframes tourIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
@@ -1159,6 +1159,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <section><div class="sec-h">What it watches<small>Three layers, one run</small></div><div class="hiw-l" id="hiw-l"></div></section>
         <section><div class="sec-h">Who does what<small>Rules first. Models only where judgement is needed</small></div><div class="group" id="hiw-who"></div></section>
         <section><div class="sec-h">When one side changes<small>Five kinds of change, and who handles each</small></div><div class="hiw" id="hiw"></div></section>
+        <section><div class="sec-h">Keeping the models honest<small>Where a model could tilt a decision, and what checks it</small></div><div class="group" id="hiw-bias"></div></section>
         <section><div class="sec-h">Guardrails</div><div class="run-line hiw-g"><span>Applies only at ≥ 85% confidence</span><span>Every change is logged and can be undone</span><span>3 rejections pause auto-apply for that kind</span><span>The GitHub check (ds-sync) re-checks every pull request</span></div></section>
         <div class="hiw-proof"><div class="sec-h" style="margin:0">The proof<small>Broken on purpose, then checked</small></div><h2 class="hiw-h2">Every break we planted was caught</h2><div class="hiw-t" id="hiw-t"></div></div>
         <div class="hiw-proof"><div class="sec-h" style="margin:0">Sync strategies<small>Tested on Primer's Button</small></div><h2 class="hiw-h2" id="lab-title"></h2><p class="lede act-lede">We made the five changes to Button and synced them four ways. Each strategy ran in its own Nebius Token Factory Sandbox, forked from the same checkpoint.</p><div class="run-line" id="lab-note" style="margin-top:4px"></div></div>
@@ -1360,7 +1361,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 
   const AREAS = {
     "Shared tokens (Figma ↔ code, light)": "Tokens",
-    "Links kept since the last run": "Links since last 100%",
+    "Links kept since last certification": "Links kept since the last run",
     "Button properties (Figma ↔ code, by value)": "Button properties",
     "Button options (docs · code · Figma · Storybook)": "Button options",
     "Button docs in Figma (React status ↔ docs)": "Button docs in Figma",
@@ -1419,6 +1420,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   // Titles in plain words; the token name stays visible underneath for people who search by it.
   const researchOpen = new Set();
+  // Side-bias check: the same conflict re-asked N times, and again with Figma and code swapped. Shown next to the lean so a
+  // single model call doesn't anchor the decision.
+  const biasNote = (i) => { const B = D.sideBias; if (!B || !i.lean) return "";
+    const pick = (L) => L.filter((x) => !x.startsWith("ask-a-human")).length, o = pick(B.cases.original), w = pick(B.cases.swapped);
+    return `<span class="bias-n"><b>Treat it as a hint.</b> Re-asked ${B.runs} times, Ultra picked a side ${o} ${o === 1 ? "time" : "times"}; with Figma and code swapped, ${w}. ${o === 0 && w === 0 ? "It doesn't favour either side, and it isn't sure here." : o === w ? "It follows the arguments, not the side." : "Its pick depends on which side is which: decide on the evidence."}</span>`; };
   const OVR = {}; let ovOpen = null; let SENT = null; // override reasons per item; the item whose override form is open; last send to the PR
   const ovForm = (i) => answers[i.id] ? "" : ovOpen === i.id
     ? `<div class="ov-f"><label for="ov-${i.id}">Why accept it as it is? The check passes for 7 days and shows your reason on the PR.</label><div><input id="ov-${i.id}" maxlength="200" placeholder="e.g. Brand review on Monday decides this" value="${esc(OVR[i.id] || "")}"><button class="btn" type="button" data-ov-ok="${i.id}">Override for 7 days</button><button class="btn ghost" type="button" data-ov-x="${i.id}">Cancel</button></div></div>`
@@ -1445,13 +1451,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     let body = "", actions = "";
     if (i.kind === "decide") {
       const opt = (side, color, who, why) => `<button class="opt${a === side ? " kept" : ""}" type="button" ${ROLES[role].decides ? `data-item="${i.id}" data-answer="${side}"` : "disabled"} aria-pressed="${a === side}">
-        <span class="who">${who}${i.lean && i.lean.toLowerCase() === side ? ` <span class="sugg">Suggested by Ultra</span>` : ""}</span>
+        <span class="who">${who}</span>
         <span class="pv-wrap" aria-hidden="true"><span class="pv-cap">Preview</span>${stage(previewFor(i.token, color))}</span>
         <span class="sample"><span class="chip" style="background:${color}"></span><span style="font-size:12px">${esc(color)}</span></span>
         <span class="why">“${esc((why || "").replace(/^'|'\.?$/g, ""))}”</span>
         ${ROLES[role].decides || a === side ? `<span class="keep">${a === side ? "Kept" : `Keep ${side === "figma" ? "Figma" : "code"}`}</span><span class="conseq">${a === side ? `${side === "figma" ? "Code" : "Figma"} now uses ${esc(color)}` : `${side === "figma" ? "Code" : "Figma"} will change to ${esc(color)}`}</span>` : ""}</button>`;
       body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
-        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why || "")}</div>
+        <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leaned ${esc(i.lean)} in this run.` : "doesn't pick a side."} ${esc(i.why || "")}${biasNote(i)}</div>
         ${i.impact ? impactHTML(i.impact) : ""}`;
       actions = a === "override" ? `<span class="q-done"><b>Overridden for 7 days.</b> “${esc(OVR[i.id] || "")}”</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Debora decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
     } else {
@@ -1729,7 +1735,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["A token is renamed", "A designer renames control/medium/gap in Figma.", "Nemotron Nano", "Pairs the old name with the new one so no link breaks.", "Asks you to confirm the rename", "warn"],
       ["An urgent hotfix", "An engineer darkens the primary hover to pass contrast.", "Nemotron Ultra", "Checks the evidence, and the WCAG check confirms it.", "Applied to the other side", "ok"],
       ["A new option on one side", "Size xsmall ships in code and docs, not in Figma.", "Nemotron Super + Tavily", "Researches how other systems do it before proposing.", "Proposed, never created alone", "warn"],
-      ["Both sides change the same thing", "Designer makes a text blue, engineer makes it grey, same week.", "You", "The model summarises both sides but never picks one.", "Your call, always", "bad"],
+      ["Both sides change the same thing", "Designer makes a text blue, engineer makes it grey, same week.", "You", "The model can give a hint, but never picks for you.", "Your call, always", "bad"],
     ];
     const CO = D.components || [], SC = D.screens, MU = SC?.mutation, GT = D.gapTasks?.tasks || [];
     const chip = (t) => `<span class="tag">${t}</span>`;
@@ -1745,6 +1751,14 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["Nemotron Ultra", "Verifies what Super found and decides which side is right when one changed."],
       ["Tavily", "Looks up how other design systems handle a new option before it's proposed."],
       ["You", "Conflicts, new components and anything under 85% confidence. Assign it and it opens a GitHub issue."],
+    ].map(([a, b]) => `<div class="hiw-w"><b style="color:var(--label);font-weight:500">${a}</b><span>${b}</span></div>`).join("");
+    const SB = D.sideBias, pk = (L) => L.filter((x) => !x.startsWith("ask-a-human")).length;
+    $("#hiw-bias").innerHTML = [
+      ["Picking a side in a conflict", SB ? `Side-swap test: the same conflict asked ${SB.runs} times, then with Figma and code swapped. Ultra picked a side ${pk(SB.cases.original)} and ${pk(SB.cases.swapped)} times: no tilt towards designers or engineers. Its lean from a single run is shown as a hint with this result next to it, never pre-selected.` : "Ultra's lean is shown as a hint, never pre-selected."],
+      ["Flagging meaning in screens", `Super reads each screen 3 times and a finding needs 2 votes; Ultra then checks it on its own. In the blind test it raised ${(SC?.blind?.falseAlarms || []).length} false alarms on ${(SC?.blind?.decoys || []).length} decoys.`],
+      ["Its own confidence", "The % is the model's own estimate, not a measured one. That's why fixes need 85%, every change is logged and undoable, and 3 rejections switch auto-fix off for that kind."],
+      ["Research for new options", "Tavily results lean towards the biggest design systems. Every source is listed under \"See the research\", so you can see who it compared with."],
+      ["Who gets an issue", "No model. The suggested owner is whoever owns that place (Figma, Storybook or docs), and you can change it."],
     ].map(([a, b]) => `<div class="hiw-w"><b style="color:var(--label);font-weight:500">${a}</b><span>${b}</span></div>`).join("");
     const pl = SC?.test?.planted || [], bl = SC?.blind?.breaks || [];
     $("#hiw-t").innerHTML = [
@@ -1781,7 +1795,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.querySelectorAll("[data-lab]").forEach((tr) => { const t = () => { const k = tr.dataset.lab; labOpen.has(k) ? labOpen.delete(k) : labOpen.add(k); renderLab(); };
       tr.addEventListener("click", t); tr.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); t(); } }); });
     const areas = L.runs[0].checks.map((c) => c.area), mx = Math.max(1, ...L.runs.flatMap((r) => r.checks.map((c) => c.total - c.passed)));
-    const short = (a) => a.replace(/\s*\(.*\)/, "");
+    const short = (a) => a.replace(/\s*\(.*\)/, "").replace("since last certification", "since the last run");
     $("#lab-heat").innerHTML = `<thead><tr><th>Area</th>${L.runs.map((r) => `<th class="c">${NAME[r.strategy][0]}</th>`).join("")}</tr></thead><tbody>${areas.map((a) => `<tr><td>${esc(short(a))}<small>${esc((a.match(/\((.*)\)/) || [])[1] || "")}</small></td>${L.runs.map((r) => { const c = r.checks.find((x) => x.area === a), o = c ? c.total - c.passed : 0;
       return `<td class="c"><span class="hm${o ? "" : " z"}${r.strategy === "agent" && o ? " wait" : ""}" style="--a:${o ? 0.12 + 0.6 * o / mx : 0}">${o ? o : "✓"}</span></td>`; }).join("")}</tr>`).join("")}</tbody>`;
   }
@@ -1792,7 +1806,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   // the PR opened at the end of the run is newer than the one the export saw: trust D.pr.url
   { const m = (D.pr?.url || "").match(/\/pull\/(\d+)/); if (m && (!LK.pr || LK.pr.number !== +m[1])) LK.pr = { ...(LK.pr || {}), number: +m[1], url: D.pr.url }; }
   const ghFile = (f) => LK.pr ? `${LK.repo}/blob/${LK.pr.branch}/${LK.dir}/${f.replace(/^out\/broken\//, "")}` : null;
-  const figmaURL = () => LK.figma ? (LK.figmaButton ? `${LK.figma.split("?")[0]}?node-id=${LK.figmaButton.replace(":", "-")}` : LK.figma) : null;
+  const figmaURL = () => !LK.figma && D.screens ? D.screens.source : LK.figma ? (LK.figmaButton ? `${LK.figma.split("?")[0]}?node-id=${LK.figmaButton.replace(":", "-")}` : LK.figma) : null;
   const xlink = (href, label) => href ? `<a class="xlink" href="${esc(href)}" target="_blank" rel="noopener">${label}<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5 3 9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : "";
   function renderPR() {
     const P = D.pr; if (!P) { $("#pr").innerHTML = `<div class="empty">No changes to review in this run.</div>`; return; }
@@ -1825,8 +1839,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#metrics").innerHTML = [
       kcard("Out of sync this run", off, "values", pips(Object.entries(SRCN).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`)), `After ${D.breaks.length} changes`),
       kcard("Fixed by the agent", `${off - left}`, `of ${off} values`, ring((off - left) / off, `${acts.length} changes applied<br>${left} values wait on you`), ""),
-      kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "fixed" }, { v: ITEMS.length, t: "need you" }]), ""),
-      kcard("Coverage", `${cov}`, `of ${comps.length} components checked`, ring(cov / Math.max(1, comps.length), `${drifted + 1} with drift<br>Agent repairs: ${esc(D.system.component)}`), ""),
+      kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "fixed" }, { v: ITEMS.length, t: ITEMS.length === 1 ? "decision for you" : "decisions for you" }]), ""),
+      kcard("Coverage", `${cov}`, `of ${comps.length} components checked`, ring(cov / Math.max(1, comps.length), `${drifted + 1} not fully in sync<br>Agent repairs: ${esc(D.system.component)}`), ""),
     ].join("");
     const tok = Object.values(D.repair.calls).reduce((x, u) => x + u.prompt + u.completion, 0), nc = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
     $("#rep-tags").innerHTML = `<span>${esc(D.system.name)} · ${esc(D.system.component)}</span><span>${esc(fmtAt(D.generatedAt))}</span><span><b>${nc}</b> Nemotron calls · ${(tok / 1000).toFixed(1)}k tokens</span>${ctr ? `<span>Contrast <b>${ctr.passed}/${ctr.total}</b> at WCAG AA</span>` : ""}`;

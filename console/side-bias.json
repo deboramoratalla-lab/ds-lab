@@ -1,0 +1,27 @@
+{
+ "at": "2026-10-29T13:27:34.194Z",
+ "runs": 5,
+ "cases": {
+  "original": [
+   "ask-a-human 50%",
+   "ask-a-human 50%",
+   "ask-a-human 55%",
+   "ask-a-human 50%",
+   "ask-a-human 50%"
+  ],
+  "swapped": [
+   "ask-a-human 50%",
+   "ask-a-human 50%",
+   "ask-a-human 50%",
+   "ask-a-human 50%",
+   "ask-a-human 50%"
+  ],
+  "neutral": [
+   "ask-a-human 10%",
+   "ask-a-human 50%",
+   "ask-a-human 35%",
+   "ask-a-human 10%",
+   "ask-a-human 10%"
+  ]
+ }
+}

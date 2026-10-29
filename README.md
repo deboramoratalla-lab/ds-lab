@@ -76,7 +76,14 @@ npm test
 - `apply-decisions.yml` applies the lead's answers to the open PR. The console's "Send answers" triggers it through the server.
 - `deploy-nebius.yml` builds the image (GHCR) and creates the Nebius Serverless endpoint. Add secrets `NEBIUS_SA_ID`, `NEBIUS_SA_PUBLIC_KEY_ID`, `NEBIUS_SA_PRIVATE_KEY`, `NEBIUS_PROJECT_ID`, optional `GH_DISPATCH_TOKEN` (fine-grained, Actions: write), and variables `NEBIUS_PLATFORM`, `NEBIUS_PRESET` (a CPU platform and preset from your project).
 
+## Side-bias test
+
+`NODE_USE_ENV_PROXY=1 npx tsx scripts/eval/side-bias.ts` asks Nemotron Ultra the same Figma-vs-code conflict 5 times, then 5 more with the sides swapped, then 5 with no argument on either side. Result (29 Oct): it picked neither side in all 15, so it doesn't tilt towards designers or engineers, but its stored lean ("Figma", from one earlier run) isn't stable. The console now shows that lean as a hint with this result next to it, never pre-selected. Results: `console/side-bias.json`.
+
 ## Limitations (honest list)
+
+- An override ("Override with a reason") lets the whole ds-sync check pass for 7 days, not just the overridden value.
+- Model confidence is the model's own estimate, not calibrated.
 
 - **Deepest checks are on Button.** It gets 1,488 checks (properties by value, Storybook stories, WCAG contrast). The other 73 components get lighter checks: options, tokens, colour tokens vs Figma, status. 31 of 74 have no Figma set, so they're checked against docs and code only: 17 have nothing to draw (utilities, layout, wrappers), 5 are deprecated, 2 exist in Figma under other names (Skeleton is split into SkeletonAvatar and SkeletonText; ConfirmationDialog is built on Dialog) and 7 are a real gap that the console lists under "To create in Figma" for a designer.
 - **Storybook:** Button gets the deep story checks; for the other components Seamline reads Primer's own stories (same version, 71 components have them) and checks that every non-default option in the docs appears in a story. It doesn't render the stories.
