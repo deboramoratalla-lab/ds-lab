@@ -78,7 +78,7 @@ npm test
 
 ## Limitations (honest list)
 
-- **Deepest checks are on Button.** It gets 1,488 checks (properties by value, Storybook stories, WCAG contrast). The other 73 components get lighter checks: options, tokens, colour tokens vs Figma, status. 14 of 74 aren't checked yet because they aren't in the Primer Web Figma file.
+- **Deepest checks are on Button.** It gets 1,488 checks (properties by value, Storybook stories, WCAG contrast). The other 73 components get lighter checks: options, tokens, colour tokens vs Figma, status. 31 of 74 have no Figma set, so they're checked against docs and code only: 17 have nothing to draw (utilities, layout, wrappers), 5 are deprecated, 2 exist in Figma under other names (Skeleton is split into SkeletonAvatar and SkeletonText; ConfirmationDialog is built on Dialog) and 7 are a real gap that the console lists under "To create in Figma" for a designer.
 - **Storybook is read for Button only.** For the rest the console shows "Not read".
 - **Nano is for mechanical work only.** In triage tests it invented a commit, so judgment always goes to Ultra, and anything below 85% confidence goes to a person.
 - **Figma is read, not written.** The agent writes its fixes to the repo and the PR; applying them back into the Figma file is still manual.
