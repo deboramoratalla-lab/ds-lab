@@ -372,6 +372,7 @@ a:hover { text-decoration: underline; }
 .scr-g[open]:last-child > summary { border-bottom:1px solid var(--hair); }
 .rep-row.gap { align-items:center; }
 .gap-a { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.rep-row .by { font-size:11.5px; color:var(--label-3); margin-top:2px; }
 .ava { display:inline-grid; place-items:center; border-radius:50%; color:#fff; font-size:10px; font-weight:600; flex-shrink:0; }
 .ava.empty { background:none; border:1.5px dashed var(--label-3); }
 .asg-wrap { position:relative; }
@@ -1113,7 +1114,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="run-line" id="q-sum"></div>
         <div class="act-cols">
           <section><div class="sec-h">To decide<small>Conflicts first: they block certification</small></div><div class="queue" id="queue-full"></div>
-            <div class="sec-h" style="margin-top:28px">Other components<small>Suggestions from Nemotron Ultra · they don't block anything</small></div><div class="group" id="q-other"></div>
+            <div class="sec-h" style="margin-top:28px">Out of sync elsewhere<small id="fix-note">Nemotron Ultra suggests a fix · assign it or mark it as not needed · doesn't block the PR</small></div><div class="group" id="q-other"></div>
             <div class="sec-h" style="margin-top:28px">Missing somewhere<small id="gap-note">A component exists in code but not in Figma, Storybook or the docs · create it or mark it as not needed · doesn't block the PR</small></div><div class="group" id="q-create"></div>
             <div class="sec-h" style="margin-top:28px">In screens<small id="q-scr-note"></small></div><div class="group" id="q-screens"></div></section>
           <aside class="act-side" aria-label="Details">
@@ -1552,15 +1553,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
     $("#queue").innerHTML = show ? (ITEMS.length > 4 || role !== "lead" || srcF !== "all" || filter !== "all" ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div>` : "") + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
     $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
-    const OT = (D.components || []).filter((c) => c.triage);
-    $("#q-other").innerHTML = OT.length ? OT.map((c) => `<button class="rep-row q-ot" data-comp="${esc(c.name)}"><div><div class="t">${esc(c.name)} <span class="s">${c.cat.total - c.cat.passed} off</span></div><div class="s">${esc(c.triage.fix)}</div></div><div class="v num">${Math.round(c.triage.confidence * 100)}%</div></button>`).join("") : `<div class="empty">Every other component is in sync.</div>`;
+    renderFixes();
     if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
       const G = [["meaning", "Meaning", "Proposed by Nemotron Super in most of 3 reads, confirmed by Nemotron Ultra"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
       const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}${SC.blind ? ` · blind test: ${SC.blind.breaks.filter((b) => b.found).length}/${SC.blind.breaks.length}, ${SC.blind.falseAlarms.length} false alarms` : ""}${SC.mutation ? ` · ${SC.mutation.caught}/${SC.mutation.tried} random breaks caught` : ""}`;
       const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
       $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${["meaning", "contrast"].includes(k) ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); }
     renderGaps();
-    document.querySelectorAll("#q-other [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
     renderQueueSide(show); $("#queue-pr").innerHTML = show ? prTag() : "";
     const open = show ? openItems().length : 0;
     $("#queue-note").textContent = show && !open ? "All answered" : "";
@@ -2028,12 +2027,12 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     return out.map((g) => ({ ...g, who: WHO[g.where], key: `${g.c}|${g.where}` }));
   }
   const TEAM = D.team?.people || [], suggest = (where) => TEAM.find((p) => p.areas.includes(where)) || TEAM[0];
-  const taskFor = (g) => (D.gapTasks?.tasks || []).find((t) => t.component === g.c && t.where === g.where);
+  const taskFor = (g) => (D.gapTasks?.tasks || []).find((t) => t.component === g.c && t.where === g.where && (t.kind || "gap") === (g.kind || "gap"));
   let gapOpen = null; // the gap whose "Create" form is open
   async function sendGap(g, action, owner) {
-    GAPANS[g.key] = action === "create" ? `create:${owner}` : "skip"; saveGaps(); renderGaps();
+    GAPANS[g.key] = action === "create" ? `create:${owner}` : "skip"; saveGaps(); renderAllTasks();
     if (!API.decisions) { toast("Saved here. Connect the server to open GitHub issues."); return; }
-    try { const r = await fetch("/api/task", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ component: g.c, where: g.where, action, owner }) }); const j = await r.json();
+    try { const r = await fetch("/api/task", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ component: g.c, where: g.where, action, owner, kind: g.kind || "gap", note: g.kind === "fix" ? g.why : "" }) }); const j = await r.json();
       const who = TEAM.find((p) => p.id === owner);
       toast(r.ok ? (action === "create" ? `Task sent to ${esc(who?.name || "the owner")}. The GitHub issue appears in a few seconds. <a href="${esc(j.issues)}" target="_blank" rel="noopener" style="color:inherit">See issues</a>` : `Recorded as not needed. Seamline won't ask again.`) : `Couldn't create it: ${esc(j.error || r.status)}`); }
     catch { toast("Couldn't reach the server."); }
@@ -2041,30 +2040,43 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const GAPOWN = {}; // chosen assignee per gap (defaults to the area's owner)
   const PCOL = ["#6d48c8", "#2f9e6e", "#e05d6f", "#e39b3c", "#3c8ec2"];
   const ava = (p, sz = 22) => p ? `<span class="ava" style="width:${sz}px;height:${sz}px;background:${PCOL[TEAM.indexOf(p) % PCOL.length]}">${esc(p.name.split(" ").map((w) => w[0]).join("").slice(0, 2))}</span>` : `<span class="ava empty" style="width:${sz}px;height:${sz}px"></span>`;
-  function renderGaps() {
-    const ALL = gaps(), auto = ALL.filter((g) => g.rec === "skip"), G = ALL.filter((g) => g.rec !== "skip");
-    const done = (g) => taskFor(g) || GAPANS[g.key], open = G.filter((g) => !done(g));
-    $("#gap-note").textContent = `${open.length} of ${G.length} to decide · ${auto.length} more marked not needed by rule (no visual) · doesn't block the PR`;
-    const row = (g) => { const t = taskFor(g), a = GAPANS[g.key], sug = suggest(g.where);
-      const sel = TEAM.find((p) => p.id === (t?.owner || (a || "").split(":")[1] || GAPOWN[g.key])) || sug;
+  // shared row: assignee pill (Notion-style), Create task, Not needed. Used by "Out of sync" fixes and "Missing somewhere" gaps.
+  function taskRows(sel, items, note) {
+    const done = (g) => taskFor(g) || GAPANS[g.key], open = items.filter((g) => !done(g));
+    note(open.length, items.length);
+    const row = (g) => { const t = taskFor(g), a = GAPANS[g.key], sug = g.owner || suggest(g.where);
+      const who = TEAM.find((p) => p.id === (t?.owner || (a || "").split(":")[1] || GAPOWN[g.key])) || sug;
       let right;
-      if (t) right = t.action === "create" ? `<span class="asg static">${ava(sel)}<span>${esc(sel?.name || "")}</span></span>${xlink(t.url, `Task #${t.number}${t.state === "closed" ? " · done" : ""}`)}` : xlink(t.url, `Not needed · #${t.number}`);
-      else if (a) right = `${a === "skip" ? `<span class="s">Not needed</span>` : `<span class="asg static">${ava(sel)}<span>${esc(sel?.name || "")}</span></span><span class="s">Task on its way</span>`}<button class="btn ghost" type="button" data-undo="${esc(g.key)}">Change</button>`;
-      else right = `<div class="asg-wrap"><button class="asg" type="button" aria-haspopup="listbox" aria-expanded="${gapOpen === g.key}" data-open="${esc(g.key)}" title="Assignee">${ava(sel)}<span>${esc(sel?.name || "Assign")}</span><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
-        ${gapOpen === g.key ? `<div class="asg-menu" role="listbox">${TEAM.map((p) => `<button type="button" role="option" aria-selected="${p === sel}" data-pick="${esc(g.key)}" data-who="${p.id}">${ava(p, 24)}<span><b>${esc(p.name)}</b><small>${esc(p.role)}${p.areas.includes(g.where) ? ` · owns ${g.where}` : ""}</small></span>${p === sel ? `<i>✓</i>` : ""}</button>`).join("")}</div>` : ""}</div>
+      if (t) right = t.action === "create" ? `<span class="asg static">${ava(who)}<span>${esc(who?.name || "")}</span></span>${xlink(t.url, `Task #${t.number}${t.state === "closed" ? " · done" : ""}`)}` : xlink(t.url, `Not needed · #${t.number}`);
+      else if (a) right = `${a === "skip" ? `<span class="s">Not needed</span>` : `<span class="asg static">${ava(who)}<span>${esc(who?.name || "")}</span></span><span class="s">Task on its way</span>`}<button class="btn ghost" type="button" data-undo="${esc(g.key)}">Change</button>`;
+      else right = `<div class="asg-wrap"><button class="asg" type="button" aria-haspopup="listbox" aria-expanded="${gapOpen === g.key}" data-open="${esc(g.key)}" title="Assignee">${ava(who)}<span>${esc(who?.name || "Assign")}</span><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+        ${gapOpen === g.key ? `<div class="asg-menu" role="listbox">${TEAM.map((p) => `<button type="button" role="option" aria-selected="${p === who}" data-pick="${esc(g.key)}" data-who="${p.id}">${ava(p, 24)}<span><b>${esc(p.name)}</b><small>${esc(p.role)}${p.areas.includes(g.where) ? ` · owns ${g.where}` : ""}</small></span>${p === who ? `<i>✓</i>` : ""}</button>`).join("")}</div>` : ""}</div>
         <button class="btn primary" type="button" data-go="${esc(g.key)}">Create task</button><button class="btn ghost" type="button" data-skip="${esc(g.key)}">Not needed</button>`;
-      return `<div class="rep-row gap"><div><div class="t"><button class="lnk" type="button" data-comp="${esc(g.c)}">${esc(g.c)}</button> <span class="tag">Missing in ${g.where}</span></div><div class="s">${esc(g.why)}</div></div><div class="gap-a">${right}</div></div>`; };
-    $("#q-create").innerHTML = G.length ? [...open, ...G.filter(done)].map(row).join("") : `<div class="empty">Every component is in all four places.</div>`;
-    const byKey = (k) => G.find((g) => g.key === k);
-    document.querySelectorAll("#q-create [data-open]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); gapOpen = gapOpen === b.dataset.open ? null : b.dataset.open; renderGaps(); });
-    document.querySelectorAll("#q-create [data-pick]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); GAPOWN[b.dataset.pick] = b.dataset.who; gapOpen = null; renderGaps(); });
-    document.querySelectorAll("#q-create [data-go]").forEach((b) => b.onclick = () => { const g = byKey(b.dataset.go); gapOpen = null; sendGap(g, "create", GAPOWN[g.key] || suggest(g.where)?.id); });
-    document.querySelectorAll("#q-create [data-skip]").forEach((b) => b.onclick = () => sendGap(byKey(b.dataset.skip), "skip"));
-    document.querySelectorAll("#q-create [data-undo]").forEach((b) => b.onclick = () => { delete GAPANS[b.dataset.undo]; saveGaps(); renderGaps(); });
-    document.querySelectorAll("#q-create [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
+      return `<div class="rep-row gap"><div><div class="t"><button class="lnk" type="button" data-comp="${esc(g.c)}">${esc(g.c)}</button> <span class="tag">${esc(g.tag)}</span></div><div class="s">${esc(g.why)}</div>${g.by ? `<div class="s by">${esc(g.by)}</div>` : ""}</div><div class="gap-a">${right}</div></div>`; };
+    $(sel).innerHTML = items.length ? [...open, ...items.filter(done)].map(row).join("") : `<div class="empty">Nothing here.</div>`;
+    const byKey = (k) => items.find((g) => g.key === k), C = $(sel);
+    C.querySelectorAll("[data-open]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); gapOpen = gapOpen === b.dataset.open ? null : b.dataset.open; renderAllTasks(); });
+    C.querySelectorAll("[data-pick]").forEach((b) => b.onclick = (e) => { e.stopPropagation(); GAPOWN[b.dataset.pick] = b.dataset.who; gapOpen = null; renderAllTasks(); });
+    C.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => { const g = byKey(b.dataset.go); gapOpen = null; sendGap(g, "create", GAPOWN[g.key] || (g.owner || suggest(g.where))?.id); });
+    C.querySelectorAll("[data-skip]").forEach((b) => b.onclick = () => sendGap(byKey(b.dataset.skip), "skip"));
+    C.querySelectorAll("[data-undo]").forEach((b) => b.onclick = () => { delete GAPANS[b.dataset.undo]; saveGaps(); renderAllTasks(); });
+    C.querySelectorAll("[data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
   }
-  document.addEventListener("click", () => { if (gapOpen) { gapOpen = null; renderGaps(); } });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && gapOpen) { gapOpen = null; renderGaps(); } });
+  function renderGaps() {
+    const ALL = gaps(), auto = ALL.filter((g) => g.rec === "skip");
+    taskRows("#q-create", ALL.filter((g) => g.rec !== "skip").map((g) => ({ ...g, kind: "gap", tag: `Missing in ${g.where}` })), (o, n) => $("#gap-note").textContent = `${o} of ${n} to decide · ${auto.length} more marked not needed by rule (no visual) · doesn't block the PR`);
+  }
+  function fixes() {
+    return (D.components || []).filter((c) => c.triage).map((c) => {
+      const f = c.triage.fix, areas = ["Figma", "Storybook", "Docs"].filter((w) => new RegExp(w === "Docs" ? "\\bdocs?\\b" : w, "i").test(f));
+      const where = areas[0] || "Docs", lead = areas.length > 1 ? TEAM.find((p) => p.areas.includes("Triage")) : null;
+      return { c: c.name, where, key: `${c.name}|fix|${where}`, kind: "fix", tag: areas.length > 1 ? areas.join(" + ") : where, why: f, by: `Nemotron Ultra · ${Math.round(c.triage.confidence * 100)}% sure · ${c.cat.total - c.cat.passed} ${c.cat.total - c.cat.passed === 1 ? "check" : "checks"} off`, owner: lead };
+    });
+  }
+  function renderFixes() { taskRows("#q-other", fixes(), (o, n) => $("#fix-note").textContent = `${o} of ${n} to assign · Nemotron Ultra suggests each fix · doesn't block the PR`); }
+  function renderAllTasks() { renderFixes(); renderGaps(); }
+  document.addEventListener("click", () => { if (gapOpen) { gapOpen = null; renderAllTasks(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && gapOpen) { gapOpen = null; renderAllTasks(); } });
   function docCell(r) {
     const st = r.cat?.status; if (!st) return `<span class="s" title="Not in primer.style">No docs</span>`;
     return `<span title="Status on primer.style">${esc(st[0].toUpperCase() + st.slice(1))}</span>`;

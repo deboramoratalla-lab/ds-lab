@@ -8,11 +8,13 @@ on:
       where: { required: true, description: "Figma | Storybook | Docs" }
       action: { required: true, description: "create | skip" }
       owner: { required: false, default: "", description: "id from console/team.json" }
+      kind: { required: false, default: "gap", description: "gap | fix" }
+      note: { required: false, default: "", description: "the suggested fix, for kind=fix" }
 permissions: { contents: read, issues: write }
 jobs:
   task:
     runs-on: ubuntu-latest
-    env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}", C: "${{ inputs.component }}", W: "${{ inputs.where }}", A: "${{ inputs.action }}", O: "${{ inputs.owner }}" }
+    env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}", C: "${{ inputs.component }}", W: "${{ inputs.where }}", A: "${{ inputs.action }}", O: "${{ inputs.owner }}", K: "${{ inputs.kind }}", N: "${{ inputs.note }}" }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
