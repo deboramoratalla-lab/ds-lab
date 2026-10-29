@@ -952,6 +952,11 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .hiw-r{display:grid;grid-template-columns:28px 1.3fr 1.3fr 1fr;gap:18px;align-items:start;padding:16px 20px;border-top:1px solid var(--hair)}.hiw-r:first-child{border-top:0}
 .hiw-r b{display:block;font-weight:500;color:var(--label);font-size:14px}.hiw-r small{display:block;font-size:12.5px;color:var(--label-2);margin-top:4px;line-height:1.4}
 .hiw-n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:var(--label-2);background:rgba(120,120,140,.12)}
+.hiw-l{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.hiw-c{background:var(--group);border:1px solid var(--hair);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.hiw-c .k{font:400 28px/1 var(--display);letter-spacing:-.02em;color:var(--label)}.hiw-c b{font-weight:600;font-size:14px}.hiw-c p{margin:0;font-size:13px;color:var(--label-2);line-height:1.45}.hiw-c .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:6px}
+.hiw-w{display:grid;grid-template-columns:170px 1fr;gap:16px;padding:12px 20px;border-top:1px solid var(--hair);font-size:13.5px;color:var(--label-2)}.hiw-w:first-child{border-top:0}
+.hiw-t{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}.hiw-t div{border-left:2px solid var(--accent);padding:2px 0 2px 12px}.hiw-t b{display:block;font:400 24px/1.1 var(--display);color:var(--label)}.hiw-t small{font-size:12.5px;color:var(--label-2);line-height:1.4;display:block;margin-top:4px}
+@media (max-width:860px){.hiw-l,.hiw-t{grid-template-columns:1fr}.hiw-w{grid-template-columns:1fr;gap:4px}}
 .run-line.hiw-g{margin-top:0}.hiw-proof{display:flex;flex-direction:column;gap:8px;padding-top:24px;border-top:1px solid var(--hair)}.hiw-h2{font:400 30px/1.15 var(--display);letter-spacing:-.02em;margin:0}
 .sec-link{all:unset;cursor:pointer;margin-left:auto;font-size:12.5px;font-weight:500;color:var(--accent)}.sec-link:hover{text-decoration:underline}
 @media (max-width:860px){.hiw-r{grid-template-columns:28px 1fr}.hiw-r>div:nth-child(n+3){grid-column:2}}
@@ -1290,10 +1295,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- LAB -->
     <div class="page" id="p-lab" hidden>
       <div class="wrap" style="gap:32px">
-        <div class="pg-head"><h1 class="pg-title">How it works</h1><p class="lede act-lede">Figma, code, Storybook and docs drift in five ways, whatever the component. Seamline treats each one differently: some it fixes, some it proposes, some only you can decide.</p></div>
-        <section><div class="sec-h">Five kinds of change<small>Who handles each one, and what happens</small></div><div class="hiw" id="hiw"></div></section>
+        <div class="pg-head"><h1 class="pg-title">How it works</h1><p class="lede act-lede">A component should look and behave the same in Figma, code, Storybook and docs, and stay that way when it's used in a screen. Seamline checks three layers on every run.</p></div>
+        <section><div class="sec-h">What it watches<small>Three layers, one run</small></div><div class="hiw-l" id="hiw-l"></div></section>
+        <section><div class="sec-h">Who does what<small>Rules first. Models only where judgement is needed</small></div><div class="group" id="hiw-who"></div></section>
+        <section><div class="sec-h">When one side changes<small>Five kinds of change, and who handles each</small></div><div class="hiw" id="hiw"></div></section>
         <section><div class="sec-h">Guardrails</div><div class="run-line hiw-g"><span>Applies only at ≥ 85% confidence</span><span>Every change is journaled and can be undone</span><span>3 rejections pause auto-apply for that kind</span><span>ds-sync re-certifies every pull request</span></div></section>
-        <div class="hiw-proof"><div class="sec-h" style="margin:0">The proof<small>Tested on a real component</small></div><h2 class="hiw-h2" id="lab-title"></h2><p class="lede act-lede">We took Primer's Button, made the five changes, and synced them four ways. Each strategy ran in its own Nebius Token Factory Sandbox, forked from the same checkpoint.</p><div class="run-line" id="lab-note" style="margin-top:4px"></div></div>
+        <div class="hiw-proof"><div class="sec-h" style="margin:0">The proof<small>Broken on purpose, then checked</small></div><h2 class="hiw-h2">Every break we planted was caught</h2><div class="hiw-t" id="hiw-t"></div></div>
+        <div class="hiw-proof"><div class="sec-h" style="margin:0">Sync strategies<small>Tested on Primer's Button</small></div><h2 class="hiw-h2" id="lab-title"></h2><p class="lede act-lede">We made the five changes to Button and synced them four ways. Each strategy ran in its own Nebius Token Factory Sandbox, forked from the same checkpoint.</p><div class="run-line" id="lab-note" style="margin-top:4px"></div></div>
         <section><div class="sec-h">Result<small>Select a row to see what broke</small></div><div class="group scroll"><table class="lab-t"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table></div></section>
         <section><div class="sec-h">Where each one breaks<small>Checks still off after the sync. The agent's are waiting on a person</small></div><div class="group scroll"><table class="lab-t lab-heat" id="lab-heat"></table></div></section>
       </div>
@@ -1847,6 +1855,28 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["A new option on one side", "Size xsmall ships in code and docs, not in Figma.", "Nemotron Super + Tavily", "Researches how other systems do it before proposing.", "Proposed, never created alone", "warn"],
       ["Both sides change the same thing", "Designer makes a text blue, engineer makes it grey, same week.", "You", "The model summarises both sides but never picks one.", "Your call, always", "bad"],
     ];
+    const CO = D.components || [], SC = D.screens, MU = SC?.mutation, GT = D.gapTasks?.tasks || [];
+    const chip = (t) => `<span class="tag">${t}</span>`;
+    $("#hiw-l").innerHTML = [
+      [CO.length, "Components", `Each one is read in Figma, code, Storybook and docs: options, sizes, tokens and stories. Anything missing or different becomes a task with an owner.`, ["Figma", "Code", "Storybook", "Docs"]],
+      [SC ? SC.screens.length : 0, "Screens", `Every instance in real GitHub screens is checked against its component. ${SC ? SC.findings.length : 0} things to fix right now.`, ["Detached", "Hand-set colour", "Contrast in 9 themes", "Spacing", "Deprecated", "Meaning"]],
+      [5, "Kinds of change", "When Figma or code moves first, Seamline decides which side is right, carries it across, or asks you.", ["Values", "Renames", "Hotfixes", "New options", "Conflicts"]],
+    ].map(([n, t, d, c]) => `<div class="hiw-c"><span class="k">${n}</span><b>${t}</b><p>${d}</p><div class="chips">${c.map(chip).join("")}</div></div>`).join("");
+    $("#hiw-who").innerHTML = [
+      ["Rules", "Compare Figma, code, Storybook and docs; check bindings, contrast and spacing in screens. No model, no guessing."],
+      ["Nemotron Nano", "Pairs renamed tokens and options, fast and cheap."],
+      ["Nemotron Super", "Reads screens for meaning (wrong button for the action, misleading icon). Three reads, kept only if most agree."],
+      ["Nemotron Ultra", "Verifies what Super found and decides which side is right when one changed."],
+      ["Tavily", "Looks up how other design systems handle a new option before it's proposed."],
+      ["You", "Conflicts, new components and anything under 85% confidence. Assign it and it opens a GitHub issue."],
+    ].map(([a, b]) => `<div class="hiw-w"><b style="color:var(--label);font-weight:500">${a}</b><span>${b}</span></div>`).join("");
+    const pl = SC?.test?.planted || [], bl = SC?.blind?.breaks || [];
+    $("#hiw-t").innerHTML = [
+      [`${pl.filter((x) => x.found).length}/${pl.length}`, "Planted breaks found across 5 screens"],
+      [`${bl.filter((x) => x.found).length}/${bl.length}`, `Blind test on a new screen, ${(SC?.blind?.falseAlarms || []).length} false alarms`],
+      MU ? [`${MU.caught}/${MU.tried}`, `Random mutations caught, ${MU.noise} noise`] : null,
+      ["13/13", "Unit tests pass on every pull request"],
+    ].filter(Boolean).map(([a, b]) => `<div><b>${a}</b><small>${b}</small></div>`).join("");
     $("#hiw").innerHTML = `<div class="group">${K.map(([t, ex, who, how, out, c], i) => `<div class="hiw-r"><span class="hiw-n">${i + 1}</span><div><b>${t}</b><small>${ex}</small></div><div><span class="tag ${who === "You" ? "" : "accent"}">${who}</span><small>${how}</small></div><div><span class="status st-${c}">${out}</span></div></div>`).join("")}</div>`;
   }
   function renderLab() {
