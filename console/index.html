@@ -344,6 +344,8 @@ a:hover { text-decoration: underline; }
 @media (max-width:760px){ .intro{flex-direction:column;align-items:flex-start} }
 .tour-spot { position:fixed; z-index:90; border-radius:24px; box-shadow:0 0 0 9999px color-mix(in srgb, var(--color-night-950) 62%, transparent), 0 0 0 6px var(--accent-soft); outline:1.5px solid var(--accent); outline-offset:2px; transition:left .35s cubic-bezier(.2,.8,.2,1), top .35s cubic-bezier(.2,.8,.2,1), width .35s cubic-bezier(.2,.8,.2,1), height .35s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
 .sugg{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.q-cons{flex-basis:100%;font-size:12.5px;color:var(--label-2)}
+.btn.ghost { min-height:24px; }
+html { overflow-x:clip; }
 .tour-pop { position:fixed; z-index:91; width:360px; padding:22px 22px 18px; border-radius:22px; background:var(--group); color:var(--label); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 18px 48px rgba(17,16,28,.28); display:grid; gap:10px; animation:tourIn .25s ease both; }
 @keyframes tourIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
 .tour-pop .tk { display:flex; align-items:center; justify-content:space-between; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
@@ -983,7 +985,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .crow .chev svg{width:14px;height:14px;transform:rotate(-90deg)}.tri{display:flex;flex-direction:column;gap:6px;align-items:flex-start;margin-top:4px;padding:14px 16px;border-radius:14px;background:var(--group);border:1px solid var(--hair)}.tri b{font-weight:500;color:var(--label);font-size:14px}.tri small{font-size:12px;color:var(--label-2)}.q-ot{border:0;background:none;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}.q-ot:hover{background:color-mix(in srgb,var(--accent) 4%,transparent)}.q-ot .t .s{display:inline;margin-left:6px}
 .cat-iss{margin:6px 0 0;padding-left:16px;font-size:12.5px;color:var(--label-2);display:flex;flex-direction:column;gap:2px}.crow .deep{font-style:normal;font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 7px;margin-left:6px}
 .run-line{display:flex;flex-wrap:wrap;gap:8px;margin-top:-20px;font-size:12.5px;color:var(--label-2)}.run-line>span{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;background:var(--group);border:1px solid var(--hair)}.run-line b{font-weight:600;color:var(--label)}.run-line .pr-check{margin:0}
-.xlink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
+.xlink{display:inline-flex;align-items:center;min-height:24px;gap:4px;font-size:12px;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}.xlink:hover{text-decoration:underline}.xlink svg{width:10px;height:10px}
 .tl-links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}.pr-fh .xlink{margin-left:auto}.pr-fh .xlink+.xlink{margin-left:12px}.pr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
 .act-side{gap:16px!important}.side-panel{background:color-mix(in srgb,var(--label) 3%,var(--ground));border:1px solid var(--hair);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
 .side-h{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--label-2);font-weight:600}
@@ -1403,7 +1405,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       head[1] = role === "designer" ? "Your reason shows on each card. Debora makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The GitHub check (ds-sync) tells you when it's safe to merge.`;
     }
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
-    const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
+    const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent done · waiting for you"], decided: ["ok", "All in sync"] }[state];
     $("#live").className = "live " + live[0]; $("#cv-state").textContent = live[1];
     // log: new lines type in one by one
     const lines = logLines(), ol = $("#log");
@@ -1728,7 +1730,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     renderAllTasks();
     if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
       const G = [["meaning", "Meaning", "Nemotron Super flagged it in at least 2 of 3 reads; Nemotron Ultra confirmed it"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
-      const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}${SC.blind ? ` · blind test: ${SC.blind.breaks.filter((b) => b.found).length}/${SC.blind.breaks.length}, ${SC.blind.falseAlarms.length} false alarms` : ""}${SC.mutation ? ` · ${SC.mutation.caught}/${SC.mutation.tried} random breaks caught` : ""}`;
+      const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens · one issue per kind · doesn't block the PR`;
       const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
       $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${["meaning", "contrast"].includes(k) ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary><div class="scr-task" id="scr-t-${k}"></div>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); renderScreenTasks(); }
     renderGaps();
@@ -2191,7 +2193,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       setTimeout(() => {
         const r = el.getBoundingClientRect(), spot = document.createElement("div"), pop = document.createElement("div");
         spot.className = "tour-spot"; Object.assign(spot.style, { left: r.left - 6 + "px", top: Math.max(4, r.top - 6) + "px", width: r.width + 12 + "px", height: Math.min(r.height, innerHeight - 24) + 12 + "px" });
-        pop.className = "tour-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true"); pop.setAttribute("aria-label", h); pop.tabIndex = -1;
+        pop.className = "tour-pop"; pop.setAttribute("role", "dialog"); pop.setAttribute("aria-modal", "true"); pop.setAttribute("aria-live", "polite"); pop.setAttribute("aria-label", h); pop.tabIndex = -1;
         const [, , kick, , , how] = TOUR[i];
         pop.innerHTML = `<div class="tk"><span>${kick}</span><span class="td" aria-label="Step ${i + 1} of ${TOUR.length}">${TOUR.map((_, k) => `<i class="${k === i ? "on" : k < i ? "done" : ""}"></i>`).join("")}</span></div><h3>${h}</h3><p>${t}</p>${how?.length ? `<div class="how"><span class="how-h">How Seamline does it</span>${how.map(([c, d]) => `<div class="how-r"><span class="tchip">${c}</span><span>${d}</span></div>`).join("")}</div>` : ""}<div class="ta"><button class="skip" type="button" data-t="x">Skip tour</button><div>${i ? `<button class="btn" type="button" data-t="b">Back</button>` : ""}<button class="btn primary" type="button" data-t="n">${i === TOUR.length - 1 ? "Start deciding" : "Next"}</button></div></div>`;
         document.body.append(spot, pop);
