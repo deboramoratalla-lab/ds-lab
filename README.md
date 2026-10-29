@@ -130,6 +130,8 @@ The whole loop on the real repo, no hand edits in between: agent run → pull re
 | 20:20 | `apply-decisions` with the lead's answers (invisible button text: keep code; approve the rest), the same call "Send answers" makes | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40762351719) |
 | 20:20 | Commit "apply the design system lead's decisions" lands on the PR; ds-sync **passes** | [run](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40762412932) |
 
+**Recorded run (29 Oct, 08:26 UTC, PR #16).** Same loop, recorded in the browser, this time answering in the live demo: "Keep code" on the conflict, "Create it" on the new option, then **Send answers to the PR** on seamline-five.vercel.app, which called the Vercel endpoint and started [apply-decisions](https://github.com/deboramoratalla-lab/ds-lab/actions/runs/40842849155). The PR's commits show the agent's commit at ✗ 2/3 checks and the "apply the design system lead's decisions" commit at ✓ 3/3, with no manual step on GitHub. [PR #16](https://github.com/deboramoratalla-lab/ds-lab/pull/16)
+
 **What the test found.** The first try (PR #14) showed that since the agent started opening PRs on its own, GitHub had been holding every ds-sync run on them as "action required" (runs opened by `GITHUB_TOKEN` need approval), so the check never actually ran on PRs #4–#13. Fixed: after opening the PR or applying answers, the workflow approves the held run and starts ds-sync on the branch itself. PR #15 above ran with the fix and needed no manual step.
 
 ## Mutation test (`src/mutation-screens.ts`)
