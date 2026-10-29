@@ -1531,10 +1531,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const confBars = acts.map((a) => ({ v: a.confidence != null ? a.confidence * 100 : 100, c: a.confidence != null ? "var(--accent)" : accentMix, l: a.confidence != null ? `${Math.round(a.confidence * 100)}%` : "rule", t: `${a.who}: ${a.what.split(/(?<=\.)\s/)[0]}` }));
     const byKind = Object.keys(CAT).map((k) => ({ v: openItems().filter((i) => i.kind === k).length, c: CAT[k].c, t: CAT[k].label }));
     $("#who-status").innerHTML = [
-      kcard("Button values in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, ring(r.passed / r.total, state === "certified" ? "Nothing changed yet" : `${D.broken.total - D.broken.passed} broke this run<br>${(D.broken.total - D.broken.passed) - bad} fixed · ${bad} wait on you`), bad ? `${bad} still out of sync` : "Everything agrees"),
+      kcard("Button values in sync", r.passed.toLocaleString(), `of ${r.total.toLocaleString()}`, ring(r.passed / r.total, state === "certified" ? "Nothing changed yet" : `${D.broken.total - D.broken.passed} broke this run<br>${(D.broken.total - D.broken.passed) - bad} fixed · ${bad} wait on ${openItems().length} ${openItems().length === 1 ? "decision" : "decisions"}`), bad ? `${bad} still out of sync` : "Everything agrees"),
       kcard("Changes detected", state === "certified" ? "0" : `${D.breaks.length}`, "this run", state === "certified" ? "" : pips([SRCN.code && `Code ${SRCN.code}`, SRCN.figma && `Figma ${SRCN.figma}`, SRCN.both && `Both ${SRCN.both}`].filter(Boolean)), ""),
-      kcard("Changes fixed by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? dotplot(confBars.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)) : "", done && confBars.some((b) => b.l === "rule") ? "Plus 1 by rule, no model needed" : ""),
-      kcard("Needs you", done ? `${open}` : "–", done && open ? `~${open * 2} min` : done ? "all answered" : "", done && open ? rows(byKind.map((b) => ({ v: b.v, t: b.t }))) : "", ""),
+      kcard("Changes fixed by the agent", done ? `${acts.length}` : "–", done && confs.length ? `avg. ${Math.round(confs.reduce((x, y) => x + y, 0) / confs.length * 100)}%` : "", done ? dotplot(confBars.filter((b) => b.l !== "rule"), Math.round(D.repair.autoApply * 100)) : "", done && confBars.some((b) => b.l === "rule") ? `${confBars.filter((b) => b.l === "rule").length} of them by rule, no model needed` : ""),
+      kcard("Needs you", done ? `${open}` : "–", done && open ? `~${openItems().reduce((x, i) => x + (i.kind === "decide" ? 1 : 2), 0)} min` : done ? "all answered" : "", done && open ? rows(byKind.map((b) => ({ v: b.v, t: b.t }))) : "", ""),
     ].join("");
     renderRuns();
   }
@@ -1603,7 +1603,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     renderAllTasks();
     if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
       const G = [["meaning", "Meaning", "Nemotron Super flagged it in at least 2 of 3 reads; Nemotron Ultra confirmed it"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
-      const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens · one issue per kind · doesn't block the PR`;
+      const t = SC.test; { const issued = screenTasks().filter((g) => taskFor(g) || GAPANS[g.key]).reduce((x, g) => x + g.n, 0);
+        $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${issued ? ` · ${issued} already have an issue` : ""} · one issue per kind · doesn't block the PR`; }
       const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
       $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${["meaning", "contrast"].includes(k) ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary><div class="scr-task" id="scr-t-${k}"></div>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); renderScreenTasks(); }
     renderGaps();
@@ -1740,7 +1741,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const CO = D.components || [], SC = D.screens, MU = SC?.mutation, GT = D.gapTasks?.tasks || [];
     const chip = (t) => `<span class="tag">${t}</span>`;
     $("#hiw-l").innerHTML = [
-      [CO.length, "Components", `Each one is read in Figma, code, Storybook and docs: options, sizes, tokens and stories. Anything missing or different becomes a task with an owner.`, ["Figma", "Code", "Storybook", "Docs"]],
+      [CO.length, "Components", `Each one is read in Figma, code, Storybook and docs: options, sizes, tokens and stories. Anything missing or different becomes a GitHub issue with an owner.`, ["Figma", "Code", "Storybook", "Docs"]],
       [SC ? SC.screens.length : 0, "Screens", `Every instance in real GitHub screens is checked against its component. ${SC ? SC.findings.length : 0} things to fix right now.`, ["Detached", "Hand-set colour", "Contrast in 9 themes", "Spacing", "Deprecated", "Meaning"]],
       [5, "Kinds of change", "When Figma or code moves first, Seamline decides which side is right, carries it across, or asks you.", ["Values", "Renames", "Hotfixes", "New options", "Conflicts"]],
     ].map(([n, t, d, c]) => `<div class="hiw-c"><span class="k">${n}</span><b>${t}</b><p>${d}</p><div class="chips">${c.map(chip).join("")}</div></div>`).join("");
@@ -1838,9 +1839,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const cov = comps.filter((c) => c.name === D.system.component || c.cat?.total).length, drifted = comps.filter((c) => c.name !== D.system.component && c.cat && c.cat.passed < c.cat.total).length;
     $("#metrics").innerHTML = [
       kcard("Out of sync this run", off, "values", pips(Object.entries(SRCN).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`)), `After ${D.breaks.length} changes`),
-      kcard("Fixed by the agent", `${off - left}`, `of ${off} values`, ring((off - left) / off, `${acts.length} changes applied<br>${left} values wait on you`), ""),
+      kcard("Fixed by the agent", `${off - left}`, `of ${off} values`, ring((off - left) / off, `${acts.length} changes applied<br>${left} values wait on ${ITEMS.length} decisions`), ""),
       kcard("Time to repair", `${(D.repair.ms / 1000).toFixed(0)} s`, "end to end", flow([{ v: off, t: "off" }, { v: off - left, t: "fixed" }, { v: ITEMS.length, t: ITEMS.length === 1 ? "decision for you" : "decisions for you" }]), ""),
-      kcard("Coverage", `${cov}`, `of ${comps.length} components checked`, ring(cov / Math.max(1, comps.length), `${drifted + 1} not fully in sync<br>Agent repairs: ${esc(D.system.component)}`), ""),
+      kcard("Coverage", `${cov}`, `of ${comps.length} have something to compare`, ring(cov / Math.max(1, comps.length), `${drifted + 1} not fully in sync<br>Agent repairs: ${esc(D.system.component)}`), ""),
     ].join("");
     const tok = Object.values(D.repair.calls).reduce((x, u) => x + u.prompt + u.completion, 0), nc = Object.values(D.repair.calls).reduce((x, u) => x + u.calls, 0);
     $("#rep-tags").innerHTML = `<span>${esc(D.system.name)} · ${esc(D.system.component)}</span><span>${esc(fmtAt(D.generatedAt))}</span><span><b>${nc}</b> Nemotron calls · ${(tok / 1000).toFixed(1)}k tokens</span>${ctr ? `<span>Contrast <b>${ctr.passed}/${ctr.total}</b> at WCAG AA</span>` : ""}`;
@@ -2060,9 +2061,9 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     ["decisions", "#q-screens > :first-child", "Step 7 · Screens", "It checks components where they're used",
       "Detached instances, hand-set colours, contrast in all 9 themes, off-scale spacing, deprecated parts, and buttons that say the wrong thing.",
       [["Rule", "Bindings, contrast and spacing, read straight from Figma."], ["Super", "Reads meaning three times."], ["Ultra", "Confirms before it shows up."]], tab("screens")],
-    ["decisions", "#q-create > :first-child", "Step 8 · Assign", "Gaps become tasks with an owner",
+    ["decisions", "#q-create > :first-child", "Step 8 · Assign", "Gaps become issues with an owner",
       "Missing in Figma, no stories, no docs. Pick who does it and Seamline opens a GitHub issue for them.",
-      [["GitHub", "An issue per task, assigned to the person who owns that place."]], tab("gap")],
+      [["GitHub", "One issue per gap, assigned to the person who owns that place."]], tab("gap")],
     ["decisions", "#q-unblock", "Step 9 · Ship", "Your answer goes to the pull request",
       "Seamline pushes it to the real PR, re-certifies, and ds-sync turns green. Every morning it runs again on its own.",
       [["GitHub", "Actions apply your answers and re-run the checks."]], tab("pr")],
