@@ -1,0 +1,20 @@
+# Called by the console's "Missing somewhere" answers (api/task.js). Create → an issue for the owner with what to build;
+# Not needed → a closed issue, so the next run doesn't ask again. Owners come from console/team.json.
+name: gap-task
+on:
+  workflow_dispatch:
+    inputs:
+      component: { required: true }
+      where: { required: true, description: "Figma | Storybook | Docs" }
+      action: { required: true, description: "create | skip" }
+      owner: { required: false, default: "", description: "id from console/team.json" }
+permissions: { contents: read, issues: write }
+jobs:
+  task:
+    runs-on: ubuntu-latest
+    env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}", C: "${{ inputs.component }}", W: "${{ inputs.where }}", A: "${{ inputs.action }}", O: "${{ inputs.owner }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/gap-task.mjs

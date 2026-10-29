@@ -372,6 +372,8 @@ a:hover { text-decoration: underline; }
 .scr-g[open]:last-child > summary { border-bottom:1px solid var(--hair); }
 .rep-row.gap { align-items:center; }
 .gap-a { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.gap-own { display:flex; align-items:center; gap:6px; }
+.gap-own select { font:inherit; font-size:12.5px; padding:6px 8px; border-radius:10px; border:1px solid var(--hair); background:var(--group); color:var(--label); max-width:260px; }
 .lnk { background:none; border:0; padding:0; font:inherit; font-weight:600; color:var(--label); cursor:pointer; }
 .lnk:hover { color:var(--accent); }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
@@ -1188,7 +1190,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     for (const a of D.repair.actions.filter((x) => x.side !== "person")) add(tag(a.who), undone.has(a.id) ? "dim" : "ok", `${a.what.split(/(?<=\.)\s/)[0].replace(/\s*\(confidence [\d.]+\)/, "").replace(/\.$/, "")}${a.confidence != null ? ` · ${Math.round(a.confidence * 100)}%` : ""}`);
     for (const i of ITEMS) {
       const ans = answers[i.id];
-      add(role === "lead" ? "you" : "laura", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to ${role === "lead" ? "you" : "Laura"}: ${qTitle(i)}`);
+      add(role === "lead" ? "you" : "debora", ans ? (ans === "reject" ? "dim" : "ok") : "warn", ans ? `${qTitle(i)} → ${ans === "approve" ? "approved" : ans === "reject" ? "rejected" : `kept ${ans}`}` : `Sent to ${role === "lead" ? "you" : "Debora"}: ${qTitle(i)}`);
     }
     if (!openItems().length) add("certify", r.passed === r.total ? "ok" : "warn", r.passed === r.total ? `Certified again · ${r.passed.toLocaleString()} checks agree` : `${r.total - r.passed} checks still open`);
     return L;
@@ -1212,7 +1214,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     if (role !== "lead" && (state === "repaired" || state === "decided")) {
       const mine = openItems().filter((i) => SRC_OF[i.kind].includes(ROLES[role].src)).length;
       head[0] = mine ? `${mine} ${mine === 1 ? "change touches" : "changes touch"} ${role === "designer" ? "Figma" : "code"}` : `Nothing waiting on ${role === "designer" ? "Figma" : "code"}`;
-      head[1] = role === "designer" ? "Your reason shows on each card. Laura makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The ds-sync check tells you when it's safe to merge.`;
+      head[1] = role === "designer" ? "Your reason shows on each card. Debora makes the call; Figma updates automatically when she does." : `Everything lands in the pull request${D.pr?.url ? "" : " once it's opened"}. The ds-sync check tells you when it's safe to merge.`;
     }
     $("#hero-title").textContent = head[0]; $("#hero-sub").textContent = head[1];
     const live = { certified: ["idle", "Agent idle"], broken: ["run", "Agent working"], repaired: ["warn", "Agent run finished"], decided: ["ok", "Certified"] }[state];
@@ -1232,7 +1234,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       ["Pair renames", !done ? (state === "broken" ? "run" : "idle") : "ok", done ? `nano · ${ITEMS.filter((i) => i.who === "nano").length} to review` : "nano"],
       ["Judge values", !done ? "idle" : "ok", done ? `ultra · ${acts.filter((a) => a.who === "ultra").length} applied` : "ultra"],
       ["Fix bindings", !done ? "idle" : "ok", done ? `rule · ${acts.filter((a) => a.who === "rule").length} applied` : "rule"],
-      [role === "lead" ? "Your review" : "Laura's review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
+      [role === "lead" ? "Your review" : "Debora's review", !done ? "idle" : open ? "warn" : "ok", done ? (open ? `${open} waiting` : "answered") : "—"],
       ["Certify", state === "decided" && !bad ? "ok" : state === "certified" ? "ok" : "idle", state === "decided" && !bad ? "100%" : state === "certified" ? "100%" : "—"],
     ];
     { const n = P.filter((x) => x[1] === "ok").length, cur = P.find((x) => x[1] !== "ok"), pg = $("#prog");
@@ -1403,7 +1405,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
         <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why || "")}</div>
         ${i.impact ? impactHTML(i.impact) : ""}`;
-      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Laura decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
+      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Debora decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
     } else {
       if (i.change?.type === "rename") body += `<div class="diff">${stage(`<span class="tk">control/medium/<b>gap</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="arrow">→</span>${stage(`<span class="tk">control/medium/<b>gapInline</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="dmeta mono">same value · 8px · used by Button medium</span></div>`;
       if (i.kind === "proposal" && i.change?.option) body += `<div class="diff">${stage(["xsmall", "small", "medium", "large"].map((z) => `<span class="szc${z === i.change.option ? " new" : ""}">${sized(z)}<span class="mono">${PB.size[z][0]}px${z === i.change.option ? " · new" : ""}</span></span>`).join(""), "row")}</div>`;
@@ -1414,7 +1416,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       }
       const yes = i.kind === "proposal" ? "Create it" : "Apply", no = i.kind === "proposal" ? "Not now" : "Reject";
       actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
-        : ROLES[role].decides ? `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>` : `<span class="q-done"><b>Laura ${i.kind === "proposal" ? "approves new options" : "reviews this"}.</b> Comment on the pull request if you know something she doesn't.</span>`;
+        : ROLES[role].decides ? `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button>` : `<span class="q-done"><b>Debora ${i.kind === "proposal" ? "approves new options" : "reviews this"}.</b> Comment on the pull request if you know something she doesn't.</span>`;
     }
     const C = CAT[i.kind], open = full || expanded.has(i.id), first = ordered().find((x) => !answers[x.id])?.id === i.id;
     const impactShort = (i.impact?.[0] ?? "").replace(/^[^:]+:\s*/, "").replace(/\s*\((\d+) variants\)/, " · $1 variants");
@@ -1424,7 +1426,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(qTitle(i))}</span>${i.token ? `<span class="q-tok">${esc(i.token)}</span>` : ""}</span>
         <span class="q-side">${a ? `<span class="status st-ok">Done</span>` : `<span class="q-imp">${impactShort}</span><span class="q-eff mono">~${C.effort}</span>`}<span class="chev">›</span></span>
       </button>
-      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Laura picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
+      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Debora picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   // KPI card: label, value, context chip, and a small chart built from the same run data. Text stays in ink; marks carry colour.
@@ -1650,7 +1652,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const prLine = D.pr ? `<div class="tl-empty">${D.pr.url ? `Opened <a href="${esc(D.pr.url)}" target="_blank" rel="noopener">${esc(D.pr.title)}</a>` : `Ready to open: ${esc(D.pr.title)}`}</div>` : "";
     $("#timeline").innerHTML = step("bad", "Drift detected", `${D.breaks.length}`, detected)
       + step("ok", "Fixed alone", `${acts.length}`, fixed)
-      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Needs you" : "Needs Laura", ITEMS.length ? `${ITEMS.length}` : "0", sent)
+      + step(ITEMS.length ? "warn" : "ok", role === "lead" ? "Needs you" : "Needs Debora", ITEMS.length ? `${ITEMS.length}` : "0", sent)
       + step(D.pr?.url ? "ok" : "idle", "Pull request", "", prLine);
     document.querySelectorAll("#timeline [data-undo]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.undo, was = undone.has(id); was ? undone.delete(id) : undone.add(id); render(); renderActivity();
       toast(was ? "Change restored." : "Change undone. It's reverted in the pull request on the next push, and checks run again.", was ? "" : "Redo", () => { undone.delete(id); render(); renderActivity(); }); }));
@@ -1916,7 +1918,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
           await travel(arcOf(k), true, green, 1400); flash(k, green); await sleep(1000); }
         target = 0.05;
         const open = openItems();
-        if (open.length) { say(`${open.length} ${open.length === 1 ? "decision" : "decisions"} sent to ${role === "lead" ? "you" : "Laura"} · see Needs you`, "YOUR TURN"); setDot(true); }
+        if (open.length) { say(`${open.length} ${open.length === 1 ? "decision" : "decisions"} sent to ${role === "lead" ? "you" : "Debora"} · see Needs you`, "YOUR TURN"); setDot(true); }
         else { say("Certified again", "DONE"); }
         await sleep(7000);
       }
@@ -2012,14 +2014,35 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     }
     return out.map((g) => ({ ...g, who: WHO[g.where], key: `${g.c}|${g.where}` }));
   }
+  const TEAM = D.team?.people || [], suggest = (where) => TEAM.find((p) => p.areas.includes(where)) || TEAM[0];
+  const taskFor = (g) => (D.gapTasks?.tasks || []).find((t) => t.component === g.c && t.where === g.where);
+  let gapOpen = null; // the gap whose "Create" form is open
+  async function sendGap(g, action, owner) {
+    GAPANS[g.key] = action === "create" ? `create:${owner}` : "skip"; saveGaps(); renderGaps();
+    if (!API.decisions) { toast("Saved here. Connect the server to open GitHub issues."); return; }
+    try { const r = await fetch("/api/task", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ component: g.c, where: g.where, action, owner }) }); const j = await r.json();
+      const who = TEAM.find((p) => p.id === owner);
+      toast(r.ok ? (action === "create" ? `Task sent to ${esc(who?.name || "the owner")}. The GitHub issue appears in a few seconds. <a href="${esc(j.issues)}" target="_blank" rel="noopener" style="color:inherit">See issues</a>` : `Recorded as not needed. Seamline won't ask again.`) : `Couldn't create it: ${esc(j.error || r.status)}`); }
+    catch { toast("Couldn't reach the server."); }
+  }
   function renderGaps() {
-    const ALL = gaps(), auto = ALL.filter((g) => g.rec === "skip"), G = ALL.filter((g) => g.rec !== "skip"), open = G.filter((g) => !GAPANS[g.key]);
+    const ALL = gaps(), auto = ALL.filter((g) => g.rec === "skip"), G = ALL.filter((g) => g.rec !== "skip");
+    const done = (g) => taskFor(g) || GAPANS[g.key], open = G.filter((g) => !done(g));
     $("#gap-note").textContent = `${open.length} of ${G.length} to decide · ${auto.length} more marked not needed by rule (no visual) · doesn't block the PR`;
-    $("#q-create").innerHTML = G.length ? G.sort((x, y) => (GAPANS[x.key] ? 1 : 0) - (GAPANS[y.key] ? 1 : 0)).map((g) => { const a = GAPANS[g.key];
-      return `<div class="rep-row gap"><div><div class="t"><button class="lnk" type="button" data-comp="${esc(g.c)}">${esc(g.c)}</button> <span class="tag">Missing in ${g.where}</span></div><div class="s">${esc(g.why)}</div></div>
-        <div class="gap-a">${a ? `<span class="s">${a === "create" ? `Create · ${g.who}` : "Not needed"}</span><button class="btn ghost" type="button" data-gap="${esc(g.key)}" data-ans="">Change</button>`
-          : `<button class="btn${g.rec === "create" ? " primary" : ""}" type="button" data-gap="${esc(g.key)}" data-ans="create">Create · ${g.who}</button><button class="btn${g.rec === "skip" ? " primary" : ""}" type="button" data-gap="${esc(g.key)}" data-ans="skip">Not needed</button>`}</div></div>`; }).join("") : `<div class="empty">Every component is in all four places.</div>`;
-    document.querySelectorAll("#q-create [data-gap]").forEach((b) => b.onclick = () => { if (b.dataset.ans) GAPANS[b.dataset.gap] = b.dataset.ans; else delete GAPANS[b.dataset.gap]; saveGaps(); renderGaps(); });
+    const row = (g) => { const t = taskFor(g), a = GAPANS[g.key], who = TEAM.find((p) => p.id === (t?.owner || (a || "").split(":")[1])), sug = suggest(g.where);
+      let right;
+      if (t) right = t.action === "create" ? `${xlink(t.url, `Task #${t.number}${t.state === "closed" ? " · done" : ""}`)}<span class="s">${esc(who?.name || "")}</span>` : `${xlink(t.url, `Not needed · #${t.number}`)}`;
+      else if (a) right = `<span class="s">${a === "skip" ? "Not needed" : `Sent to ${esc(who?.name || "")}`} · issue on its way</span><button class="btn ghost" type="button" data-undo="${esc(g.key)}">Change</button>`;
+      else if (gapOpen === g.key) right = `<label class="gap-own"><span class="s">Owner</span><select data-own="${esc(g.key)}">${TEAM.map((p) => `<option value="${p.id}"${p.id === sug?.id ? " selected" : ""}>${esc(p.name)} · ${esc(p.role)}${p.id === sug?.id ? ` (owns ${g.where})` : ""}</option>`).join("")}</select></label><button class="btn primary" type="button" data-go="${esc(g.key)}">Create task</button><button class="btn ghost" type="button" data-cancel>Cancel</button>`;
+      else right = `<button class="btn${g.rec === "create" ? " primary" : ""}" type="button" data-open="${esc(g.key)}">Create · ${esc(sug?.name.split(" ")[0] || g.who)}</button><button class="btn" type="button" data-skip="${esc(g.key)}">Not needed</button>`;
+      return `<div class="rep-row gap"><div><div class="t"><button class="lnk" type="button" data-comp="${esc(g.c)}">${esc(g.c)}</button> <span class="tag">Missing in ${g.where}</span></div><div class="s">${esc(g.why)}</div></div><div class="gap-a">${right}</div></div>`; };
+    $("#q-create").innerHTML = G.length ? [...open, ...G.filter(done)].map(row).join("") : `<div class="empty">Every component is in all four places.</div>`;
+    const byKey = (k) => G.find((g) => g.key === k);
+    document.querySelectorAll("#q-create [data-open]").forEach((b) => b.onclick = () => { gapOpen = b.dataset.open; renderGaps(); });
+    document.querySelectorAll("#q-create [data-cancel]").forEach((b) => b.onclick = () => { gapOpen = null; renderGaps(); });
+    document.querySelectorAll("#q-create [data-go]").forEach((b) => b.onclick = () => { const g = byKey(b.dataset.go), own = document.querySelector(`[data-own="${CSS.escape(b.dataset.go)}"]`).value; gapOpen = null; sendGap(g, "create", own); });
+    document.querySelectorAll("#q-create [data-skip]").forEach((b) => b.onclick = () => sendGap(byKey(b.dataset.skip), "skip"));
+    document.querySelectorAll("#q-create [data-undo]").forEach((b) => b.onclick = () => { delete GAPANS[b.dataset.undo]; saveGaps(); renderGaps(); });
     document.querySelectorAll("#q-create [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
   }
   function docCell(r) {

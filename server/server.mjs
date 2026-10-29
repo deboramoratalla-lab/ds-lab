@@ -15,6 +15,12 @@ const ok = (s) => /^[\w.,=|-]{1,400}$/.test(s);
 createServer(async (req, res) => {
   if (req.method === "GET" && (req.url === "/" || req.url.startsWith("/?"))) return send(res, 200, html, "text/html; charset=utf-8");
   if (req.method === "GET" && req.url === "/api/health") return send(res, 200, { ok: true, decisions: !!TOKEN, repo: REPO });
+  if (req.method === "POST" && req.url === "/api/task") {
+    const { default: task } = await import("../api/task.js");
+    let raw = ""; for await (const ch of req) raw += ch;
+    const shim = { status(c) { this.c = c; return this; }, json(o) { send(res, this.c || 200, o); } };
+    return task({ method: "POST", body: raw }, shim);
+  }
   if (req.method === "POST" && req.url === "/api/decide") {
     if (!TOKEN) return send(res, 503, { error: "Sending answers is not configured on this server." });
     let raw = ""; for await (const c of req) { raw += c; if (raw.length > 4000) return send(res, 413, { error: "too large" }); }

@@ -1,0 +1,9 @@
+{
+  "note": "The design-system team Seamline assigns tasks to. Areas say who owns what (like CODEOWNERS): the console suggests the owner of the area and lets you pick anyone. Only people with a github login become GitHub assignees; the rest are named in the issue. Demo team: edit to match yours.",
+  "people": [
+    { "id": "debora", "name": "Debora Moratalla", "role": "Design system lead", "areas": ["Triage"], "github": "deboramoratalla-lab" },
+    { "id": "marta", "name": "Marta Ruiz", "role": "Product designer", "areas": ["Figma"] },
+    { "id": "dani", "name": "Dani Ortega", "role": "Frontend engineer", "areas": ["Storybook", "Code"] },
+    { "id": "irene", "name": "Irene Sanz", "role": "Content designer", "areas": ["Docs"] }
+  ]
+}
