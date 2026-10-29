@@ -1,4 +1,14 @@
 {
- "at": "2026-10-29T11:30:33.932Z",
- "tasks": []
+ "at": "2026-10-29T11:34:09.079Z",
+ "tasks": [
+  {
+   "component": "Timeline",
+   "where": "Figma",
+   "action": "create",
+   "number": 17,
+   "url": "https://github.com/deboramoratalla-lab/ds-lab/issues/17",
+   "state": "open",
+   "owner": "marta"
+  }
+ ]
 }
