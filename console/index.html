@@ -370,6 +370,10 @@ a:hover { text-decoration: underline; }
 .scr-g > summary .s { color:var(--label-2); font-size:12.5px; }
 .scr-g:last-child > summary { border-bottom:0; }
 .scr-g[open]:last-child > summary { border-bottom:1px solid var(--hair); }
+.rep-row.gap { align-items:center; }
+.gap-a { display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.lnk { background:none; border:0; padding:0; font:inherit; font-weight:600; color:var(--label); cursor:pointer; }
+.lnk:hover { color:var(--accent); }
 .q-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 14px 16px; align-items: start; }
 .q-head .t { font-weight: 600; font-size: 14px; }
 .q-head .s { color: var(--label-2); font-size: 12.5px; margin-top: 3px; }
@@ -1241,7 +1245,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <div class="act-cols">
           <section><div class="sec-h">To decide<small>Conflicts first: they block certification</small></div><div class="queue" id="queue-full"></div>
             <div class="sec-h" style="margin-top:28px">Other components<small>Suggestions from Nemotron Ultra · they don't block anything</small></div><div class="group" id="q-other"></div>
-            <div class="sec-h" style="margin-top:28px">To create in Figma<small>In code, nothing in Figma for designers to use · a designer creates them · they don't block anything</small></div><div class="group" id="q-create"></div>
+            <div class="sec-h" style="margin-top:28px">Missing somewhere<small id="gap-note">A component exists in code but not in Figma, Storybook or the docs · create it or mark it as not needed · doesn't block the PR</small></div><div class="group" id="q-create"></div>
             <div class="sec-h" style="margin-top:28px">In screens<small id="q-scr-note"></small></div><div class="group" id="q-screens"></div></section>
           <aside class="act-side" aria-label="Details">
             <section class="side-panel"><div class="side-h">Your progress</div><div id="q-prog"></div></section>
@@ -1686,8 +1690,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       const t = SC.test; $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${t ? ` · test: ${t.planted.filter((p) => p.found).length}/${t.planted.length} planted breaks found` : ""}${SC.blind ? ` · blind test: ${SC.blind.breaks.filter((b) => b.found).length}/${SC.blind.breaks.length}, ${SC.blind.falseAlarms.length} false alarms` : ""}${SC.mutation ? ` · ${SC.mutation.caught}/${SC.mutation.tried} random breaks caught` : ""}`;
       const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
       $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${["meaning", "contrast"].includes(k) ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); }
-    { const M = missingInFigma(); $("#q-create").innerHTML = M.length ? M.map((c) => `<button class="rep-row q-ot" data-comp="${esc(c.name)}"><div><div class="t">${esc(c.name)}</div><div class="s">Designers have nothing to place yet. Create it from the code's options.</div></div><div class="v"><span class="s">Designer</span></div></button>`).join("") : `<div class="empty">Every visual component has a Figma set.</div>`;
-      document.querySelectorAll("#q-create [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); }); }
+    renderGaps();
     document.querySelectorAll("#q-other [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
     renderQueueSide(show); $("#queue-pr").innerHTML = show ? prTag() : "";
     const open = show ? openItems().length : 0;
@@ -2140,6 +2143,31 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const NO_VISUAL = new Set(["AnchoredOverlay", "CheckboxGroup", "Details", "FeatureFlags", "FormControl", "Hidden", "LabelGroup", "PageLayout", "Portal", "RadioGroup", "RelativeTime", "ScrollableRegion", "SplitPageLayout", "Stack", "Text", "Truncate", "VisuallyHidden"]);
   const PARTIAL = { Skeleton: "Split in Figma: SkeletonAvatar and SkeletonText", ConfirmationDialog: "Built on Dialog: use Dialog in Figma" };
   const missingInFigma = () => (D.components || []).filter((c) => !c.cat?.figma && !/deprecated/i.test(c.cat?.status || "") && !NO_VISUAL.has(c.name) && !PARTIAL[c.name]);
+  // Gaps: a component that exists in code but is missing in one of the other three places. Each one is a small
+  // decision: create it (and who does it) or mark it as not needed. Answers are kept in this browser.
+  let GAPANS = {}; try { GAPANS = JSON.parse(localStorage.getItem("seamline-gaps") || "{}"); } catch {}
+  const saveGaps = () => { try { localStorage.setItem("seamline-gaps", JSON.stringify(GAPANS)); } catch {} };
+  function gaps() {
+    const out = [], WHO = { Figma: "Designer", Storybook: "Engineer", Docs: "Docs writer" };
+    for (const c of D.components || []) {
+      const dep = /deprecated/i.test(c.cat?.status || ""), nv = NO_VISUAL.has(c.name);
+      if (dep) continue;
+      if (!c.cat?.figma && !PARTIAL[c.name]) out.push({ c: c.name, where: "Figma", rec: nv ? "skip" : "create", why: nv ? "Nothing to draw: it's a utility or layout component." : "Designers have nothing to place yet. Create it from the code's options." });
+      if (!c.story) out.push({ c: c.name, where: "Storybook", rec: nv ? "skip" : "create", why: nv ? "No visual output to show in a story." : "Engineers can't see or test it in Storybook." });
+      if (!c.cat?.status) out.push({ c: c.name, where: "Docs", rec: "create", why: "Not on primer.style, so nobody can find how to use it." });
+    }
+    return out.map((g) => ({ ...g, who: WHO[g.where], key: `${g.c}|${g.where}` }));
+  }
+  function renderGaps() {
+    const ALL = gaps(), auto = ALL.filter((g) => g.rec === "skip"), G = ALL.filter((g) => g.rec !== "skip"), open = G.filter((g) => !GAPANS[g.key]);
+    $("#gap-note").textContent = `${open.length} of ${G.length} to decide · ${auto.length} more marked not needed by rule (no visual) · doesn't block the PR`;
+    $("#q-create").innerHTML = G.length ? G.sort((x, y) => (GAPANS[x.key] ? 1 : 0) - (GAPANS[y.key] ? 1 : 0)).map((g) => { const a = GAPANS[g.key];
+      return `<div class="rep-row gap"><div><div class="t"><button class="lnk" type="button" data-comp="${esc(g.c)}">${esc(g.c)}</button> <span class="tag">Missing in ${g.where}</span></div><div class="s">${esc(g.why)}</div></div>
+        <div class="gap-a">${a ? `<span class="s">${a === "create" ? `Create · ${g.who}` : "Not needed"}</span><button class="btn ghost" type="button" data-gap="${esc(g.key)}" data-ans="">Change</button>`
+          : `<button class="btn${g.rec === "create" ? " primary" : ""}" type="button" data-gap="${esc(g.key)}" data-ans="create">Create · ${g.who}</button><button class="btn${g.rec === "skip" ? " primary" : ""}" type="button" data-gap="${esc(g.key)}" data-ans="skip">Not needed</button>`}</div></div>`; }).join("") : `<div class="empty">Every component is in all four places.</div>`;
+    document.querySelectorAll("#q-create [data-gap]").forEach((b) => b.onclick = () => { if (b.dataset.ans) GAPANS[b.dataset.gap] = b.dataset.ans; else delete GAPANS[b.dataset.gap]; saveGaps(); renderGaps(); });
+    document.querySelectorAll("#q-create [data-comp]").forEach((b) => b.onclick = () => { compSel = b.dataset.comp; renderCompHead(); go("component"); });
+  }
   function docCell(r) {
     const st = r.cat?.status; if (!st) return `<span class="s" title="Not in primer.style">No docs</span>`;
     return `<span title="Status on primer.style">${esc(st[0].toUpperCase() + st.slice(1))}</span>`;
