@@ -1828,7 +1828,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#comp-sub").textContent = `${rows.filter((r) => r.cert).length} of ${rows.length} checked · ${rows.filter((r) => r.cert && !r.off && !r.wait).length} in sync`;
     const st = (r) => !r.cert ? `<span class="comp-nc">${r.cat && !r.cat.css && !r.cat.figma ? "Behaviour only" : "Nothing to compare"}</span>` : r.off ? `<span class="cst bad">${r.off} out of sync</span>` : r.wait ? `<span class="cst warn">${r.wait} waiting</span>` : `<span class="cst ok">In sync</span>`;
     $("#comp").innerHTML = `<div class="crow chead"><span>Component</span><span>Figma</span><span>Storybook</span><span>Checks</span><span>Status</span><span></span></div>` +
-      list.map((r) => `<button class="crow" data-comp="${esc(r.name)}"><span class="cn">${esc(r.name)}${r.deep ? ' <em class="deep">Agent</em>' : ""}</span><span>${r.inFigma ? "Component set" : "Not in Figma"}</span><span>${r.story ? "Stories" : "Not read"}</span><span>${r.deep ? `${cur.total.toLocaleString()}` : r.cat?.total || "—"}</span><span>${st(r)}</span><span class="chev"><svg><use href="#i-chev"/></svg></span></button>`).join("") +
+      list.map((r) => `<button class="crow" data-comp="${esc(r.name)}"><span class="cn">${esc(r.name)}${r.deep ? ' <em class="deep">Agent</em>' : ""}</span><span>${figCell(r)}</span><span>${r.story ? "Stories" : "Not read"}</span><span>${r.deep ? `${cur.total.toLocaleString()}` : r.cat?.total || "—"}</span><span>${st(r)}</span><span class="chev"><svg><use href="#i-chev"/></svg></span></button>`).join("") +
       (!compQ && shown.length > 3 ? `<button class="crow cmore" id="comp-more">${compAll ? "Show fewer" : `Show all ${shown.length}`}</button>` : "") +
       (!shown.length ? `<div class="crow cmore">No component matches “${esc(compQ)}”</div>` : "");
     $("#comp-more")?.addEventListener("click", () => { compAll = !compAll; renderComponents(); });
@@ -1984,6 +1984,15 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   function endTour(home) { tourEls?.forEach((e) => e.remove()); tourEls = null; if (home === true) go("decisions"); }
   addEventListener("keydown", (e) => { if (!tourEls) return; if (e.key === "Escape") endTour(false); });
   addEventListener("resize", () => { if (tourEls) endTour(false); });
+  // Why a component has no Figma set: no visual of its own (utilities, layout, wrappers), deprecated in the docs,
+  // or a real gap in the Primer Web file. Only the last one is something to fix.
+  const NO_VISUAL = new Set(["AnchoredOverlay", "CheckboxGroup", "Details", "FeatureFlags", "FormControl", "Hidden", "LabelGroup", "PageLayout", "Portal", "RadioGroup", "RelativeTime", "ScrollableRegion", "SplitPageLayout", "Stack", "Text", "Truncate", "VisuallyHidden"]);
+  function figCell(r) {
+    if (r.inFigma) return "Component set";
+    if (/deprecated/i.test(r.cat?.status || "")) return `<span class="s" title="Deprecated in Primer's docs, so no Figma set is expected">Deprecated</span>`;
+    if (NO_VISUAL.has(r.name)) return `<span class="s" title="Utility, layout or wrapper: nothing to draw in Figma">No visual</span>`;
+    return `<span style="color:var(--amber)" title="A visual component the Primer Web Figma file doesn't have yet">Missing in Figma</span>`;
+  }
   function go(p) {
     if (!pages.includes(p)) p = "overview";
     pages.forEach((x) => { $("#p-" + x).hidden = x !== p; });
