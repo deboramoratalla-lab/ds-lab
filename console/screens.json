@@ -477,8 +477,8 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1450",
    "component": "Button",
-   "msg": "Label \"Save changes\" contradicts the row describing archiving the repository.",
-   "fix": "Change the label to \"Archive repository\" (or similar).",
+   "msg": "Label \"Save changes\" does not describe the row action \"Archive this repository\".",
+   "fix": "Change label to \"Archive this repository\".",
    "by": "Nemotron Super + Ultra"
   },
   {
@@ -486,8 +486,8 @@
    "screen": "5 · Settings · Danger zone",
    "node": "8908:1460",
    "component": "Button",
-   "msg": "Icon link-external suggests opening another page, not deleting the repository.",
-   "fix": "Replace link-external icon with the trash octicon.",
+   "msg": "Icon link-external suggests opening another page, contradicting the delete action.",
+   "fix": "Replace link-external icon with trash icon (or remove the icon).",
    "by": "Nemotron Super + Ultra"
   },
   {
@@ -495,8 +495,17 @@
    "screen": "6 · New issue",
    "node": "8914:582",
    "component": "Button",
-   "msg": "Primary button labelled 'Cancel' contradicts the row's main action of submitting a new issue.",
-   "fix": "Make 'Submit new issue' the primary button and change 'Cancel' to default or secondary.",
+   "msg": "Primary button used for Cancel instead of the main action",
+   "fix": "Change Cancel to default/variant secondary and make 'Submit new issue' the primary button",
+   "by": "Nemotron Super + Ultra"
+  },
+  {
+   "kind": "meaning",
+   "screen": "6 · New issue",
+   "node": "8914:576",
+   "component": "Button",
+   "msg": "Button labeled \"Submit new issue\" uses default variant but should be primary as it is the main form action.",
+   "fix": "Change variant to primary.",
    "by": "Nemotron Super + Ultra"
   }
  ],
@@ -863,8 +872,17 @@
     "screen": "6 · New issue",
     "node": "8914:582",
     "component": "Button",
-    "msg": "Primary button labelled 'Cancel' contradicts the row's main action of submitting a new issue.",
-    "fix": "Make 'Submit new issue' the primary button and change 'Cancel' to default or secondary.",
+    "msg": "Primary button used for Cancel instead of the main action",
+    "fix": "Change Cancel to default/variant secondary and make 'Submit new issue' the primary button",
+    "by": "Nemotron Super + Ultra"
+   },
+   {
+    "kind": "meaning",
+    "screen": "6 · New issue",
+    "node": "8914:576",
+    "component": "Button",
+    "msg": "Button labeled \"Submit new issue\" uses default variant but should be primary as it is the main form action.",
+    "fix": "Change variant to primary.",
     "by": "Nemotron Super + Ultra"
    }
   ]
@@ -923,6 +941,16 @@
    "invisible Button size=small (28px is its real size)",
    "default 'Submit' + 'Preview' buttons"
   ],
-  "falseAlarms": []
+  "falseAlarms": [
+   {
+    "kind": "meaning",
+    "screen": "6 · New issue",
+    "node": "8914:576",
+    "component": "Button",
+    "msg": "Button labeled \"Submit new issue\" uses default variant but should be primary as it is the main form action.",
+    "fix": "Change variant to primary.",
+    "by": "Nemotron Super + Ultra"
+   }
+  ]
  }
 }
