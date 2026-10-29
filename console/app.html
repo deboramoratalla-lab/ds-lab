@@ -1149,7 +1149,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     <!-- LAB -->
     <div class="page" id="p-lab" hidden>
       <div class="wrap" style="gap:32px">
-        <div class="pg-head"><h1 class="pg-title">How it works</h1><p class="lede act-lede">A component should look and behave the same in Figma, code, Storybook and docs, and stay that way when it's used in a screen. Seamline checks three layers on every run.</p></div>
+        <div class="pg-head"><h1 class="pg-title">How it works</h1><p class="lede act-lede">A component should look and behave the same in Figma, code, Storybook and docs, and stay that way when it's used in a screen. Seamline checks three layers on every run.</p><button class="btn primary" type="button" id="hiw-tour" style="margin-top:12px;width:fit-content">Take the guided tour · 1 min</button></div>
         <section><div class="sec-h">What it watches<small>Three layers, one run</small></div><div class="hiw-l" id="hiw-l"></div></section>
         <section><div class="sec-h">Who does what<small>Rules first. Models only where judgement is needed</small></div><div class="group" id="hiw-who"></div></section>
         <section><div class="sec-h">When one side changes<small>Five kinds of change, and who handles each</small></div><div class="hiw" id="hiw"></div></section>
@@ -1994,7 +1994,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const pages = ["component", "overview", "activity", "decisions", "lab", "metrics", "sources"];
   (() => { const el = $("#intro"); let seen = false; try { seen = localStorage.getItem("seamline-intro") === "1"; } catch {}
     if (seen) { el.hidden = true; $("#tour-again").hidden = false; }
-    $("#tour-again").onclick = () => tour(0);
+    $("#tour-again").onclick = () => tour(0); $("#hiw-tour").onclick = () => tour(0);
     const hide = () => { el.hidden = true; $("#tour-again").hidden = false; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
     $("#intro-x").onclick = hide; $("#intro-tour").onclick = () => { hide(); tour(0); }; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
   const TOUR = [
