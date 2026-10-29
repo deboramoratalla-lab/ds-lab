@@ -354,7 +354,7 @@ a:hover { text-decoration: underline; }
 .tour-pop p { margin:0; font-size:13.5px; color:var(--label-2); line-height:1.5; }
 .tour-pop .how { display:grid; gap:6px; padding:12px 14px; border-radius:14px; background:var(--stage); }
 .tour-pop .how-h { font-size:11px; font-weight:600; color:var(--label-3); text-transform:uppercase; letter-spacing:.06em; }
-.tour-pop .how-r { display:grid; grid-template-columns:64px 1fr; gap:8px; align-items:baseline; font-size:12.5px; color:var(--label); line-height:1.4; }
+.tour-pop .how-r { display:grid; grid-template-columns:auto 1fr; gap:8px; align-items:baseline; font-size:12.5px; color:var(--label); line-height:1.4; }
 .tour-pop .tchip { font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent); white-space:nowrap; }
 .tour-pop .ta { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
 .tour-pop .ta div { display:flex; gap:8px; }
@@ -1997,34 +1997,44 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     $("#tour-again").onclick = () => tour(0); $("#hiw-tour").onclick = () => tour(0);
     const hide = () => { el.hidden = true; $("#tour-again").hidden = false; try { localStorage.setItem("seamline-intro", "1"); } catch {} };
     $("#intro-x").onclick = hide; $("#intro-tour").onclick = () => { hide(); tour(0); }; $("#intro-go").onclick = () => { hide(); go("decisions"); }; })();
+  const tab = (k) => () => document.querySelector(`[data-dtab="${k}"]`)?.click();
   const TOUR = [
     ["overview", "#who-status", "The result", "Here's where Primer stands after the last run",
-      "Changes landed in Figma and code. Seamline caught them, fixed what it could and kept count of what's left.",
-      [["Certify", "1,488 checks on Button and lighter checks on all 74 components, across Figma, code, Storybook and docs."]]],
+      `Seamline keeps ${(D.components || []).length || 74} components the same in Figma, code, Storybook and docs, and checks how they're used in real screens.`,
+      [["Certify", "Deep checks on Button, lighter checks on every component, and every instance in the screens."]]],
     ["overview", ".cv-map", "Step 1 · Read", "It reads all four sources",
       "Figma variables, Primer's code, Storybook stories and primer.style docs. A number on a source means something there doesn't match.",
       [["Rule", "Compares every value, name and option. No model needed to spot drift."]]],
-    ["overview", ".cv-log", "Step 2 · Judge", "Each change goes to the model that fits it",
+    ["overview", "#comp-sec", "Step 2 · Compare", "Every component, in every place",
+      "Each row says whether the component exists and matches in Figma, code, Storybook and docs. Anything off becomes a decision.",
+      [["Rule", "Options and sizes read from the code's TypeScript API and checked against each source."]]],
+    ["overview", ".cv-log", "Step 3 · Judge", "Each change goes to the model that fits it",
       "Small, mechanical work goes to a small model. Judgment goes to the big one. The log shows each call and why.",
       [["Nano", "Pairs a renamed token with its old name."], ["Ultra", "Reads commits and tickets to say which side is right."], ["Super", "Researches a new option with Tavily before proposing it."]]],
-    ["overview", "#pipe", "Step 3 · Fix", "It only fixes what it's sure of",
+    ["overview", "#pipe", "Step 4 · Fix", "It only fixes what it's sure of",
       "Below 85% confidence it stops and asks. Every fix is journaled, so you can undo it.",
       [["≥ 85%", "Applied to the other side and logged."], ["3 no's", "Three rejections of one kind pause auto-fix for it."]]],
-    ["overview", "#queue-sec .sec-h", "Step 4 · Ask", "The rest comes to you",
-      "A real conflict, a check it wasn't sure about, a new option. That's all. The pull request stays red until you answer.",
-      [["ds-sync", "A GitHub check that fails while a decision is open."]]],
-    ["decisions", "#queue-full > :first-child", "Step 5 · Decide", "You see both sides before you pick",
+    ["decisions", ".dtabs", "Step 5 · Ask", "The rest comes to you, sorted",
+      "What blocks the pull request, what's wrong in screens, what's out of sync and what's missing. One tab each.",
+      [["ds-sync", "A GitHub check that stays red while a PR decision is open."]], tab("pr")],
+    ["decisions", "#queue-full > :first-child", "Step 6 · Decide", "You see both sides before you pick",
       "Who changed what, why, and what it affects. When both sides changed, the agent summarises and never picks for you.",
-      [["Ultra", "Writes the summary without taking a side."]]],
-    ["decisions", "#q-unblock", "Step 6 · Ship", "Your answer goes to the pull request",
+      [["Ultra", "Writes the summary without taking a side."]], tab("pr")],
+    ["decisions", "#q-screens > :first-child", "Step 7 · Screens", "It checks components where they're used",
+      "Detached instances, hand-set colours, contrast in all 9 themes, off-scale spacing, deprecated parts, and buttons that say the wrong thing.",
+      [["Rule", "Bindings, contrast and spacing, read straight from Figma."], ["Super", "Reads meaning three times."], ["Ultra", "Confirms before it shows up."]], tab("screens")],
+    ["decisions", "#q-create > :first-child", "Step 8 · Assign", "Gaps become tasks with an owner",
+      "Missing in Figma, no stories, no docs. Pick who does it and Seamline opens a GitHub issue for them.",
+      [["GitHub", "An issue per task, assigned to the person who owns that place."]], tab("gap")],
+    ["decisions", "#q-unblock", "Step 9 · Ship", "Your answer goes to the pull request",
       "Seamline pushes it to the real PR, re-certifies, and ds-sync turns green. Every morning it runs again on its own.",
-      [["GitHub", "Actions apply your answers and re-run the checks."]]],
+      [["GitHub", "Actions apply your answers and re-run the checks."]], tab("pr")],
   ];
   let tourEls = null;
   function tour(i) {
     endTour(false);
     if (i >= TOUR.length) return;
-    const [pg, sel, , h, t] = TOUR[i]; go(pg);
+    const [pg, sel, , h, t] = TOUR[i]; go(pg); TOUR[i][6]?.();
     requestAnimationFrame(() => setTimeout(() => {
       const el = document.querySelector(sel); if (!el) return tour(i + 1);
       el.scrollIntoView({ block: el.offsetHeight > innerHeight - 200 ? "start" : "center" }); scrollBy(0, el.offsetHeight > innerHeight - 200 ? -90 : 0);
