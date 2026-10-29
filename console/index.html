@@ -346,6 +346,8 @@ a:hover { text-decoration: underline; }
 .sugg{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.q-cons{flex-basis:100%;font-size:12.5px;color:var(--label-2)}
 .btn.ghost { min-height:24px; }
 html { overflow-x:clip; }
+.ov-l{font-size:12.5px;margin-left:auto}.ov-f{flex-basis:100%;display:grid;gap:6px;font-size:12.5px;color:var(--label-2)}.ov-f>div{display:flex;gap:8px;flex-wrap:wrap}.ov-f input{flex:1;min-width:200px;font:inherit;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--hair);background:var(--group);color:var(--label)}
+.ship{display:grid;gap:10px;padding:18px 20px}.ship h3{margin:0;font-size:16px;font-weight:600}.ship ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}.ship li{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--label-2)}.ship li i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;background:var(--fill);color:var(--label-3);flex:none}.ship li.ok i{background:var(--green);color:#fff}.ship li.ok{color:var(--label)}
 .tour-pop { position:fixed; z-index:91; width:360px; padding:22px 22px 18px; border-radius:22px; background:var(--group); color:var(--label); box-shadow:0 1px 2px rgba(0,0,0,.06), 0 18px 48px rgba(17,16,28,.28); display:grid; gap:10px; animation:tourIn .25s ease both; }
 @keyframes tourIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
 .tour-pop .tk { display:flex; align-items:center; justify-content:space-between; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); }
@@ -915,7 +917,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
 .tl-empty{font-size:13px;color:var(--label-2);padding:2px 0}.tl-empty a{color:var(--accent)}
 #act-sum{grid-template-columns:repeat(4,minmax(0,1fr))}
 .pr-top{display:flex;align-items:center;gap:10px}.pr-meta{font-size:12px;color:var(--label-3)}.pr-t{font-size:14px;font-weight:500;color:var(--label);line-height:1.4}
-.pr-check{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--label-2)}.pr-dot{width:8px;height:8px;border-radius:50%}.pr-dot.red{background:var(--red)}.pr-dot.green{background:var(--green)}
+.pr-check{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--label-2)}.pr-dot{width:8px;height:8px;border-radius:50%}.pr-dot.red{background:var(--red)}.pr-dot.green{background:var(--green)}.pr-dot.amber{background:var(--amber)}
 .pr-actions{display:flex;gap:8px}.pr-more summary{cursor:pointer;font-size:12.5px;color:var(--accent);font-weight:500;list-style:none}.pr-more summary::-webkit-details-marker{display:none}
 .pr-more[open] summary{margin-bottom:10px}.pr-more .pr-f{margin-top:8px;border:1px solid var(--hair);border-radius:12px;overflow:hidden}.pr-fh{display:flex;gap:8px;align-items:center;padding:8px 12px;font-size:12.5px}.pr-more pre{margin:0;padding:10px 12px;font-size:11.5px;max-height:220px;overflow:auto;background:color-mix(in srgb,var(--label) 3%,var(--group))}
 .mdl{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--hair)}.mdl:first-child{border-top:0}.mdl .t{font-size:13px;font-weight:500;color:var(--label)}.mdl .s{font-size:12px;color:var(--label-3)}
@@ -1563,6 +1565,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   const KIND = { decide: ["Your call", "st-warn"], review: ["Review", "st-off"], proposal: ["Proposal", "st-off"] };
   // Titles in plain words; the token name stays visible underneath for people who search by it.
   const researchOpen = new Set();
+  const OVR = {}; let ovOpen = null; let SENT = null; // override reasons per item; the item whose override form is open; last send to the PR
+  const ovForm = (i) => answers[i.id] ? "" : ovOpen === i.id
+    ? `<div class="ov-f"><label for="ov-${i.id}">Why accept it as it is? The check passes for 7 days and shows your reason on the PR.</label><div><input id="ov-${i.id}" maxlength="200" placeholder="e.g. Brand review on Monday decides this" value="${esc(OVR[i.id] || "")}"><button class="btn" type="button" data-ov-ok="${i.id}">Override for 7 days</button><button class="btn ghost" type="button" data-ov-x="${i.id}">Cancel</button></div></div>`
+    : ROLES[role].decides ? `<button class="btn ghost ov-l" type="button" data-ov="${i.id}">Override with a reason</button>` : "";
   function researchHTML(B) {
     const refs = [...(B.findings || []), ...(B.standard ? [B.standard] : [])].filter((f, i, arr) => arr.findIndex((g) => g.system === f.system && g.values.join() === f.values.join()) === i);
     return `<div class="rs"><div class="rs-h">${B.searches} Tavily searches · Nemotron Super · only numbers found in the cited source are kept</div>${refs.map((f) => `<div class="rs-r"><b>${esc(f.system)}</b><span>${esc(f.values.join(" · "))}</span>${f.url === "local" ? `<small>Read from your code</small>` : `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(new URL(f.url).hostname)}</a>`}</div>`).join("")}</div>`;
@@ -1593,7 +1599,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       body = `<div class="choice">${opt("figma", i.figma, "Designer · Figma", i.people?.figma)}${opt("code", i.code, "Engineer · code", i.people?.code)}</div>
         <div class="note"><b>Nemotron Ultra</b> ${i.lean ? `leans ${esc(i.lean)}.` : "doesn't pick a side."} ${esc(i.why || "")}</div>
         ${i.impact ? impactHTML(i.impact) : ""}`;
-      actions = a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Debora decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
+      actions = a === "override" ? `<span class="q-done"><b>Overridden for 7 days.</b> “${esc(OVR[i.id] || "")}”</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : a ? `<span class="q-done"><b>Decided.</b> ${a === "figma" ? "Code" : "Figma"} gets the ${a} value.</span>${ROLES[role].decides ? `<button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : ""}` : ROLES[role].decides ? "" : `<span class="q-done"><b>Debora decides.</b> Your reason is already on the card; reply on the pull request to add context.</span>`;
     } else {
       if (i.change?.type === "rename") body += `<div class="diff">${stage(`<span class="tk">control/medium/<b>gap</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="arrow">→</span>${stage(`<span class="tk">control/medium/<b>gapInline</b></span><span class="gapbar"><i></i></span>`, "sm")}<span class="dmeta mono">same value · 8px · used by Button medium</span></div>`;
       if (i.kind === "proposal" && i.change?.option) body += `<div class="diff">${stage(["xsmall", "small", "medium", "large"].map((z) => `<span class="szc${z === i.change.option ? " new" : ""}">${sized(z)}<span class="mono">${PB.size[z][0]}px${z === i.change.option ? " · new" : ""}</span></span>`).join(""), "row")}</div>`;
@@ -1603,7 +1609,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         body += `<div class="impact"><div><span class="status ${V[0]}">${V[1]}</span></div><div>${esc(R.recommendation)}</div>${`<div><button class="btn ghost" style="padding:0" data-research="${i.id}">${researchOpen.has(i.id) ? "Hide the research" : "See the research"}</button></div>${researchOpen.has(i.id) ? researchHTML(R) : ""}`}</div>`;
       }
       const yes = i.kind === "proposal" ? "Create it" : "Apply", no = i.kind === "proposal" ? "Not now" : "Reject";
-      actions = a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
+      actions = a === "override" ? `<span class="q-done"><b>Overridden for 7 days.</b> “${esc(OVR[i.id] || "")}”</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>` : a ? `<span class="q-done"><b>${a === "approve" ? (i.kind === "proposal" ? "Approved." : "Applied.") : "Rejected."}</b> ${a === "approve" ? "" : "Stays as it is."}</span><button class="btn ghost" data-item="${i.id}" data-answer="">Change</button>`
         : ROLES[role].decides ? `<button class="btn primary" data-item="${i.id}" data-answer="approve">${yes}</button><button class="btn" data-item="${i.id}" data-answer="reject">${no}</button><span class="q-cons">${i.kind === "proposal" ? "Not now leaves it out of Figma and Storybook. The check stays red until it's added there or removed from code." : "Reject keeps things as they are."}</span>` : `<span class="q-done"><b>Debora ${i.kind === "proposal" ? "approves new options" : "reviews this"}.</b> Comment on the pull request if you know something she doesn't.</span>`;
     }
     const C = CAT[i.kind], open = full || expanded.has(i.id), first = ordered().find((x) => !answers[x.id])?.id === i.id;
@@ -1614,7 +1620,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
         <span class="q-main"><span class="q-cat">${C.label}${first && !full ? `<span class="start">Start here</span>` : ""}</span><span class="q-title">${esc(qTitle(i))}</span>${i.token ? `<span class="q-tok">${esc(i.token)}</span>` : ""}</span>
         <span class="q-side">${a ? `<span class="status st-ok">Done</span>` : `<span class="q-imp">${impactShort}</span><span class="q-eff mono">~${C.effort}</span>`}<span class="chev">›</span></span>
       </button>
-      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Debora picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions ? `<div class="q-actions">${actions}</div>` : ""}</div>` : ""}</div>`;
+      ${open ? `<div class="q-body"><div class="q-head"><div><div class="s">${esc(i.kind === "decide" && role !== "lead" ? "The designer and the engineer both changed it. Debora picks which value stays; the other side gets updated" : C.sub)}.${i.kind === "decide" ? "" : ` ${esc(i.why)}`}</div>${i.kind === "decide" ? "" : `<div class="q-meta">${meta}</div>`}</div></div>${body}${actions || (full && ovForm(i)) ? `<div class="q-actions">${actions}${full ? ovForm(i) : ""}</div>` : ""}</div>` : ""}</div>`;
   }
   { const h = new Date().getHours(); $("#greet").textContent = `${h < 12 ? "Good morning" : h < 20 ? "Good afternoon" : "Good evening"}, Debora`; }
   // KPI card: label, value, context chip, and a small chart built from the same run data. Text stays in ink; marks carry colour.
@@ -1678,7 +1684,8 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
   async function sendAnswers() {
     const decide = ITEMS.filter((i) => i.kind === "decide" && (answers[i.id] === "figma" || answers[i.id] === "code")).map((i) => `${i.token}=${answers[i.id]}`).join(",");
     const approve = ITEMS.filter((i) => i.kind !== "decide" && answers[i.id] === "approve").map((i) => i.id).join(",");
-    try { const r = await fetch("/api/decide", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ decide, approve }) }); const j = await r.json();
+    const ov = ITEMS.filter((i) => answers[i.id] === "override"), override = ov.map((i) => i.id).join(","), reason = ov.map((i) => OVR[i.id]).join("; ").slice(0, 200);
+    try { const r = await fetch("/api/decide", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ decide, approve, override, reason }) }); const j = await r.json(); if (r.ok) { SENT = { at: Date.now(), runs: j.runs }; render(); }
       toast(r.ok ? `Sent. GitHub is applying your answers to the PR; ds-sync re-runs in a minute or two. <a href="${esc(j.runs)}" target="_blank" rel="noopener" style="color:inherit">See the run</a>` : `Couldn't send: ${esc(j.error || r.status)}`); }
     catch (e) { toast("Couldn't reach the server."); }
   }
@@ -1702,10 +1709,10 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const mins = open.reduce((x, i) => x + (i.kind === "decide" ? 1 : 2), 0);
     const nice = (w) => w.replace(/^the /, "").replace(/ who changed it$/, "").replace(/s$/, "").replace(/^./, (c) => c.toUpperCase());
     const who = {}; for (const i of open) { const n = (i.impact || []).find((x) => x.startsWith("Notified:")); if (n) for (const w of n.replace(/^Notified:\s*/, "").split(/,\s*| and /)) { const k = nice(w.trim()); if (k) (who[k] = who[k] || []).push(qTitle(i)); } }
-    $("#q-sum").innerHTML = `<span><b>${open.length}</b> need you${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>the GitHub check ${blocking ? `fails until ${blocking === 1 ? "this decision is" : `these ${blocking} decisions are`} answered` : "passes"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
-    $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${({ figma: "kept Figma", code: "kept code", approve: "approved", reject: "not now" })[a] || "answered"}` : ""}</small></span></button>`; }).join("")}</div>`;
+    $("#q-sum").innerHTML = `<span><b>${open.length}</b> need you${open.length ? ` · ~${mins} min` : ""}</span><span class="pr-check"><span class="pr-dot ${blocking ? "red" : SENT ? "green" : "amber"}"></span>the GitHub check ${blocking ? `fails until ${blocking === 1 ? "this decision is" : `these ${blocking} decisions are`} answered` : SENT ? "is re-running with your answers" : "turns green once you send your answers"}</span>${Object.keys(who).length ? `<span>${Object.keys(who).length} people get a note once you answer</span>` : ""}`;
+    $("#q-prog").innerHTML = `<div class="qp">${ordered().map((i) => { const a = answers[i.id]; return `<button class="qp-r${a ? " done" : ""}" data-qjump="${i.id}"><span class="qp-c">${a ? "✓" : ""}</span><span><b>${esc(qTitle(i))}</b><small>${CAT[i.kind].label}${a ? ` · ${({ figma: "kept Figma", code: "kept code", approve: "approved", reject: "not now", override: "overridden" })[a] || "answered"}` : ""}</small></span></button>`; }).join("")}</div>`;
     const P = D.pr;
-    $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : "green"}"></span>The GitHub check ${blocking ? `fails until ${blocking === 1 ? "1 decision is" : `${blocking} decisions are`} answered` : "passes"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div>${API.decisions ? `<button class="btn primary q-send" type="button" ${open.length ? "disabled" : ""}>${open.length ? `Answer ${open.length} more to send` : "Send answers to the PR"}</button>` : `<small>Your answers go to this pull request.</small>`}</div>` : `<small>No pull request for this run.</small>`;
+    $("#q-unblock").innerHTML = P ? `<div class="qu"><div class="pr-check"><span class="pr-dot ${blocking ? "red" : SENT ? "green" : "amber"}"></span>The GitHub check ${blocking ? `fails until ${blocking === 1 ? "1 decision is" : `${blocking} decisions are`} answered` : SENT ? "is re-running with your answers" : "turns green once you send your answers"}</div><div class="qu-t">${esc(P.title.replace(/^Seamline: /, ""))}</div><div class="tl-links">${xlink(P.url, `PR #${LK.pr?.number ?? ""}`)}${xlink(P.url && P.url + "/checks", "ds-sync check")}</div>${API.decisions ? `<button class="btn primary q-send" type="button" ${open.length ? "disabled" : ""}>${open.length ? `Answer ${open.length} more to send` : "Send answers to the PR"}</button>` : `<small>Your answers go to this pull request.</small>`}</div>` : `<small>No pull request for this run.</small>`;
     $("#q-unblock .q-send")?.addEventListener("click", sendAnswers);
     document.querySelectorAll("[data-qjump]").forEach((b) => b.addEventListener("click", () => { expanded.add(b.dataset.qjump); renderQueue(); document.querySelector(`#queue-full [data-id="${b.dataset.qjump}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   }
@@ -1726,7 +1733,13 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     const dd = `<div class="sdd${ddOpen ? " open" : ""}"><button class="sdd-btn${srcF !== "all" ? " on" : ""}" aria-haspopup="listbox" aria-expanded="${ddOpen}"><svg><use href="#i-${cur[3]}"/></svg>${cur[1]}<svg class="cv"><use href="#i-chev"/></svg></button>
       <div class="sdd-menu" role="listbox">${opts.map(([k, l, n, ic]) => `<button role="option" aria-selected="${srcF === k}" data-src-opt="${k}"${n ? "" : " disabled"}><svg><use href="#i-${ic}"/></svg>${l}<span class="mono">${n}</span>${srcF === k ? '<span class="ck">✓</span>' : ""}</button>`).join("")}</div></div>`;
     $("#queue").innerHTML = show ? (ITEMS.length > 4 || role !== "lead" || srcF !== "all" || filter !== "all" ? `<div class="fbar"><div class="fchips">${chips}</div>${dd}</div>` : "") + (list.length ? list.map((i) => itemHTML(i, false)).join("") : `<div class="fhint2">No items match these filters.</div>`) : empty;
-    $("#queue-full").innerHTML = show ? ordered().map((i) => itemHTML(i, true)).join("") : empty;
+    const P = D.pr, prn = LK.pr?.number ?? "", nOv = ITEMS.filter((i) => answers[i.id] === "override").length;
+    const ship = show && !openItems().length ? `<div class="group ship" role="status"><h3>${SENT ? "Sent. The pull request is on its way to green" : "All answered. One step left"}</h3><ol>
+      <li class="ok"><i>✓</i>${ITEMS.length} decisions answered${nOv ? ` · ${nOv} overridden for 7 days` : ""}</li>
+      <li class="${SENT ? "ok" : ""}"><i>${SENT ? "✓" : "2"}</i>${SENT ? `Sent to PR #${prn}. ${xlink(SENT.runs, "See the run")}` : API.decisions ? `<span>Send them to PR #${prn}</span><button class="btn primary q-send2" type="button">Send answers to the PR</button>` : `Send them to PR #${prn} from the live demo`}</li>
+      <li><i>3</i>The GitHub check re-runs in a minute or two and turns green, so PR #${prn} can merge. ${P?.url ? xlink(P.url + "/checks", "Watch the check") : ""}</li></ol></div>` : "";
+    $("#queue-full").innerHTML = show ? ship + ordered().map((i) => itemHTML(i, true)).join("") : empty;
+    $("#queue-full .q-send2")?.addEventListener("click", sendAnswers);
     renderAllTasks();
     if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
       const G = [["meaning", "Meaning", "Nemotron Super flagged it in at least 2 of 3 reads; Nemotron Ultra confirmed it"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
@@ -1742,13 +1755,18 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     document.querySelectorAll("[data-item]").forEach((b) => b.addEventListener("click", () => {
       const id = b.dataset.item, it = ITEMS.find((x) => x.id === id), prev = answers[id];
       if (b.dataset.answer) { answers[id] = b.dataset.answer; expanded.delete(id); const nx = ordered().find((x) => !answers[x.id]); if (nx) expanded.add(nx.id);
-        const left = openItems().length, A = { figma: "Kept Figma", code: "Kept code", approve: "Approved", reject: "Not now" }[b.dataset.answer] || "Answered";
+        const left = openItems().length, A = { figma: "Kept Figma", code: "Kept code", approve: "Approved", reject: "Not now", override: "Overridden" }[b.dataset.answer] || "Answered";
         toast(`${A}: ${esc(qTitle(it))}. ${left ? `${left} left.` : "All answered. The GitHub check will pass once your answers are pushed to the PR."}`, "Change", () => { if (prev) answers[id] = prev; else delete answers[id]; expanded.add(id); syncState(); render(); }); }
       else delete answers[id];
       syncState(); render();
     }));
     document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
     document.querySelectorAll("[data-toggle]").forEach((b) => b.addEventListener("click", () => { const id = b.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); renderQueue(); }));
+    document.querySelectorAll("[data-ov]").forEach((b) => b.onclick = () => { ovOpen = b.dataset.ov; renderQueue(); document.getElementById(`ov-${ovOpen}`)?.focus(); });
+    document.querySelectorAll("[data-ov-x]").forEach((b) => b.onclick = () => { ovOpen = null; renderQueue(); });
+    document.querySelectorAll("[data-ov-ok]").forEach((b) => b.onclick = () => { const id = b.dataset.ovOk, v = document.getElementById(`ov-${id}`).value.trim();
+      if (v.length < 3) { toast("Write a short reason first. It goes on the pull request."); document.getElementById(`ov-${id}`).focus(); return; }
+      OVR[id] = v.replace(/[^\w\s.,;:'()\/-]/g, ""); answers[id] = "override"; ovOpen = null; expanded.delete(id); syncState(); render(); toast(`Overridden for 7 days. ${openItems().length ? `${openItems().length} left.` : "All answered."}`); });
     document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => { filter = b.dataset.filter; renderQueue(); }));
     document.querySelectorAll("[data-research]").forEach((b) => b.addEventListener("click", (e) => { e.stopPropagation(); const id = b.dataset.research; researchOpen.has(id) ? researchOpen.delete(id) : researchOpen.add(id); renderQueue(); }));
     const sb = $("#queue .sdd-btn"); if (sb) sb.addEventListener("click", (e) => { e.stopPropagation(); ddOpen = !ddOpen; renderQueue(); if (ddOpen) $("#queue .sdd-menu [aria-selected=true]")?.focus(); });

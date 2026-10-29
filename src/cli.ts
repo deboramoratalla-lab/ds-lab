@@ -130,8 +130,8 @@ if (cmd === "pr") {
   const { cpSync, rmSync, readFileSync: rf, writeFileSync: wf } = await import("node:fs");
   const d = JSON.parse(rf("console/data.json", "utf8"));
   // ds-lab pr --decide token=figma|code --approve all   push the person's decisions to the open PR's branch
-  const dAt = process.argv.indexOf("--decide"), aAt = process.argv.indexOf("--approve");
-  if ((dAt > 0 || aAt > 0) && d.pr.branch) {
+  const dAt = process.argv.indexOf("--decide"), aAt = process.argv.indexOf("--approve"), oAt = process.argv.indexOf("--override"), rAt = process.argv.indexOf("--reason");
+  if ((dAt > 0 || aAt > 0 || oAt > 0) && d.pr.branch) {
     const git = (...a: string[]) => execFileSync("git", a, { encoding: "utf8" }).trim();
     const picks = Object.fromEntries((dAt > 0 ? process.argv[dAt + 1] : "").split(",").filter(Boolean).map((x) => x.split("=")));
     const ok = aAt > 0 ? process.argv[aAt + 1] : "";
@@ -147,6 +147,16 @@ if (cmd === "pr") {
         resolveItem(w, input, item, answer);
         if (item.change?.type === "rename" && answer === "approve") renames[item.change.from] = item.change.to;
         done.push(`- ${item.title} → ${item.kind === "decide" ? `keep ${answer}` : "approved"}`);
+      }
+      // Overrides: the lead accepts an item as it is, with a reason. ds-sync then passes for 7 days and says why.
+      const ovIds = (oAt > 0 ? process.argv[oAt + 1] : "").split(",").filter(Boolean), reason = (rAt > 0 ? process.argv[rAt + 1] : "").trim();
+      if (ovIds.length) {
+        if (reason.length < 3) { console.error("An override needs a reason (--reason)."); process.exit(1); }
+        const prev = existsSync(`${dir}/overrides.json`) ? JSON.parse(rf(`${dir}/overrides.json`, "utf8")) : [];
+        const at = new Date(), expires = new Date(at.getTime() + 7 * 864e5);
+        const add = d.repair.items.filter((i: any) => ovIds.includes(i.id)).map((i: any) => ({ id: i.id, title: i.title, reason, by: "Debora (design system lead)", at: at.toISOString(), expires: expires.toISOString() }));
+        wf(`${dir}/overrides.json`, JSON.stringify([...prev.filter((x: any) => !ovIds.includes(x.id)), ...add], null, 1));
+        for (const x of add) done.push(`- ${x.title} → overridden until ${x.expires.slice(0, 10)}: ${reason}`);
       }
       if (!done.length) { console.error("Nothing to apply. Use --decide <token>=figma|code and/or --approve all|<id>."); process.exit(1); }
       wf(`${dir}/renames.json`, JSON.stringify(renames, null, 1));
@@ -199,6 +209,8 @@ if (cmd === "certify-primer" || cmd === "break") {
     console.log();
   }
   const r = certifyPrimer(input);
+  const ovf = wsAt > 0 ? `${process.argv[wsAt + 1]}/overrides.json` : "";
+  const overrides = ovf && existsSync(ovf) ? JSON.parse(readFileSync(ovf, "utf8")).filter((o: any) => new Date(o.expires) > new Date()) : [];
   for (const c of r.checks) {
     console.log(`${c.passed === c.total ? "✓" : "✗"} ${c.area.padEnd(50)} ${c.passed}/${c.total}`);
     for (const x of c.issues.slice(0, 15)) console.log(`    ${x}`);
@@ -206,6 +218,11 @@ if (cmd === "certify-primer" || cmd === "break") {
   console.log(`\nWarnings (${r.warnings.length}):`);
   for (const w of r.warnings.slice(0, 30)) console.log(`  · ${w}`);
   console.log(r.ok ? "\nCertified: Primer Web (light) is in sync with GitHub's code, within scope." : "\nNot in sync.");
+  if (!r.ok && overrides.length) {
+    console.log(`\nPassed by override (${overrides.length}). The values above are still out of sync:`);
+    for (const o of overrides) { console.log(`  · ${o.title}: "${o.reason}" — ${o.by}, until ${o.expires.slice(0, 10)}`); if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Overridden by ${o.by}::${o.title}: ${o.reason} (until ${o.expires.slice(0, 10)})`); }
+    process.exit(0);
+  }
   process.exit(r.ok ? 0 : 2);
 }
 

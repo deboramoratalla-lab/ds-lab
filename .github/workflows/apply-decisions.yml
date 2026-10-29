@@ -6,6 +6,8 @@ on:
     inputs:
       decide: { description: "token=figma|code, comma-separated", required: false, default: "" }
       approve: { description: "all, or item ids, comma-separated", required: false, default: "" }
+      override: { description: "item ids accepted as they are, comma-separated", required: false, default: "" }
+      reason: { description: "why they are overridden (required with override)", required: false, default: "" }
 permissions: { contents: write, pull-requests: write, actions: write }
 jobs:
   apply:
@@ -18,14 +20,17 @@ jobs:
         with: { node-version: 22 }
       - run: npm ci || npm install
       - run: bash fixtures/get-primer.sh
-      - run: |
+      - env: { DECIDE: "${{ inputs.decide }}", APPROVE: "${{ inputs.approve }}", OVERRIDE: "${{ inputs.override }}", REASON: "${{ inputs.reason }}" }
+        run: |
           git config user.name "seamline-agent"; git config user.email "seamline-agent@users.noreply.github.com"
-          ARGS=""; [ -n "${{ inputs.decide }}" ] && ARGS="$ARGS --decide ${{ inputs.decide }}"; [ -n "${{ inputs.approve }}" ] && ARGS="$ARGS --approve ${{ inputs.approve }}"
-          npx tsx src/cli.ts pr $ARGS
+          ARGS=(); [ -n "$DECIDE" ] && ARGS+=(--decide "$DECIDE"); [ -n "$APPROVE" ] && ARGS+=(--approve "$APPROVE"); [ -n "$OVERRIDE" ] && ARGS+=(--override "$OVERRIDE" --reason "$REASON")
+          npx tsx src/cli.ts pr "${ARGS[@]}"
           # pushes made with GITHUB_TOKEN don't re-run ds-sync on their own: start it on the PR branch
           BR=$(git ls-remote --heads origin 'ds-sync/*' | awk '{print $2}' | sed 's#refs/heads/##' | sort | tail -1)
           sleep 15
           for id in $(gh api "repos/${{ github.repository }}/actions/runs?branch=$BR&status=action_required" --jq '.workflow_runs[].id'); do
             gh api -X POST "repos/${{ github.repository }}/actions/runs/$id/approve" && echo "approved ds-sync run $id" || echo "could not approve $id"
           done
+          PR=$(gh pr list --head "$BR" --json number -q '.[0].number')
+          [ -n "$OVERRIDE" ] && [ -n "$PR" ] && gh pr comment "$PR" --body "**Overridden by Debora (design system lead)** for 7 days: $REASON" || true
           [ -n "$BR" ] && (gh workflow run ds-sync.yml --ref "$BR" && echo "started ds-sync on $BR" || echo "could not start ds-sync on $BR")
