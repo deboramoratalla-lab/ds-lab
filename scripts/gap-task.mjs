@@ -11,7 +11,7 @@ label("seamline-gap", "6d48c8", "A component missing in Figma, Storybook or docs
 const title = `${A === "skip" ? "Not needed" : "Create"}: ${C} in ${W}`;
 const existing = gh("issue", "list", "-R", REPO, "--label", "seamline-gap", "--state", "all", "--search", `"${C} in ${W}" in:title`, "--json", "number,title", "-q", ".[].title");
 if (existing.split("\n").some((t) => t.endsWith(`: ${C} in ${W}`))) { console.log("already recorded"); process.exit(0); }
-const docs = JSON.parse(readFileSync("fixtures/primer-react/package/generated/components.json", "utf8")).components ?? {};
+let docs = {}; try { docs = JSON.parse(readFileSync("fixtures/primer-react/package/generated/components.json", "utf8")).components ?? {}; } catch {}
 const doc = Object.values(docs).find((d) => d.name === C);
 const opts = (doc?.props ?? []).filter((p) => /^(variant|size)$/.test(p.name)).map((p) => `- \`${p.name}\`: ${p.type}${p.defaultValue ? ` (default ${p.defaultValue})` : ""}`).join("\n");
 const what = { Figma: `Create a **${C}** component set in the Primer Web Figma file so designers can place it.`, Storybook: `Add stories for **${C}** so engineers can see and test it.`, Docs: `Write the **${C}** page on primer.style so people can find how to use it.` }[W];
