@@ -1612,7 +1612,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
     if (D.screens) { const SC = D.screens, nodeURL = (n) => `${SC.source}?node-id=${n.replace(/^I/, "").split(";")[0].replace(":", "-")}`;
       const G = [["meaning", "Meaning", "Nemotron Super flagged it in at least 2 of 3 reads; Nemotron Ultra confirmed it"], ["contrast", "Contrast", "Below WCAG AA in light mode"], ["contrast-modes", "Other colour modes", "Dark, dimmed, high contrast and colour-blind modes"], ["hardcoded", "Set by hand", "Colours that don't come from a token"], ["token", "Tokens code doesn't have", ""], ["detached", "Detached", "No longer linked to the library"], ["missing", "Not in the library", ""], ["deprecated", "Deprecated", "Marked deprecated in Primer's docs"], ["variant", "Options code doesn't have", "In Figma, missing in docs or code"], ["resized", "Resized by hand", ""], ["spacing", "Spacing", "Off Primer's spacing scale"]];
       const t = SC.test; { const issued = screenTasks().filter((g) => taskFor(g) || GAPANS[g.key]).reduce((x, g) => x + g.n, 0);
-        $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens${issued ? ` · ${issued} already have an issue` : ""} · one issue per kind · doesn't block the PR`; }
+        $("#q-scr-note").textContent = `${SC.findings.length} problems in ${SC.screens.length} GitHub screens, grouped into ${screenTasks().length} kinds · one issue per kind${issued ? ` · ${screenTasks().filter((g) => taskFor(g) || GAPANS[g.key]).length} already ${screenTasks().filter((g) => taskFor(g) || GAPANS[g.key]).length === 1 ? "has its issue" : "have theirs"}` : ""} · doesn't block the PR`; }
       const row = (f) => `<div class="rep-row"><div><div class="t">${f.inherited ? `<span class="tag">From Primer</span> ` : ""}${esc(f.msg)}${f.count > 1 ? ` <span class="s">× ${f.count}</span>` : ""}</div><div class="s">${esc((f.screens || [f.screen]).map((x) => x.replace(/^\d+ · /, "")).join(", "))} · ${esc(f.fix)}</div></div><div class="v">${xlink(nodeURL(f.node), "Figma")}</div></div>`;
       $("#q-screens").innerHTML = G.map(([k, label, sub]) => { const L = SC.findings.filter((f) => f.kind === k); return L.length ? `<details class="scr-g"${k === "meaning" ? " open" : ""}><summary><span class="t">${label}</span><span class="count">${L.length}</span>${sub ? `<span class="s">${sub}</span>` : ""}</summary><div class="scr-task" id="scr-t-${k}"></div>${L.sort((x, y) => (x.inherited ? 1 : 0) - (y.inherited ? 1 : 0)).map(row).join("")}</details>` : ""; }).join(""); renderScreenTasks(); }
     renderGaps();
@@ -2206,7 +2206,7 @@ body:not([data-role="lead"]) .acct .av-btn{box-shadow:none!important}
       (w === "menu" ? (document.querySelector(`[data-pick="${q}"][aria-selected="true"]`) || document.querySelector(`[data-pick="${q}"]`)) : document.querySelector(`[data-open="${q}"]`))?.focus(); } }
   function dtabCounts() {
     const set = (id, n) => { const e = $(id); if (e) e.textContent = n; };
-    set("#dt-pr", openItems().length); set("#dt-screens", screenTasks().filter((g) => !(taskFor(g) || GAPANS[g.key])).reduce((x, g) => x + g.n, 0));
+    set("#dt-pr", openItems().length); set("#dt-screens", screenTasks().filter((g) => !(taskFor(g) || GAPANS[g.key])).length);
     const openOf = (L) => L.filter((g) => !(taskFor(g) || GAPANS[g.key])).length;
     set("#dt-fix", openOf(fixes())); set("#dt-gap", openOf(gaps().filter((g) => g.rec !== "skip").map((g) => ({ ...g, kind: "gap" }))));
   }
