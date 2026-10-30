@@ -7,3 +7,6 @@
 :root {
   --button-invisible-fgColor-rest: #59636e;
 }
+:root {
+  --control-medium-gapInline: 8px;
+}
